@@ -4,12 +4,12 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.jobmoa.app.biz.login.MemberDTO" alias="member" />
-        <typeAlias type="com.jobmoa.app.biz.main.MainDTO" alias="main" />
+        <typeAlias type="com.jobmoa.app.biz.participant.ParticipantDTO" alias="participant" />
     </typeAliases>
 
 
     <mappers>
-        <mapper resource="mappings/login-mapping.xml" />
-        <mapper resource="mappings/main-mapping.xml" />
+        <mapper resource="mappings/Member-mapping.xml" />
+        <mapper resource="mappings/Participant-mapping.xml" />
     </mappers>
 </configuration>

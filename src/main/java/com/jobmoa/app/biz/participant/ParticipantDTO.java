@@ -1,9 +1,9 @@
-package com.jobmoa.app.biz.main;
+package com.jobmoa.app.biz.participant;
 
 import lombok.Data;
 
 @Data
-public class MainDTO {
+public class ParticipantDTO {
     private int SERIAL_NUMBER; // 일련번호
     private String REGISTRATION_DATE; // 등록일
     private String branch; // 지점
@@ -57,4 +57,7 @@ public class MainDTO {
     private String exclusionReason; // 제유사유
     private Boolean closure; // 마감
     private String contact; // 연락처
+
+
+    private String condition; // 개발자 구분
 }
