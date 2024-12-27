@@ -10,12 +10,12 @@ import java.sql.SQLException;
 @Slf4j
 public class JDBCUtil {
     public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    public static final String DB_NAME = "db122266";
-    public static final String DB_PORT = "1433";
+    public static final String DB_NAME = "";
+    public static final String DB_PORT = "";
     public static final String DB_IP = "";
-    public static final String DB_URL = "jdbc:sqlserver://211.115.206.107:1433;DatabaseName=db122266;trustServerCertificate=true;";
-    public static final String DB_USER = "u122266";
-    public static final String DB_PASSWORD = "jobmoano1!"; // DB설정 Github 연결시 삭제 후 진행
+    public static final String DB_URL = "jdbc:sqlserver://:1433;DatabaseName=;trustServerCertificate=true;";
+    public static final String DB_USER = "";
+    public static final String DB_PASSWORD = ""; // DB설정 Github 연결시 삭제 후 진행
 
     public static Connection connect(){
         log.info("-----현재 연결 정보 시작------");
