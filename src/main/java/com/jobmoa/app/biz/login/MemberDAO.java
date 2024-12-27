@@ -16,15 +16,15 @@ public class MemberDAO {
     private static final String ns = "MemberDAO.";
 
     public List<MemberDTO> selectAll(MemberDTO loginDTO) {
-        log.info("loginDTO : [{}]",loginDTO.toString());
+        log.info("loginDTO : [{}]",loginDTO);
         List<MemberDTO> datas = sqlSession.selectList(ns+"selectAll");
-        log.info("datas : [{}]",datas.toString());
+        log.info("datas : [{}]",datas);
         return datas;
     }
 
     public MemberDTO selectOne(MemberDTO loginDTO) {
         MemberDTO data = sqlSession.selectOne(ns+"selectOne", loginDTO);
-        log.info("data : [{}]",data.toString());
+        log.info("data : [{}]",data);
         return data;
     }
 

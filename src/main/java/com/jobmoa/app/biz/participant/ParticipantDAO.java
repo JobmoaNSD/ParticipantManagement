@@ -17,14 +17,14 @@ public class ParticipantDAO {
     private static final String ns = "ParticipantDAO.";
 
     public List<ParticipantDTO> selectAll(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO.toString());
-        List<ParticipantDTO> datas = sqlSession.selectList(ns+"");//SELECT Query 작성 완료하면 적어야함
+        log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO);
+        List<ParticipantDTO> datas = sqlSession.selectList(ns+"participant_main_selectAll");//SELECT Query 작성 완료하면 적어야함
         log.info("datas : [{}]",datas.toString());
         return datas;
     }
 
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantDAO selectOne : [{}]",participantDTO.toString());
+        log.info("ParticipantDTO ParticipantDAO selectOne : [{}]",participantDTO);
         ParticipantDTO data = sqlSession.selectOne(ns+"");
         return data;
     }
