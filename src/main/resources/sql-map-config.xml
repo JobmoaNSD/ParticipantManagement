@@ -3,13 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias type="com.jobmoa.app.biz.login.LoginDTO" alias="login" />
-        <typeAlias type="com.jobmoa.app.biz.login.LoginDTO" alias="login" />
+        <typeAlias type="com.jobmoa.app.biz.login.MemberDTO" alias="member" />
+        <typeAlias type="com.jobmoa.app.biz.participant.ParticipantDTO" alias="participant" />
     </typeAliases>
 
 
     <mappers>
-        <mapper resource="mappings/login-mapping.xml" />
-        <mapper resource="mappings/login-mapping.xml" />
+        <mapper resource="mappings/Member-mapping.xml" />
+        <mapper resource="mappings/Participant-mapping.xml" />
     </mappers>
 </configuration>

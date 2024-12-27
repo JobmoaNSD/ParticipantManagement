@@ -6,33 +6,33 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("loginService")
-public class LoginServiceImpl implements LoginService{
+public class MemberServiceImpl implements MemberService {
 
     @Autowired
-    private LoginDAO loginDAO;
+    private MemberDAO loginDAO;
 
     @Override
-    public LoginDTO selectOne(LoginDTO loginDTO) {
+    public MemberDTO selectOne(MemberDTO loginDTO) {
         return loginDAO.selectOne(loginDTO);
     }
 
     @Override
-    public List<LoginDTO> selectAll(LoginDTO loginDTO) {
+    public List<MemberDTO> selectAll(MemberDTO loginDTO) {
         return loginDAO.selectAll(loginDTO);
     }
 
     @Override
-    public boolean insert(LoginDTO loginDTO) {
+    public boolean insert(MemberDTO loginDTO) {
         return loginDAO.insert(loginDTO);
     }
 
     @Override
-    public boolean update(LoginDTO loginDTO) {
+    public boolean update(MemberDTO loginDTO) {
         return loginDAO.update(loginDTO);
     }
 
     @Override
-    public boolean delete(LoginDTO loginDTO) {
+    public boolean delete(MemberDTO loginDTO) {
         return loginDAO.delete(loginDTO);
     }
 }
