@@ -11,9 +11,9 @@
 
     <bean class="org.apache.commons.dbcp2.BasicDataSource" id="ds" destroy-method="close">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-        <property name="url" value="jdbc:sqlserver://211.115.206.107:1433;DatabaseName=db122266;trustServerCertificate=true;"/>
-        <property name="username" value="u122266"/>
-        <property name="password" value="jobmoano1!"/>
+        <property name="url" value="jdbc:sqlserver://GITHUB 연동시 지우고 올려주세요:1433;DatabaseName=db122266;trustServerCertificate=true;"/>
+        <property name="username" value="GITHUB 연동시 지우고 올려주세요"/>
+        <property name="password" value="GITHUB 연동시 지우고 올려주세요"/>
     </bean>
 
     <bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate">
