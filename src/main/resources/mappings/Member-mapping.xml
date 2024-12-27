@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="LoginDAO">
-    <select id="selectAll" resultType="login">
+<mapper namespace="MemberDAO">
+    <select id="selectAll" resultType="member">
         SELECT PK, 계정 LOGIN_ID, 비번 LOGIN_PASSWORD, 지점 LOGIN_SPOT, 전담자 LOGIN_DEDICATEDPERSON, 직책 LOGIN_POSITION, 등록번호 LOGIN_REFISTRATIONNUMDER, 관리자 LOGIN_ISADMIN FROM u122266.J_상담_직원
     </select>
 
-    <select id="selectOne" resultType="login">
+    <select id="selectOne" resultType="member">
         SELECT
             PK,
             계정 AS LOGIN_ID,

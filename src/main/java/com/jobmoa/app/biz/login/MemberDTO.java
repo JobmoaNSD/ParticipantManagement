@@ -3,7 +3,7 @@ package com.jobmoa.app.biz.login;
 import lombok.Data;
 
 @Data
-public class LoginDTO {
+public class MemberDTO {
 
     private int login_numPK; // PK
     private String login_id; // 아이디

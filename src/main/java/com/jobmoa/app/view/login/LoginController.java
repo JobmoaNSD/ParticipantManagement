@@ -1,7 +1,7 @@
 package com.jobmoa.app.view.login;
 
-import com.jobmoa.app.biz.login.LoginDTO;
-import com.jobmoa.app.biz.login.LoginService;
+import com.jobmoa.app.biz.login.MemberDTO;
+import com.jobmoa.app.biz.login.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    private LoginService loginService;
+    private MemberService loginService;
 
     @GetMapping("/login.do")
     public String loginController(){
@@ -25,13 +25,13 @@ public class LoginController {
     }
 
     @PostMapping("/login.do")
-    public String loginController(Model model, LoginDTO loginDTO){
+    public String loginController(Model model, MemberDTO loginDTO){
 
         log.info("loginDTO : [{}]",loginDTO.toString());
-        LoginDTO data = loginService.selectOne(loginDTO);
+        MemberDTO data = loginService.selectOne(loginDTO);
 
         if(loginDTO != null){
-            List<LoginDTO> datas = loginService.selectAll(loginDTO);
+            List<MemberDTO> datas = loginService.selectAll(loginDTO);
             model.addAttribute("datas", datas);
         }
         else{
