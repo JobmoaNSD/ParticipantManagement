@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
-
+<%@ attribute name="gnb_main_header"%>
+<%@ attribute name="gnb_sub_header"%>
 
     <!--begin::Header-->
     <nav class="app-header navbar navbar-expand bg-body">
@@ -9,12 +10,12 @@
             <!--begin::Start Navbar Links-->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                    <a class="nav-link" data-lte-toggle="sidebar" href="" role="button">
                         <i class="bi bi-list"></i>
                     </a>
                 </li>
-                <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
-                <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
+                <li class="nav-item d-none d-md-block"><a href="" class="nav-link"><%=gnb_main_header%></a></li>
+                <li class="nav-item d-none d-md-block"><a href="" class="nav-link"><%=gnb_sub_header%></a></li>
             </ul>
             <!--end::Start Navbar Links-->
             <!--begin::End Navbar Links-->
@@ -30,14 +31,14 @@
                 <!--begin::User Menu Dropdown-->
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <span class="d-none d-md-inline">Alexander Pierce</span>
+                        <span class="d-none d-md-inline">로그인 정보</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                         <!--begin::User Image-->
-                        <li class="user-header text-bg-primary">
+                        <li class="text-bg-primary text-center">
                             <p>
-                                Alexander Pierce - Web Developer
-                                <small>Member since Nov. 2023</small>
+                                참여자 관리
+                                <small class="text-center">(남부)</small>
                             </p>
                         </li>
                         <!--end::User Image-->
@@ -45,9 +46,10 @@
                         <li class="user-body">
                             <!--begin::Row-->
                             <div class="row">
-                                <div class="col-4 text-center"><a href="#">Followers</a></div>
-                                <div class="col-4 text-center"><a href="#">Sales</a></div>
-                                <div class="col-4 text-center"><a href="#">Friends</a></div>
+
+                                <div class="col-4 text-center">전담자<br/>홍길동</div>
+                                <div class="col-4 text-center">권한<br/>상담</div>
+                                <div class="col-4 text-center">관리자<br/>False</div>
                             </div>
                             <!--end::Row-->
                         </li>
@@ -71,16 +73,16 @@
         <!--begin::Sidebar Brand-->
         <div class="sidebar-brand">
             <!--begin::Brand Link-->
-            <a href="./index.html" class="brand-link">
+            <a href="./index.jsp" class="brand-link">
                 <!--begin::Brand Image-->
                 <img
-                        src="../../dist/assets/img/AdminLTELogo.png"
+                        src="../../img/JobmoaLog.png"
                         alt="AdminLTE Logo"
                         class="brand-image opacity-75 shadow"
                 />
                 <!--end::Brand Image-->
                 <!--begin::Brand Text-->
-                <span class="brand-text fw-light">AdminLTE 4</span>
+<%--                <span class="brand-text fw-light">AdminLTE 4</span>--%>
                 <!--end::Brand Text-->
             </a>
             <!--end::Brand Link-->
@@ -96,36 +98,82 @@
                         role="menu"
                         data-accordion="false"
                 >
-                    <li class="nav-item menu-open">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon bi bi-speedometer"></i>
+                    <!--begin::실적관리-->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-file-bar-graph-fill"></i>
                             <p>
-                                Dashboard
+                                실적관리
                                 <i class="nav-arrow bi bi-chevron-right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="./index.html" class="nav-link active">
-                                    <i class="nav-icon bi bi-circle"></i>
-                                    <p>Dashboard v1</p>
+                                <a href="./index.jsp" class="nav-link">
+                                    <small><p>대시보드</p></small>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="./index2.html" class="nav-link">
-                                    <i class="nav-icon bi bi-circle"></i>
-                                    <p>Dashboard v2</p>
+                                <a href="./index.jsp" class="nav-link">
+                                    <small><p>일일업무보고</p></small>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./index.jsp" class="nav-link">
+                                    <small><p>업무진행현황</p></small>
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-header">DOCUMENTATIONS</li>
+                    <!--end::실적관리-->
+                    <!--begin::상담관리-->
                     <li class="nav-item">
-                        <a href="./docs/introduction.html" class="nav-link">
-                            <i class="nav-icon bi bi-download"></i>
-                            <p>Installation</p>
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-file-person"></i>
+                            <p>
+                                상담관리
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="./index.jsp" class="nav-link">
+                                    <small><p>참여자 조회 및 수정</p></small>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./index.jsp" class="nav-link">
+                                    <small><p>신규 참여자</p></small>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+                    <!--end::상담관리-->
+                    <!--begin::알선기업관리-->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-people-fill"></i>
+                            <p>
+                                알선기업관리
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="./index.jsp" class="nav-link">
+                                    <small><p>알선기업</p></small>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--end::알선기업관리-->
+<%--                    <li class="nav-header">DOCUMENTATIONS</li>--%>
+<%--                    <li class="nav-item">--%>
+<%--                        <a href="./docs/introduction.html" class="nav-link">--%>
+<%--                            <i class="nav-icon bi bi-download"></i>--%>
+<%--                            <p>Installation</p>--%>
+<%--                        </a>--%>
+<%--                    </li>--%>
                 </ul>
                 <!--end::Sidebar Menu-->
             </nav>

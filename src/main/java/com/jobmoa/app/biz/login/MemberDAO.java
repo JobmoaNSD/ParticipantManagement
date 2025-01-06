@@ -28,6 +28,7 @@ public class MemberDAO {
         return data;
     }
 
+
     public boolean insert(MemberDTO loginDTO) {
         return false;
     }

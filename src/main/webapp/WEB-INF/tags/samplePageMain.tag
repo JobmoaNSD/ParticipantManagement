@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
-
+<%@ attribute name="content_header_name" %>
 
 <!--begin::App Main-->
 <main class="app-main">
@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <!--begin::Row-->
             <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0">참여자 관리</h3></div>
+                <div class="col-sm-6"><h3 class="mb-0"><%=content_header_name%></h3></div>
             </div>
             <!--end::Row-->
         </div>
@@ -40,16 +40,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="i" begin="1" end="10">
+                                <c:forEach var="i" begin="1" end="1">
                                     <tr>
-                                        <td>Test</td>
-                                        <td>Test</td>
-                                        <td>Test</td>
-                                        <td>Test</td>
-                                        <td>Test</td>
-                                        <td>Test</td>
-                                        <td>Test</td>
-                                        <td>Test</td>
+
                                     </tr>
                                 </c:forEach>
                                 </tbody>

@@ -71,10 +71,10 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="Sample Main header" gnb_sub_header="Sample Sub header"/>
+    <mytag:gnb gnb_main_header="실적관리" gnb_sub_header="대시보드"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
-    <mytag:samplePageMain content_header_name="Sample Page"/>
+    <mytag:samplePageMain content_header_name="대시보드"/>
     <!--end:::App Main content-->
     <!--begin::Footer-->
     <mytag:footer/>
