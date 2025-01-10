@@ -67,6 +67,7 @@
 
     <!-- chart.js script 데이터 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <!-- jQuery 시작 데이터 -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -87,148 +88,283 @@
             <!--begin::Main content-->
             <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
             <div class="container-fluid">
-                <!-- main card 형식 본문  시작 -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="p-3">
-                            <div class="">
+                <!-- begin::main content header 시작-->
+                <div class="header row d-flex justify-content-between align-items-center bg-white border border-black rounded-2 m-1">
+                    <!-- begin::main 지점 / 다우톡 주요 공지사항 시작 -->
+                    <div class="col-md-10 pt-1">
+                        <div class="row">
+                            <div class="col-md-2 align-items-center">
+                                <div class="h5">
+                                    XX지점
+                                </div>
+                                <div class="h3">
+                                    홍길동 상담사
+                                </div>
+                            </div>
+                            <div class="col-md-8 d-flex flex-column align-items-center">
+                                <div class="">
+                                    다우톡 공지사항
+                                </div>
+                                <div class="h3">
+                                    <a href="https://jobmoa.daouoffice.com/app/board" target="_blank">Test Link1</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end::main 지점 / 다우톡 주요 공지사항 끝 -->
+                    <!-- begin::main 다우톡 업무 메뉴얼 시작-->
+                    <div class="col-md-2 d-flex flex-column align-items-center pt-1">
+                        <div class="">
+                            업무 메뉴얼
+                        </div>
+                        <div class="h3">
+                            <a href="https://jobmoa.daouoffice.com/app/board" target="_blank">Test Link1</a>
+                        </div>
+                    </div>
+                    <!-- begin::main 다우톡 업무 메뉴얼 끝-->
+                </div>
+                <!-- begin::main 기본 header 끝-->
+
+                <!-- begin::main 업무 참여자 통계 시작 -->
+                <div class="row text-center bg-white border border-black rounded-2 pt-1 pb-1 m-1">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="row h2 ps-3">
+                                    금일 업무
+                                </div>
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="dashboard row text-center d-flex justify-content-center">
-                                            <!-- card 형식 div 태그 시작 -->
-                                            <!-- 첫번째 card 형식 div 태그 시작 -->
-                                            <div class="col-sm-6 col-md-2">
-                                                <div class="card card-stats card-round">
-                                                    <div class="cardheader">
-                                                        <div class="row align-items-center">
-                                                            <h4 class="card-text pt-2">나올 공간입니다.</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body p-0">
-                                                        <div class="row align-items-center">
-                                                            <div class="numbers">
-                                                                <p class="">테스트 입력입니다.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>집중알선대상자 XX명</div>
                                             </div>
-                                            <!-- 첫번째 card 형식 div 태그 끝 -->
-                                            <!-- 두번째 card 형식 div 태그 시작 -->
-                                            <div class="col-sm-6 col-md-2">
-                                                <div class="card card-stats card-round">
-                                                    <div class="cardheader">
-                                                        <div class="row align-items-center">
-                                                            <h4 class="card-text pt-2">나올 공간입니다.</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body p-0">
-                                                        <div class="row align-items-center">
-                                                            <div class="numbers">
-                                                                <p class="">테스트 입력입니다.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        </li>
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>30일 경과예정자 X명</div>
                                             </div>
-                                            <!-- 두번째 card 형식 div 태그 끝 -->
-                                            <!-- 세번째 card 형식 div 태그 시작 -->
-                                            <div class="col-sm-6 col-md-2">
-                                                <div class="card card-stats card-round">
-                                                    <div class="cardheader">
-                                                        <div class="row align-items-center">
-                                                            <h4 class="card-text pt-2">나올 공간입니다.</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body p-0">
-                                                        <div class="row align-items-center">
-                                                            <div class="numbers">
-                                                                <p class="">테스트 입력입니다.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        </li>
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>구직촉진수당 신청 예정자 XX명</div>
                                             </div>
-                                            <!-- 세번째 card 형식 div 태그 끝 -->
-                                            <!-- 네번째 card 형식 div 태그 시작 -->
-                                            <div class="col-sm-6 col-md-2">
-                                                <div class="card card-stats card-round">
-                                                    <div class="cardheader">
-                                                        <div class="row align-items-center">
-                                                            <h4 class="card-text pt-2">나올 공간입니다.</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body p-0">
-                                                        <div class="row align-items-center">
-                                                            <div class="numbers">
-                                                                <p class="">테스트 입력입니다.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 border-start border-dark border-2">
+                            <div class="row h2 ps-3">
+                                참여자 통계
+                            </div>
+                            <div class="row">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div class="ms-2 me-auto text-start">
+                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>
+                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div class="ms-2 me-auto text-start">
+                                            <div class="fw-bold">총 진행자 수 00명</div>
+                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div class="ms-2 me-auto text-start">
+                                            <div class="fw-bold">총 참여자 수 00명</div>
+                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end::main 업무 참여자 통계 끝 -->
+                <!-- begin::main chart 본문 시작 -->
+                <div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1" >
+                    <div class="col-md-12">
+                        <!-- begin::main chart header 시작 -->
+                        <div class="row">
+                            <div class="col-md-8 pt-2 pb-2 h2 me-auto">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        나의 KPI 달성률
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="row h2 ps-3">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" id="kpi-btn">
+                                                상세보기<i class="bi bi-arrow-bar-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 pt-2 pb-2 h2 me-auto">
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            성공금 현황
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row h2 ps-3">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" id="success-btn">
+                                                    상세보기<i class="bi bi-arrow-bar-right"></i>
+                                                </button>
                                             </div>
-                                            <!-- 네번째 card 형식 div 태그 끝 -->
-                                            <!-- card 형식 div 태그 끝 -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- begin::main chart header 끝 -->
+                        <div class="row text-center d-flex justify-content-center" id="chart-div">
+                            <!-- KPI & 성공금 Start -->
+                            <div class="col-md-8 pt-2 h2 me-auto">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="flex-fill chart_startdate">
+                                            <div class="text-center d-flex justify-content-center doughnut-chart" style="weight: 200px;">
+                                                <%--FIXME chart_startdate --%>
+                                                <canvas id="chart_startdate"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="flex-fill chart_gender">
+                                            <div class="text-center d-flex justify-content-center doughnut-chart" style="weight: 200px;">
+                                                <%--FIXME chart_gender --%>
+                                                <canvas id="chart_gender"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="flex-fill ex-chart1">
+                                            <div class="text-center d-flex justify-content-center" style="weight: 200px;">
+                                                <%--FIXME ex-chart1 --%>
+                                                <canvas id="ex-chart1"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="flex-fill ex-chart2">
+                                            <div class="text-center d-flex justify-content-center" style="weight: 200px;">
+                                                <%--FIXME ex-chart2 --%>
+                                                <canvas id="ex-chart2"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="flex-fill ex-chart3">
+                                            <div class="text-center d-flex justify-content-center" style="weight: 200px;">
+                                                <%--FIXME ex-chart3 --%>
+                                                <canvas id="ex-chart3" ></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row h-100">
+                                    <div class="flex-fill ex-chart-bar1 h-100">
+                                        <div class="text-center d-flex justify-content-center h-100">
+                                            <%--FIXME ex-chart-bar1 --%>
+                                            <canvas id="ex-chart-bar1"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                        <!-- KPI & 성공금 End -->
                 </div>
-                <!-- main card 형식 본문  끝 -->
-                <!-- main chart 본문 시작 -->
-                <div class="row text-center d-flex justify-content-center" id="chart-div">
-                    <div class="row">
-                        <!-- Ex Chart Start -->
-                        <div class="col-md-3">
-                            <div class="card flex-fill" class="ex-chart1">
-                                <div class="card-header">
-                                    <h3>예시 차트 입니다.</h3>
-                                </div>
-                                <div class="card-body text-center d-flex justify-content-center" style="height: 250px;">
-                                    <%--FIXME ex-chart1 --%>
-                                    <canvas id="ex-chart1"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card flex-fill" class="ex-chart2">
-                                <div class="card-header">
-                                    <h3>예시 차트 입니다.</h3>
-                                </div>
-                                <div class="card-body text-center d-flex justify-content-center" style="height: 250px;">
-                                    <%--FIXME ex-chart2 --%>
-                                    <canvas id="ex-chart2"></canvas>
+                <!-- end::main chart 본문 끝 -->
+                <!-- begin::sub chart 본문 시작 -->
+                <div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1">
+                    <div class="col-md-12">
+                        <!-- begin::sub chart header 시작 -->
+                        <div class="row">
+                            <div class="col-md-12 pt-2 pb-2 h2 me-auto">
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        나의 성과 현황
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="row h2 ps-3">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" id="my-btn">
+                                                상세보기<i class="bi bi-arrow-bar-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card flex-fill" class="ex-chart3">
-                                <div class="card-header">
-                                    <h3>예시 차트 입니다.</h3>
-                                </div>
-                                <div class="card-body text-center d-flex justify-content-center" style="height: 250px;">
-                                    <%--FIXME ex-chart3 --%>
-                                    <canvas id="ex-chart3"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card flex-fill" class="ex-chart4">
-                                <div class="card-header">
-                                    <h3>예시 차트 입니다.</h3>
-                                </div>
-                                <div class="card-body text-center d-flex justify-content-center" style="height: 250px;">
-                                    <%--FIXME ex-chart4 --%>
-                                    <canvas id="ex-chart4"></canvas>
+                        <!-- begin::sub chart header 끝 -->
+                        <div class="row text-center d-flex justify-content-center" id="my-chart-div">
+                            <!-- 나의 성과 현황 시작 -->
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="flex-fill ex-chart-bar1">
+                                        <div class="text-center d-flex justify-content-center">
+                                            <%--FIXME ex-chart-bar1 --%>
+                                            <canvas id="ex-chart-bar1"></canvas>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="flex-fill ex-chart-bar1">
+                                        <div class="text-center d-flex justify-content-center">
+                                            <%--FIXME ex-chart-bar1 --%>
+                                            <canvas id="ex-chart-bar1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="flex-fill ex-chart-bar1">
+                                        <div class="text-center d-flex justify-content-center">
+                                            <%--FIXME ex-chart-bar1 --%>
+                                            <canvas id="ex-chart-bar1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="flex-fill ex-chart-bar1">
+                                        <div class="text-center d-flex justify-content-center">
+                                            <%--FIXME ex-chart-bar1 --%>
+                                            <canvas id="ex-chart-bar1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="flex-fill ex-chart-bar1">
+                                        <div class="text-center d-flex justify-content-center">
+                                            <%--FIXME ex-chart-bar1 --%>
+                                            <canvas id="ex-chart-bar1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 나의 성과 현황 끝 -->
                         </div>
-                        <!-- Ex Chart End -->
                     </div>
                 </div>
-                <!-- main chart 본문 끝 -->
+                <!-- begin::sub chart 본문 끝 -->
             </div>
             <!--end::Main content-->
         </div>
@@ -316,44 +452,53 @@
         crossorigin="anonymous"
 ></script>
 
-<%-- FIXME Chart.js javascript Start--%>
+<%-- FIXME Chart.js doughnut chart javascript Start--%>
 <script>
     $(document).ready(function () {
-        var ctx = $('#ex-chart1')[0].getContext('2d');
-        var ctx = $('#ex-chart2')[0].getContext('2d');
-        var ctx = $('#ex-chart3')[0].getContext('2d');
-        var ctx = $('#ex-chart4')[0].getContext('2d');
+
         // chart.js 중앙 텍스트 플러그인 정의 및 등록
         const drawCenterTextPlugin = {
             id: 'drawCenterText',
             beforeDraw: function (chart) {
-                var width = chart.width,
-                    height = chart.height,
-                    ctx = chart.ctx;
+                const width = chart.width;
+                const height = chart.height;
+                const ctx = chart.ctx;
+
+                // 중앙 텍스트 내용 가져오기
+                const text = chart.options.plugins.drawCenterText?.text || "";
+
+                // 폰트 및 텍스트 정보 설정
                 ctx.restore();
-                var fontSize = (height / 250).toFixed(2); // 글자 크기 지정
+                var fontSize = (height / 700).toFixed(2); // 글자 크기 지정
                 ctx.font = fontSize + "em sans-serif";
                 ctx.textBaseline = "middle";
+
                 // 중앙에 들어갈 텍스트와 위치 계산
-                var text = "100",
-                    textX = Math.round((width - ctx.measureText(text).width) / 2),
-                    textY = height / 2;
-                // 텍스트를 중앙에 출력
+                const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                const textY = height / 2;
+
+                // 텍스트 출력
                 ctx.fillText(text, textX, textY);
                 ctx.save();
             }
         };
-        //플러그인 추가
-        Chart.register(drawCenterTextPlugin);
 
-        const ex_chart = {
+        //전체 chart 플러그인 추가
+        Chart.register(drawCenterTextPlugin);
+        Chart.register(ChartDataLabels);
+
+        const chart_startdate = {
             type: 'doughnut',
             data: {
-                labels: ['A', 'B', 'C'],
+                labels: ['미취업자', '취업자'],
                 datasets: [{
-                    data: [300, 50, 100, 500, 600, 800, 900],
-                    backgroundColor: ['#007bff', '#dc3545', '#2a5282','#7c2628','#ffc107','#ffc107'],
-                    // hoverBackgroundColor: ['#007bff', '#dc3545', '#ffc107'],
+                    data: [50, 250],
+                    backgroundColor: ['#ffffff','#f67676'],
+                    hoverBackgroundColor: ['#e04e4e'],
+                    border:1,
+                    borderWidth: 1,
+                    borderColor: '#000000',
+                    hoverBorderColor: '#000000',
                 }],
             },
             options: {
@@ -363,17 +508,221 @@
                     legend: {
                         display: false,
                     },
-                    drawCenterText: true // 플러그인
+                    datalabels: {
+                        formatter: function (value, context) {
+                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
+                        },
+                        color: '#fff',
+                    },
+                    drawCenterText:{
+                        text:'취업자 수\n'+'250'+'명',
+                    }
                 },
-            }
+            },
         };
 
-        new Chart($('#ex-chart1'), ex_chart);
-        new Chart($('#ex-chart2'), ex_chart);
-        new Chart($('#ex-chart3'), ex_chart);
-        new Chart($('#ex-chart4'), ex_chart);
+        const chart_gender = {
+            type: 'doughnut',
+            data: {
+                labels: ['남', '여'],
+                datasets: [{
+                    data: [300, 400],
+                    backgroundColor: ['#ffffff','#f67676'],
+                    hoverBackgroundColor: ['#e04e4e'],
+                    border:1,
+                    borderWidth: 1,
+                    borderColor: '#000000',
+                    hoverBorderColor: '#000000',
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    datalabels: {
+                        formatter: function (value, context) {
+                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
+                        },
+                        color: '#fff',
+                    },
+                    drawCenterText:{
+                        text:'남\n'+'300'+'명'+' 여 '+'400'+'명',
+                    }
+                },
+            },
+        };
+
+        const chart_1 = {
+            type: 'doughnut',
+            data: {
+                labels: ['test', 'test2'],
+                datasets: [{
+                    data: [10, 500],
+                    backgroundColor: ['#ffffff','#f67676'],
+                    hoverBackgroundColor: ['#e04e4e'],
+                    border:1,
+                    borderWidth: 1,
+                    borderColor: '#000000',
+                    hoverBorderColor: '#000000',
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    datalabels: {
+                        formatter: function (value, context) {
+                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
+                        },
+                        color: '#fff',
+                    },
+
+                    drawCenterText:{
+                        text:'300',
+                    }, // 플러그인
+                },
+            },
+        };
+
+        const chart_2 = {
+            type: 'doughnut',
+            data: {
+                labels: ['test3', 'test4'],
+                datasets: [{
+                    data: [90, 600],
+                    backgroundColor: ['#ffffff','rgba(255,0,0,0.48)'],
+                    hoverBackgroundColor: ['#e04e4e'],
+                    border:1,
+                    borderWidth: 1,
+                    borderColor: '#000000',
+                    hoverBorderColor: '#000000',
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    datalabels: {
+                        formatter: function (value, context) {
+                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
+                        },
+                        color: '#fff',
+                    },
+
+                    drawCenterText:{
+                        text:'300',
+                    }, // 플러그인
+                },
+            },
+        };
+
+        const chart_3 = {
+            type: 'doughnut',
+            data: {
+                labels: ['test4', 'test6'],
+                datasets: [{
+                    data: [200, 400],
+                    backgroundColor: ['#ffffff','#f67676'],
+                    hoverBackgroundColor: ['#e04e4e'],
+                    border:1,
+                    borderWidth: 1,
+                    borderColor: '#000000',
+                    hoverBorderColor: '#000000',
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    datalabels: {
+                        formatter: function (value, context) {
+                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
+                        },
+                        color: '#fff',
+                    },
+
+                    drawCenterText:{
+                        text:'300',
+                    }, // 플러그인
+                },
+            },
+        };
+
+        new Chart($('#chart_startdate'), chart_startdate);
+        new Chart($('#chart_gender'), chart_gender);
+        new Chart($('#ex-chart1'), chart_1);
+        new Chart($('#ex-chart2'), chart_2);
+        new Chart($('#ex-chart3'), chart_3);
 
     })
 </script>
-<%-- FIXME Chart.js javascript End--%>
+<%-- FIXME Chart.js Doughnut Chart javascript  End --%>
+<%-- FIXME Chart.js Bar Chart javascript Start --%>
+<script>
+    $('document').ready(function () {
+        const chart_bar1 = {
+            type: 'bar',
+            data: {
+                labels: ['성공금 발생', '인센티브'],
+                datasets: [{
+                    label: '잡모아 평균',
+                    data: [60005715, 4502212],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                },
+                    {
+                        label: '지점 평균',
+                        data: [35021540, 2512412],
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '홍길동',
+                        data: [42535410, 3210021],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        display: false,
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                    },
+                }
+            }
+        }
+
+        new Chart($('#ex-chart-bar1'), chart_bar1);
+    })
+</script>
+<%-- FIXME Chart.js Bar Chart javascript End --%>
+
+<script>
+    $(document).ready(function () {
+
+    })
+</script>
 </html>

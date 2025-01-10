@@ -4,14 +4,14 @@
 <!--begin::Footer-->
 <footer class="app-footer">
     <!--begin::To the end-->
-    <div class="float-end d-none d-sm-inline">Anything you want</div>
+    <div class="float-end d-none d-sm-inline">기업 전화번호 : 02-2607-9119 (609)</div>
     <!--end::To the end-->
     <!--begin::Copyright-->
     <strong>
-        Copyright &copy; 2014-2024&nbsp;
-        <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.
+        사이트 관리자
+        <a href="email::namsd@jobmoa.com"  class="text-decoration-none">남상도</a>.
     </strong>
-    All rights reserved.
+
     <!--end::Copyright-->
 </footer>
 <!--end::Footer-->
