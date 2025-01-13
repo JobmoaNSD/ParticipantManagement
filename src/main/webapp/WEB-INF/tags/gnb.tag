@@ -138,7 +138,7 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="./index.jsp" class="nav-link">
-                                    <small><p>참여자 조회 및 수정</p></small>
+                                    <small><p>참여자 조회 및 관리</p></small>
                                 </a>
                             </li>
                             <li class="nav-item">
