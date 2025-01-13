@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 @Slf4j
-public class JDBCUtil {
+public class JDBCUtil {//사용안함
     public static final String DB_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     public static final String DB_NAME = "";
     public static final String DB_PORT = "";
@@ -28,7 +28,6 @@ public class JDBCUtil {
         finally {
             log.info("-----Driver Data------");
             log.info("SQL Driver : [{}]", DB_DRIVER);
-
         }
         Connection conn = null;
         try {

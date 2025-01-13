@@ -19,8 +19,9 @@ public class ParticipantController {
     @Autowired
     private ParticipantService participantService;
 
+    //Page 이동
     @GetMapping("participant.do")
-    public String participantPageController(Model model, HttpSession session, MemberDTO memberDTO, ParticipantDTO participantDTO){
+    public String participantPageController(Model model, HttpSession session, ParticipantDTO participantDTO){
 
         //로그인 여부를 확인하기 위해 정보를 입력
         String user_name = (String)session.getAttribute("JOBMOA_LOGIN_NAME");
