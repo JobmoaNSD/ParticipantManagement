@@ -69,6 +69,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
+    <script src="js/drawChartCenterTextPlugin.js"></script>
+    <script src="js/dashBoardJS.js"></script>
+
     <!-- jQuery 시작 데이터 -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
@@ -101,7 +104,7 @@
                                     홍길동 상담사
                                 </div>
                             </div>
-                            <div class="col-md-8 d-flex flex-column align-items-center">
+                            <div class="col-md-8 d-flex flex-column align-items-center pt-1">
                                 <div class="">
                                     다우톡 공지사항
                                 </div>
@@ -280,11 +283,11 @@
                             </div>
                         </div>
                     </div>
-                        <!-- KPI & 성공금 End -->
+                    <!-- KPI & 성공금 End -->
                 </div>
                 <!-- end::main chart 본문 끝 -->
                 <!-- begin::sub chart 본문 시작 -->
-                <div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1">
+                <div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1" style="height: 300px;">
                     <div class="col-md-12">
                         <!-- begin::sub chart header 시작 -->
                         <div class="row">
@@ -294,7 +297,7 @@
                                         나의 성과 현황
                                     </div>
                                     <div class="col-md-1">
-                                        <div class="row h2 ps-3">
+                                        <div class="row h2 ps-3 me-auto">
                                             <button type="button" class="btn btn-outline-secondary btn-sm" id="my-btn">
                                                 상세보기<i class="bi bi-arrow-bar-right"></i>
                                             </button>
@@ -304,64 +307,70 @@
                             </div>
                         </div>
                         <!-- begin::sub chart header 끝 -->
-                        <div class="row text-center d-flex justify-content-center" id="my-chart-div">
+                        <!-- begin::sub chart body 시작 -->
+                        <div class="row text-center d-flex justify-content-center h-75" id="my-chart-div">
                             <!-- 나의 성과 현황 시작 -->
-                            <div class="col-md-2">
-                                <div class="row">
-                                    <div class="flex-fill ex-chart-bar1">
-                                        <div class="text-center d-flex justify-content-center">
-                                            <%--FIXME ex-chart-bar1 --%>
-                                            <canvas id="ex-chart-bar1"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="row h-100">
 
-                            <div class="col-md-2">
-                                <div class="row">
-                                    <div class="flex-fill ex-chart-bar1">
-                                        <div class="text-center d-flex justify-content-center">
-                                            <%--FIXME ex-chart-bar1 --%>
-                                            <canvas id="ex-chart-bar1"></canvas>
+                                <div class="col-md-2 h-100">
+                                    <div class="row h-100">
+                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                            <div class="text-center d-flex justify-content-center h-100">
+                                                <%--FIXME ex-chart-bar2 --%>
+                                                <canvas id="ex-chart-bar2"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-2">
-                                <div class="row">
-                                    <div class="flex-fill ex-chart-bar1">
-                                        <div class="text-center d-flex justify-content-center">
-                                            <%--FIXME ex-chart-bar1 --%>
-                                            <canvas id="ex-chart-bar1"></canvas>
+                                <div class="col-md-2 h-100">
+                                    <div class="row h-100">
+                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                            <div class="text-center d-flex justify-content-center h-100">
+                                                <%--FIXME ex-chart-bar3 --%>
+                                                <canvas id="ex-chart-bar3"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-2">
-                                <div class="row">
-                                    <div class="flex-fill ex-chart-bar1">
-                                        <div class="text-center d-flex justify-content-center">
-                                            <%--FIXME ex-chart-bar1 --%>
-                                            <canvas id="ex-chart-bar1"></canvas>
+                                <div class="col-md-2 h-100" >
+                                    <div class="row h-100">
+                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                            <div class="text-center d-flex justify-content-center h-100">
+                                                <%--FIXME ex-chart-bar4 --%>
+                                                <canvas id="ex-chart-bar4"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-2">
-                                <div class="row">
-                                    <div class="flex-fill ex-chart-bar1">
-                                        <div class="text-center d-flex justify-content-center">
-                                            <%--FIXME ex-chart-bar1 --%>
-                                            <canvas id="ex-chart-bar1"></canvas>
+                                <div class="col-md-2 h-100" >
+                                    <div class="row h-100">
+                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                            <div class="text-center d-flex justify-content-center h-100">
+                                                <%--FIXME ex-chart-bar5 --%>
+                                                <canvas id="ex-chart-bar5"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-md-2 h-100" >
+                                    <div class="row h-100">
+                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                            <div class="text-center d-flex justify-content-center h-100">
+                                                <%--FIXME ex-chart-bar6 --%>
+                                                <canvas id="ex-chart-bar6"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-                            <!-- 나의 성과 현황 끝 -->
+                                <!-- 나의 성과 현황 끝 -->
                         </div>
+                        <!-- begin::sub chart body 끝 -->
                     </div>
                 </div>
                 <!-- begin::sub chart 본문 끝 -->
@@ -456,215 +465,40 @@
 <script>
     $(document).ready(function () {
 
-        // chart.js 중앙 텍스트 플러그인 정의 및 등록
-        const drawCenterTextPlugin = {
-            id: 'drawCenterText',
-            beforeDraw: function (chart) {
-                const width = chart.width;
-                const height = chart.height;
-                const ctx = chart.ctx;
-
-                // 중앙 텍스트 내용 가져오기
-                const text = chart.options.plugins.drawCenterText?.text || "";
-
-                // 폰트 및 텍스트 정보 설정
-                ctx.restore();
-                var fontSize = (height / 700).toFixed(2); // 글자 크기 지정
-                ctx.font = fontSize + "em sans-serif";
-                ctx.textBaseline = "middle";
-
-                // 중앙에 들어갈 텍스트와 위치 계산
-                const textX = Math.round((width - ctx.measureText(text).width) / 2);
-                const textY = height / 2;
-
-                // 텍스트 출력
-                ctx.fillText(text, textX, textY);
-                ctx.save();
-            }
-        };
-
         //전체 chart 플러그인 추가
         Chart.register(drawCenterTextPlugin);
         Chart.register(ChartDataLabels);
 
-        const chart_startdate = {
-            type: 'doughnut',
-            data: {
-                labels: ['미취업자', '취업자'],
-                datasets: [{
-                    data: [50, 250],
-                    backgroundColor: ['#ffffff','#f67676'],
-                    hoverBackgroundColor: ['#e04e4e'],
-                    border:1,
-                    borderWidth: 1,
-                    borderColor: '#000000',
-                    hoverBorderColor: '#000000',
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    datalabels: {
-                        formatter: function (value, context) {
-                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
-                        },
-                        color: '#fff',
-                    },
-                    drawCenterText:{
-                        text:'취업자 수\n'+'250'+'명',
-                    }
-                },
-            },
-        };
 
-        const chart_gender = {
-            type: 'doughnut',
-            data: {
-                labels: ['남', '여'],
-                datasets: [{
-                    data: [300, 400],
-                    backgroundColor: ['#ffffff','#f67676'],
-                    hoverBackgroundColor: ['#e04e4e'],
-                    border:1,
-                    borderWidth: 1,
-                    borderColor: '#000000',
-                    hoverBorderColor: '#000000',
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    datalabels: {
-                        formatter: function (value, context) {
-                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
-                        },
-                        color: '#fff',
-                    },
-                    drawCenterText:{
-                        text:'남\n'+'300'+'명'+' 여 '+'400'+'명',
-                    }
-                },
-            },
-        };
+        let id ='';
+        let drawCenterText_text='';
+        let denominator = 700;
 
-        const chart_1 = {
-            type: 'doughnut',
-            data: {
-                labels: ['test', 'test2'],
-                datasets: [{
-                    data: [10, 500],
-                    backgroundColor: ['#ffffff','#f67676'],
-                    hoverBackgroundColor: ['#e04e4e'],
-                    border:1,
-                    borderWidth: 1,
-                    borderColor: '#000000',
-                    hoverBorderColor: '#000000',
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    datalabels: {
-                        formatter: function (value, context) {
-                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
-                        },
-                        color: '#fff',
-                    },
+        id = $('#chart_startdate');
+        const chart_startdate = {title:['미취업자','취업자'],text:[50,250]};
+        drawCenterText_text = '취업자 수\n'+'250'+'명';
+        chart_doughnut_data(id,chart_startdate,drawCenterText_text,denominator);
 
-                    drawCenterText:{
-                        text:'300',
-                    }, // 플러그인
-                },
-            },
-        };
+        id = $('#chart_gender');
+        const chart_gender = {title:['남', '여'],text:[300, 400]};
+        drawCenterText_text = '남\n'+'300'+'명'+' 여 '+'400'+'명';
+        chart_doughnut_data(id,chart_gender,drawCenterText_text,denominator);
 
-        const chart_2 = {
-            type: 'doughnut',
-            data: {
-                labels: ['test3', 'test4'],
-                datasets: [{
-                    data: [90, 600],
-                    backgroundColor: ['#ffffff','rgba(255,0,0,0.48)'],
-                    hoverBackgroundColor: ['#e04e4e'],
-                    border:1,
-                    borderWidth: 1,
-                    borderColor: '#000000',
-                    hoverBorderColor: '#000000',
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    datalabels: {
-                        formatter: function (value, context) {
-                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
-                        },
-                        color: '#fff',
-                    },
+        id = $('#ex-chart1');
+        const testdata1 = {title:['test1','test2'],text:[50,250]};
+        drawCenterText_text = '300';
+        chart_doughnut_data(id,testdata1,drawCenterText_text,denominator);
 
-                    drawCenterText:{
-                        text:'300',
-                    }, // 플러그인
-                },
-            },
-        };
+        id = $('#ex-chart2');
+        const testdata2 = {title:['test1','test2'],text:[300,250]};
+        drawCenterText_text = '300';
+        chart_doughnut_data(id,testdata2,drawCenterText_text,denominator);
 
-        const chart_3 = {
-            type: 'doughnut',
-            data: {
-                labels: ['test4', 'test6'],
-                datasets: [{
-                    data: [200, 400],
-                    backgroundColor: ['#ffffff','#f67676'],
-                    hoverBackgroundColor: ['#e04e4e'],
-                    border:1,
-                    borderWidth: 1,
-                    borderColor: '#000000',
-                    hoverBorderColor: '#000000',
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    },
-                    datalabels: {
-                        formatter: function (value, context) {
-                            return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
-                        },
-                        color: '#fff',
-                    },
+        id = $('#ex-chart3');
+        const testdata3 = {title:['test1','test2'],text:[900,900]};
+        drawCenterText_text = '300';
+        chart_doughnut_data(id,testdata3,drawCenterText_text,denominator);
 
-                    drawCenterText:{
-                        text:'300',
-                    }, // 플러그인
-                },
-            },
-        };
-
-        new Chart($('#chart_startdate'), chart_startdate);
-        new Chart($('#chart_gender'), chart_gender);
-        new Chart($('#ex-chart1'), chart_1);
-        new Chart($('#ex-chart2'), chart_2);
-        new Chart($('#ex-chart3'), chart_3);
 
     })
 </script>
@@ -672,57 +506,44 @@
 <%-- FIXME Chart.js Bar Chart javascript Start --%>
 <script>
     $('document').ready(function () {
-        const chart_bar1 = {
-            type: 'bar',
-            data: {
-                labels: ['성공금 발생', '인센티브'],
-                datasets: [{
-                    label: '잡모아 평균',
-                    data: [60005715, 4502212],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1,
-                },
-                    {
-                        label: '지점 평균',
-                        data: [35021540, 2512412],
-                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: '홍길동',
-                        data: [42535410, 3210021],
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        display: false,
-                    },
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-                    },
-                }
-            }
-        }
+        let data_title= ['잡모아 평균','지점 평균','전담자'];
+        //chart 성공금 현황
+        let id=$('#ex-chart-bar1');
+        let lable=['성공금 발생','인센티브'];
+        let data={title:data_title,text:[[60005715,4502212],[35021540,2512412],[42535410,3210021]]};
+        chart_bar_data_succes(id,lable,data);
 
-        new Chart($('#ex-chart-bar1'), chart_bar1);
+        //chart 나의 성과 현황
+        //취업자 수
+        id=$('#ex-chart-bar2');
+        lable=['취업자 수'];
+        data={title:data_title,text:[41,32,40]};
+        chart_bar_data_my(id,lable,data);
+
+        //알선 취업자 수
+        id=$('#ex-chart-bar3');
+        lable=['알선 취업자 수'];
+        data={title:data_title,text:[38,40,11]};
+        chart_bar_data_my(id,lable,data);
+
+        //조기 취업자 수
+        id=$('#ex-chart-bar4');
+        lable=['조기 취업자 수'];
+        data={title:data_title,text:[25,21,20]};
+        chart_bar_data_my(id,lable,data);
+
+        //나은 일자리
+        id=$('#ex-chart-bar5');
+        lable=['나은 일자리'];
+        data={title:data_title,text:[15,21,30]};
+        chart_bar_data_my(id,lable,data);
+
+        //고용 유지
+        id=$('#ex-chart-bar6');
+        lable=['고용 유지'];
+        data={title:data_title,text:[20,32,18]};
+        chart_bar_data_my(id,lable,data);
     })
 </script>
 <%-- FIXME Chart.js Bar Chart javascript End --%>
-
-<script>
-    $(document).ready(function () {
-
-    })
-</script>
 </html>

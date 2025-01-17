@@ -38,4 +38,10 @@ public class ParticipantController {
         model.addAttribute("datas", datas);
         return "views/participantMain";
     }
+
+    @GetMapping("testparticipants.do")
+    public String newParticipantsController(){
+        return "views/NewParticipantsPage";
+    }
+
 }
