@@ -507,7 +507,7 @@
 <script>
     $('document').ready(function () {
         let data_title= ['잡모아 평균','지점 평균','전담자'];
-        //chart 성공금 현환
+        //chart 성공금 현황
         let id=$('#ex-chart-bar1');
         let lable=['성공금 발생','인센티브'];
         let data={title:data_title,text:[[60005715,4502212],[35021540,2512412],[42535410,3210021]]};
