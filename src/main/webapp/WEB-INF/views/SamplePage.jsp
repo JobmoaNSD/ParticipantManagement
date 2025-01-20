@@ -74,8 +74,22 @@
     <mytag:gnb gnb_main_header="Sample Main header" gnb_sub_header="Sample Sub header"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
-    <mytag:samplePageMain content_header_name="Sample Page"/>
-    <!--end:::App Main content-->
+    <!--begin::App Main-->
+    <main class="app-main">
+        <!--begin::App Content-->
+        <div class="app-content">
+            <div class="container-fluid">
+            <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
+
+            <mytag:samplePageMain content_header_name="Sample Page"/>
+
+            </div>
+        </div>
+        <!--begin::App Content-->
+    </main>
+    <!--end::App Main-->
+    <!--end:::App main content-->
+
     <!--begin::Footer-->
     <mytag:footer/>
     <!--end::Footer-->

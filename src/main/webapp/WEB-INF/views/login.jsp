@@ -17,12 +17,12 @@
         <h2>Login</h2>
         <form action="/login.do" method="POST">
             <div class="input-group">
-                <label for="login_id">Username</label>
-                <input type="text" id="login_id" name="login_id" placeholder="아이디를 입력해주세요" required>
+                <label for="member_userid">Username</label>
+                <input type="text" id="member_userid" name="member_userid" placeholder="아이디를 입력해주세요" required>
             </div>
             <div class="input-group">
-                <label for="login_password">Password</label>
-                <input type="password" id="login_password" name="login_password" placeholder="패스워드를 입력해주세요" required>
+                <label for="member_userpw">Password</label>
+                <input type="password" id="member_userpw" name="member_userpw" placeholder="패스워드를 입력해주세요" required>
             </div>
             <div class="button-group">
                 <button type="submit" class="btn">Login</button>

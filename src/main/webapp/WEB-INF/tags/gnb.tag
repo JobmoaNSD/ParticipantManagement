@@ -14,8 +14,8 @@
                         <i class="bi bi-list"></i>
                     </a>
                 </li>
-                <li class="nav-item d-none d-md-block"><a href="" class="nav-link"><%=gnb_main_header%></a></li>
-                <li class="nav-item d-none d-md-block"><a href="" class="nav-link"><%=gnb_sub_header%></a></li>
+                <li class="nav-item d-none d-md-block"><a href="" class="nav-link">${gnb_main_header}</a></li>
+                <li class="nav-item d-none d-md-block"><a href="" class="nav-link">${gnb_sub_header}</a></li>
             </ul>
             <!--end::Start Navbar Links-->
             <!--begin::End Navbar Links-->
@@ -38,7 +38,7 @@
                         <li class="text-bg-primary text-center">
                             <p>
                                 참여자 관리
-                                <small class="text-center">(남부)</small>
+                                <small class="text-center">(${JOBMOA_LOGIN_DATA.member_branch})</small>
                             </p>
                         </li>
                         <!--end::User Image-->
@@ -47,9 +47,9 @@
                             <!--begin::Row-->
                             <div class="row">
 
-                                <div class="col-4 text-center">전담자<br/>홍길동</div>
-                                <div class="col-4 text-center">권한<br/>상담</div>
-                                <div class="col-4 text-center">관리자<br/>False</div>
+                                <div class="col-4 text-center">전담자<br/>${JOBMOA_LOGIN_DATA.member_username}</div>
+                                <div class="col-4 text-center">권한<br/>${JOBMOA_LOGIN_DATA.member_role}</div>
+                                <div class="col-4 text-center">고유번호<br/>${JOBMOA_LOGIN_DATA.member_uniquenumber}</div>
                             </div>
                             <!--end::Row-->
                         </li>
@@ -77,7 +77,7 @@
                 <!--begin::Brand Image-->
                 <img
                         src="../../img/JobmoaLog.png"
-                        alt="AdminLTE Logo"
+                        alt="JOBMOA Logo"
                         class="brand-image opacity-75 shadow"
                 />
                 <!--end::Brand Image-->
@@ -99,7 +99,7 @@
                         data-accordion="false"
                 >
                     <!--begin::실적관리-->
-                    <li class="nav-item">
+                    <li class="nav-item ${gnb_main_header eq '실적관리' ? 'menu-open' : ''}">
                         <a href="#" class="nav-link">
                             <i class="nav-icon bi bi-file-bar-graph-fill"></i>
                             <p>
@@ -118,7 +118,7 @@
                                     <small><p>일일업무보고</p></small>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item ">
                                 <a href="./index.jsp" class="nav-link">
                                     <small><p>업무진행현황</p></small>
                                 </a>
@@ -127,7 +127,7 @@
                     </li>
                     <!--end::실적관리-->
                     <!--begin::상담관리-->
-                    <li class="nav-item">
+                    <li class="nav-item ${gnb_main_header eq '상담관리' ? 'menu-open' : ''}">
                         <a href="#" class="nav-link">
                             <i class="nav-icon bi bi-file-person"></i>
                             <p>
@@ -137,7 +137,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="./index.jsp" class="nav-link">
+                                <a href="./participant.do" class="nav-link">
                                     <small><p>참여자 조회 및 관리</p></small>
                                 </a>
                             </li>
@@ -150,7 +150,7 @@
                     </li>
                     <!--end::상담관리-->
                     <!--begin::알선기업관리-->
-                    <li class="nav-item">
+                    <li class="nav-item ${gnb_main_header eq '알선기업관리' ? 'menu-open' : ''}">
                         <a href="#" class="nav-link">
                             <i class="nav-icon bi bi-people-fill"></i>
                             <p>
