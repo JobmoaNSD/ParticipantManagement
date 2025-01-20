@@ -1,5 +1,6 @@
 package com.jobmoa.app.view.login;
 
+import com.jobmoa.app.biz.common.LoginBean;
 import com.jobmoa.app.biz.login.MemberDTO;
 import com.jobmoa.app.biz.login.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -22,11 +23,17 @@ public class LoginController {
     @GetMapping("/login.do")
     public String loginController(){
 
-        return "views/SamplePage";
+        return "views/login";
     }
 
     @PostMapping("/login.do")
-    public String loginController(Model model, HttpSession session, MemberDTO memberDTO){
+    public String loginController(Model model, HttpSession session, MemberDTO memberDTO, LoginBean loginBean){
+
+        String url = "login.do";
+        String icon = "warning";
+        String title = "로그인 실패";
+        String message = "";
+
 
         log.info("loginDTO : [{}]",memberDTO);
         MemberDTO data = memberService.selectOne(memberDTO);
@@ -34,15 +41,26 @@ public class LoginController {
         // 사용자가 입력한 Data 가 Null 이 아니고
         // 검색된 Data 가 Null 이 아니면 Session 에 저장
         if(data != null){
-            if(data.getLogin_id() != null){
-                session.setAttribute("JOBMOA_LOGIN_NAME", data.getLogin_counselor());
-                return "redirect:participant.do";
+            if(data.getMember_userid() != null){
+                loginBean.setMember_userid(data.getMember_userid());
+                loginBean.setMember_username(data.getMember_username());
+                loginBean.setMember_branch(data.getMember_branch());
+                loginBean.setMember_role(data.getMember_role());
+                loginBean.setMember_uniquenumber(data.getMember_uniquenumber());
+                session.setAttribute("JOBMOA_LOGIN_DATA", loginBean);
+                url = "dashboard.do";
+                icon = "success";
+                title = "로그인 성공";
             }
         }
 
-        log.info("로그인에 실패하였습니다.");
+        model.addAttribute("url", url);
+        model.addAttribute("icon", icon);
+        model.addAttribute("title", title);
+        model.addAttribute("message", message);
+        log.info("로그인 여부 : [{}]",title);
 
-        return "redirect:login.do";
+        return "views/info";
     }
 
     @GetMapping("/logout.do")

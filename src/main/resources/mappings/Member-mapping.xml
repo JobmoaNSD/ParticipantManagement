@@ -2,30 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="MemberDAO">
-    <select id="selectAll" resultType="member">
-        SELECT PK,
-               계정 LOGIN_ID,
-               비번 LOGIN_PASSWORD,
-               지점 LOGIN_SPOT,
-               전담자 LOGIN_COUNSELOR,
-               직책 LOGIN_POSITION,
-               등록번호 LOGIN_REFISTRATIONNUMDER,
-               관리자 LOGIN_ISADMIN
-        FROM u122266.J_상담_직원
-    </select>
-
-    <select id="selectOne" resultType="member">
-        SELECT
-            PK,
-            계정 AS LOGIN_ID,
-            비번 AS LOGIN_PASSWORD,
-            지점 LOGIN_SPOT,
-            전담자 LOGIN_COUNSELOR,
-            직책 LOGIN_POSITION,
-            등록번호 LOGIN_REFISTRATIONNUMDER,
-            관리자 LOGIN_ISADMIN
-        FROM u122266.J_상담_직원 AS LOGIN_TABLE
-        WHERE LOGIN_TABLE.계정=#{login_id} and LOGIN_TABLE.비번=#{login_password}
+    <select id="LOGIN_SELECT" resultType="member">
+        SELECT LOGINPK member_loginpk,
+               BRANCH member_branch,
+               USERNAME member_username,
+               ROLE member_role,
+               USERID member_userid,
+               USERPW member_userpw,
+               MANAGER member_manager,
+               REGDATE member_regdate,
+               UNIQUENUMBER member_uniquenumber
+        FROM dbo.J_LOGIN
+        WHERE USERID=#{member_userid} AND USERPW=#{member_userpw}
     </select>
 
 </mapper>

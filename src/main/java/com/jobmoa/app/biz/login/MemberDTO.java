@@ -4,15 +4,15 @@ import lombok.Data;
 
 @Data
 public class MemberDTO {
+    private int member_loginpk;
+    private String member_branch;
+    private String member_username;
+    private String member_role;
+    private String member_userid;
+    private String member_userpw;
+    private boolean member_ismanager;
+    private String member_regdate;
+    private String member_uniquenumber;
 
-    private int login_numPK; // PK
-    private String login_id; // 아이디
-    private String login_password; // 비밀번호
-    private String login_spot; // 지점
-    private String login_counselor; // 전담자 (상담사 성명)
-    private String login_position; // 직책
-    private String login_registrationNumber; // 등록번호
-    private boolean login_isAdmin; // 관리자 여부
-
-    private String login_condition; // 개발자 구분
+    private String member_condition; // 개발자 구분
 }

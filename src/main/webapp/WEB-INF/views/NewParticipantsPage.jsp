@@ -134,195 +134,224 @@
                     <div class="col-md-12">
                         <%-- 기본정보 입력 폼 시작 --%>
                         <div class="row  card">
-                            <div class="card-header"><h1>기본정보</h1></div>
-                            <div class="card-body row d-flex justify-content-start ">
-                                <div class="pb-2 mb-1" style="width: 10%;">
-                                    <label for="PARTIC" class="form-label">참여자</label>
-                                    <input type="text" class="form-control" id="PARTIC" name="PARTIC">
+                            <div class="card-header">
+                                <h1 class="card-title">기본정보</h1>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
+                                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                                    </button>
                                 </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="DOB" class="form-label" >생년월일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="DOB" name="DOB" placeholder="yyyy-mm-dd" aria-label="생년월일">
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-1 pb-2 mb-1" style="width: 10%;">
+                                        <label for="PARTIC" class="form-label">참여자</label>
+                                        <input type="text" class="form-control" id="PARTIC" name="PARTIC">
+                                    </div>
+                                    <div class="col-md-1" style="width: 11%;">
+                                        <label for="DOB" class="form-label"  >생년월일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="DOB" name="DOB" placeholder="yyyy-mm-dd" aria-label="생년월일">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1" style="width: 6%;">
+                                        <label for="GENDER" class="form-label">성별</label>
+                                        <select class="form-select" aria-label="Default select example" id="GENDER" name="GENDER">
+                                            <option selected value="남">남</option>
+                                            <option value="여">여</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="RECRUIT" class="form-label">모집경로</label>
+                                        <select class="form-select" aria-label="Default select example" id="RECRUIT" name="RECRUIT">
+                                            <option selected value="센터배정">센터배정</option>
+                                            <option value="대학">대학</option>
+                                            <option value="고교">고교</option>
+                                            <option value="훈련기관">훈련기관</option>
+                                            <option value="자체모집">자체모집</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1" style="width: 6%;">
+                                        <label for="PARTTYPE" class="form-label">참여유형</label>
+                                        <select class="form-select" aria-label="Default select example" id="PARTTYPE" name="PARTTYPE">
+                                            <option selected value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1" style="width: 15%;">
+                                        <label for="SCHOOL" class="form-label">주소(시,구)</label>
+                                        <input type="text" class="form-control" id="SCHOOL" name="SCHOOL">
+                                        <div id="schoollist"></div>
+                                    </div>
+                                    <div class="col-md-1" style="width: 15%;">
+                                        <label for="SPECIALTY" class="form-label">학교명</label>
+                                        <input type="text" class="form-control" id="SPECIALTY" name="SPECIALTY">
+                                        <div id="specialtylist"></div>
+                                    </div>
+                                    <div class="col-md-1" style="width: 15%;">
+                                        <label for="ADDRESS" class="form-label">전공</label>
+                                        <input type="text" class="form-control" id="ADDRESS" name="ADDRESS">
+                                    </div>
+                                    <div class="col-md-1" style="width: 8%;">
+                                        <label for="ANTECEDENTS" class="form-label">경력</label>
+                                        <input type="text" class="form-control" id="ANTECEDENTS" name="ANTECEDENTS">
+                                    </div>
+                                    <div class="col-md-2" style="width: 15%;">
+                                        <label for="CERTIF" class="form-label">자격증</label>
+                                        <input type="text" class="form-control" id="CERTIF" name="CERTIF">
+                                    </div>
+                                    <div class="col-md-1" style="width: 11%;">
+                                        <label for="LSSUEDATE" class="form-label">발급일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="LSSUEDATE" name="LSSUEDATE" placeholder="yyyy-mm-dd" aria-label="발급일">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="" style="width: 5%;">
-                                    <label for="GENDER" class="form-label">성별</label>
-                                    <select class="form-select" aria-label="Default select example" id="GENDER" name="GENDER">
-                                        <option selected value="남">남</option>
-                                        <option value="여">여</option>
-                                    </select>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="RECRUIT" class="form-label">모집경로</label>
-                                    <select class="form-select" aria-label="Default select example" id="RECRUIT" name="RECRUIT">
-                                        <option selected value="센터배정">센터배정</option>
-                                        <option value="대학">대학</option>
-                                        <option value="고교">고교</option>
-                                        <option value="훈련기관">훈련기관</option>
-                                        <option value="자체모집">자체모집</option>
-                                    </select>
-                                </div>
-                                <div class="" style="width: 5%;">
-                                    <label for="PARTTYPE" class="form-label">참여유형</label>
-                                    <select class="form-select" aria-label="Default select example" id="PARTTYPE" name="PARTTYPE">
-                                        <option selected value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </div>
-                                <div class="" style="width: 15%;">
-                                    <label for="SCHOOL" class="form-label">주소(시,구)</label>
-                                    <input type="text" class="form-control" id="SCHOOL" name="SCHOOL">
-                                    <div id="schoollist"></div>
-                                </div>
-                                <div class="" style="width: 15%;">
-                                    <label for="SPECIALTY" class="form-label">학교명</label>
-                                    <input type="text" class="form-control" id="SPECIALTY" name="SPECIALTY">
-                                    <div id="specialtylist"></div>
-                                </div>
-                                <div class="" style="width: 15%;">
-                                    <label for="ADDRESS" class="form-label">전공</label>
-                                    <input type="text" class="form-control" id="ADDRESS" name="ADDRESS">
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="ANTECEDENTS" class="form-label">경력</label>
-                                    <input type="text" class="form-control" id="ANTECEDENTS" name="ANTECEDENTS">
-                                </div>
-                                <div class="" style="width: 15%;">
-                                    <label for="CERTIF" class="form-label">자격증</label>
-                                    <input type="text" class="form-control" id="CERTIF" name="CERTIF">
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="LSSUEDATE" class="form-label">발급일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="LSSUEDATE" name="LSSUEDATE" placeholder="yyyy-mm-dd" aria-label="발급일">
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                         <%-- 기본정보 입력 폼 끝 --%>
 
                         <%-- 상담정보 입력 폼 시작 --%>
-                        <div class="row card pt-3 mt-3">
-                            <div class="card-header"><h1>상담정보</h1></div>
-                            <div class="card-body row d-flex justify-content-start ">
-                                <div class="pb-2 mb-1" style="width: 5%;">
-                                    <label for="JOBSKILL" class="form-label">취업역량</label>
-                                    <select class="form-select" aria-label="Default select example" id="JOBSKILL" name="JOBSKILL">
-                                        <option value=""></option>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                    </select>
+                        <div class="row card mt-3">
+                            <div class="card-header">
+                                <h1 class="card-title">상담정보</h1>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
+                                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                                    </button>
                                 </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="LASTCONS" class="form-label" >최근상담일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="LASTCONS" name="LASTCONS" placeholder="yyyy-mm-dd" aria-label="최근상담일">
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="pb-2 mb-1" style="width: 6%;">
+                                        <label for="JOBSKILL" class="form-label">취업역량</label>
+                                        <select class="form-select" aria-label="Default select example" id="JOBSKILL" name="JOBSKILL">
+                                            <option value=""></option>
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="" style="width: 11%;">
-                                    <label for="PROGRESS" class="form-label">진행단계</label>
-                                    <select class="form-select" aria-label="Default select example" id="PROGRESS" name="PROGRESS">
-                                        <option selected value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="미고보">미고보</option>
-                                        <option value="고보일반">고보일반</option>
-                                        <option value="등록창업">등록창업</option>
-                                        <option value="미등록창업">미등록창업</option>
-                                        <option value="미사">미사</option>
-                                        <option value="미사종">미사종</option>
-                                        <option value="유예">유예</option>
-                                        <option value="취소">취소</option>
-                                        <option value="이관">이관</option>
-                                        <option value="중단">중단</option>
-                                    </select>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="SUC_M" class="form-label">성공금_충족여부</label>
-                                    <select class="form-select" aria-label="Default select example" id="SUC_M" name="SUC_M">
-                                        <option selected value="센터배정">센터배정</option>
-                                        <option value="대학">대학</option>
-                                        <option value="고교">고교</option>
-                                        <option value="훈련기관">훈련기관</option>
-                                        <option value="자체모집">자체모집</option>
-                                    </select>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="INITCONS" class="form-label">초기상담일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="INITCONS" name="INITCONS" placeholder="yyyy-mm-dd" aria-label="초기상담일">
+                                    <div class="" style="width: 11%;">
+                                        <label for="LASTCONS" class="form-label" >최근상담일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="LASTCONS" name="LASTCONS" placeholder="yyyy-mm-dd" aria-label="최근상담일">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="JOBEX" class="form-label">구직만료일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="JOBEX" name="JOBEX" placeholder="yyyy-mm-dd" aria-label="구직만료일">
+                                    <div class="" style="width: 10%;">
+                                        <label for="PROGRESS" class="form-label">진행단계</label>
+                                        <select class="form-select" aria-label="Default select example" id="PROGRESS" name="PROGRESS">
+                                            <option selected value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="미고보">미고보</option>
+                                            <option value="고보일반">고보일반</option>
+                                            <option value="등록창업">등록창업</option>
+                                            <option value="미등록창업">미등록창업</option>
+                                            <option value="미사">미사</option>
+                                            <option value="미사종">미사종</option>
+                                            <option value="유예">유예</option>
+                                            <option value="취소">취소</option>
+                                            <option value="이관">이관</option>
+                                            <option value="중단">중단</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="IAPDATE" class="form-label">IAP수립일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="IAPDATE" name="IAPDATE" placeholder="yyyy-mm-dd" aria-label="IAP수립일">
+                                    <div class="" style="width: 12%;">
+                                        <label for="SUC_M" class="form-label">성공금_충족여부</label>
+                                        <select class="form-select" aria-label="Default select example" id="SUC_M" name="SUC_M">
+                                            <option selected value="고보미가입취업">고보미가입취업</option>
+                                            <option value="본인">본인</option>
+                                            <option value="알선">알선</option>
+                                            <option value="소개취업">소개취업</option>
+                                            <option value="1.5배알선">1.5배알선</option>
+                                            <option value="창업">창업</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="STEPAPPROACH" class="form-label">3단계진입일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="STEPAPPROACH" name="STEPAPPROACH" placeholder="yyyy-mm-dd" aria-label="3단계진입일">
+                                    <div class="" style="width: 11%;">
+                                        <label for="INITCONS" class="form-label">초기상담일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="INITCONS" name="INITCONS" placeholder="yyyy-mm-dd" aria-label="초기상담일">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="EXPDATE" class="form-label">기간만료(예정)일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="EXPDATE" name="EXPDATE" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일">
+                                    <div class="" style="width: 11%;">
+                                        <label for="JOBEX" class="form-label">구직만료일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="JOBEX" name="JOBEX" placeholder="yyyy-mm-dd" aria-label="구직만료일">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="CLINIC" class="form-label">클리닉실시일</label>
-                                    <div class="input-group">
-                                        <i class="bi bi-calendar-date input-group-text"></i>
-                                        <input type="text" class="form-control datepicker_on" id="CLINIC" name="CLINIC" placeholder="yyyy-mm-dd" aria-label="클리닉실시일">
+                                    <div class="" style="width: 11%;">
+                                        <label for="IAPDATE" class="form-label">IAP수립일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="IAPDATE" name="IAPDATE" placeholder="yyyy-mm-dd" aria-label="IAP수립일">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="" style="width: 15%;">
-                                    <label for="JOBWANT" class="form-label">희망직무</label>
-                                    <input type="text" class="form-control" id="JOBWANT" name="JOBWANT">
+                                    <div class="" style="width: 11%;">
+                                        <label for="STEPAPPROACH" class="form-label">3단계진입일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="STEPAPPROACH" name="STEPAPPROACH" placeholder="yyyy-mm-dd" aria-label="3단계진입일">
+                                        </div>
+                                    </div>
+                                    <div class="" style="width: 11%;">
+                                        <label for="EXPDATE" class="form-label">기간만료(예정)일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="EXPDATE" name="EXPDATE" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일">
+                                        </div>
+                                    </div>
+                                    <div class="" style="width: 11%;">
+                                        <label for="CLINIC" class="form-label">클리닉실시일</label>
+                                        <div class="input-group">
+                                            <i class="bi bi-calendar-date input-group-text"></i>
+                                            <input type="text" class="form-control datepicker_on" id="CLINIC" name="CLINIC" placeholder="yyyy-mm-dd" aria-label="클리닉실시일">
+                                        </div>
+                                    </div>
+                                    <div class="" style="width: 15%;">
+                                        <label for="JOBWANT" class="form-label">희망직무</label>
+                                        <input type="text" class="form-control" id="JOBWANT" name="JOBWANT">
 
-                                </div>
-                                <div class="" style="width: 10%;">
-                                    <label for="SALWANT" class="form-label">희망급여</label>
-                                    <input type="number" class="form-control" id="SALWANT" name="SALWANT" min="0" max="1000" placeholder="단위 만원">
+                                    </div>
+                                    <div class="" style="width: 10%;">
+                                        <label for="SALWANT" class="form-label">희망급여</label>
+                                        <input type="number" class="form-control" id="SALWANT" name="SALWANT" min="0" max="1000" placeholder="단위 만원">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <%-- 상담정보 입력 폼 끝 --%>
 
-                            <%-- 취업정보 입력 폼 시작 --%>
-                            <div class="row card pt-3 mt-3">
-                                <div class="card-header"><h1>취업정보</h1></div>
-                                <div class="card-body row d-flex justify-content-start ">
-                                    <div class="pb-2 mb-1" style="width: 10%;">
+                        <%-- 취업정보 입력 폼 시작 --%>
+                        <div class="row card mt-3">
+                            <div class="card-header">
+                                <h1 class="card-title">취업정보</h1>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
+                                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="pb-2 mb-1" style="width: 11%;">
                                         <label for="STARTDATE" class="form-label">취창업일</label>
                                         <div class="input-group">
                                             <i class="bi bi-calendar-date input-group-text"></i>
                                             <input type="text" class="form-control datepicker_on" id="STARTDATE" name="STARTDATE" placeholder="yyyy-mm-dd" aria-label="취창업일">
                                         </div>
                                     </div>
-                                    <div class="" style="width: 10%;">
+                                    <div class="" style="width: 11%;">
                                         <label for="PROCDATE" class="form-label" >취창업처리일</label>
                                         <div class="input-group">
                                             <i class="bi bi-calendar-date input-group-text"></i>
@@ -345,12 +374,12 @@
                                     </div>
                                     <div class="" style="width: 8%;">
                                         <label for="SALARY" class="form-label">임금</label>
-                                            <input type="number" class="form-control" id="SALARY" name="SALARY" min="0" max="1000" placeholder="단위 만원">
+                                        <input type="number" class="form-control" id="SALARY" name="SALARY" min="0" max="1000" placeholder="단위 만원">
 
                                     </div>
                                     <div class="" style="width: 10%;">
                                         <label for="JOBROLE" class="form-label">직무</label>
-                                            <input type="text" class="form-control" id="JOBROLE" name="JOBROLE">
+                                        <input type="text" class="form-control" id="JOBROLE" name="JOBROLE">
                                     </div>
                                     <div class="" style="width: 14%;">
                                         <label for="INCENTIVE" class="form-label">취업인센티브_구분</label>
@@ -383,11 +412,21 @@
                                     </div>
                                     <div class="" style="width: 100%;">
                                         <label for="MEMO" class="form-label">메모</label>
-                                        <textarea class="form-control" id="MEMO" name="MEMO" rows="3" cols="10"></textarea>
+                                        <textarea class="form-control" id="MEMO" name="MEMO" rows="3" cols="10" placeholder="메모를 입력하세요."></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <%-- 취업정보 입력 폼 끝 --%>
+                        </div>
+                        <%-- 취업정보 입력 폼 끝 --%>
+                        <%-- 참여자 등록 버튼 시작 --%>
+                        <div class="row pt-2 mt-3">
+                            <div class="col-12 text-end">
+                                <button type="button" class="btn btn-primary" class="btn btn-check" id="btn_check">
+                                    신규 참여자 등록
+                                </button>
+                            </div>
+                        </div>
+                        <%-- 참여자 등록 버튼 끝 --%>
                     </div>
                 </div>
             </div>

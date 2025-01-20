@@ -65,14 +65,14 @@
             crossorigin="anonymous"
     />
 
-    <!-- chart.js script 데이터 -->
+    <!-- chart.js script -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <script src="js/drawChartCenterTextPlugin.js"></script>
     <script src="js/dashBoardJS.js"></script>
 
-    <!-- jQuery 시작 데이터 -->
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 </head>

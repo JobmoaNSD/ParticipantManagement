@@ -23,7 +23,7 @@ public class ParticipantController {
     @GetMapping("participant.do")
     public String participantPageController(Model model, HttpSession session, ParticipantDTO participantDTO){
 
-        //로그인 여부를 확인하기 위해 정보를 입력
+/*        //로그인 여부를 확인하기 위해 정보를 입력
         String user_name = (String)session.getAttribute("JOBMOA_LOGIN_NAME");
         log.info("participantPageController");
 
@@ -35,7 +35,7 @@ public class ParticipantController {
         participantDTO.setParticipant_counselor(user_name);
         List<ParticipantDTO> datas = participantService.selectAll(participantDTO);
 
-        model.addAttribute("datas", datas);
+        model.addAttribute("datas", datas);*/
         return "views/participantMain";
     }
 
