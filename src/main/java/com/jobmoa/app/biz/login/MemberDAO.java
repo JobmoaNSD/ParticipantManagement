@@ -1,7 +1,7 @@
 package com.jobmoa.app.biz.login;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class MemberDAO {
     @Autowired
-    private SqlSession sqlSession;
+    private SqlSessionTemplate sqlSession;
 
     private static final String ns = "MemberDAO.";
 
@@ -24,7 +24,7 @@ public class MemberDAO {
     }
 
     public MemberDTO selectOne(MemberDTO memberDTO) {
-        MemberDTO data = sqlSession.selectOne(ns+"LOGIN_SELECT", memberDTO);
+        MemberDTO data = sqlSession.selectOne(ns+"loginSelect", memberDTO);
         log.info("data : [{}]",data);
         return data;
     }

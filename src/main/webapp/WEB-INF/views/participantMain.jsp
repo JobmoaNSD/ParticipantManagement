@@ -83,11 +83,13 @@
         <div class="app-content">
             <div class="container-fluid">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
+
                 <div class="row col-md-11 pt-5 me-auto ms-auto">
                     <div class="col-md-12 text-center">
                         <h3>참여자 조회</h3>
                     </div>
-                    <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto" style="height: 70px;">
+                    <%-- 참여자 검색 시작 --%>
+                    <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto" >
                         <!-- 검색 조건 선택 -->
                         <div class="col-md-2 ms-auto">
                             <select
@@ -111,58 +113,69 @@
                             />
                         </div>
                         <%-- 검색버튼 --%>
-                        <div class="col-md-1 ps-1 pe-1 text-center btn btn-secondary me-auto">
+                        <div class="col-md-1 text-center btn btn-secondary">
                             검색
                         </div>
+                        <div class="col-md-1 ps-1 pe-1 text-center me-auto">
+                            <select class="form-select shadow-sm" name="pageRows" id="pageRows">
+                                <option selected value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover shadow-sm">
-                            <thead class="table-dark text-white">
-                            <tr>
-                                <th class="text-center"><input type="button" class="btn btn-danger" value="마감"></th>
-                                <th>구직번호</th>
-                                <th>참여자</th>
-                                <th>성별</th>
-                                <th>최근상담일</th>
-                                <th>진행단계</th>
-                                <th>생년월일</th>
-                                <th>등록일</th>
-                                <th>마감</th>
-                            </tr>
-                            </thead>
-                            <tbody class="align-middle">
-                            <c:forEach var="i" begin="1" end="10">
+                    <%-- 참여자 검색 끝 --%>
+                    <%-- 참여자 테이블 시작 --%>
+                    <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto mt-auto">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover shadow-sm">
+                                <thead class="table-dark text-white">
                                 <tr>
-                                    <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="a"></label></td>
-                                    <td>11123</td>
-                                    <td>홍길동</td>
-                                    <td>남/여</td>
-                                    <td>2025-01-20</td>
-                                    <td>1</td>
-                                    <td>2000-00-00</td>
-                                    <td>2024-12-20</td>
-                                    <td>
-                                        <span class="badge ${data.isClosed ? 'bg-danger' : 'bg-success'}">
-                                                ${data.isClosed ? '마감' : '진행중'}
-                                        </span>
-                                    </td>
+                                    <th class="text-center"><input type="button" class="btn btn-danger" value="마감"></th>
+                                    <th>구직번호</th>
+                                    <th>참여자</th>
+                                    <th>성별</th>
+                                    <th>최근상담일</th>
+                                    <th>진행단계</th>
+                                    <th>생년월일</th>
+                                    <th>등록일</th>
+                                    <th>마감</th>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="align-middle">
+                                <c:forEach items="${datas}" var="data">
+                                    <tr>
+                                        <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="a"></label></td>
+                                        <td>${data.participantJobNo}</td>
+                                        <td>${data.participantPartic}</td>
+                                        <td>${data.participantGender}</td>
+                                        <td>${data.participantLastCons}</td>
+                                        <td>${data.participantProgress}</td>
+                                        <td>${data.participantDob}</td>
+                                        <td>${data.participantRegDate}</td>
+                                        <td>
+                                        <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'}">
+                                                ${data.participantClose ? '마감' : '진행중'}
+                                        </span>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-11 text-center ms-auto me-auto d-flex justify-content-center">
-                <ul class="pagination">
-                    <c:set var="page" value="10"></c:set>
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <c:forEach var="i" begin="1" end="${page}">
-                            <li class="page-item"><a class="page-link" href="#">${i}</a></li>
-                        </c:forEach>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                </ul>
-            </div>
+                    <%-- 참여자 테이블 끝 --%>
+
+                    <%-- 페이지네이션 시작 --%>
+                    <mytag:pagination page="${page}" startButton="${startButton}" endButton="${endButton}" totalButton="${totalButton}"/>
+                    <%-- 페이지네이션 끝 --%>
+               </div>
+
+           </div>
+
+
         </div>
         <!--end::App Content-->
     </main>

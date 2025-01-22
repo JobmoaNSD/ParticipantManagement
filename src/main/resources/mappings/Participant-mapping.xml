@@ -2,122 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ParticipantDAO">
-    <select id="selectAll_All" resultType="participant">
+    <select id="selectAllParticipantBasic" resultType="participant">
+        SELECT TOP (#{pageRows})
+        participantJobNo,
+        participantPartic,
+        participantGender,
+        participantLastCons,
+        participantProgress,
+        participantDob,
+        participantRegDate,
+        participantClose
+        FROM (
         SELECT
-            일련번호 AS participant_serial_number,
-            등록일 AS participant_registration_date,
-            지점 AS participant_branch,
-            전담자 AS participant_counselor,
-            참여자 AS participant_participant,
-            모집경로 AS participant_recruitmentPath,
-            참여유형 AS participant_participationType,
-            집단여부 AS participant_groupParticipation,
-            집단시작일 AS participant_groupStartDate,
-            집단종료일 AS participant_groupEndDate,
-            학교명 AS participant_schoolName,
-            전공 AS participant_major,
-            주민등록번호 AS participant_ssn,
-            실업급여종료일 AS participant_unemploymentBenefitEndDate,
-            연락처_1 AS participant_contact1,
-            연락처_2 AS participant_contact2,
-            실업급여대상 AS participant_unemploymentBenefitTarget,
-            실업급여시작일 AS participant_unemploymentBenefitStartDate,
-            가산점대상 AS participant_priorityTarget,
-            취업역량 AS participant_jobCompetency,
-            구직만료일 AS participant_jobSearchExpiryDate,
-            진행단계 AS participant_currentStage,
-            초기상담경과개월_A AS participant_initialCounselingElapsedMonths,
-            초기상담일 AS participant_initialCounselingDate,
-            최근상담일 AS participant_recentCounselingDate,
-            미사종료일 AS participant_misaEndDate,
-            취소종료일 AS participant_cancelEndDate,
-            이관종료일 AS participant_transferEndDate,
-            중단종료일 AS participant_suspensionEndDate,
-            IAP수립일 AS participant_iapEstablishmentDate,
-            프로그램 AS participant_program,
-            [3단계진입일] AS participant_step3EntryDate,
-            기간만료예정일 AS participant_expiryDate,
-            클리닉실시일 AS participant_clinicDate,
-            희망업무 AS participant_desiredJob,
-            취창업일 AS participant_employmentEntrepreneurshipDate,
-            취창업처리일 AS participant_employmentEntrepreneurshipProcessingDate,
-            취업유형 AS participant_employmentType,
-            퇴사일 AS participant_resignationDate,
-            취업처 AS participant_companyEmployed,
-            임금 AS participant_salary,
-            직무 AS participant_occupation,
-            [3대면] AS participant_faceToFace3,
-            [160만원이상] AS participant_above160k,
-            성공금제외 AS participant_excludeBonus,
-            내일채움공제 AS participant_futureSavingPlan,
-            은행명 AS participant_bankName,
-            예금주 AS participant_accountHolder,
-            계좌번호 AS participant_accountNumber,
-            메모 AS participant_notes,
-            제유사유 AS participant_exclusionReason,
-            마감 AS participant_closure,
-            연락처 AS participant_contact
-        FROM dbo.J_상담;
+        ROW_NUMBER() OVER (ORDER BY ParticipantJobNo DESC) AS RowNum,
+        ParticipantJobNo,
+        ParticipantPartic,
+        ParticipantGender,
+        ParticipantLastCons,
+        ParticipantProgress,
+        ParticipantDob,
+        ParticipantRegDate,
+        ParticipantClose
+        FROM PARTICIPANTS_VIEW
+        WHERE ParticipantUserid = #{participantUserid} ) AS SUB_QUERY
+        WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
-    <select id="participant_main_selectAll" resultType="participant">
-        SELECT
-            일련번호 AS participant_serial_number,
-            등록일 AS participant_registration_date,
-            지점 AS participant_branch,
-            전담자 AS participant_counselor,
-            참여자 AS participant_participant,
-            모집경로 AS participant_recruitmentPath,
-            참여유형 AS participant_participationType,
-            집단여부 AS participant_groupParticipation,
-            집단시작일 AS participant_groupStartDate,
-            집단종료일 AS participant_groupEndDate,
-            학교명 AS participant_schoolName,
-            전공 AS participant_major,
-            주민등록번호 AS participant_ssn,
-            실업급여종료일 AS participant_unemploymentBenefitEndDate,
-            연락처_1 AS participant_contact1,
-            연락처_2 AS participant_contact2,
-            실업급여대상 AS participant_unemploymentBenefitTarget,
-            실업급여시작일 AS participant_unemploymentBenefitStartDate,
-            가산점대상 AS participant_priorityTarget,
-            취업역량 AS participant_jobCompetency,
-            구직만료일 AS participant_jobSearchExpiryDate,
-            진행단계 AS participant_currentStage,
-            초기상담경과개월_A AS participant_initialCounselingElapsedMonths,
-            초기상담일 AS participant_initialCounselingDate,
-            최근상담일 AS participant_recentCounselingDate,
-            미사종료일 AS participant_misaEndDate,
-            취소종료일 AS participant_cancelEndDate,
-            이관종료일 AS participant_transferEndDate,
-            중단종료일 AS participant_suspensionEndDate,
-            IAP수립일 AS participant_iapEstablishmentDate,
-            프로그램 AS participant_program,
-            [3단계진입일] AS participant_step3EntryDate,
-            기간만료예정일 AS participant_expiryDate,
-            클리닉실시일 AS participant_clinicDate,
-            희망업무 AS participant_desiredJob,
-            취창업일 AS participant_employmentEntrepreneurshipDate,
-            취창업처리일 AS participant_employmentEntrepreneurshipProcessingDate,
-            취업유형 AS participant_employmentType,
-            퇴사일 AS participant_resignationDate,
-            취업처 AS participant_companyEmployed,
-            임금 AS participant_salary,
-            직무 AS participant_occupation,
-            [3대면] AS participant_faceToFace3,
-            [160만원이상] AS participant_above160k,
-            성공금제외 AS participant_excludeBonus,
-            내일채움공제 AS participant_futureSavingPlan,
-            은행명 AS participant_bankName,
-            예금주 AS participant_accountHolder,
-            계좌번호 AS participant_accountNumber,
-            메모 AS participant_notes,
-            제유사유 AS participant_exclusionReason,
-            마감 AS participant_closure,
-            연락처 AS participant_contact
-        FROM dbo.J_상담;
-    </select>
-    <select id="selectOne" resultType="participant">
 
+    <select id="selectCountParticipant" resultType="participant">
+        SELECT
+            COUNT(ParticipantJobNo) totalCount
+        FROM PARTICIPANTS_VIEW
+        WHERE
+            ParticipantUserid = #{participantUserid}
     </select>
 
 </mapper>
