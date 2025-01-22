@@ -21,32 +21,49 @@ public class LoginController {
     private MemberService memberService;
 
     @GetMapping("/login.do")
-    public String loginController(){
+    public String loginController(HttpSession session, LoginBean loginBean){
+        log.info("-----------------------------------");
+        //Session에 저장되어 있는 Login DATA
+        loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        String page = "views/login";
 
-        return "views/login";
+        //Session이 비어있지 않다면 dashboard.do 페이지로 이동
+        if (loginBean != null) {
+            page = "redirect:dashboard.do";
+        }
+
+        log.info("login DATA : [{}]", loginBean);
+        log.info("login Controller page : [{}]", page);
+        log.info("-----------------------------------");
+        return page;
     }
 
     @PostMapping("/login.do")
     public String loginController(Model model, HttpSession session, MemberDTO memberDTO, LoginBean loginBean){
-
+        log.info("-----------------------------------");
+        log.info("Start loginController");
         String url = "login.do";
-        String icon = "warning";
+        String icon = "error";
         String title = "로그인 실패";
         String message = "";
 
-
+        memberDTO = memberService.selectOne(memberDTO);
         log.info("loginDTO : [{}]",memberDTO);
-        MemberDTO data = memberService.selectOne(memberDTO);
 
         // 사용자가 입력한 Data 가 Null 이 아니고
         // 검색된 Data 가 Null 이 아니면 Session 에 저장
-        if(data != null){
-            if(data.getMember_userid() != null){
-                loginBean.setMember_userid(data.getMember_userid());
-                loginBean.setMember_username(data.getMember_username());
-                loginBean.setMember_branch(data.getMember_branch());
-                loginBean.setMember_role(data.getMember_role());
-                loginBean.setMember_uniquenumber(data.getMember_uniquenumber());
+        if(memberDTO != null){
+            if(memberDTO.getMemberUserID() != null){
+                log.info("loginController login Success user ID : [{}]",memberDTO.getMemberUserID());
+
+                //로그인 정보를 Bean 객체에 담고
+                loginBean.setMemberUserID(memberDTO.getMemberUserID());
+                loginBean.setMemberUserName(memberDTO.getMemberUserName());
+                loginBean.setMemberBranch(memberDTO.getMemberBranch());
+                loginBean.setMemberRole(memberDTO.getMemberRole());
+                loginBean.setMemberUniqueNumber(memberDTO.getMemberUniqueNumber());
+
+                //Session에 저장해 사용
                 session.setAttribute("JOBMOA_LOGIN_DATA", loginBean);
                 url = "dashboard.do";
                 icon = "success";
@@ -54,18 +71,29 @@ public class LoginController {
             }
         }
 
+        //info.jsp 페이지로 넘어갈때 활용
+        //로그인 성공 : dashboard.do 페이지로 이동
+        //로그인 실패 : login.do 페이지로 이동
         model.addAttribute("url", url);
+        //SweetAlert 사용중 아이콘 선택
+        //성공 : success
+        //실패 : error
         model.addAttribute("icon", icon);
         model.addAttribute("title", title);
         model.addAttribute("message", message);
         log.info("로그인 여부 : [{}]",title);
 
+        //info 페이지로 이동
+        log.info("-----------------------------------");
         return "views/info";
     }
 
     @GetMapping("/logout.do")
     public String logoutController(HttpSession session){
-        session.removeAttribute("JOBMOA_LOGIN_NAME");
-        return "redirect:index.jsp";
+        log.info("-----------------------------------");
+        session.removeAttribute("JOBMOA_LOGIN_DATA");
+        log.info("session remove : [{}]", session.getAttribute("JOBMOA_LOGIN_DATA"));
+        log.info("-----------------------------------");
+        return "redirect:login.do";
     }
 }

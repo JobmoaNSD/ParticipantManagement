@@ -30,7 +30,7 @@
                 <!--end::Fullscreen Toggle-->
                 <!--begin::User Menu Dropdown-->
                 <li class="nav-item dropdown user-menu">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    <a href="" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <span class="d-none d-md-inline">로그인 정보</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
@@ -38,7 +38,7 @@
                         <li class="text-bg-primary text-center">
                             <p>
                                 참여자 관리
-                                <small class="text-center">(${JOBMOA_LOGIN_DATA.member_branch})</small>
+                                <small class="text-center">(${JOBMOA_LOGIN_DATA.memberBranch})</small>
                             </p>
                         </li>
                         <!--end::User Image-->
@@ -47,16 +47,16 @@
                             <!--begin::Row-->
                             <div class="row">
 
-                                <div class="col-4 text-center">전담자<br/>${JOBMOA_LOGIN_DATA.member_username}</div>
-                                <div class="col-4 text-center">권한<br/>${JOBMOA_LOGIN_DATA.member_role}</div>
-                                <div class="col-4 text-center">고유번호<br/>${JOBMOA_LOGIN_DATA.member_uniquenumber}</div>
+                                <div class="col-4 text-center">전담자<br/>${JOBMOA_LOGIN_DATA.memberUserName}</div>
+                                <div class="col-4 text-center">권한<br/>${JOBMOA_LOGIN_DATA.memberRole}</div>
+                                <div class="col-4 text-center">고유번호<br/>${JOBMOA_LOGIN_DATA.memberUniqueNumber}</div>
                             </div>
                             <!--end::Row-->
                         </li>
                         <!--end::Menu Body-->
                         <!--begin::Menu Footer-->
                         <li class="user-footer">
-                            <a href="#" class="btn btn-default btn-flat float-end">Sign out</a>
+                            <a href="logout.do" class="btn btn-default btn-flat float-end">Sign out</a>
                         </li>
                         <!--end::Menu Footer-->
                     </ul>
@@ -109,7 +109,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="./index.jsp" class="nav-link">
+                                <a href="./dashboard.do" class="nav-link">
                                     <small><p>대시보드</p></small>
                                 </a>
                             </li>
@@ -142,7 +142,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="./testparticipants.do" class="nav-link">
+                                <a href="./newparticipant.do" class="nav-link">
                                     <small><p>신규 참여자</p></small>
                                 </a>
                             </li>

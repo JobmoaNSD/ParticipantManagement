@@ -1,7 +1,7 @@
 package com.jobmoa.app.biz.participant;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,20 +12,21 @@ import java.util.List;
 public class ParticipantDAO {
 
     @Autowired
-    SqlSession sqlSession;
+    private SqlSessionTemplate sqlSession;
 
     private static final String ns = "ParticipantDAO.";
 
     public List<ParticipantDTO> selectAll(ParticipantDTO participantDTO) {
         log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO);
-        List<ParticipantDTO> datas = sqlSession.selectList(ns+"participant_main_selectAll");//SELECT Query 작성 완료하면 적어야함
+        List<ParticipantDTO> datas = sqlSession.selectList(ns+"selectAllParticipantBasic", participantDTO);
         log.info("datas : [{}]",datas.toString());
         return datas;
     }
 
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
         log.info("ParticipantDTO ParticipantDAO selectOne : [{}]",participantDTO);
-        ParticipantDTO data = sqlSession.selectOne(ns+"");
+        ParticipantDTO data = sqlSession.selectOne(ns+"selectCountParticipant", participantDTO);
+        log.info("ParticipantDTO ParticipantDAO data : [{}]",data);
         return data;
     }
 

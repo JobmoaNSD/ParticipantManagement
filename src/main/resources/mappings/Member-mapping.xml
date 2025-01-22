@@ -2,18 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="MemberDAO">
-    <select id="LOGIN_SELECT" resultType="member">
-        SELECT LOGINPK member_loginpk,
-               BRANCH member_branch,
-               USERNAME member_username,
-               ROLE member_role,
-               USERID member_userid,
-               USERPW member_userpw,
-               MANAGER member_manager,
-               REGDATE member_regdate,
-               UNIQUENUMBER member_uniquenumber
+    <select id="loginSelect" resultType="member">
+        SELECT LOGINPK memberLoginPK,
+               BRANCH memberBranch,
+               USERNAME memberUserName,
+               ROLE memberRole,
+               USERID memberUserID,
+               USERPW memberUserPW,
+               MANAGER memberISManager,
+               REGDATE memberRegDate,
+               UNIQUENUMBER memberUniqueNumber
         FROM dbo.J_LOGIN
-        WHERE USERID=#{member_userid} AND USERPW=#{member_userpw}
+        WHERE USERID=#{memberUserID} AND USERPW=#{memberUserPW}
     </select>
 
 </mapper>
