@@ -1,4 +1,4 @@
-package com.jobmoa.app.biz.common;
+package com.jobmoa.app.biz.bean;
 
 import lombok.Getter;
 import lombok.Setter;

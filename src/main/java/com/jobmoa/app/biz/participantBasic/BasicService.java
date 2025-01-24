@@ -15,6 +15,9 @@ public class BasicService implements BasicServiceImpl {
 
     @Override
     public boolean insert(BasicDTO basicDTO) {
+        if(basicDAO.insert(basicDTO)) {
+            return true;
+        }
         return false;
     }
 

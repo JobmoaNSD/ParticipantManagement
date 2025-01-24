@@ -14,8 +14,8 @@
                         <i class="bi bi-list"></i>
                     </a>
                 </li>
-                <li class="nav-item d-none d-md-block"><a href="" class="nav-link">${gnb_main_header}</a></li>
-                <li class="nav-item d-none d-md-block"><a href="" class="nav-link">${gnb_sub_header}</a></li>
+                <li class="nav-item d-none d-md-block"><div class="nav-link">${gnb_main_header}</div></li>
+                <li class="nav-item d-none d-md-block"><div class="nav-link">${gnb_sub_header}</div></li>
             </ul>
             <!--end::Start Navbar Links-->
             <!--begin::End Navbar Links-->
@@ -137,12 +137,12 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="./participant.do" class="nav-link">
+                                <a href="./participant.login" class="nav-link">
                                     <small><p>참여자 조회 및 관리</p></small>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="./newparticipant.do" class="nav-link">
+                                <a href="./newparticipant.login" class="nav-link">
                                     <small><p>신규 참여자</p></small>
                                 </a>
                             </li>

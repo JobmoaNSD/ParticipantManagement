@@ -2,15 +2,30 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                   http://www.springframework.org/schema/beans/spring-beans.xsd
                   http://www.springframework.org/schema/context
-                  http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+                  http://www.springframework.org/schema/context/spring-context-4.2.xsd
+                  http://www.springframework.org/schema/aop
+                  https://www.springframework.org/schema/aop/spring-aop.xsd
+                  http://www.springframework.org/schema/tx
+                  http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
     <context:component-scan base-package="com.jobmoa.app.biz.login"/>
     <context:component-scan base-package="com.jobmoa.app.biz.participant"/>
+    <context:component-scan base-package="com.jobmoa.app.biz.particcertif"/>
+    <context:component-scan base-package="com.jobmoa.app.biz.participantBasic"/>
+    <context:component-scan base-package="com.jobmoa.app.biz.participantCounsel"/>
+    <context:component-scan base-package="com.jobmoa.app.biz.participantEmployment"/>
 
-
+    <bean class="org.apache.commons.dbcp2.BasicDataSource" id="ds" destroy-method="close">
+        <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+        <property name="url" value="jdbc:sqlserver://192.168.0.7:1433;DatabaseName=J_CounselDB;trustServerCertificate=true;"/>
+        <property name="username" value="Testaccount"/>
+        <property name="password" value="jobmoano1!"/>
+    </bean>
 
     <bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate">
         <property name="dataSource" ref="ds"/>
@@ -20,6 +35,7 @@
         <property name="dataSource" ref="ds"/>
     </bean>
 
+    <!-- Mybatis  정의 -->
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="ds"/>
         <property name="configLocation" value="classpath:sql-map-config.xml"/>
@@ -28,4 +44,20 @@
     <bean id="mybatis" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg ref="sqlSession"/>
     </bean>
+
+    <!-- 트랜잭션 어드바이스 정의 -->
+    <tx:annotation-driven proxy-target-class="true"/>
+    <tx:advice transaction-manager="txManager" id="txAdvice">
+        <tx:attributes>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- AOP 설정 -->
+    <aop:config>
+        <!-- 첫 번째 포인트컷 정의: BasicService.insert(..) 메서드에 적용 -->
+        <aop:pointcut id="txPointcut" expression="execution(* com.jobmoa.app.biz.*.*Service.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
 </beans>

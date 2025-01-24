@@ -1,4 +1,4 @@
-package com.jobmoa.app.biz.common;
+package com.jobmoa.app.biz.bean;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +28,9 @@ public class PaginationBean {
         /*
             1,2,3,4,5
             1 -> 0 : 10
-            page - 1 * 10 : => +10
+            (page - 1) * 10 : => +10
             2 -> 10 : 20
+            (page - 2) * 10 : => +10
             3 -> 20 : 30
          */
         // 시작 페이지
