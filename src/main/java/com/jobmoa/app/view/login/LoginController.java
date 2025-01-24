@@ -19,15 +19,16 @@ public class LoginController {
     private MemberServiceImpl memberService;
 
     @GetMapping("/login.do")
-    public String loginController(HttpSession session, LoginBean loginBean){
+    public String loginController(HttpSession session){
         log.info("-----------------------------------");
         //Session에 저장되어 있는 Login DATA
-        loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
         String page = "views/login";
 
-        //Session이 비어있지 않다면 dashboard.do 페이지로 이동
+        //Session이 비어있지 않다면 dashboard.login 페이지로 이동
         if (loginBean != null) {
-            page = "redirect:dashboard.do";
+            log.info("dashboard.login page 이동");
+            page = "redirect:dashboard.login";
         }
 
         log.info("login DATA : [{}]", loginBean);
@@ -63,14 +64,14 @@ public class LoginController {
 
                 //Session에 저장해 사용
                 session.setAttribute("JOBMOA_LOGIN_DATA", loginBean);
-                url = "dashboard.do";
+                url = "dashboard.login";
                 icon = "success";
                 title = "로그인 성공";
             }
         }
 
         //info.jsp 페이지로 넘어갈때 활용
-        //로그인 성공 : dashboard.do 페이지로 이동
+        //로그인 성공 : dashboard.login 페이지로 이동
         //로그인 실패 : login.do 페이지로 이동
         model.addAttribute("url", url);
         //SweetAlert 사용중 아이콘 선택

@@ -100,7 +100,7 @@ public class ParticipantController {
         return "views/NewParticipantsPage";
     }
 
-    @PostMapping("newParticipantsInsert.login")
+    @PostMapping("newparticipant.login")
     public String newParticipantsController(Model model, HttpSession session,
                                             BasicDTO basicDTO, CounselDTO counselDTO, EmploymentDTO employmentDTO, ParticcertifDTO particcertifDTO){
         log.info("-----------------------------------");

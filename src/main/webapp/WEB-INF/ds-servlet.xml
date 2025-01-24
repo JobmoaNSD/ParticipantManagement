@@ -21,11 +21,11 @@
         <mvc:interceptor>
             <!-- Interceptor를 적용할 URL 패턴 -->
             <mvc:mapping path="/*.login"/>
-            <mvc:mapping path="/secure/*"/>
+<!--            <mvc:mapping path="/secure/*"/>-->
 
             <!-- 로그인 예외 URL -->
             <mvc:exclude-mapping path="/login.do"/>
-            <mvc:exclude-mapping path="/resources/**"/>
+<!--            <mvc:exclude-mapping path="/resources/**"/>-->
 
             <!-- Interceptor 클래스 등록 -->
             <bean class="com.jobmoa.app.biz.interceptor.LoginInterceptor"/>
