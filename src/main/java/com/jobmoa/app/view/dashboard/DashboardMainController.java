@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DashboardMainController {
 
-    @GetMapping("/dashboard.do")
+    @GetMapping("/dashboard.login")
     public String dashboardMain(){
         log.info("-----------------------------------");
         log.info("Start dashboardMain Controller(GetMapping)");

@@ -114,6 +114,12 @@
     <!-- recommend JS -->
     <script src="js/recommendJS.js"></script>
 
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script src="js/sweetAlert.js"></script>
+
+
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -132,11 +138,11 @@
             <div class="container-fluid">
                 <div class="row pt-3">
                     <div class="col-md-12">
-                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/newParticipantsInsert.do" class="form-horizontal">
+                        <form id="newParticipantsForm" name="newParticipantsForm" method="GET" action="/newParticipantsInsert.login" class="form-horizontal">
                             <%-- 참여자 등록 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
                                 <div class="col-12 text-end">
-                                    <button type="button" class="btn btn-primary" class="btn btn-check" id="btn_check">
+                                    <button type="button" class="btn btn-primary" id="btn_check">
                                         신규 참여자 등록
                                     </button>
                                 </div>
@@ -539,6 +545,58 @@
             particcertifDivLength();
         });
 
+        <%-- form 전달 시작 --%>
+        const btn_check = $("#btn_check") // 전송 버튼을 추가
+        btn_check.on("click", function () {
+            const newParticipantsForm = $("#newParticipantsForm");
+            const formData = {}; // 전송할 데이터를 저장할 객체
+            // let hasInvalidField = false; // 유효하지 않은 필드 여부를 확인
+
+            // 폼 항목 데이터를 반복 처리
+            newParticipantsForm.find("input, select, textarea").each(function () {
+                const fieldName = $(this).attr("name"); // 필드 이름
+                const fieldValue = $(this).val().trim().toLowerCase(); // 필드 값 (공백 제거 및 소문자로 처리)
+                console.log("fieldName : ["+fieldName+"]")
+                console.log("fieldValue : ["+fieldValue+"]")
+                if (fieldValue != "") {
+                    // 값이 ""공백이 아닌 경우만 데이터 추가
+                    formData[fieldName] = fieldValue;
+                } else if (fieldValue == "") {
+                    // 값이 빈 경우 오류 처리
+                    console.log(`Error: ${fieldName} is empty`);
+                }
+                // "true"가 아닌 필드는 무시되지만, 에러로 간주되지 않음
+            });
+
+            if (formData["basicPartic"] == "" || formData["basicPartic"] == undefined || formData["basicPartic"] == null) {
+                // 참여자 필드가 ""공백이 아닌 경우
+                alertDefaultError("참여자는 필수로 입력해야합니다.");
+            } else { //TODO FIXME Ajax 변경 진행해야 함 현재 오류 Error: SyntaxError: Unexpected token '<', "
+                console.log(formData); // "true"만 포함된 필드 데이터 확인
+                // 데이터 전송 코드 작성 가능
+                // POST 요청으로 데이터 전송
+                $.ajax({
+                    type: "POST",
+                    url: "/newparticipant.login", // 요청 주소
+                    data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
+                    contentType: "application/json; charset=utf-8", // 데이터 타입 설정
+                    dataType: "json", // 응답 데이터 타입
+                    success: function (response) {
+                        // 성공 시 처리
+                        console.log("Success:", response);
+                        alert("참여자가 성공적으로 등록되었습니다!"); // 성공 알림
+                    },
+                    error: function (xhr, status, error) {
+                        // 에러 발생 시 처리
+                        console.error("Error:", error);
+                        alert("데이터 전송 중 오류가 발생하였습니다.");
+                    },
+                });
+                // newParticipantsForm.submit();
+            }
+
+        });
+        <%-- form 전달 끝 --%>
     });
 </script>
 
