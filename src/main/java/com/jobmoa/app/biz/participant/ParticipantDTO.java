@@ -19,7 +19,7 @@ public class ParticipantDTO {
     private String participantSpecialty; // 전공
     private String participantAddress; // 주소(시,구)
     private String participantAntecedents; // 경력
-    private String participantClose; // 마감여부
+    private boolean participantClose; // 마감여부
 
     //Counsel DB 컬럼
     private String participantJobSkill; // 취업역량
@@ -33,14 +33,14 @@ public class ParticipantDTO {
     private String participantEXPDate; // 기간만료(예정)일
     private String participantClinic; // 클리닉실시일
     private String participantJobWant; // 희망직무
-    private String participantSalWant; // 희망급여
+    private int participantSalWant; // 희망급여
 
     //Employment DB 컬럼
     private String participantStartDate; // 취창업일
     private String participantProcDate; // 취창업처리일
     private String participantEmpType; // 취업유형
     private String participantLoyer; // 취업처
-    private String participantSalary; // 임금
+    private int participantSalary; // 임금
     private String participantJobRole; // 직무
     private String participantIncentive; // 취업인센티브_구분
     private String participantJobcat; // 일경험분류

@@ -2,10 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context
-						http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+						http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <context:component-scan base-package="com.jobmoa.app.view.login"/>
     <context:component-scan base-package="com.jobmoa.app.view.participant"/>
@@ -15,4 +16,19 @@
         <property name="prefix" value="/WEB-INF/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- Interceptor를 적용할 URL 패턴 -->
+            <mvc:mapping path="/*.login"/>
+            <mvc:mapping path="/secure/*"/>
+
+            <!-- 로그인 예외 URL -->
+            <mvc:exclude-mapping path="/login.do"/>
+            <mvc:exclude-mapping path="/resources/**"/>
+
+            <!-- Interceptor 클래스 등록 -->
+            <bean class="com.jobmoa.app.biz.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

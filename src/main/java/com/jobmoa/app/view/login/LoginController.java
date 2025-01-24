@@ -1,8 +1,8 @@
 package com.jobmoa.app.view.login;
 
-import com.jobmoa.app.biz.common.LoginBean;
+import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.login.MemberDTO;
-import com.jobmoa.app.biz.login.MemberService;
+import com.jobmoa.app.biz.login.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-
 @Slf4j
 @Controller
 public class LoginController {
 
     @Autowired
-    private MemberService memberService;
+    private MemberServiceImpl memberService;
 
     @GetMapping("/login.do")
     public String loginController(HttpSession session, LoginBean loginBean){

@@ -23,8 +23,8 @@
         <li class="page-item ${page == totalButton ? 'disabled' : ''}">
             <a class="page-link" href="?page=${page + 1}"><i class="bi bi-chevron-compact-right" style="font-size: 12px;"></i></a>
         </li>
-        <li class="page-item ${totalButton-page >= totalButton ? 'disabled' : ''}">
-            <a class="page-link" href="?page=${(page + 10) > totalButton ? totalButton : page + 10}"><i class="bi bi-chevron-double-right" style="font-size: 12px;"></i></a>
+        <li class="page-item ${totalButton == endButton ? 'disabled' : ''}">
+            <a class="page-link" href="?page=${(endButton - (endButton % 1))+1}"><i class="bi bi-chevron-double-right" style="font-size: 12px;"></i></a>
         </li>
     </ul>
 </div>

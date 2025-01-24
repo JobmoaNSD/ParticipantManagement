@@ -78,14 +78,16 @@
     <main class="app-main">
         <!--begin::App Content-->
         <div class="app-content">
+            <!--begin::Main content-->
             <div class="container-fluid">
             <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
 
             <mytag:samplePageMain content_header_name="Sample Page"/>
 
             </div>
+            <!--end::Main content-->
         </div>
-        <!--begin::App Content-->
+        <!--end::App Content-->
     </main>
     <!--end::App Main-->
     <!--end:::App main content-->

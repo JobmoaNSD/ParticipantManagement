@@ -96,7 +96,7 @@
                     <!-- begin::main 지점 / 다우톡 주요 공지사항 시작 -->
                     <div class="col-md-10 pt-1">
                         <div class="row">
-                            <div class="col-md-2 align-items-center">
+                            <div class="col-md-4 border-end border-dark border-2">
                                 <div class="h5">
                                     XX지점
                                 </div>
@@ -104,24 +104,33 @@
                                     홍길동 상담사
                                 </div>
                             </div>
-                            <div class="col-md-8 d-flex flex-column align-items-center pt-1">
-                                <div class="">
-                                    다우톡 공지사항
+                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                                <div class="h6 m-0">
+                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">다우톡 공지사항</a>
                                 </div>
-                                <div class="h3">
-                                    <a href="https://jobmoa.daouoffice.com/app/board" target="_blank">Test Link1</a>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                                <div class="h6 m-0">
+                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 직무분석</a>
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                                <div class="h6 m-0">
+                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 이력서 자소서 클리닉</a>
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                                <div class="h6 m-0">
+                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 컨설팅 알선</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- end::main 지점 / 다우톡 주요 공지사항 끝 -->
                     <!-- begin::main 다우톡 업무 메뉴얼 시작-->
-                    <div class="col-md-2 d-flex flex-column align-items-center pt-1">
-                        <div class="">
-                            업무 메뉴얼
-                        </div>
-                        <div class="h3">
-                            <a href="https://jobmoa.daouoffice.com/app/board" target="_blank">Test Link1</a>
+                    <div class="col-md-2 d-flex align-items-center justify-content-center pt-1">
+                        <div class="h6 m-0">
+                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">업무 메뉴얼</a>
                         </div>
                     </div>
                     <!-- begin::main 다우톡 업무 메뉴얼 끝-->
