@@ -1,6 +1,7 @@
 package com.jobmoa.app.biz.particcertif;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,6 +9,9 @@ import java.util.List;
 @Slf4j
 @Service
 public class ParticcertifService implements ParticcertifServiceImpl {
+    @Autowired
+    private ParticcertifDAO particcertifDAO;
+
     @Override
     public ParticcertifDTO selectOne(ParticcertifDTO particcertifDTO) {
         return null;
@@ -20,7 +24,7 @@ public class ParticcertifService implements ParticcertifServiceImpl {
 
     @Override
     public boolean insert(ParticcertifDTO particcertifDTO) {
-        return false;
+        return particcertifDAO.insert(particcertifDTO);
     }
 
     @Override

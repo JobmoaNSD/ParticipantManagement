@@ -100,14 +100,15 @@ public class ParticipantController {
         return "views/NewParticipantsPage";
     }
 
+
     @PostMapping("newparticipant.login")
     public String newParticipantsController(Model model, HttpSession session,
                                             BasicDTO basicDTO, CounselDTO counselDTO, EmploymentDTO employmentDTO, ParticcertifDTO particcertifDTO){
         log.info("-----------------------------------");
         log.info("Start newParticipantsInsertController");
-        String url = "participant.login";
-        String icon = "error";
-        String title = "참여자 등록 실패";
+        String url = "newparticipant.login";
+        String icon = "success";
+        String title = "참여자 등록";
         String message = "";
 
         //넘어올 정보는 기본정보, 상담정보, 취업정보, 자격증정보
@@ -124,10 +125,16 @@ public class ParticipantController {
         //기본정보는 참여자가 비어 있지 않다면 DAO로 바로 넘겨준다.
         if(basicDTO != null && basicDTO.getBasicPartic() != null){
             //기본정보의 저장에 문제가 있다면 False 를 반환 받아 나머지 정보는 저장되지 않게 한다.
-            if(basicService.insert(basicDTO) == false){
-                log.error("basicService insert error");
+            boolean result = basicService.insert(basicDTO);
+            if(!result){
+                log.error("basicService insert error [{}],[{}]",result,basicDTO);
                 message = "기본정보 등록에 실패하였습니다.";
+                icon = "error";
                 log.error(message);
+                model.addAttribute("url", url);
+                model.addAttribute("icon", icon);
+                model.addAttribute("title", title);
+                model.addAttribute("message", message);
                 return "views/info";
             }
 
@@ -138,8 +145,27 @@ public class ParticipantController {
             employmentDTO.setEmploymentJobNo(jobno);
             particcertifDTO.setParticcertifJobNo(jobno);
             //3가지 정보들을 DB 저장한다.
+            if(!counselService.insert(counselDTO)){
+                log.error("아이디 [{}], 지점 [{}] counselService insert error", loginId,loginBranch);
+                icon = "warning";
+                message += "\n 상담정보 등록에 실패하였습니다.";
+            }
+            if(!employmentService.insert(employmentDTO)){
+                log.error("아이디 [{}], 지점 [{}] employmentService insert error", loginId,loginBranch);
+                icon = "warning";
+                message += "\n 취업정보 등록에 실패하였습니다.";
+            }
+            if(!particcertifService.insert(particcertifDTO)){
+                log.error("아이디 [{}], 지점 [{}] particcertifService insert error", loginId,loginBranch);
+                icon = "warning";
+                message += "\n 자격증정보 등록에 실패하였습니다.";
+            }
         }
 
+        model.addAttribute("url", url);
+        model.addAttribute("icon", icon);
+        model.addAttribute("title", title);
+        model.addAttribute("message", message);
 
         log.info("-----------------------------------");
         return "views/info";

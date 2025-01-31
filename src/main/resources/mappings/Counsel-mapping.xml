@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CounselDAO">
+    <insert id="counselInsert">
+        INSERT INTO J_COUNSEL
+        (JOBNO, JOBSKILL, LASTCONS, PROGRESS, SUC_U, INITCONS, JOBEX, IAPDATE, STEPAPPRO, EXPDATE, CLINIC, JOBWANT, SALWANT)
+        VALUES
+        (
+         #{counselJobNo},
+         #{counselJobSkill},
+         #{counselLastCons},
+         #{counselProgress},
+         #{counselSUCS},
+         #{counselInItCons},
+         #{counselJobEX},
+         #{counselIAPDate},
+         #{counselStepPro},
+         #{counselEXPDate},
+         #{counselClinic},
+         #{counselJobWant},
+         #{counselSalWant}
+        )
+    </insert>
+
+</mapper>

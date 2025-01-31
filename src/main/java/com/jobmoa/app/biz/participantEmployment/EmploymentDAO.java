@@ -19,7 +19,7 @@ public class EmploymentDAO {
     public boolean insert(EmploymentDTO employmentDTO) {
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.insert(ns+"insert", employmentDTO) > 0;
+        boolean flag = sqlSession.insert(ns+"employmentInsert", employmentDTO) > 0;
         log.info("employment insert SQL flag : [{}]",flag);
         return flag;
     }

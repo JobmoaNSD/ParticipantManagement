@@ -5,11 +5,19 @@
     <typeAliases>
         <typeAlias type="com.jobmoa.app.biz.login.MemberDTO" alias="member" />
         <typeAlias type="com.jobmoa.app.biz.participant.ParticipantDTO" alias="participant" />
+        <typeAlias type="com.jobmoa.app.biz.participantBasic.BasicDTO" alias="basic" />
+        <typeAlias type="com.jobmoa.app.biz.participantCounsel.CounselDTO" alias="counsel" />
+        <typeAlias type="com.jobmoa.app.biz.participantEmployment.EmploymentDTO" alias="employment" />
+        <typeAlias type="com.jobmoa.app.biz.particcertif.ParticcertifDTO" alias="particcertif" />
     </typeAliases>
 
 
     <mappers>
         <mapper resource="mappings/Member-mapping.xml" />
         <mapper resource="mappings/Participant-mapping.xml" />
+        <mapper resource="mappings/Basic-mapping.xml" />
+        <mapper resource="mappings/Counsel-mapping.xml" />
+        <mapper resource="mappings/Employment-mapping.xml" />
+        <mapper resource="mappings/Particcertif-mapping.xml" />
     </mappers>
 </configuration>

@@ -17,9 +17,10 @@ public class BasicDAO {
     private static final String ns = "BasicDAO.";
 
     public boolean insert(BasicDTO basicDTO) {
+        log.info("basic insert SQL basicDTO : [{}]",basicDTO);
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.insert(ns+"insert", basicDTO) > 0;
+        boolean flag =  sqlSession.insert(ns+"basicInsert", basicDTO) > 0;
         log.info("basic insert SQL flag : [{}]",flag);
         return flag;
     }
@@ -38,8 +39,8 @@ public class BasicDAO {
         log.info("basic delete SQL flag : [{}]",flag);
         return flag;
     }
-    public BasicDTO select(BasicDTO basicDTO) {
-        BasicDTO data = sqlSession.selectOne(ns+"select", basicDTO);
+    public BasicDTO selectOne(BasicDTO basicDTO) {
+        BasicDTO data = sqlSession.selectOne(ns+"basicSelectJOBNO", basicDTO);
         log.info("basic select SQL data : [{}]",data);
         return data;
     }

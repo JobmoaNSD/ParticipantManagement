@@ -19,7 +19,7 @@ public class CounselDTO {
     private String counselEXPDate; // 기간만료(예정)일
     private String counselClinic; // 클리닉실시일
     private String counselJobWant; // 희망직무
-    private int counselSalWant; // 희망급여
+    private String counselSalWant; // 희망급여
 
     // DB 외 변수
     private String counselCondition; //개발자 구분

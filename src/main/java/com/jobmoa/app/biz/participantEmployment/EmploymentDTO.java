@@ -12,7 +12,7 @@ public class EmploymentDTO {
     private String employmentProcDate; // 취창업처리일
     private String employmentEmpType; // 취업유형
     private String employmentLoyer; // 취업처
-    private int employmentSalary; // 임금
+    private String employmentSalary; // 임금
     private String employmentJobRole; // 직무
     private String employmentIncentive; // 취업인센티브_구분
     private String employmentJobcat; // 일경험분류
