@@ -16,8 +16,7 @@ public class EmploymentService implements EmploymentServiceImpl {
     @Override
     public boolean insert(EmploymentDTO employmentDTO) {
         log.info("employment insert data : [{}]",employmentDTO);
-        boolean flag = employmentDAO.insert(employmentDTO);
-        return flag;
+        return employmentDAO.insert(employmentDTO);
     }
 
     @Override

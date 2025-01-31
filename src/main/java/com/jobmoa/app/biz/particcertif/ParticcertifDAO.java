@@ -12,10 +12,13 @@ public class ParticcertifDAO {
     @Autowired
     private SqlSessionTemplate sqlSession;
 
-    private static final String ns = "";
+    private static final String ns = "ParticcertifDAO.";
 
     public boolean insert(ParticcertifDTO particcertifDTO) {
-        return false;
+        log.info("particcertifDTO : [{}]",particcertifDTO);
+        boolean flag = sqlSession.insert(ns+"particcertifInsert",particcertifDTO) > 0;
+        log.info("particcertifDTO insert : [{}]",flag);
+        return flag;
     }
     public boolean update(ParticcertifDTO particcertifDTO) {
         return false;

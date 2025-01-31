@@ -138,7 +138,7 @@
             <div class="container-fluid">
                 <div class="row pt-3">
                     <div class="col-md-12">
-                        <form id="newParticipantsForm" name="newParticipantsForm" method="GET" action="/newParticipantsInsert.login" class="form-horizontal">
+                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/newparticipant.login" class="form-horizontal">
                             <%-- 참여자 등록 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
                                 <div class="col-12 text-end">
@@ -548,6 +548,11 @@
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
+           const form = $("#newParticipantsForm");
+           form.submit();
+        });
+        /*const btn_check = $("#btn_check") // 전송 버튼을 추가
+        btn_check.on("click", function () {
             const newParticipantsForm = $("#newParticipantsForm");
             const formData = {}; // 전송할 데이터를 저장할 객체
             // let hasInvalidField = false; // 유효하지 않은 필드 여부를 확인
@@ -569,33 +574,34 @@
             });
 
             if (formData["basicPartic"] == "" || formData["basicPartic"] == undefined || formData["basicPartic"] == null) {
-                // 참여자 필드가 ""공백이 아닌 경우
+                // 참여자 필드가 ""공백인 아닌 경우
                 alertDefaultError("참여자는 필수로 입력해야합니다.");
             } else { //TODO FIXME Ajax 변경 진행해야 함 현재 오류 Error: SyntaxError: Unexpected token '<', "
                 console.log(formData); // "true"만 포함된 필드 데이터 확인
+                console.log(JSON.stringify(formData)); // "true"만 포함된 필드 데이터 확인
                 // 데이터 전송 코드 작성 가능
                 // POST 요청으로 데이터 전송
                 $.ajax({
                     type: "POST",
                     url: "/newparticipant.login", // 요청 주소
                     data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환
-                    contentType: "application/json; charset=utf-8", // 데이터 타입 설정
+                    contentType: "application/json", // 데이터 타입 설정
                     dataType: "json", // 응답 데이터 타입
-                    success: function (response) {
-                        // 성공 시 처리
-                        console.log("Success:", response);
-                        alert("참여자가 성공적으로 등록되었습니다!"); // 성공 알림
-                    },
-                    error: function (xhr, status, error) {
-                        // 에러 발생 시 처리
-                        console.error("Error:", error);
-                        alert("데이터 전송 중 오류가 발생하였습니다.");
-                    },
+                }).done(function (response) {
+                    // 성공 시 처리
+                    console.log("Success:", response);
+                    alert("참여자가 성공적으로 등록되었습니다!" + response); // 성공 알림
+                }).fail(function (xhr, status, error) {
+                    // 에러 발생 시 처리
+                    console.error("xhr:", xhr);
+                    console.error("status:", status);
+                    console.error("Error:", error);
+                    alert("데이터 전송 중 오류가 발생하였습니다.");
                 });
                 // newParticipantsForm.submit();
             }
 
-        });
+        });*/
         <%-- form 전달 끝 --%>
     });
 </script>

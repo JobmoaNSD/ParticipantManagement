@@ -27,7 +27,7 @@ public class CounselDAO {
     public boolean insert(CounselDTO counselDTO) {
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.insert(ns+"insert", counselDTO) > 0;
+        boolean flag = sqlSession.insert(ns+"counselInsert", counselDTO) > 0;
         log.info("counsel insert SQL flag : [{}]",flag);
         return flag;
     }

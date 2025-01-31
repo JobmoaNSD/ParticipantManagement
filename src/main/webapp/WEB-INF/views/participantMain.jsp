@@ -145,23 +145,33 @@
                                 </tr>
                                 </thead>
                                 <tbody class="align-middle">
-                                <c:forEach items="${datas}" var="data">
-                                    <tr>
-                                        <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="a"></label></td>
-                                        <td>${data.participantJobNo}</td>
-                                        <td>${data.participantPartic}</td>
-                                        <td>${data.participantGender}</td>
-                                        <td>${data.participantLastCons}</td>
-                                        <td>${data.participantProgress}</td>
-                                        <td>${data.participantDob}</td>
-                                        <td>${data.participantRegDate}</td>
-                                        <td>
-                                        <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'}">
-                                                ${data.participantClose ? '마감' : '진행중'}
-                                        </span>
+
+                                <c:choose>
+                                    <c:when test="${empty datas}">
+                                        <td style="text-align: center" colspan="9">
+                                            신규 참여자를 등록해주세요.
                                         </td>
-                                    </tr>
-                                </c:forEach>
+                                    </c:when>
+                                    <c:when test="${not empty datas}">
+                                        <c:forEach items="${datas}" var="data">
+                                            <tr>
+                                                <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="a"></label></td>
+                                                <td>${data.participantJobNo}</td>
+                                                <td>${data.participantPartic}</td>
+                                                <td>${data.participantGender}</td>
+                                                <td>${data.participantLastCons}</td>
+                                                <td>${data.participantProgress}</td>
+                                                <td>${data.participantDob}</td>
+                                                <td>${data.participantRegDate}</td>
+                                                <td>
+                                                    <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'}">
+                                                            ${data.participantClose ? '마감' : '진행중'}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:when>
+                                </c:choose>
                                 </tbody>
                             </table>
                         </div>
@@ -169,11 +179,18 @@
                     <%-- 참여자 테이블 끝 --%>
 
                     <%-- 페이지네이션 시작 --%>
-                    <mytag:pagination page="${page}" startButton="${startButton}" endButton="${endButton}" totalButton="${totalButton}"/>
-                    <%-- 페이지네이션 끝 --%>
-               </div>
+                    <c:choose>
+                        <c:when test="${empty datas}">
 
-           </div>
+                        </c:when>
+                        <c:when test="${not empty datas}">
+                            <mytag:pagination page="${page}" startButton="${startButton}" endButton="${endButton}" totalButton="${totalButton}"/>
+                        </c:when>
+                    </c:choose>
+                    <%-- 페이지네이션 끝 --%>
+                </div>
+
+            </div>
 
 
         </div>

@@ -519,7 +519,7 @@
         //chart 성공금 현황
         let id=$('#ex-chart-bar1');
         let lable=['성공금 발생','인센티브'];
-        let data={title:data_title,text:[[60005715,4502212],[35021540,2512412],[42535410,3210021]]};
+        let data={title:data_title,text:[[60005715,45022120],[35021540,25124120],[42535410,32100210]]};
         chart_bar_data_succes(id,lable,data);
 
         //chart 나의 성과 현황

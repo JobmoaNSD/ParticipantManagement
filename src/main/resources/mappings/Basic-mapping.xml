@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BasicDAO">
+    <insert id="basicInsert">
+        INSERT INTO J_BASIC
+        (BRANCH, USERID, PARTIC, DOB, GENDER, RECRUIT, PARTTYPE, SCHOOL, SPECIALTY, ADDRESS, ANTECEDENTS)
+        VALUES
+        (
+         #{basicBranch},
+         #{basicUserid},
+         #{basicPartic},
+         #{basicDob},
+         #{basicGender},
+         #{basicRecruit},
+         #{basicPartType},
+         #{basicSchool},
+         #{basicSpecialty},
+         #{basicAddress},
+         #{basicAntecedents}
+        )
+    </insert>
+
+    <select id="basicSelectJOBNO" resultType="basic">
+        SELECT TOP(1) JOBNO as basicJobNo FROM J_BASIC WHERE USERID = #{basicUserid} ORDER BY JOBNO DESC;
+    </select>
+
+</mapper>

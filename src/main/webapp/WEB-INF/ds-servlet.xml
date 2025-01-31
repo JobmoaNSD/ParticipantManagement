@@ -11,6 +11,16 @@
     <context:component-scan base-package="com.jobmoa.app.view.login"/>
     <context:component-scan base-package="com.jobmoa.app.view.participant"/>
     <context:component-scan base-package="com.jobmoa.app.view.dashboard"/>
+    <context:component-scan base-package="com.jobmoa.app.view.restController"/>
+
+    <!-- jackson bean -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="viewResolver">
         <property name="prefix" value="/WEB-INF/"/>

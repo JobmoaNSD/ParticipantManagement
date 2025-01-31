@@ -1,6 +1,7 @@
 package com.jobmoa.app.biz.participantCounsel;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,6 +9,9 @@ import java.util.List;
 @Slf4j
 @Service("counselService")
 public class CounselService implements CounselServiceImpl {
+    @Autowired
+    private CounselDAO counselDAO;
+
     @Override
     public CounselDTO selectOne(CounselDTO counselDTO) {
         return null;
@@ -20,7 +24,7 @@ public class CounselService implements CounselServiceImpl {
 
     @Override
     public boolean insert(CounselDTO counselDTO) {
-        return false;
+        return counselDAO.insert(counselDTO);
     }
 
     @Override
