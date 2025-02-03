@@ -114,9 +114,6 @@
     <!-- recommend JS -->
     <script src="js/recommendJS.js"></script>
 
-    <!-- particcertifDiv JS -->
-    <script src="js/particcertifDiv.js"></script>
-
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -129,7 +126,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="신규 참여자"/>
+    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 수정"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->
@@ -141,102 +138,16 @@
             <div class="container-fluid">
                 <div class="row pt-3">
                     <div class="col-md-12">
-                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/newparticipant.login" class="form-horizontal">
-                            <%-- 참여자 등록 버튼 시작 --%>
+                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updateCounsel.login" class="form-horizontal">
+                            <%-- 참여자 수정 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
                                 <div class="col-12 text-end">
                                     <button type="button" class="btn btn-primary" id="btn_check">
-                                        신규 참여자 등록
+                                        참여자 수정
                                     </button>
                                 </div>
                             </div>
-                            <%-- 참여자 등록 버튼 끝 --%>
-                            <%-- 기본정보 입력 폼 시작 --%>
-                            <div class="row  card">
-                                <div class="card-header">
-                                    <h1 class="card-title">기본정보</h1>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
-                                            <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-                                            <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row default-card-body">
-                                        <div class="col-md-1 pb-2 mb-1 w-auto">
-                                            <label for="basicPartic" class="form-label">참여자</label>
-                                            <input type="text" class="form-control" id="basicPartic" name="basicPartic">
-                                        </div>
-                                        <div class="col-md-1" style="width: 11%">
-                                            <label for="basicDob" class="form-label" >생년월일</label>
-                                            <div class="input-group">
-                                                <i class="bi bi-calendar-date input-group-text"></i>
-                                                <input type="text" class="form-control datepicker_on" id="basicDob" name="basicDob" placeholder="yyyy-mm-dd" aria-label="생년월일">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1 w-auto">
-                                            <label for="basicGender" class="form-label">성별</label>
-                                            <select class="form-select" aria-label="Default select example" id="basicGender" name="basicGender">
-                                                <option selected value="남">남</option>
-                                                <option value="여">여</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-1 w-auto">
-                                            <label for="basicRecruit" class="form-label">모집경로</label>
-                                            <select class="form-select" aria-label="Default select example" id="basicRecruit" name="basicRecruit">
-                                                <option selected value="센터배정">센터배정</option>
-                                                <option value="대학">대학</option>
-                                                <option value="고교">고교</option>
-                                                <option value="훈련기관">훈련기관</option>
-                                                <option value="자체모집">자체모집</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-1 w-auto">
-                                            <label for="basicPartType" class="form-label">참여유형</label>
-                                            <select class="form-select" aria-label="Default select example" id="basicPartType" name="basicPartType">
-                                                <option selected value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-1 w-auto">
-                                            <label for="basicAddress" class="form-label">주소(시,구)</label>
-                                            <input type="text" class="form-control" id="basicAddress" name="basicAddress">
-                                        </div>
-                                        <div class="col-md-1 w-auto">
-                                            <label for="basicSchool" class="form-label">학교명</label>
-                                            <input type="text" class="form-control" id="basicSchool" name="basicSchool">
-                                            <div id="basicSchoollist"></div>
-                                        </div>
-                                        <div class="col-md-1 w-auto">
-                                            <label for="basicSpecialty" class="form-label">전공</label>
-                                            <input type="text" class="form-control" id="basicSpecialty" name="basicSpecialty">
-                                            <div id="basicSpecialtylist"></div>
-                                        </div>
-                                        <div class="col-md-1 w-auto">
-                                            <label for="basicAntecedents" class="form-label">경력</label>
-                                            <input type="text" class="form-control" id="basicAntecedents" name="basicAntecedents">
-                                        </div>
-                                        <%--자격증 --%>
-                                        <div class="row col-md-12 particcertif-div">
-                                            <div class="particcertif-div-header">
-                                                <label for="particcertifCertif" class="form-label">
-                                                    자격증
-                                                    <i class="bi bi-patch-plus-fill particcertif-div-plus"></i>
-                                                    <i class="bi bi-patch-minus particcertif-div-minus" style="display: none"></i>
-                                                </label>
-                                            </div>
-                                            <div class="particcertif-div-content d-flex">
-                                                <input type="text" class="form-control w-auto particcertifCertif" id="particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <%-- 기본정보 입력 폼 끝 --%>
-
+                            <%-- 참여자 수정 버튼 끝 --%>
                             <%-- 상담정보 입력 폼 시작 --%>
                             <div class="row card mt-3">
                                 <div class="card-header">
@@ -351,94 +262,6 @@
                                 </div>
                             </div>
                             <%-- 상담정보 입력 폼 끝 --%>
-
-                            <%-- 취업정보 입력 폼 시작 --%>
-                            <div class="row card mt-3">
-                                <div class="card-header">
-                                    <h1 class="card-title">취업정보</h1>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
-                                            <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-                                            <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="pb-2 mb-1 " style="width: 11%">
-                                            <label for="employmentStartDate" class="form-label">취창업일</label>
-                                            <div class="input-group">
-                                                <i class="bi bi-calendar-date input-group-text"></i>
-                                                <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일">
-                                            </div>
-                                        </div>
-                                        <div class="" style="width: 11%">
-                                            <label for="employmentProcDate" class="form-label" >취창업처리일</label>
-                                            <div class="input-group">
-                                                <i class="bi bi-calendar-date input-group-text"></i>
-                                                <input type="text" class="form-control datepicker_on" id="employmentProcDate" name="employmentProcDate" placeholder="yyyy-mm-dd" aria-label="취창업처리일">
-                                            </div>
-                                        </div>
-                                        <div class="w-auto">
-                                            <label for="employmentEmpType" class="form-label">취업유형</label>
-                                            <select class="form-select" aria-label="Default select example" id="employmentEmpType" name="employmentEmpType">
-                                                <option value=""></option>
-                                                <option value="본인">본인</option>
-                                                <option value="알선">알선</option>
-                                                <option value="소개취업">소개취업</option>
-                                                <option value="1.5배알선">1.5배알선</option>
-                                            </select>
-                                        </div>
-                                        <div class="w-auto">
-                                            <label for="employmentLoyer" class="form-label">취업처</label>
-                                            <input type="text" class="form-control" id="employmentLoyer" name="employmentLoyer">
-                                        </div>
-                                        <div class="w-auto">
-                                            <label for="employmentSalary" class="form-label">임금(단위 만원)</label>
-                                            <input type="number" class="form-control" id="employmentSalary" name="employmentSalary" min="0" max="1000" placeholder="단위 만원">
-
-                                        </div>
-                                        <div class="w-auto">
-                                            <label for="employmentJobRole" class="form-label">직무</label>
-                                            <input type="text" class="form-control" id="employmentJobRole" name="employmentJobRole">
-                                        </div>
-                                        <div class="w-auto">
-                                            <label for="employmentIncentive" class="form-label">취업인센티브_구분</label>
-                                            <select class="form-select" aria-label="Default select example" id="employmentIncentive" name="employmentIncentive">
-                                                <option value=""></option>
-                                                <option value="해당[컨설팅 알선 - 120%]">해당[컨설팅 알선 - 120%]</option>
-                                                <option value="해당[알선취업 - 100%]">해당[알선취업 - 100%]</option>
-                                                <option value="해당[외부구인정보 소개 - 100%]">해당[외부구인정보 소개 - 100%]</option>
-                                                <option value="해당[대면상담 6회 - 100%]">해당[대면상담 6회 - 100%]</option>
-                                                <option value="해당[간접고용서비스 4회 - 50%]">해당[간접고용서비스 4회 - 50%]</option>
-                                                <option value="미해당[서비스 미제공]">미해당[서비스 미제공]</option>
-                                                <option value="미해당[1개월 미만 퇴사]">미해당[1개월 미만 퇴사]</option>
-                                                <option value="미해당[파견업체]">미해당[파견업체]</option>
-                                            </select>
-                                        </div>
-                                        <div class="w-auto">
-                                            <label for="employmentJobcat" class="form-label">일경험분류</label>
-                                            <select class="form-select" aria-label="Default select example" id="employmentJobcat" name="employmentJobcat">
-                                                <option value=""></option>
-                                                <option value="신규진입">신규진입</option>
-                                                <option value="장기미취업">장기미취업</option>
-                                                <option value="경력자">경력자</option>
-                                                <option value="미경력중장년">미경력중장년</option>
-                                            </select>
-                                        </div>
-                                        <div class="w-auto">
-                                            <label for="employmentOthers" class="form-label">기타</label>
-                                            <input type="text" class="form-control" id="employmentOthers" name="employmentOthers">
-
-                                        </div>
-                                        <div class="" style="width: 100%;">
-                                            <label for="employmentMemo" class="form-label">메모</label>
-                                            <textarea class="form-control" id="employmentMemo" name="employmentMemo" rows="3" cols="10" placeholder="메모를 입력하세요."></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <%-- 취업정보 입력 폼 끝 --%>
                         </form>
                     </div>
                 </div>
@@ -510,6 +333,44 @@
         let specialtyData = ["test","st","qwer"];
         recommendFunction("#basicSpecialty", "#basicSpecialtylist",specialtyData);
 
+        /*
+            여러 자격증 입력이 가능하게 하기 위한 함수
+        */
+        const particcertif_div_content = $(".particcertif-div-content");
+        const particcertif_div_plus = $(".particcertif-div-plus");
+        const particcertif_div_minus = $(".particcertif-div-minus");
+        const particcertifDivLength = function () {
+            let DivLength = $(".particcertifCertif").length;
+            console.log("자격증 div 개수: ["+DivLength+"]")
+            if (DivLength > 1) {
+                console.log("자격증 빼기 아이콘 보이기")
+                particcertif_div_minus.show();
+            } else {
+                console.log("자격증 빼기 아이콘 숨기기")
+                particcertif_div_minus.hide();
+            }
+        };
+
+        //plus 버튼 클릭하면 class명 particcertif_div 추가 및 minus 표시, html 추가
+        particcertif_div_plus.on("click", function () {
+            console.log("자격증 Div 추가");
+            const newDiv =
+                $('<input type="text" class="form-control particcertifCertif w-auto" id="particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">');
+            particcertif_div_content.append(newDiv);
+            particcertif_div_minus.show();
+            particcertifDivLength();
+        });
+
+        //minus 버튼 클릭 시 particcertif_div 제거, 1개 이하일 때는 minus 숨기기
+        particcertif_div_minus.on("click", function () {
+            console.log("자격증 Div 삭제");
+            particcertif_div_content.children().last().remove();
+            if (particcertif_div_content.length <= 1) {
+                particcertif_div_minus.hide();
+            }
+            particcertifDivLength();
+        });
+
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
@@ -517,6 +378,7 @@
            form.submit();
         });
         <%-- form 전달 끝 --%>
+
     });
 </script>
 

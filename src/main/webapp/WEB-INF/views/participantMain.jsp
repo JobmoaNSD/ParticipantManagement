@@ -20,6 +20,10 @@
             name="description"
             content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS."
     />
+
+    <!-- jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <meta
             name="keywords"
             content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard"
@@ -66,6 +70,46 @@
             integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
             crossorigin="anonymous"
     />
+
+    <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    <script
+            src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
+            integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
+            crossorigin="anonymous"
+    ></script>
+    <!--end::Third Party Plugin(OverlayScrollbars)-->
+    <!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+    <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+    ></script>
+    <!--end::Required Plugin(popperjs for Bootstrap 5)-->
+    <!--begin::Required Plugin(Bootstrap 5)-->
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+            crossorigin="anonymous"
+    ></script>
+    <!--end::Required Plugin(Bootstrap 5)-->
+
+
+    <!-- sortablejs -->
+    <script
+            src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
+            integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ="
+            crossorigin="anonymous"
+    ></script>
+    <!-- sortablejs -->
+    <!-- apexcharts -->
+    <script
+            src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
+            integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
+            crossorigin="anonymous"
+    ></script>
+    <!--begin::Required Plugin(AdminLTE)-->
+    <script src="js/adminlte.js"></script>
+    <!--end::Required Plugin(AdminLTE)-->
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -132,7 +176,7 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-hover shadow-sm">
                                 <thead class="table-dark text-white">
-                                <tr>
+                                <tr class="text-center">
                                     <th class="text-center"><input type="button" class="btn btn-danger" value="마감"></th>
                                     <th>구직번호</th>
                                     <th>참여자</th>
@@ -142,20 +186,21 @@
                                     <th>생년월일</th>
                                     <th>등록일</th>
                                     <th>마감</th>
+                                    <th>수정</th>
                                 </tr>
                                 </thead>
                                 <tbody class="align-middle">
 
                                 <c:choose>
                                     <c:when test="${empty datas}">
-                                        <td style="text-align: center" colspan="9">
+                                        <td style="text-align: center" colspan="10">
                                             신규 참여자를 등록해주세요.
                                         </td>
                                     </c:when>
                                     <c:when test="${not empty datas}">
                                         <c:forEach items="${datas}" var="data">
                                             <tr>
-                                                <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="a"></label></td>
+                                                <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="${data.participantJobNo}"></label></td>
                                                 <td>${data.participantJobNo}</td>
                                                 <td>${data.participantPartic}</td>
                                                 <td>${data.participantGender}</td>
@@ -163,10 +208,23 @@
                                                 <td>${data.participantProgress}</td>
                                                 <td>${data.participantDob}</td>
                                                 <td>${data.participantRegDate}</td>
-                                                <td>
+                                                <td class="text-center">
                                                     <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'}">
                                                             ${data.participantClose ? '마감' : '진행중'}
                                                     </span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-primary btn-sm shadow-sm btn-basic" data-bs-toggle="tooltip" data-popper-placement="top" title="기본정보 수정">
+                                                            <i class="bi bi-pencil"></i> 기본
+                                                        </button>
+                                                        <button type="button" class="btn btn-info btn-sm shadow-sm mx-1 btn-counsel" data-bs-toggle="tooltip" data-bs-placement="top" title="상담정보 수정">
+                                                            <i class="bi bi-chat"></i> 상담
+                                                        </button>
+                                                        <button type="button" class="btn btn-success btn-sm shadow-sm btn-employment" data-bs-toggle="tooltip" data-bs-placement="top" title="취업정보 수정">
+                                                            <i class="bi bi-briefcase"></i> 취업
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -207,27 +265,7 @@
 
 </body>
 <!--begin::Script-->
-<!--begin::Third Party Plugin(OverlayScrollbars)-->
-<script
-        src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
-        integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
-        crossorigin="anonymous"
-></script>
-<!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-<script
-        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"
-></script>
-<!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-        crossorigin="anonymous"
-></script>
-<!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-<script src="js/adminlte.js"></script>
-<!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<!--begin::OverlayScrollbars Configure-->
 <script>
     const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
     const Default = {
@@ -251,13 +289,6 @@
 <!--end::OverlayScrollbars Configure-->
 
 <!-- OPTIONAL SCRIPTS -->
-<!-- sortablejs -->
-<script
-        src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
-        integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ="
-        crossorigin="anonymous"
-></script>
-<!-- sortablejs -->
 <script>
     const connectedSortables = document.querySelectorAll('.connectedSortable');
     connectedSortables.forEach((connectedSortable) => {
@@ -272,10 +303,36 @@
         cardHeader.style.cursor = 'move';
     });
 </script>
-<!-- apexcharts -->
-<script
-        src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
-        integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
-        crossorigin="anonymous"
-></script>
+
+<!-- 툴팁 활성화 스크립트 -->
+<script>
+    // DOM 로드 후 툴팁 활성화
+    $(document).ready(function () {
+        $('[data-bs-toggle="tooltip"]').tooltip({
+            delay: { show: 0, hide: 0 } // 표시와 사라짐에 딜레이를 없애즉시 나타나도록 설정
+        });
+
+        //선택 버튼의 구직번호 불러올 함수
+        function getJobNumber(currentRow){
+            // '구직번호' 열의 텍스트 추출 (구직번호가 2번째 열이라고 가정)
+            // console.log('버튼 클릭, 구직번호:', currentRow.find('td').eq(1).text());
+            return  currentRow.find('td').eq(1).text();
+        }
+
+        //참여자 정보 수정을 위한 버튼 배열
+        const btns = [[$('.btn-basic'),'basic'], [$('.btn-counsel'),'counsel'], [$('.btn-employment'),'employment']];
+
+        //배열을 확인 / 확인된 배열의 구직 번호를 불러 오는 함수
+        btns.forEach(function ($btn) {
+            $btn[0].on('click', function () {
+                // 현재 버튼의 부모 tr 요소 탐색
+                const number = getJobNumber($(this).closest('tr'));
+                // console.log('/update'+$btn[1]+'?'+$btn[1]+'JobNo=' + number)
+                location.href = '/update'+$btn[1]+'.login?'+$btn[1]+'JobNo=' + number;
+            });
+        })
+
+    });
+</script>
+
 </html>
