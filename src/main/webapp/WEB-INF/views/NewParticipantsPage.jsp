@@ -112,6 +112,7 @@
     <link rel="stylesheet" href="css/datepicker.css">
 
     <!-- recommend JS -->
+    <link rel="stylesheet" href="css/recommend.css">
     <script src="js/recommendJS.js"></script>
 
     <!-- particcertifDiv JS -->
@@ -208,12 +209,12 @@
                                         <div class="col-md-1 w-auto">
                                             <label for="basicSchool" class="form-label">학교명</label>
                                             <input type="text" class="form-control" id="basicSchool" name="basicSchool">
-                                            <div id="basicSchoollist"></div>
+                                            <div class="overflow-y-scroll recommend" id="basicSchoollist"></div>
                                         </div>
                                         <div class="col-md-1 w-auto">
                                             <label for="basicSpecialty" class="form-label">전공</label>
                                             <input type="text" class="form-control" id="basicSpecialty" name="basicSpecialty">
-                                            <div id="basicSpecialtylist"></div>
+                                            <div class="overflow-y-scroll recommend" id="basicSpecialtylist"></div>
                                         </div>
                                         <div class="col-md-1 w-auto">
                                             <label for="basicAntecedents" class="form-label">경력</label>
@@ -228,9 +229,10 @@
                                                     <i class="bi bi-patch-minus particcertif-div-minus" style="display: none"></i>
                                                 </label>
                                             </div>
-                                            <div class="particcertif-div-content d-flex">
-                                                <input type="text" class="form-control w-auto particcertifCertif" id="particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">
+                                            <div class="particcertif-div-content d-flex" id="particcertifCertif">
+                                                <input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">
                                             </div>
+                                            <div class="overflow-y-scroll recommend" id="basicParticcertiflist"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -499,17 +501,6 @@
 
 <script>
     $(document).ready(function () {
-
-        /*
-            사용자 편의성을 위해
-            추천 리스트를 뿌려준다.
-        */
-        let schoolData = ["test","st","qwer"];
-        recommendFunction("#basicSchool", "#basicSchoollist",schoolData);
-
-        let specialtyData = ["test","st","qwer"];
-        recommendFunction("#basicSpecialty", "#basicSpecialtylist",specialtyData);
-
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
@@ -517,6 +508,17 @@
            form.submit();
         });
         <%-- form 전달 끝 --%>
+
+        <%-- 사용자 편의성을 위해 목록 리스트 출력 시작 --%>
+        //자격증 목록 리스트 출력
+        $(document).on("focus", ".particcertifCertif", function () {
+            recommendFunction($(this), "#basicParticcertiflist",xmlData("./XMLData/particcertifXMLData.xml", "particcertif name"));
+        });
+
+        // 학교명 목록 리스트 출력
+        recommendFunction("#basicSchool", "#basicSchoollist",xmlData("./XMLData/SchoolXMLData.xml", "school name"));
+        <%-- 사용자 편의성을 위해 목록 리스트 출력 끝 --%>
+
     });
 </script>
 

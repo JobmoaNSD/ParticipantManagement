@@ -114,6 +114,9 @@
     <!-- recommend JS -->
     <script src="js/recommendJS.js"></script>
 
+    <!-- selectOption JS -->
+    <script src="js/selectOptionJS.js"></script>
+
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -138,7 +141,7 @@
             <div class="container-fluid">
                 <div class="row pt-3">
                     <div class="col-md-12">
-                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updateEmployment.login" class="form-horizontal">
+                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updateemployment.login" class="form-horizontal">
                             <%-- 참여자 수정 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
                                 <div class="col-12 text-end">
@@ -165,19 +168,19 @@
                                             <label for="employmentStartDate" class="form-label">취창업일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
-                                                <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일">
+                                                <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일" value="${employment.employmentStartDate}">
                                             </div>
                                         </div>
                                         <div class="" style="width: 11%">
                                             <label for="employmentProcDate" class="form-label" >취창업처리일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
-                                                <input type="text" class="form-control datepicker_on" id="employmentProcDate" name="employmentProcDate" placeholder="yyyy-mm-dd" aria-label="취창업처리일">
+                                                <input type="text" class="form-control datepicker_on" id="employmentProcDate" name="employmentProcDate" placeholder="yyyy-mm-dd" aria-label="취창업처리일" value="${employment.employmentProcDate}">
                                             </div>
                                         </div>
                                         <div class="w-auto">
                                             <label for="employmentEmpType" class="form-label">취업유형</label>
-                                            <select class="form-select" aria-label="Default select example" id="employmentEmpType" name="employmentEmpType">
+                                            <select class="form-select" aria-label="Default select example" id="employmentEmpType" name="employmentEmpType" >
                                                 <option value=""></option>
                                                 <option value="본인">본인</option>
                                                 <option value="알선">알선</option>
@@ -187,16 +190,16 @@
                                         </div>
                                         <div class="w-auto">
                                             <label for="employmentLoyer" class="form-label">취업처</label>
-                                            <input type="text" class="form-control" id="employmentLoyer" name="employmentLoyer">
+                                            <input type="text" class="form-control" id="employmentLoyer" name="employmentLoyer" value="${employment.employmentLoyer}">
                                         </div>
                                         <div class="w-auto">
                                             <label for="employmentSalary" class="form-label">임금(단위 만원)</label>
-                                            <input type="number" class="form-control" id="employmentSalary" name="employmentSalary" min="0" max="1000" placeholder="단위 만원">
+                                            <input type="number" class="form-control" id="employmentSalary" name="employmentSalary" min="0" max="1000" placeholder="단위 만원" value="${employment.employmentSalary}">
 
                                         </div>
                                         <div class="w-auto">
                                             <label for="employmentJobRole" class="form-label">직무</label>
-                                            <input type="text" class="form-control" id="employmentJobRole" name="employmentJobRole">
+                                            <input type="text" class="form-control" id="employmentJobRole" name="employmentJobRole" value="${employment.employmentJobRole}">
                                         </div>
                                         <div class="w-auto">
                                             <label for="employmentIncentive" class="form-label">취업인센티브_구분</label>
@@ -224,12 +227,12 @@
                                         </div>
                                         <div class="w-auto">
                                             <label for="employmentOthers" class="form-label">기타</label>
-                                            <input type="text" class="form-control" id="employmentOthers" name="employmentOthers">
+                                            <input type="text" class="form-control" id="employmentOthers" name="employmentOthers" value="${employment.employmentOthers}">
 
                                         </div>
                                         <div class="" style="width: 100%;">
                                             <label for="employmentMemo" class="form-label">메모</label>
-                                            <textarea class="form-control" id="employmentMemo" name="employmentMemo" rows="3" cols="10" placeholder="메모를 입력하세요."></textarea>
+                                            <textarea class="form-control" id="employmentMemo" name="employmentMemo" rows="3" cols="10" placeholder="메모를 입력하세요.">${employment.memo}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -296,54 +299,6 @@
 <script>
     $(document).ready(function () {
 
-        /*
-            사용자 편의성을 위해
-            추천 리스트를 뿌려준다.
-        */
-        let schoolData = ["test","st","qwer"];
-        recommendFunction("#basicSchool", "#basicSchoollist",schoolData);
-
-        let specialtyData = ["test","st","qwer"];
-        recommendFunction("#basicSpecialty", "#basicSpecialtylist",specialtyData);
-
-        /*
-            여러 자격증 입력이 가능하게 하기 위한 함수
-        */
-        const particcertif_div_content = $(".particcertif-div-content");
-        const particcertif_div_plus = $(".particcertif-div-plus");
-        const particcertif_div_minus = $(".particcertif-div-minus");
-        const particcertifDivLength = function () {
-            let DivLength = $(".particcertifCertif").length;
-            console.log("자격증 div 개수: ["+DivLength+"]")
-            if (DivLength > 1) {
-                console.log("자격증 빼기 아이콘 보이기")
-                particcertif_div_minus.show();
-            } else {
-                console.log("자격증 빼기 아이콘 숨기기")
-                particcertif_div_minus.hide();
-            }
-        };
-
-        //plus 버튼 클릭하면 class명 particcertif_div 추가 및 minus 표시, html 추가
-        particcertif_div_plus.on("click", function () {
-            console.log("자격증 Div 추가");
-            const newDiv =
-                $('<input type="text" class="form-control particcertifCertif w-auto" id="particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">');
-            particcertif_div_content.append(newDiv);
-            particcertif_div_minus.show();
-            particcertifDivLength();
-        });
-
-        //minus 버튼 클릭 시 particcertif_div 제거, 1개 이하일 때는 minus 숨기기
-        particcertif_div_minus.on("click", function () {
-            console.log("자격증 Div 삭제");
-            particcertif_div_content.children().last().remove();
-            if (particcertif_div_content.length <= 1) {
-                particcertif_div_minus.hide();
-            }
-            particcertifDivLength();
-        });
-
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
@@ -352,6 +307,16 @@
         });
         <%-- form 전달 끝 --%>
 
+        <%-- 목록 내용 변경 시작 --%>
+        //취업유형
+        selectOption($(".employmentEmpType"),${employment.employmentEmpType});
+
+        //취업인센티브_구분
+        selectOption($(".employmentIncentive"),${employment.employmentIncentive});
+
+        //일경험 구분
+        selectOption($(".employmentJobcat"),${employment.employmentJobcat});
+        <%-- 목록 내용 변경 끝 --%>
     });
 </script>
 

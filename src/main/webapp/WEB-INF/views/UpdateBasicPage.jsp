@@ -117,6 +117,9 @@
     <!-- particcertifDiv JS -->
     <script src="js/particcertifDiv.js"></script>
 
+    <!-- selectOption JS -->
+    <script src="js/selectOptionJS.js"></script>
+
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -141,7 +144,7 @@
             <div class="container-fluid">
                 <div class="row pt-3">
                     <div class="col-md-12">
-                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updateBasic.login" class="form-horizontal">
+                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updatebasic.login" class="form-horizontal">
                             <%-- 참여자 수정 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
                                 <div class="col-12 text-end">
@@ -208,12 +211,12 @@
                                         <div class="col-md-1 w-auto">
                                             <label for="basicSchool" class="form-label">학교명</label>
                                             <input type="text" class="form-control" id="basicSchool" name="basicSchool" value="${basic.basicSchool}">
-                                            <div id="basicSchoollist"></div>
+                                            <div class="overflow-y-scroll recommend" id="basicSchoollist"></div>
                                         </div>
                                         <div class="col-md-1 w-auto">
                                             <label for="basicSpecialty" class="form-label">전공</label>
                                             <input type="text" class="form-control" id="basicSpecialty" name="basicSpecialty" value="${basic.basicSpecialty}">
-                                            <div id="basicSpecialtylist"></div>
+                                            <div class="overflow-y-scroll recommend" id="basicSpecialtylist"></div>
                                         </div>
                                         <div class="col-md-1 w-auto">
                                             <label for="basicAntecedents" class="form-label">경력</label>
@@ -228,9 +231,10 @@
                                                     <i class="bi bi-patch-minus particcertif-div-minus" style="display: none"></i>
                                                 </label>
                                             </div>
-                                            <div class="particcertif-div-content d-flex" id="particcertifCertif">
+                                            <div class="particcertif-div-content " id="particcertifCertif">
 
                                             </div>
+                                            <div class="overflow-y-scroll recommend" id="basicParticcertiflist"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -296,17 +300,6 @@
 
 <script>
     $(document).ready(function () {
-
-        /*
-            사용자 편의성을 위해
-            추천 리스트를 뿌려준다.
-        */
-        let schoolData = ["test","st","qwer"];
-        recommendFunction("#basicSchool", "#basicSchoollist",schoolData);
-
-        let specialtyData = ["test","st","qwer"];
-        recommendFunction("#basicSpecialty", "#basicSpecialtylist",specialtyData);
-
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
@@ -314,6 +307,42 @@
            form.submit();
         });
         <%-- form 전달 끝 --%>
+
+        <%-- 사용자 편의성을 위해 목록 리스트 출력 시작 --%>
+        //자격증 목록 리스트 출력
+        $(document).on("focus", ".particcertifCertif", function () {
+            recommendFunction($(this), "#basicParticcertiflist",xmlData("./XMLData/particcertifXMLData.xml", "particcertif name"));
+        });
+
+        //학교명 목록 리스트 출력
+        recommendFunction("#basicSchool", "#basicSchoollist",xmlData("./XMLData/SchoolXMLData.xml", "school name"));
+        <%-- 사용자 편의성을 위해 목록 리스트 출력 끝 --%>
+
+        //자격증 배열을 백단에서 전달받습니다.
+        const specialtyArr = ${particcertifCertif};
+        const particcertif_div_content = $(".particcertif-div-content");
+        //전달 받은 배열 만큼 div 태그를 생성한다.
+        if(specialtyArr.length > 0 || specialtyArr != null) {
+            specialtyArr.forEach((item) => {
+                const newDiv = $('<input type="text" class="form-control particcertifCertif w-auto" name="particcertifCertif" placeholder="자격증 입력" value="'+item+'">');
+                particcertif_div_content.append(newDiv);
+            });
+        }
+        else{
+            const newDiv = $('<input type="text" class="form-control particcertifCertif w-auto" name="particcertifCertif" placeholder="자격증 입력">');
+            particcertif_div_content.append(newDiv);
+        }
+
+        //성별 목록 내용 변경
+        selectOption($(".basicGender"),${basic.basicGender});
+
+        //모집경로 목록 내용 변경
+        selectOption($(".basicRecruit"),${basic.basicRecruit});
+
+        //참여유형 목록 내용 변경
+        selectOption($(".basicPartType"),${basic.basicPartType});
+
+
     });
 </script>
 

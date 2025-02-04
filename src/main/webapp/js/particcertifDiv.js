@@ -22,7 +22,7 @@ $(document).ready(function () {
     particcertif_div_plus.on("click", function () {
         console.log("자격증 Div 추가");
         const newDiv =
-            $('<input type="text" class="form-control particcertifCertif w-auto" id="particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">');
+            $('<input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">');
         particcertif_div_content.append(newDiv);
         particcertif_div_minus.show();
         particcertifDivLength();
