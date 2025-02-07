@@ -155,6 +155,8 @@
                             <div class="row card mt-3">
                                 <div class="card-header">
                                     <h1 class="card-title">상담정보</h1>
+                                    <input type="hidden" name="counselCounselNo" value="${counsel.counselCounselNo}">
+                                    <input type="hidden" name="counselJobNo" value="${counsel.counselJobNo}">
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
                                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
@@ -200,8 +202,8 @@
                                             </select>
                                         </div>
                                         <div class="w-auto">
-                                            <label for="counselSUCS" class="form-label">성공금_충족여부</label>
-                                            <select class="form-select" aria-label="Default select example" id="counselSUCS" name="counselSUCS">
+                                            <label for="counselSUCU" class="form-label">성공금_충족여부</label>
+                                            <select class="form-select" aria-label="Default select example" id="counselSUCU" name="counselSUCU">
                                                 <option selected value="고보미가입취업">고보미가입취업</option>
                                                 <option value="본인">본인</option>
                                                 <option value="알선">알선</option>
@@ -336,13 +338,13 @@
 
         <%-- 목록 내용 변경 시작 --%>
         //취업역량
-        selectOption($(".counselJobSkill"),${counselJobSkill});
+        selectOption($("#counselJobSkill"),"${counsel.counselJobSkill}");
 
         //진행단계 목록 내용 변경
-        selectOption($(".counselProgress"),${counselProgress});
+        selectOption($("#counselProgress"),"${counsel.counselProgress}");
 
         //성공금_충족여부
-        selectOption($(".counselSUCS"),${counselSUCS});
+        selectOption($("#counselSUCU"),"${counsel.counselSUCU}");
         <%-- 목록 내용 변경 끝 --%>
     });
 </script>

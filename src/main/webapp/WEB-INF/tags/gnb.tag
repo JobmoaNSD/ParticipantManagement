@@ -109,7 +109,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="./dashboard.do" class="nav-link">
+                                <a href="./dashboard.login" class="nav-link">
                                     <small><p>대시보드</p></small>
                                 </a>
                             </li>

@@ -26,19 +26,21 @@ public class EmploymentDAO {
     public boolean update(EmploymentDTO employmentDTO) {
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.update(ns+"update", employmentDTO) > 0;
+        boolean flag = sqlSession.update(ns+"employmentUpdate", employmentDTO) > 0;
         log.info("employment update SQL flag : [{}]",flag);
         return flag;
     }
     public boolean delete(EmploymentDTO employmentDTO) {
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.delete(ns+"delete", employmentDTO) > 0;
+        boolean flag = sqlSession.delete(ns+"employmentDelete", employmentDTO) > 0;
         log.info("employment delete SQL flag : [{}]",flag);
         return flag;
     }
     public EmploymentDTO selectOne(EmploymentDTO employmentDTO) {
-        EmploymentDTO data = sqlSession.selectOne(ns+"selectOne", employmentDTO);
+        String condition = employmentDTO.getEmploymentCondition();
+        log.info("employment selectOne SQL employmentDTO : [{}]",condition);
+        EmploymentDTO data = sqlSession.selectOne(ns+condition, employmentDTO);
         log.info("employment selectOne data : [{}]",data);
         return data;
     }

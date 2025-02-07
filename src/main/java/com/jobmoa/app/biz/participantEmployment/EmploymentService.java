@@ -21,7 +21,8 @@ public class EmploymentService implements EmploymentServiceImpl {
 
     @Override
     public boolean update(EmploymentDTO employmentDTO) {
-        return false;
+        log.info("employment update data : [{}]",employmentDTO);
+        return employmentDAO.update(employmentDTO);
     }
 
     @Override
@@ -31,7 +32,14 @@ public class EmploymentService implements EmploymentServiceImpl {
 
     @Override
     public EmploymentDTO selectOne(EmploymentDTO employmentDTO) {
-        return null;
+        log.info("employment selectOne data : [{}]",employmentDTO);
+        EmploymentDTO data = null;
+        //DTO 가 null이 아니고 condition 이 null 이 아니면 selecone 함수 실행
+        if(employmentDTO != null && employmentDTO.getEmploymentCondition() != null) {
+            data = employmentDAO.selectOne(employmentDTO);
+        }
+        log.info("employment selectOne data : [{}]",data);
+        return data;
     }
 
     @Override

@@ -139,6 +139,7 @@ public class ParticipantController {
             }
 
             //기본정보가 문제없이 저장되었다면 JOBNO를 받아 변수에 추가한다.
+            basicDTO.setBasicCondition("basicSelectJOBNO");
             int jobno = basicService.selectOne(basicDTO).getBasicJobNo();
             //JOBNO를 상담정보, 취업정보, 자격증정보에 각각 추가한다.
             counselDTO.setCounselJobNo(jobno);
