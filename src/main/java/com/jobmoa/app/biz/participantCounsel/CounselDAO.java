@@ -17,7 +17,9 @@ public class CounselDAO {
     private static final String ns = "CounselDAO.";
 
     public CounselDTO selectOne(CounselDTO counselDTO) {
-        CounselDTO data = sqlSession.selectOne(ns+"selectOne", counselDTO);
+        String condition = counselDTO.getCounselCondition();
+        log.info("counsel selectOne SQL counselDTO : [{}]",condition);
+        CounselDTO data = sqlSession.selectOne(ns+condition, counselDTO);
         log.info("data : [{}]",data);
         return data;
     }
@@ -34,14 +36,14 @@ public class CounselDAO {
     public boolean update(CounselDTO counselDTO) {
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.update(ns+"update", counselDTO) > 0;
+        boolean flag = sqlSession.update(ns+"counselUpdate", counselDTO) > 0;
         log.info("counsel update SQL flag : [{}]",flag);
         return flag;
     }
     public boolean delete(CounselDTO counselDTO) {
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.delete(ns+"delete", counselDTO) > 0;
+        boolean flag = sqlSession.delete(ns+"counselDelete", counselDTO) > 0;
         log.info("counsel delete SQL flag : [{}]",flag);
         return flag;
     }

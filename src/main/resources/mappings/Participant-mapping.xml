@@ -4,27 +4,33 @@
 <mapper namespace="ParticipantDAO">
     <select id="selectAllParticipantBasic" resultType="participant">
         SELECT TOP (#{pageRows})
-        participantJobNo,
-        participantPartic,
-        participantGender,
-        participantLastCons,
-        participantProgress,
-        participantDob,
-        participantRegDate,
-        participantClose
+            participantJobNo,
+            participantPartic,
+            participantGender,
+            participantLastCons,
+            participantProgress,
+            participantDob,
+            participantRegDate,
+            participantClose
         FROM (
-        SELECT
-        ROW_NUMBER() OVER (ORDER BY ParticipantJobNo DESC) AS RowNum,
-        ParticipantJobNo,
-        ParticipantPartic,
-        ParticipantGender,
-        ParticipantLastCons,
-        ParticipantProgress,
-        ParticipantDob,
-        ParticipantRegDate,
-        ParticipantClose
-        FROM PARTICIPANTS_VIEW
-        WHERE ParticipantUserid = #{participantUserid} ) AS SUB_QUERY
+                 SELECT
+                     ROW_NUMBER() OVER (ORDER BY ParticipantJobNo DESC) AS RowNum,
+                     ParticipantJobNo,
+                     ParticipantPartic,
+                     ParticipantGender,
+                     CASE
+                         WHEN ParticipantLastCons >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantLastCons
+                         END AS ParticipantLastCons,
+                     ParticipantProgress,
+                     CASE
+                         WHEN ParticipantDob >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantDob
+                         END AS ParticipantDob,
+                     CASE
+                         WHEN ParticipantRegDate >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantRegDate
+                         END AS ParticipantRegDate,
+                     ParticipantClose
+                 FROM PARTICIPANTS_VIEW
+                 WHERE ParticipantUserid = #{participantUserid} ) AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
 

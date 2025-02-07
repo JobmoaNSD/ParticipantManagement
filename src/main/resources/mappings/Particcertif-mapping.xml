@@ -2,16 +2,60 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ParticcertifDAO">
+
     <insert id="particcertifInsert">
         INSERT INTO J_PARTICCERTIF
         (JOBNO, CERTIF)
         VALUES
-        <foreach collection="particcertifCertif" item="data" separator=",">
+        <foreach collection="particcertifCertifs" item="data" separator=",">
             (
             #{particcertifJobNo},
             #{data}
             )
         </foreach>
     </insert>
+
+    <update id="particcertifUpdate">
+        UPDATE
+        J_PARTICCERTIF
+        SET
+            CERTIF = #{particcertifCertif}
+        WHERE
+            JOBNO = ${particcertifJobNo}
+          AND
+            CERTIF = ${particcertifCertif}
+    </update>
+
+    <delete id="particcertifDelete">
+        DELETE
+        FROM
+            J_PARTICCERTIF
+        WHERE
+            JOBNO = ${particcertifJobNo}
+    </delete>
+
+    <select id="particcertifSelectOne" resultType="particcertif">
+        SELECT
+            PARTNO AS particcertifPartNo,
+            JOBNO AS particcertifJobNo,
+            CERTIF AS particcertifCertif
+        From
+            J_PARTICCERTIF
+        WHERE
+            JOBNO=#{particcertifJobNo}
+        AND
+            CERTIF=#{particcertifCertif}
+    </select>
+
+    <select id="particcertifSelectALLParticOne" resultType="particcertif">
+        SELECT
+            PARTNO AS particcertifPartNo,
+            JOBNO AS particcertifJobNo,
+            CERTIF AS particcertifCertif
+        From
+            J_PARTICCERTIF
+        WHERE
+            JOBNO=#{particcertifJobNo}
+    </select>
 
 </mapper>

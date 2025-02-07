@@ -155,6 +155,8 @@
                             <div class="row card mt-3">
                                 <div class="card-header">
                                     <h1 class="card-title">취업정보</h1>
+                                    <input type="hidden" name="employmentEnployNo" value="${employment.employmentEnployNo}">
+                                    <input type="hidden" name="employmentJobNo" value="${employment.employmentJobNo}">
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
                                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
@@ -232,7 +234,7 @@
                                         </div>
                                         <div class="" style="width: 100%;">
                                             <label for="employmentMemo" class="form-label">메모</label>
-                                            <textarea class="form-control" id="employmentMemo" name="employmentMemo" rows="3" cols="10" placeholder="메모를 입력하세요.">${employment.memo}</textarea>
+                                            <textarea class="form-control" id="employmentMemo" name="employmentMemo" rows="3" cols="10" placeholder="메모를 입력하세요.">${employment.employmentMemo}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -309,13 +311,13 @@
 
         <%-- 목록 내용 변경 시작 --%>
         //취업유형
-        selectOption($(".employmentEmpType"),${employment.employmentEmpType});
+        selectOption($("#employmentEmpType"),"${employment.employmentEmpType}");
 
         //취업인센티브_구분
-        selectOption($(".employmentIncentive"),${employment.employmentIncentive});
+        selectOption($("#employmentIncentive"),"${employment.employmentIncentive}");
 
         //일경험 구분
-        selectOption($(".employmentJobcat"),${employment.employmentJobcat});
+        selectOption($("#employmentJobcat"),"${employment.employmentJobcat}");
         <%-- 목록 내용 변경 끝 --%>
     });
 </script>

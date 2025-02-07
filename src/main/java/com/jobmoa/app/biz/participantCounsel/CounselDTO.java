@@ -11,7 +11,7 @@ public class CounselDTO {
     private String counselJobSkill; // 취업역량
     private String counselLastCons; // 최근상담일
     private String counselProgress; // 진행단계
-    private String counselSUCS; // 성공금충족여부
+    private String counselSUCU; // 성공금충족여부
     private String counselInItCons; // 초기상담일
     private String counselJobEX; // 구직만료일
     private String counselIAPDate; // IAP수료일

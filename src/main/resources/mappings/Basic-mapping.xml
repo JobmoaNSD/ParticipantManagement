@@ -21,8 +21,58 @@
         )
     </insert>
 
+    <update id="basicUpdate">
+        UPDATE
+            J_BASIC
+        SET
+            PARTIC = #{basicPartic},
+            DOB = #{basicDob},
+            GENDER = #{basicGender},
+            RECRUIT = #{basicRecruit},
+            PARTTYPE = #{basicPartType},
+            SCHOOL = #{basicSchool},
+            SPECIALTY = #{basicSpecialty},
+            ADDRESS = #{basicAddress},
+            ANTECEDENTS = #{basicAntecedents}
+        WHERE
+            JOBNO = #{basicJobNo}
+    </update>
+
     <select id="basicSelectJOBNO" resultType="basic">
         SELECT TOP(1) JOBNO as basicJobNo FROM J_BASIC WHERE USERID = #{basicUserid} ORDER BY JOBNO DESC;
     </select>
 
+    <select id="basicSelectOneJOBNO" resultType="basic">
+        SELECT
+            JOBNO AS basicJobNo
+        FROM
+            J_BASIC
+        WHERE
+            JOBNO=#{basicJobNo}
+          AND
+            USERID=#{basicUserid}
+    </select>
+
+    <select id="basicSelectPKONE" resultType="basic">
+        SELECT
+            JOBNO AS basicJobNo,
+            PARTIC AS basicPartic,
+            CASE
+                WHEN DOB >= DATEADD(YEAR, -100, GETDATE()) THEN DOB
+                END AS basicDob,
+            GENDER AS basicGender,
+            RECRUIT AS basicRecruit,
+            PARTTYPE AS basicParttype,
+            ADDRESS AS basicAddress,
+            SCHOOL AS basicSchool,
+            SPECIALTY AS basicSpecialty,
+            ANTECEDENTS AS basicAntecedents
+        FROM
+            J_BASIC
+        WHERE
+            JOBNO=#{basicJobNo}
+          AND
+            USERID=#{basicUserid}
+    </select>
+    
 </mapper>

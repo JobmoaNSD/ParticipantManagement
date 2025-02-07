@@ -6,19 +6,60 @@
         INSERT INTO J_EMPLOYMENT
         (JOBNO, STARTDATE, PROCDATE, EMPTYPE, EMPLOYER, SALARY, JOBROLE, INCENTIVE, JOBCAT, MEMO, OTHERS)
         VALUES
-        (
-         #{employmentJobNo},
-         #{employmentStartDate},
-         #{employmentProcDate},
-         #{employmentEmpType},
-         #{employmentLoyer},
-         #{employmentSalary},
-         #{employmentJobRole},
-         #{employmentIncentive},
-         #{employmentJobcat},
-         #{employmentMemo},
-         #{employmentOthers}
-        )
+            (
+                #{employmentJobNo},
+                #{employmentStartDate},
+                #{employmentProcDate},
+                #{employmentEmpType},
+                #{employmentLoyer},
+                #{employmentSalary},
+                #{employmentJobRole},
+                #{employmentIncentive},
+                #{employmentJobcat},
+                #{employmentMemo},
+                #{employmentOthers}
+            )
     </insert>
 
+    <update id="employmentUpdate">
+        UPDATE
+            J_EMPLOYMENT
+        SET
+            STARTDATE = #{employmentStartDate},
+            PROCDATE = #{employmentProcDate},
+            EMPTYPE = #{employmentEmpType},
+            EMPLOYER = #{employmentLoyer},
+            SALARY = #{employmentSalary},
+            JOBROLE = #{employmentJobRole},
+            INCENTIVE = #{employmentIncentive},
+            JOBCAT = #{employmentJobcat},
+            MEMO = #{employmentMemo},
+            OTHERS = #{employmentOthers}
+        WHERE
+            ENPLOYNO = #{employmentEnployNo}
+    </update>
+
+    <select id="employmentSelectOne" resultType="employment">
+        SELECT
+            ENPLOYNO AS employmentEnployNo,
+            JOBNO AS employmentJobNo,
+            CASE
+                WHEN STARTDATE >= DATEADD(YEAR, -100, GETDATE()) THEN STARTDATE
+                END AS employmentStartDate,
+            CASE
+                WHEN PROCDATE >= DATEADD(YEAR, -100, GETDATE()) THEN PROCDATE
+                END  AS employmentProcDate,
+            EMPTYPE AS employmentEmpType,
+            EMPLOYER AS employmentLoyer,
+            SALARY AS employmentSalary,
+            JOBROLE AS employmentJobRole,
+            INCENTIVE AS employmentIncentive,
+            JOBCAT AS employmentJobcat,
+            MEMO AS employmentMemo,
+            OTHERS AS employmentOthers
+        FROM
+            J_EMPLOYMENT
+        WHERE
+            JOBNO=#{employmentJobNo}
+    </select>
 </mapper>

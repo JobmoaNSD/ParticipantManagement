@@ -230,7 +230,7 @@
                                                 </label>
                                             </div>
                                             <div class="particcertif-div-content d-flex" id="particcertifCertif">
-                                                <input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertif" placeholder="자격증 입력">
+                                                <input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertifs" placeholder="자격증 입력">
                                             </div>
                                             <div class="overflow-y-scroll recommend" id="basicParticcertiflist"></div>
                                         </div>
@@ -504,8 +504,13 @@
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
-           const form = $("#newParticipantsForm");
-           form.submit();
+            const basicPartic = $("#basicPartic").val();
+            if(basicPartic != "" && basicPartic != undefined){
+                const form = $("#newParticipantsForm");
+                form.submit();
+            }
+
+            alertDefaultInfo("참여자 성명은 필수 입력 입니다.","참여자를 입력해주세요.");
         });
         <%-- form 전달 끝 --%>
 

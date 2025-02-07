@@ -6,21 +6,76 @@
         INSERT INTO J_COUNSEL
         (JOBNO, JOBSKILL, LASTCONS, PROGRESS, SUC_U, INITCONS, JOBEX, IAPDATE, STEPAPPRO, EXPDATE, CLINIC, JOBWANT, SALWANT)
         VALUES
-        (
-         #{counselJobNo},
-         #{counselJobSkill},
-         #{counselLastCons},
-         #{counselProgress},
-         #{counselSUCS},
-         #{counselInItCons},
-         #{counselJobEX},
-         #{counselIAPDate},
-         #{counselStepPro},
-         #{counselEXPDate},
-         #{counselClinic},
-         #{counselJobWant},
-         #{counselSalWant}
-        )
+            (
+                #{counselJobNo},
+                #{counselJobSkill},
+                #{counselLastCons},
+                #{counselProgress},
+                #{counselSUCU},
+                #{counselInItCons},
+                #{counselJobEX},
+                #{counselIAPDate},
+                #{counselStepPro},
+                #{counselEXPDate},
+                #{counselClinic},
+                #{counselJobWant},
+                #{counselSalWant}
+            )
     </insert>
 
+    <update id="counselUpdate">
+        UPDATE
+            J_COUNSEL
+        SET
+            JOBSKILL = #{counselJobSkill},
+            LASTCONS = #{counselLastCons},
+            PROGRESS = #{counselProgress},
+            SUC_U = #{counselSUCU},
+            INITCONS = #{counselInItCons},
+            JOBEX = #{counselJobEX},
+            IAPDATE = #{counselIAPDate},
+            STEPAPPRO = #{counselStepPro},
+            EXPDATE = #{counselEXPDate},
+            CLINIC = #{counselClinic},
+            JOBWANT = #{counselJobWant},
+            SALWANT = #{counselSalWant}
+        WHERE
+            COUNSELNO = #{counselCounselNo}
+    </update>
+
+    <select id="counselSelectOne" resultType="counsel">
+        SELECT
+            COUNSELNO AS counselCounselNo,
+            JOBNO AS counselJobNo,
+            JOBSKILL AS counselJobSkill,
+            CASE
+                WHEN LASTCONS >= DATEADD(YEAR, -100, GETDATE()) THEN LASTCONS
+                END AS counselLastCons,
+            PROGRESS AS counselProgress,
+            SUC_U AS counselSUCU,
+            CASE
+                WHEN INITCONS >= DATEADD(YEAR, -100, GETDATE()) THEN INITCONS
+                END AS counselInItCons,
+            CASE
+                WHEN JOBEX >= DATEADD(YEAR, -100, GETDATE()) THEN JOBEX
+                END AS conselJobEX,
+            CASE
+                WHEN IAPDATE >= DATEADD(YEAR, -100, GETDATE()) THEN IAPDATE
+                END AS counselIAPDate,
+            CASE
+                WHEN STEPAPPRO >= DATEADD(YEAR, -100, GETDATE()) THEN STEPAPPRO
+                END AS counselStepPro,
+            CASE
+                WHEN EXPDATE >= DATEADD(YEAR, -100, GETDATE()) THEN EXPDATE
+                END AS counselEXPDate,
+            CASE
+                WHEN CLINIC >= DATEADD(YEAR, -100, GETDATE()) THEN CLINIC
+                END AS counselClinic,
+            JOBWANT AS counselJobWant,
+            SALWANT AS counselSalWant
+        FROM
+            J_COUNSEL
+        WHERE
+            JOBNO=#{counselJobNo}
+    </select>
 </mapper>

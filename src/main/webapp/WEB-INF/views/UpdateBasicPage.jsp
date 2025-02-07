@@ -113,9 +113,8 @@
 
     <!-- recommend JS -->
     <script src="js/recommendJS.js"></script>
+    <link rel="stylesheet" href="css/recommend.css">
 
-    <!-- particcertifDiv JS -->
-    <script src="js/particcertifDiv.js"></script>
 
     <!-- selectOption JS -->
     <script src="js/selectOptionJS.js"></script>
@@ -158,6 +157,7 @@
                             <div class="row  card">
                                 <div class="card-header">
                                     <h1 class="card-title">기본정보</h1>
+                                    <input type="hidden" name="basicJobNo" value="${basic.basicJobNo}">
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
                                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
@@ -231,8 +231,7 @@
                                                     <i class="bi bi-patch-minus particcertif-div-minus" style="display: none"></i>
                                                 </label>
                                             </div>
-                                            <div class="particcertif-div-content " id="particcertifCertif">
-
+                                            <div class="particcertif-div-content d-flex" id="particcertifCertif">
                                             </div>
                                             <div class="overflow-y-scroll recommend" id="basicParticcertiflist"></div>
                                         </div>
@@ -317,34 +316,41 @@
         //학교명 목록 리스트 출력
         recommendFunction("#basicSchool", "#basicSchoollist",xmlData("./XMLData/SchoolXMLData.xml", "school name"));
         <%-- 사용자 편의성을 위해 목록 리스트 출력 끝 --%>
-
         //자격증 배열을 백단에서 전달받습니다.
-        const specialtyArr = ${particcertifCertif};
+        let specialtyArr = JSON.parse('${particcertifs}') ;
         const particcertif_div_content = $(".particcertif-div-content");
+        specialtyArr = specialtyArr.map(item => item);
+        console.log(specialtyArr);
+
         //전달 받은 배열 만큼 div 태그를 생성한다.
-        if(specialtyArr.length > 0 || specialtyArr != null) {
+        if(specialtyArr.length > 0 && specialtyArr != null) {
             specialtyArr.forEach((item) => {
-                const newDiv = $('<input type="text" class="form-control particcertifCertif w-auto" name="particcertifCertif" placeholder="자격증 입력" value="'+item+'">');
+                // console.log(item.particcertifPartNo);
+                let newDiv = $('<input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertifs" placeholder="자격증 입력" value="'+item.particcertif+'">'
+                + '<input type="hidden" name="particcertifPartNos" placeholder="자격증 PK" value="'+item.particcertifPartNo+'">');
+
                 particcertif_div_content.append(newDiv);
             });
         }
         else{
-            const newDiv = $('<input type="text" class="form-control particcertifCertif w-auto" name="particcertifCertif" placeholder="자격증 입력">');
+            const newDiv = $('<input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertifs" placeholder="자격증 입력">');
             particcertif_div_content.append(newDiv);
         }
 
         //성별 목록 내용 변경
-        selectOption($(".basicGender"),${basic.basicGender});
+        selectOption($("#basicGender"),"${basic.basicGender}");
 
         //모집경로 목록 내용 변경
-        selectOption($(".basicRecruit"),${basic.basicRecruit});
+        selectOption($("#basicRecruit"),"${basic.basicRecruit}");
 
         //참여유형 목록 내용 변경
-        selectOption($(".basicPartType"),${basic.basicPartType});
+        selectOption($("#basicPartType"),"${basic.basicPartType}");
 
 
     });
 </script>
 
+<!-- particcertifDiv JS -->
+<script src="js/particcertifDiv.js"></script>
 
 </html>
