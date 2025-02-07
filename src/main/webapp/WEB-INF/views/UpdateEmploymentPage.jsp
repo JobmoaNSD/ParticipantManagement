@@ -144,7 +144,27 @@
                         <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updateemployment.login" class="form-horizontal">
                             <%-- 참여자 수정 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
-                                <div class="col-12 text-end">
+                                <div class="col-1 text-start">
+                                    <div class="w-auto">
+                                        <label for="counselProgress" class="form-label">진행단계</label>
+                                        <select class="form-select" aria-label="Default select example" id="counselProgress" name="counselProgress">
+                                            <option selected value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="미고보">미고보</option>
+                                            <option value="고보일반">고보일반</option>
+                                            <option value="등록창업">등록창업</option>
+                                            <option value="미등록창업">미등록창업</option>
+                                            <option value="미사">미사</option>
+                                            <option value="미사종">미사종</option>
+                                            <option value="유예">유예</option>
+                                            <option value="취소">취소</option>
+                                            <option value="이관">이관</option>
+                                            <option value="중단">중단</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-11 text-end">
                                     <button type="button" class="btn btn-primary" id="btn_check">
                                         참여자 수정
                                     </button>
@@ -183,11 +203,6 @@
                                         <div class="w-auto">
                                             <label for="employmentEmpType" class="form-label">취업유형</label>
                                             <select class="form-select" aria-label="Default select example" id="employmentEmpType" name="employmentEmpType" >
-                                                <option value=""></option>
-                                                <option value="본인">본인</option>
-                                                <option value="알선">알선</option>
-                                                <option value="소개취업">소개취업</option>
-                                                <option value="1.5배알선">1.5배알선</option>
                                             </select>
                                         </div>
                                         <div class="w-auto">
@@ -309,16 +324,34 @@
         });
         <%-- form 전달 끝 --%>
 
-        <%-- 목록 내용 변경 시작 --%>
+        <%-- 각 ID 별 변수 --%>
         //취업유형
-        selectOption($("#employmentEmpType"),"${employment.employmentEmpType}");
+        const employmentEmpType = $("#employmentEmpType");
+        //취업인센티브
+        const employmentIncentive = $("#employmentIncentive");
+        //일경험
+        const employmentJobcat = $("#employmentJobcat");
+        //진행단계
+        const counselProgress = $("#counselProgress");
+
+        <%-- 목록 내용 변경 시작 --%>
+        //진행단계
+        selectOption(counselProgress,"${counselProgress}");
+
+        //취업유형
+        selectOption(employmentEmpType,"${employment.employmentEmpType}");
 
         //취업인센티브_구분
-        selectOption($("#employmentIncentive"),"${employment.employmentIncentive}");
+        selectOption(employmentIncentive,"${employment.employmentIncentive}");
 
         //일경험 구분
-        selectOption($("#employmentJobcat"),"${employment.employmentJobcat}");
+        selectOption(employmentJobcat,"${employment.employmentJobcat}");
         <%-- 목록 내용 변경 끝 --%>
+
+        <%-- 취업유형 변경 시작 --%>
+        changeSelect(counselProgress, employmentEmpType,"${counselProgress}");
+        <%-- 취업유형 변경 끝 --%>
+
     });
 </script>
 

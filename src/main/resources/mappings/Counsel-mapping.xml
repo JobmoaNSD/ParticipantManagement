@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="CounselDAO">
+    <!-- 상담사 정보 저장용 쿼리 -->
     <insert id="counselInsert">
         INSERT INTO J_COUNSEL
         (JOBNO, JOBSKILL, LASTCONS, PROGRESS, SUC_U, INITCONS, JOBEX, IAPDATE, STEPAPPRO, EXPDATE, CLINIC, JOBWANT, SALWANT)
@@ -23,6 +24,7 @@
             )
     </insert>
 
+    <!-- 상담사 정보 업데이트용 쿼리 -->
     <update id="counselUpdate">
         UPDATE
             J_COUNSEL
@@ -43,6 +45,17 @@
             COUNSELNO = #{counselCounselNo}
     </update>
 
+    <!-- 취업정보에서 참여유형 업데이트할때 사용할 쿼리 -->
+    <update id="counselUpdateProgress">
+        UPDATE
+            J_COUNSEL
+        SET
+            PROGRESS = #{counselProgress}
+        WHERE
+            JOBNO=#{counselJobNo}
+    </update>
+
+    <!-- 상담정보 하나 확인용 쿼리 -->
     <select id="counselSelectOne" resultType="counsel">
         SELECT
             COUNSELNO AS counselCounselNo,
@@ -78,4 +91,18 @@
         WHERE
             JOBNO=#{counselJobNo}
     </select>
+
+    <!-- -->
+    <select id="counselSelectOneEmployment" resultType="counsel">
+        SELECT
+            COUNSELNO AS counselCounselNo,
+            JOBNO AS counselJobNo,
+            PROGRESS AS counselProgress
+        FROM
+            J_COUNSEL
+        WHERE
+            JOBNO=#{counselJobNo}
+    </select>
+
+
 </mapper>
