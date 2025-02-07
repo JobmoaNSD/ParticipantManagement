@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="BasicDAO">
+    <!-- 기본정보 등록 쿼리문 -->
     <insert id="basicInsert">
         INSERT INTO J_BASIC
         (BRANCH, USERID, PARTIC, DOB, GENDER, RECRUIT, PARTTYPE, SCHOOL, SPECIALTY, ADDRESS, ANTECEDENTS)
@@ -21,6 +22,7 @@
         )
     </insert>
 
+    <!-- 기본 정보 업데이트 쿼리문 -->
     <update id="basicUpdate">
         UPDATE
             J_BASIC
@@ -38,10 +40,12 @@
             JOBNO = #{basicJobNo}
     </update>
 
+    <!-- 등록전 최신에 등록된 구직번호 확인용 쿼리 -->
     <select id="basicSelectJOBNO" resultType="basic">
         SELECT TOP(1) JOBNO as basicJobNo FROM J_BASIC WHERE USERID = #{basicUserid} ORDER BY JOBNO DESC;
     </select>
 
+    <!-- 전담자 아이디 구직번호 내 참여자인지 확인용 -->
     <select id="basicSelectOneJOBNO" resultType="basic">
         SELECT
             JOBNO AS basicJobNo
@@ -53,6 +57,7 @@
             USERID=#{basicUserid}
     </select>
 
+    <!-- 구직번호로 참여자 하나 검색하는 용 -->
     <select id="basicSelectPKONE" resultType="basic">
         SELECT
             JOBNO AS basicJobNo,

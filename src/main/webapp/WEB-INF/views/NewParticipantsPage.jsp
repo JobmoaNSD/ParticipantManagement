@@ -118,6 +118,9 @@
     <!-- particcertifDiv JS -->
     <script src="js/particcertifDiv.js"></script>
 
+    <!-- selectOptionJS JS -->
+    <script src="js/selectOptionJS.js"></script>
+
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -384,11 +387,7 @@
                                         <div class="w-auto">
                                             <label for="employmentEmpType" class="form-label">취업유형</label>
                                             <select class="form-select" aria-label="Default select example" id="employmentEmpType" name="employmentEmpType">
-                                                <option value=""></option>
-                                                <option value="본인">본인</option>
-                                                <option value="알선">알선</option>
-                                                <option value="소개취업">소개취업</option>
-                                                <option value="1.5배알선">1.5배알선</option>
+
                                             </select>
                                         </div>
                                         <div class="w-auto">
@@ -523,6 +522,12 @@
         // 학교명 목록 리스트 출력
         recommendFunction("#basicSchool", "#basicSchoollist",xmlData("./XMLData/SchoolXMLData.xml", "school name"));
         <%-- 사용자 편의성을 위해 목록 리스트 출력 끝 --%>
+
+        <%-- 진행단계별 취업유형 변경 시작 --%>
+        const counselProgress = $("#counselProgress");
+        const employmentEmpType = $("#employmentEmpType");
+        changeSelect(counselProgress, employmentEmpType);
+        <%-- 진행단계별 취업유형 변경 종료 --%>
 
     });
 </script>

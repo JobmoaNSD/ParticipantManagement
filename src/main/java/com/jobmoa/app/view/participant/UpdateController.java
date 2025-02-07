@@ -98,14 +98,26 @@ public class UpdateController {
     }
 
     @GetMapping("/updateemployment.login")
-    public String updateEmploymentPage(Model model, EmploymentDTO employmentDTO){
+    public String updateEmploymentPage(Model model, EmploymentDTO employmentDTO, CounselDTO counselDTO){
         //취업 정보를 불러온다.
         employmentDTO.setEmploymentCondition("employmentSelectOne");
         employmentDTO = employmentService.selectOne(employmentDTO);
-        log.info("employmentDTO : [{}]", employmentDTO);
+        log.info("updateEmploymentPage employmentDTO : [{}]", employmentDTO);
 
-        //상담 정보를 전달한다.
+        //상담정보에서 진행단계를 불러오기 위해 counselDTO 에서 jobno(구직번호)로 검색
+        counselDTO.setCounselCondition("counselSelectOneEmployment");
+        counselDTO.setCounselJobNo(employmentDTO.getEmploymentJobNo());
+        counselDTO = counselService.selectOne(counselDTO);
+        //DTO 확인용 로그
+        log.info("updateEmploymentPage counselDTO : [{}]", counselDTO);
+        //만약 counselDTO 가 null 이라면 "" 공백
+        //아니라면 counselProgress 를 반환
+        String counselProgress = counselDTO == null ? "" : counselDTO.getCounselProgress();
+
+        //취업 정보를 전달한다.
         model.addAttribute("employment", employmentDTO);
+        //상담 정보의 참여 유형도 전달
+        model.addAttribute("counselProgress", counselProgress);
         return "views/UpdateEmploymentPage";
     }
 
@@ -188,6 +200,7 @@ public class UpdateController {
             //상담정보의 구직번호와 검색한 구직번호가 0보다 크다면 업데이트를 진행
             if (getJobNo(counselJobNo, basicDTO, session) > 0 && counselJobNo > 0) {
                 //상담정보 업데이트로 데이터를 전달하고
+                counselDTO.setCounselCondition("counselUpdate");
                 flag = counselService.update(counselDTO);
             }
 
@@ -220,7 +233,7 @@ public class UpdateController {
     }
 
     @PostMapping("/updateemployment.login")
-    public String update(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO){
+    public String update(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO, CounselDTO counselDTO){
         //info 페이지로 넘길 변수 선언
         String url = "updateemployment.login";
         String icon = "";
@@ -249,6 +262,9 @@ public class UpdateController {
                 icon = "error";
                 title = "취업정보 수정 실패";
             }
+            counselDTO.setCounselJobNo(jobNo);
+            counselDTO.setCounselCondition("counselUpdateProgress");
+            counselService.update(counselDTO);
         }
         //취업번호가 0보다 작거나 같다면 신규 등록
         else if(employmentEnployNo <= 0){

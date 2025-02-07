@@ -3,6 +3,7 @@
 
 <mapper namespace="ParticcertifDAO">
 
+    <!-- 자격증 등록용 쿼리 -->
     <insert id="particcertifInsert">
         INSERT INTO J_PARTICCERTIF
         (JOBNO, CERTIF)
@@ -15,6 +16,7 @@
         </foreach>
     </insert>
 
+    <!-- 자격증 업데이트 용 쿼리 사용안하는 중 -->
     <update id="particcertifUpdate">
         UPDATE
         J_PARTICCERTIF
@@ -26,6 +28,7 @@
             CERTIF = ${particcertifCertif}
     </update>
 
+    <!-- 자격증 삭제용 쿼리 -->
     <delete id="particcertifDelete">
         DELETE
         FROM
@@ -34,6 +37,7 @@
             JOBNO = ${particcertifJobNo}
     </delete>
 
+    <!-- 참여자 자격증 찾기용 -->
     <select id="particcertifSelectOne" resultType="particcertif">
         SELECT
             PARTNO AS particcertifPartNo,
@@ -47,6 +51,7 @@
             CERTIF=#{particcertifCertif}
     </select>
 
+    <!-- 참여자 전체 자격증 확인용 쿼리 -->
     <select id="particcertifSelectALLParticOne" resultType="particcertif">
         SELECT
             PARTNO AS particcertifPartNo,

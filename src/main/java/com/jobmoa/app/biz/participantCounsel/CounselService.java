@@ -38,7 +38,11 @@ public class CounselService implements CounselServiceImpl {
 
     @Override
     public boolean update(CounselDTO counselDTO) {
-        return counselDAO.update(counselDTO);
+        boolean flag = false;
+        if(counselDTO != null && counselDTO.getCounselCondition() != null) {
+            flag = counselDAO.update(counselDTO);
+        }
+        return flag;
     }
 
     @Override
