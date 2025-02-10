@@ -18,14 +18,14 @@ public class ParticipantDAO {
 
     public List<ParticipantDTO> selectAll(ParticipantDTO participantDTO) {
         log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO);
-        List<ParticipantDTO> datas = sqlSession.selectList(ns+"selectAllParticipantBasic", participantDTO);
+        List<ParticipantDTO> datas = sqlSession.selectList(ns+participantDTO.getParticipantCondition(), participantDTO);
         log.info("datas : [{}]",datas.toString());
         return datas;
     }
 
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
         log.info("ParticipantDTO ParticipantDAO selectOne : [{}]",participantDTO);
-        ParticipantDTO data = sqlSession.selectOne(ns+"selectCountParticipant", participantDTO);
+        ParticipantDTO data = sqlSession.selectOne(ns+participantDTO.getParticipantCondition(), participantDTO);
         log.info("ParticipantDTO ParticipantDAO data : [{}]",data);
         return data;
     }

@@ -58,6 +58,7 @@ public class ParticipantDTO {
     private int endPage;
 
     //검색 변수
-    private String selectOption;
+    private String searchOption;
     private String search;
+    private String searchFilter;
 }

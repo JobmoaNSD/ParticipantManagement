@@ -67,7 +67,19 @@ public class ParticipantController {
         // 사용자에게 보여질 버튼 개수
         int limitButton = 10;
 
-        // 게시글 전체 개수
+        String search = participantDTO.getSearch();
+        String selectCondition = "selectAllParticipantBasic";
+        String selectCountCondition = "selectCountParticipant";
+
+        if(search != null && !search.equals("")){
+            selectCondition = "selectAllParticipantSearch";
+            selectCountCondition = "selectCountParticipantSearch";
+        }
+
+        //글 개수 쿼리 컨디션
+        participantDTO.setParticipantCondition(selectCountCondition);
+
+        // 게시글 개수
         int totalCount = participantService.selectOne(participantDTO).getTotalCount();
         log.info("totalCount : [{}]", totalCount);
 
@@ -77,6 +89,9 @@ public class ParticipantController {
         participantDTO.setStartPage(paginationBean.getStartPage());
         participantDTO.setEndPage(paginationBean.getEndPage());
         participantDTO.setPageRows(pageRows);
+
+        //검색 Condition
+        participantDTO.setParticipantCondition(selectCondition);
 
         // 위 정보를 토대로 게시글 받아 온다.
         List<ParticipantDTO> datas = participantService.selectAll(participantDTO);

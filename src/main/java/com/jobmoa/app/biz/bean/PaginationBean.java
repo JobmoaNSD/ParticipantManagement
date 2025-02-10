@@ -17,7 +17,8 @@ public class PaginationBean {
 
     public void paginationProject(int page,int pageRows,int limitButton,int totalCount){
         // 실제 버튼 개수
-        this.totalButton = (int) Math.ceil(totalCount / pageRows);
+        this.totalButton = (int) Math.ceil(totalCount / pageRows)+1;
+        log.info("totalButton ㅁㅁ: [{}]", totalCount / pageRows);
         // 시작 버튼
         this.startButton = (page - 1) / limitButton * limitButton + 1;
         // 끝 버튼
