@@ -111,6 +111,12 @@
     <script src="js/adminlte.js"></script>
     <!--end::Required Plugin(AdminLTE)-->
 
+    <!-- pagination JS 파일 -->
+    <script src="js/paginationJS.js"></script>
+
+    <!-- selectOptionJS JS 파일 -->
+    <script src="js/selectOptionJS.js"></script>
+
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -138,12 +144,12 @@
                         <div class="col-md-2 ms-auto">
                             <select
                                     class="form-select shadow-sm"
-                                    name="search_select"
-                                    id="search_select"
+                                    name="searchOption"
+                                    id="search-Option"
                             >
-                                <option selected value="구직번호">구직번호</option>
-                                <option value="참여자">참여자</option>
-                                <option value="진행단계">진행단계</option>
+                                <option ${param.searchOption.equals("participantJobNo") ? 'selected' : ''} value="participantJobNo">구직번호</option>
+                                <option ${param.searchOption.equals("participantPartic") ? 'selected' : ''} value="participantPartic">참여자</option>
+                                <option ${param.searchOption.equals("participantProgress") ? 'selected' : ''} value="participantProgress">진행단계</option>
                             </select>
                         </div>
                         <!-- 검색 입력 -->
@@ -151,22 +157,23 @@
                             <input
                                     type="text"
                                     class="form-control shadow-sm"
-                                    id="search_text"
-                                    name="search_text"
+                                    id="search"
+                                    name="search"
                                     placeholder="검색어를 입력해주세요."
+                                    value="${param.search}"
                             />
                         </div>
                         <%-- 검색버튼 --%>
-                        <div class="col-md-1 text-center btn btn-secondary">
+                        <div class="col-md-1 text-center btn btn-secondary" id="searchBtn">
                             검색
                         </div>
                         <div class="col-md-1 ps-1 pe-1 text-center me-auto">
                             <select class="form-select shadow-sm" name="pageRows" id="pageRows">
-                                <option selected value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="40">40</option>
-                                <option value="50">50</option>
+                                <option ${param.pageRows.equals("10") ? 'selected' : ''} value="10">10</option>
+                                <option ${param.pageRows.equals("20") ? 'selected' : ''} value="20">20</option>
+                                <option ${param.pageRows.equals("30") ? 'selected' : ''} value="30">30</option>
+                                <option ${param.pageRows.equals("40") ? 'selected' : ''} value="40">40</option>
+                                <option ${param.pageRows.equals("50") ? 'selected' : ''} value="50">50</option>
                             </select>
                         </div>
                     </div>
@@ -193,13 +200,13 @@
 
                                 <c:choose>
                                     <c:when test="${empty datas}">
-                                        <td style="text-align: center" colspan="10">
+                                        <td class="text-center" colspan="10">
                                             신규 참여자를 등록해주세요.
                                         </td>
                                     </c:when>
                                     <c:when test="${not empty datas}">
                                         <c:forEach items="${datas}" var="data">
-                                            <tr>
+                                            <tr class="text-center">
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="${data.participantJobNo}"></label></td>
                                                 <td>${data.participantJobNo}</td>
                                                 <td>${data.participantPartic}</td>
@@ -237,19 +244,22 @@
                     <%-- 참여자 테이블 끝 --%>
 
                     <%-- 페이지네이션 시작 --%>
-                    <c:choose>
-                        <c:when test="${empty datas}">
+                    <%--                    <c:choose>--%>
+                    <%--                        <c:when test="${empty datas}">--%>
 
-                        </c:when>
-                        <c:when test="${not empty datas}">
-                            <mytag:pagination page="${page}" startButton="${startButton}" endButton="${endButton}" totalButton="${totalButton}"/>
-                        </c:when>
-                    </c:choose>
+                    <%--                        </c:when>--%>
+                    <%--                        <c:when test="${not empty datas}">--%>
+                    <%--                            <mytag:pagination page="${page}" startButton="${startButton}" endButton="${endButton}" totalButton="${totalButton}"/>--%>
+                    <%--                        </c:when>--%>
+                    <%--                    </c:choose>--%>
+                    <div class="col-md-11 text-center ms-auto me-auto d-flex justify-content-center">
+                        <ul class="pagination">
+                        </ul>
+                    </div>
                     <%-- 페이지네이션 끝 --%>
                 </div>
 
             </div>
-
 
         </div>
         <!--end::App Content-->
@@ -304,23 +314,27 @@
     });
 </script>
 
-<!-- 툴팁 활성화 스크립트 -->
 <script>
-    // DOM 로드 후 툴팁 활성화
+
     $(document).ready(function () {
+        // DOM 로드 후 툴팁 활성화
+        <%-- 툴팁 활성화 스크립트 시작 --%>
         $('[data-bs-toggle="tooltip"]').tooltip({
-            delay: { show: 0, hide: 0 } // 표시와 사라짐에 딜레이를 없애즉시 나타나도록 설정
+            delay: {show: 0, hide: 0} // 표시와 사라짐에 딜레이를 없애즉시 나타나도록 설정
         });
+        <%-- 툴팁 활성화 스크립트 끝 --%>
+
+        <%-- 수정 버튼별 구직번호 전달 스크립트 시작 --%>
 
         //선택 버튼의 구직번호 불러올 함수
-        function getJobNumber(currentRow){
+        function getJobNumber(currentRow) {
             // '구직번호' 열의 텍스트 추출 (구직번호가 2번째 열이라고 가정)
             // console.log('버튼 클릭, 구직번호:', currentRow.find('td').eq(1).text());
-            return  currentRow.find('td').eq(1).text();
+            return currentRow.find('td').eq(1).text();
         }
 
         //참여자 정보 수정을 위한 버튼 배열
-        const btns = [[$('.btn-basic'),'basic'], [$('.btn-counsel'),'counsel'], [$('.btn-employment'),'employment']];
+        const btns = [[$('.btn-basic'), 'basic'], [$('.btn-counsel'), 'counsel'], [$('.btn-employment'), 'employment']];
 
         //배열을 확인 / 확인된 배열의 구직 번호를 불러 오는 함수
         btns.forEach(function ($btn) {
@@ -328,10 +342,40 @@
                 // 현재 버튼의 부모 tr 요소 탐색
                 const number = getJobNumber($(this).closest('tr'));
                 // console.log('/update'+$btn[1]+'?'+$btn[1]+'JobNo=' + number)
-                location.href = '/update'+$btn[1]+'.login?'+$btn[1]+'JobNo=' + number;
+                location.href = '/update' + $btn[1] + '.login?' + $btn[1] + 'JobNo=' + number;
             });
         })
+        <%-- 수정 버튼별 구직번호 전달 스크립트 끝 --%>
 
+        <%-- 검색 스크립트 시작 --%>
+        //필터 변수
+        const search_option = $('#search-Option');
+        //검색어 변수
+        const search = $('#search');
+        //페이지 개수 변수
+        const pageRows = $('#pageRows');
+        //검색 버튼 변수
+        const searchBtn = $('#searchBtn');
+
+        searchBtn.on('click', function () {
+            location.href = '/participant.login?page=1&searchOption=' + search_option.val() + '&search=' + search.val() + '&pageRows=' + pageRows.val();
+        });
+
+        <%-- 검색 스크립트 끝 --%>
+
+        <%-- pagination 시작 --%>
+        // page 변수
+        let page = parseInt("${page}", 10) || 1; // page가 비어있거나 아닌 경우 숫자로 변환 후 기본값 1 적용
+        page = (page == 0) ? 1 : page; //page가 0이라면 1로 변경
+        // startButton 변수
+        const startButton = parseInt("${startButton}", 10) || 1; // startButton 기본값 1
+        // endButton 변수
+        const endButton = parseInt("${endButton}", 10) || 1; // endButton 기본값 10
+        // totalButton 변수
+        const totalButton = parseInt("${totalButton}", 10) || 0; // totalButton 기본값 0
+        //pagination JS 함수 호출
+        paginationAddItems(page, startButton, endButton, totalButton);
+        <%-- pagination 끝 --%>
     });
 </script>
 

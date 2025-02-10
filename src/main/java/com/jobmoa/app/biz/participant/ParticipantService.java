@@ -16,12 +16,20 @@ public class ParticipantService implements ParticipantServiceImpl {
     @Override
     public List<ParticipantDTO> selectAll(ParticipantDTO participantDTO) {
         log.info("List<ParticipantDTO> ParticipantService selectAll : [{}]",participantDTO);
+        if(participantDTO == null || participantDTO.getParticipantCondition() == null) {
+            log.error("selectAll participantDTO null OR participantCondition null");
+            return null;
+        }
         return participantDAO.selectAll(participantDTO);
     }
 
     @Override
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
         log.info("ParticipantDTO ParticipantService selectOne : [{}]",participantDTO);
+        if(participantDTO == null || participantDTO.getParticipantCondition() == null) {
+            log.error("selectOne participantDTO null OR participantCondition null");
+            return null;
+        }
         return participantDAO.selectOne(participantDTO);
     }
 

@@ -128,8 +128,8 @@
         scrollbarAutoHide: 'leave',
         scrollbarClickScroll: true,
     };
-    document.addEventListener('DOMContentLoaded', function () {
-        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+    $.on('DOMContentLoaded', function () {
+        const sidebarWrapper = $.select(SELECTOR_SIDEBAR_WRAPPER);
         if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
             OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
                 scrollbars: {
@@ -152,7 +152,7 @@
 ></script>
 <!-- sortablejs -->
 <script>
-    const connectedSortables = document.querySelectorAll('.connectedSortable');
+    const connectedSortables = $.select('.connectedSortable');
     connectedSortables.forEach((connectedSortable) => {
         let sortable = new Sortable(connectedSortable, {
             group: 'shared',
@@ -160,7 +160,7 @@
         });
     });
 
-    const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
+    const cardHeaders = $.select('.connectedSortable .card-header');
     cardHeaders.forEach((cardHeader) => {
         cardHeader.style.cursor = 'move';
     });
