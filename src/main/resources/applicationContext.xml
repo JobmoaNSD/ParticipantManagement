@@ -21,6 +21,7 @@
     <context:component-scan base-package="com.jobmoa.app.biz.participantBasic"/>
     <context:component-scan base-package="com.jobmoa.app.biz.participantCounsel"/>
     <context:component-scan base-package="com.jobmoa.app.biz.participantEmployment"/>
+    <context:component-scan base-package="com.jobmoa.app.biz.participantEducation"/>
 
     <bean class="org.apache.commons.dbcp2.BasicDataSource" id="ds" destroy-method="close">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
@@ -59,7 +60,7 @@
     <!-- AOP 설정 -->
     <aop:config>
         <!-- 첫 번째 포인트컷 정의: BasicService.insert(..) 메서드에 적용 -->
-        <aop:pointcut id="txPointcut" expression="execution(* com.jobmoa.app.biz.*.*Service.*(..))"/>
+        <aop:pointcut id="txPointcut" expression="execution(* com.jobmoa.app.biz.*.*Impl.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
 </beans>

@@ -18,10 +18,15 @@ public class BasicDTO {
     private String basicSpecialty; // 전공
     private String basicAddress; // 주소(시,구)
     private String basicAntecedents; // 경력
+    private String basicSpecific; // 특정계층
+    private String basicPlacement; // 알선요청
     private boolean basicClose; // 마감여부
 
     //join 변수
     private String basicUsername; //전담자 이름
+
+    //다중 삭제 구직번호 변수
+    private int[] basicJobNos;
 
     //DB 외 변수
     private String basicCondition; //개발자 구분

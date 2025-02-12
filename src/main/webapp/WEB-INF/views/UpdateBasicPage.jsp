@@ -171,7 +171,7 @@
                                             <label for="basicPartic" class="form-label">참여자</label>
                                             <input type="text" class="form-control" id="basicPartic" name="basicPartic" value="${basic.basicPartic}">
                                         </div>
-                                        <div class="col-md-1" style="width: 11%">
+                                        <div class="col-md-1 datepicker-div">
                                             <label for="basicDob" class="form-label" >생년월일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
@@ -221,6 +221,22 @@
                                         <div class="col-md-1 w-auto">
                                             <label for="basicAntecedents" class="form-label">경력</label>
                                             <input type="text" class="form-control" id="basicAntecedents" name="basicAntecedents" value="${basic.basicAntecedents}">
+                                        </div>
+                                        <div class="col-md-1 w-auto">
+                                            <label for="basicSpecific" class="form-label">특정계층</label>
+                                            <select class="form-select" aria-label="Default select example" id="basicSpecific" name="basicSpecific">
+                                                <option value=""></option>
+                                                <option value="중장년">중장년</option>
+                                                <option value="?">?</option>
+                                                <option value="?">?</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1 w-auto">
+                                            <label for="basicPlacement" class="form-label">알선요청</label>
+                                            <select class="form-select" aria-label="Default select example" id="basicPlacement" name="basicPlacement">
+                                                <option value="미해당">미해당</option>
+                                                <option value="해당">해당</option>
+                                            </select>
                                         </div>
                                         <%--자격증 --%>
                                         <div class="row col-md-12 particcertif-div">
@@ -345,6 +361,12 @@
 
         //참여유형 목록 내용 변경
         selectOption($("#basicPartType"),"${basic.basicPartType}");
+
+        //특정계층 목록 내용 변경
+        selectOption($("#basicSpecific"),"${basic.basicSpecific}");
+
+        //알선요청 목록 내용 변경
+        selectOption($("#basicPlacement"),"${basic.basicPlacement}");
 
 
     });

@@ -17,15 +17,15 @@ public class PaginationBean {
 
     public void paginationProject(int page,int pageRows,int limitButton,int totalCount){
         // 실제 버튼 개수
-        this.totalButton = (int) Math.ceil(totalCount / pageRows)+1;
-        log.info("totalButton ㅁㅁ: [{}]", totalCount / pageRows);
+        this.totalButton = (int) Math.ceil(totalCount / pageRows);
+        log.info("totalButton : [{}]", totalCount / pageRows);
         // 시작 버튼
         this.startButton = (page - 1) / limitButton * limitButton + 1;
         // 끝 버튼
         this.endButton = Math.min(this.startButton + limitButton - 1, this.totalButton);
-        log.info("startButton : [{}]", startButton);
-        log.info("endButton : [{}]", endButton);
-        log.info("totalButton : [{}]", totalButton);
+        log.info("startButton : [{}]", this.startButton);
+        log.info("endButton : [{}]", this.endButton);
+        log.info("totalButton : [{}]", this.totalButton);
         /*
             1,2,3,4,5
             1 -> 0 : 10
@@ -37,7 +37,7 @@ public class PaginationBean {
         // 시작 페이지
         this.startPage = (page - 1) * pageRows;
         // 끝 페이지
-        this.endPage = startPage+pageRows;
+        this.endPage = this.startPage+pageRows;
     }
 
 }

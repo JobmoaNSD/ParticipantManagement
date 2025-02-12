@@ -9,6 +9,7 @@
         <typeAlias type="com.jobmoa.app.biz.participantCounsel.CounselDTO" alias="counsel" />
         <typeAlias type="com.jobmoa.app.biz.participantEmployment.EmploymentDTO" alias="employment" />
         <typeAlias type="com.jobmoa.app.biz.particcertif.ParticcertifDTO" alias="particcertif" />
+        <typeAlias type="com.jobmoa.app.biz.participantEducation.EducationDTO" alias="education" />
     </typeAliases>
 
 
@@ -19,5 +20,6 @@
         <mapper resource="mappings/Counsel-mapping.xml" />
         <mapper resource="mappings/Employment-mapping.xml" />
         <mapper resource="mappings/Particcertif-mapping.xml" />
+        <mapper resource="mappings/Education-mapping.xml" />
     </mappers>
 </configuration>

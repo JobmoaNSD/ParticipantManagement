@@ -41,8 +41,11 @@ public class ParticipantDAO {
     }
 
     public boolean delete(ParticipantDTO participantDTO) {
-
-        return false;
+        log.info("ParticipantDTO ParticipantDAO delete : [{}]",participantDTO);
+        //쿼리가 실행되고 0이거나 작으면 false 0보다 크면 true 를 반환
+        boolean flag = 0 < sqlSession.delete(ns+participantDTO.getParticipantCondition(), participantDTO);
+        log.info("ParticipantDTO ParticipantDAO result : [{}]",flag);
+        return flag;
     }
 
 

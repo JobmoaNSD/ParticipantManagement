@@ -117,6 +117,11 @@
     <!-- selectOptionJS JS 파일 -->
     <script src="js/selectOptionJS.js"></script>
 
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script src="js/sweetAlert.js"></script>
+
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -184,7 +189,7 @@
                             <table class="table table-striped table-hover shadow-sm">
                                 <thead class="table-dark text-white">
                                 <tr class="text-center">
-                                    <th class="text-center"><input type="button" class="btn btn-danger" value="마감"></th>
+                                    <th class="text-center"><input type="button" class="btn btn-danger" id="delete_btn" value="삭제"></th>
                                     <th>구직번호</th>
                                     <th>참여자</th>
                                     <th>성별</th>
@@ -207,7 +212,7 @@
                                     <c:when test="${not empty datas}">
                                         <c:forEach items="${datas}" var="data">
                                             <tr class="text-center">
-                                                <td><label class="text-center w-100 h-100"><input type="checkbox" class="isClose_check" name="isClose_check" value="${data.participantJobNo}"></label></td>
+                                                <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
                                                 <td>${data.participantJobNo}</td>
                                                 <td>${data.participantPartic}</td>
                                                 <td>${data.participantGender}</td>
@@ -215,8 +220,8 @@
                                                 <td>${data.participantProgress}</td>
                                                 <td>${data.participantDob}</td>
                                                 <td>${data.participantRegDate}</td>
-                                                <td class="text-center">
-                                                    <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'}">
+                                                <td class="text-center isClose_td">
+                                                    <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'} isClose_span">
                                                             ${data.participantClose ? '마감' : '진행중'}
                                                     </span>
                                                 </td>
@@ -244,14 +249,6 @@
                     <%-- 참여자 테이블 끝 --%>
 
                     <%-- 페이지네이션 시작 --%>
-                    <%--                    <c:choose>--%>
-                    <%--                        <c:when test="${empty datas}">--%>
-
-                    <%--                        </c:when>--%>
-                    <%--                        <c:when test="${not empty datas}">--%>
-                    <%--                            <mytag:pagination page="${page}" startButton="${startButton}" endButton="${endButton}" totalButton="${totalButton}"/>--%>
-                    <%--                        </c:when>--%>
-                    <%--                    </c:choose>--%>
                     <div class="col-md-11 text-center ms-auto me-auto d-flex justify-content-center">
                         <ul class="pagination">
                         </ul>
@@ -376,6 +373,86 @@
         //pagination JS 함수 호출
         paginationAddItems(page, startButton, endButton, totalButton);
         <%-- pagination 끝 --%>
+
+        <%-- 참여자 삭제 체크 시작 --%>
+        let jobNo = [];
+        const getCheckedValues = (items) => {
+            jobNo = [];
+            items.each(function () {
+                const value = $(this).val();
+                jobNo.push(value);
+            });
+        };
+
+        $('#delete_btn').on('click', () => {
+            const delete_items = $('.delete:checked');
+            getCheckedValues(delete_items)
+            $.ajax({
+                url: 'participantDelete.login',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({basicJobNos: jobNo}),
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.length);
+                    let flag = false;
+                    if (data.length > 0) {
+                        alertDefaultInfo('삭제되지 않은 인원이 있습니다.' + '<br>' + data.length + ' 명 \n 구직번호 : ' + data + '<br>')
+                            .then((result) => {
+                                if(result){
+                                    flag = true
+                                };
+                            });
+                    }
+                    else{
+                        flag = true;
+                    }
+                    if (flag) location.reload();
+                },
+                error: function (data) {
+                    alertDefaultError('오류발생','삭제중 오류가 발생했습니다.');
+                    console.log(data);
+                }
+            });
+        });
+
+        <%-- 참여자 삭제 체크 끝 --%>
+
+        <%-- 마감 여부 시작 --%>
+        const isCloses = $('.isClose_td');
+            isCloses.on('click', function () {
+                const close_span = $(this).find('span');
+                const number = getJobNumber(close_span.closest('tr'));
+                console.log(number);
+                let isClose = false;
+                if(close_span.hasClass('badge bg-success isClose_span')){
+                    isClose = true;
+                }
+
+                $.ajax({
+                    url: 'ParticipantClose.login',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify({basicJobNo: number, basicClose: isClose}),
+                    success: function (data) {
+                        console.log(data == true);
+                        if(data){
+                            close_span.removeClass('badge bg-success isClose_span').addClass('badge bg-danger isClose_span')
+                            close_span.text("마감")
+                        }
+                        else{
+                            close_span.removeClass('badge bg-danger isClose_span').addClass('badge bg-success isClose_span')
+                            close_span.text("진행중")
+                        }
+                    },
+                    error: function (data) {
+
+                    }
+                });
+            });
+        <%-- 마감 여부 끝 --%>
     });
 </script>
 

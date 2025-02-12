@@ -98,10 +98,10 @@
                         <div class="row">
                             <div class="col-md-4 border-end border-dark border-2">
                                 <div class="h5">
-                                    XX지점
+                                    ${JOBMOA_LOGIN_DATA.memberBranch}지점
                                 </div>
                                 <div class="h3">
-                                    홍길동 상담사
+                                    ${JOBMOA_LOGIN_DATA.memberUserName} 상담사
                                 </div>
                             </div>
                             <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
@@ -140,7 +140,7 @@
                 <!-- begin::main 업무 참여자 통계 시작 -->
                 <div class="row text-center bg-white border border-black rounded-2 pt-1 pb-1 m-1">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="row">
                                 <div class="row h2 ps-3">
                                     금일 업무
@@ -154,7 +154,7 @@
                                         </li>
                                         <li class="list-group-item d-flex border-bottom-0">
                                             <div class="">
-                                                <div>30일 경과예정자 X명</div>
+                                                <div>15일 경과예정자 X명</div>
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex border-bottom-0">
@@ -176,18 +176,27 @@
                                         <div class="ms-2 me-auto text-start">
                                             <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>
                                             <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>
+                                            <div class="progress rounded rounded-2">
+                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                            </div>
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
                                         <div class="ms-2 me-auto text-start">
                                             <div class="fw-bold">총 진행자 수 00명</div>
                                             <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>
+                                            <div class="progress rounded rounded-2">
+                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                            </div>
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
                                         <div class="ms-2 me-auto text-start">
                                             <div class="fw-bold">총 참여자 수 00명</div>
                                             <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>
+                                            <div class="progress rounded rounded-2">
+                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                                            </div>
                                         </div>
                                     </li>
                                 </ul>
