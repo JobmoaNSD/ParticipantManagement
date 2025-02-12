@@ -118,6 +118,9 @@
     <!-- particcertifDiv JS -->
     <script src="js/particcertifDiv.js"></script>
 
+    <!-- educationDiv JS -->
+    <script src="js/educationDiv.js"></script>
+
     <!-- selectOptionJS JS -->
     <script src="js/selectOptionJS.js"></script>
 
@@ -172,7 +175,7 @@
                                             <label for="basicPartic" class="form-label">참여자</label>
                                             <input type="text" class="form-control" id="basicPartic" name="basicPartic">
                                         </div>
-                                        <div class="col-md-1" style="width: 11%">
+                                        <div class="col-md-1 datepicker-div">
                                             <label for="basicDob" class="form-label" >생년월일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
@@ -223,8 +226,24 @@
                                             <label for="basicAntecedents" class="form-label">경력</label>
                                             <input type="text" class="form-control" id="basicAntecedents" name="basicAntecedents">
                                         </div>
+                                        <div class="col-md-1 w-auto">
+                                            <label for="basicSpecific" class="form-label">특정계층</label>
+                                            <select class="form-select" aria-label="Default select example" id="basicSpecific" name="basicSpecific">
+                                                <option value=""></option>
+                                                <option value="중장년">중장년</option>
+                                                <option value="?">?</option>
+                                                <option value="?">?</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1 w-auto">
+                                            <label for="basicPlacement" class="form-label">알선요청</label>
+                                            <select class="form-select" aria-label="Default select example" id="basicPlacement" name="basicPlacement">
+                                                <option value="미해당">미해당</option>
+                                                <option value="해당">해당</option>
+                                            </select>
+                                        </div>
                                         <%--자격증 --%>
-                                        <div class="row col-md-12 particcertif-div">
+                                        <div class="row col-md-12 particcertif-div mt-1">
                                             <div class="particcertif-div-header">
                                                 <label for="particcertifCertif" class="form-label">
                                                     자격증
@@ -265,7 +284,7 @@
                                                 <option value="D">D</option>
                                             </select>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="counselLastCons" class="form-label" >최근상담일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
@@ -301,42 +320,42 @@
                                                 <option value="창업">창업</option>
                                             </select>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="counselInItCons" class="form-label">초기상담일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
                                                 <input type="text" class="form-control datepicker_on" id="counselInItCons" name="counselInItCons" placeholder="yyyy-mm-dd" aria-label="초기상담일">
                                             </div>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="counselJobEX" class="form-label">구직만료일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
                                                 <input type="text" class="form-control datepicker_on" id="counselJobEX" name="counselJobEX" placeholder="yyyy-mm-dd" aria-label="구직만료일">
                                             </div>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="counselIAPDate" class="form-label">IAP수립일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
                                                 <input type="text" class="form-control datepicker_on" id="counselIAPDate" name="counselIAPDate" placeholder="yyyy-mm-dd" aria-label="IAP수립일">
                                             </div>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="counselStepPro" class="form-label">3단계진입일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
                                                 <input type="text" class="form-control datepicker_on" id="counselStepPro" name="counselStepPro" placeholder="yyyy-mm-dd" aria-label="3단계진입일">
                                             </div>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="counselEXPDate" class="form-label">기간만료(예정)일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
                                                 <input type="text" class="form-control datepicker_on" id="counselEXPDate" name="counselEXPDate" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일">
                                             </div>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="counselClinic" class="form-label">클리닉실시일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
@@ -351,6 +370,19 @@
                                         <div class="w-auto">
                                             <label for="counselSalWant" class="form-label">희망급여(단위 만원)</label>
                                             <input type="number" class="form-control" id="counselSalWant" name="counselSalWant" min="0" max="1000" placeholder="단위 만원">
+                                        </div>
+                                        <%-- 교육내역 --%>
+                                        <div class="row col-md-12 education-div mt-1">
+                                            <div class="education-div-header">
+                                                <label for="education" class="form-label">
+                                                    교육내역
+                                                    <i class="bi bi-patch-plus-fill education-div-plus"></i>
+                                                    <i class="bi bi-patch-minus education-div-minus" style="display: none"></i>
+                                                </label>
+                                            </div>
+                                            <div class="education-div-content d-flex" id="education">
+                                                <input type="text" class="form-control w-auto education" name="educations" placeholder="교육 내역 입력">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -370,14 +402,14 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="pb-2 mb-1 " style="width: 11%">
+                                        <div class="pb-2 mb-1 datepicker-div">
                                             <label for="employmentStartDate" class="form-label">취창업일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
                                                 <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일">
                                             </div>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="employmentProcDate" class="form-label" >취창업처리일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
@@ -504,12 +536,13 @@
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
             const basicPartic = $("#basicPartic").val();
-            if(basicPartic != "" && basicPartic != undefined){
-                const form = $("#newParticipantsForm");
-                form.submit();
-            }
 
-            alertDefaultInfo("참여자 성명은 필수 입력 입니다.","참여자를 입력해주세요.");
+            if(basicPartic.length <= 0){
+                alertDefaultInfo("참여자 성명은 필수 입력 입니다.","참여자를 입력해주세요.");
+                return;
+            }
+            const form = $("#newParticipantsForm");
+            form.submit();
         });
         <%-- form 전달 끝 --%>
 

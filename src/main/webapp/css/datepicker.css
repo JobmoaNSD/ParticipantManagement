@@ -49,3 +49,7 @@
 .datepicker table tr td[data-day="6"] {
     color: #d9534f !important; /* 빨간색 텍스트 */
 }
+
+.datepicker-div{
+    width: 180px;
+}

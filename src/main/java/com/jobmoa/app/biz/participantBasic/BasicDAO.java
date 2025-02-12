@@ -30,7 +30,7 @@ public class BasicDAO {
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
         log.info("basic update SQL basicDTO : [{}]",basicDTO);
-        boolean flag = sqlSession.update(ns+"basicUpdate", basicDTO) > 0;
+        boolean flag = sqlSession.update(ns+basicDTO.getBasicCondition(), basicDTO) > 0;
         log.info("basic update SQL flag : [{}]",flag);
         return flag;
     }

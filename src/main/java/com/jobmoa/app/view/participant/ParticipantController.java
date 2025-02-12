@@ -2,16 +2,18 @@ package com.jobmoa.app.view.participant;
 
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.bean.PaginationBean;
+import com.jobmoa.app.biz.participantEducation.EducationDTO;
+import com.jobmoa.app.biz.participantEducation.EducationServiceImpl;
 import com.jobmoa.app.biz.particcertif.ParticcertifDTO;
-import com.jobmoa.app.biz.particcertif.ParticcertifService;
+import com.jobmoa.app.biz.particcertif.ParticcertifServiceImpl;
 import com.jobmoa.app.biz.participant.ParticipantDTO;
-import com.jobmoa.app.biz.participant.ParticipantService;
+import com.jobmoa.app.biz.participant.ParticipantServiceImpl;
 import com.jobmoa.app.biz.participantBasic.BasicDTO;
-import com.jobmoa.app.biz.participantBasic.BasicService;
+import com.jobmoa.app.biz.participantBasic.BasicServiceImpl;
 import com.jobmoa.app.biz.participantCounsel.CounselDTO;
-import com.jobmoa.app.biz.participantCounsel.CounselService;
+import com.jobmoa.app.biz.participantCounsel.CounselServiceImpl;
 import com.jobmoa.app.biz.participantEmployment.EmploymentDTO;
-import com.jobmoa.app.biz.participantEmployment.EmploymentService;
+import com.jobmoa.app.biz.participantEmployment.EmploymentServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +29,22 @@ import java.util.List;
 public class ParticipantController {
 
     @Autowired
-    private ParticipantService participantService;
+    private ParticipantServiceImpl participantService;
 
     @Autowired
-    private BasicService basicService;
+    private BasicServiceImpl basicService;
 
     @Autowired
-    private CounselService counselService;
+    private CounselServiceImpl counselService;
 
     @Autowired
-    private EmploymentService employmentService;
+    private EmploymentServiceImpl employmentService;
 
     @Autowired
-    private ParticcertifService particcertifService;
+    private ParticcertifServiceImpl particcertifService;
+
+    @Autowired
+    private EducationServiceImpl educationService;
 
     //Page 이동
     @GetMapping("participant.login")
@@ -118,7 +123,8 @@ public class ParticipantController {
 
     @PostMapping("newparticipant.login")
     public String newParticipantsController(Model model, HttpSession session,
-                                            BasicDTO basicDTO, CounselDTO counselDTO, EmploymentDTO employmentDTO, ParticcertifDTO particcertifDTO){
+                                            BasicDTO basicDTO, CounselDTO counselDTO, EmploymentDTO employmentDTO,
+                                            ParticcertifDTO particcertifDTO, EducationDTO educationDTO){
         log.info("-----------------------------------");
         log.info("Start newParticipantsInsertController");
         String url = "newparticipant.login";
@@ -160,6 +166,7 @@ public class ParticipantController {
             counselDTO.setCounselJobNo(jobno);
             employmentDTO.setEmploymentJobNo(jobno);
             particcertifDTO.setParticcertifJobNo(jobno);
+            educationDTO.setEducationJobNo(jobno);
             //3가지 정보들을 DB 저장한다.
             if(!counselService.insert(counselDTO)){
                 log.error("아이디 [{}], 지점 [{}] counselService insert error", loginId,loginBranch);
@@ -175,6 +182,11 @@ public class ParticipantController {
                 log.error("아이디 [{}], 지점 [{}] particcertifService insert error", loginId,loginBranch);
                 icon = "warning";
                 message += "\n 자격증정보 등록에 실패하였습니다.";
+            }
+            if(!educationService.insert(educationDTO)){
+                log.error("아이디 [{}], 지점 [{}] educationService insert error]", loginId,loginBranch);
+                icon = "warning";
+                message += "\n ";
             }
         }
 

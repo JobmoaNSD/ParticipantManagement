@@ -175,8 +175,8 @@
                             <div class="row card mt-3">
                                 <div class="card-header">
                                     <h1 class="card-title">취업정보</h1>
-                                    <input type="hidden" name="employmentEnployNo" value="${employment.employmentEnployNo}">
-                                    <input type="hidden" name="employmentJobNo" value="${employment.employmentJobNo}">
+                                    <input type="hidden" name="employmentEnployNo" value="${employment.employmentEnployNo == null ? 0 : employment.employmentEnployNo}">
+                                    <input type="hidden" name="employmentJobNo" value="${employment.employmentJobNo == null ? param.employmentJobNo : employment.employmentJobNo}">
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
                                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
@@ -186,14 +186,14 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="pb-2 mb-1 " style="width: 11%">
+                                        <div class="pb-2 mb-1 datepicker-div">
                                             <label for="employmentStartDate" class="form-label">취창업일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>
                                                 <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일" value="${employment.employmentStartDate}">
                                             </div>
                                         </div>
-                                        <div class="" style="width: 11%">
+                                        <div class="datepicker-div">
                                             <label for="employmentProcDate" class="form-label" >취창업처리일</label>
                                             <div class="input-group">
                                                 <i class="bi bi-calendar-date input-group-text"></i>

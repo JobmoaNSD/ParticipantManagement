@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ParticipantDAO">
-    <!-- 기본 쿼리 -->
+    <!-- 기본 쿼리 시작 -->
     <select id="selectAllParticipantBasic" resultType="participant">
         SELECT TOP (#{pageRows})
             participantJobNo,
@@ -42,8 +42,9 @@
         WHERE
             ParticipantUserid = #{participantUserid}
     </select>
+    <!-- 기본 쿼리 끝 -->
 
-    <!-- 검색 쿼리 -->
+    <!-- 검색 쿼리 시작 -->
     <select id="selectAllParticipantSearch" resultType="participant">
         SELECT TOP (#{pageRows})
             participantJobNo,
@@ -83,4 +84,56 @@
         WHERE
             ParticipantUserid = #{participantUserid} AND ${searchOption} like '%'+#{search}+'%'
     </select>
+    <!-- 검색 쿼리 끝 -->
+
+    <!-- 참여자 전체 자격증 확인용 쿼리 시작 -->
+    <select id="selectOneParticcertif" resultType="participant">
+        SELECT
+            COUNT(JOBNO) AS participantCount
+        From
+            J_PARTICCERTIF
+        WHERE
+            JOBNO=#{participantJobNo}
+    </select>
+    <!-- 참여자 전체 자격증 확인용 쿼리 끝 -->
+
+    <!-- 참여자 전체 상담 확인용 쿼리 시작 -->
+    <select id="selectOneCounsel" resultType="participant">
+        SELECT
+            COUNT(JOBNO) AS participantCount
+        From
+            J_COUNSEL
+        WHERE
+            JOBNO=#{participantJobNo}
+    </select>
+    <!-- 참여자 전체 상담 확인용 쿼리 끝 -->
+
+    <!-- 참여자 전체 취업 확인용 쿼리 시작 -->
+    <select id="selectOneEmployment" resultType="participant">
+        SELECT
+            COUNT(JOBNO) AS participantCount
+        From
+            J_EMPLOYMENT
+        WHERE
+            JOBNO=#{participantJobNo}
+    </select>
+    <!-- 참여자 전체 취업 확인용 쿼리 끝 -->
+
+    <!-- 삭제 쿼리 -->
+    <!-- 기본 정보 삭제 쿼리 -->
+    <delete id="participantBasicDelete">
+        DELETE FROM J_BASIC WHERE JOBNO = #{participantJobNo} AND USERID = #{participantUserid}
+    </delete>
+    <!-- 자격증 정보 삭제 쿼리 -->
+    <delete id="participantParticcertifDelete">
+        DELETE FROM J_PARTICCERTIF WHERE JOBNO = #{participantJobNo}
+    </delete>
+    <!-- 상담 정보 삭제 쿼리 -->
+    <delete id="participantCounselDelete">
+        DELETE FROM J_COUNSEL WHERE JOBNO = #{participantJobNo}
+    </delete>
+    <!-- 취업 정보 삭제 쿼리 -->
+    <delete id="participantEmploymentDelete">
+        DELETE FROM J_EMPLOYMENT WHERE JOBNO = #{participantJobNo}
+    </delete>
 </mapper>

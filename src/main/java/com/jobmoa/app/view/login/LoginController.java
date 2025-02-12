@@ -2,6 +2,7 @@ package com.jobmoa.app.view.login;
 
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.login.MemberDTO;
+import com.jobmoa.app.biz.login.MemberService;
 import com.jobmoa.app.biz.login.MemberServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;

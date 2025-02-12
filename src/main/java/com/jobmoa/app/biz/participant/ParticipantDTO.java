@@ -19,6 +19,8 @@ public class ParticipantDTO {
     private String participantSpecialty; // 전공
     private String participantAddress; // 주소(시,구)
     private String participantAntecedents; // 경력
+    private String participantSpecific; // 특정계층
+    private String participantPlacement; // 알선요청
     private boolean participantClose; // 마감여부
 
     //Counsel DB 컬럼
@@ -61,4 +63,6 @@ public class ParticipantDTO {
     private String searchOption;
     private String search;
     private String searchFilter;
+
+    private int participantCount;
 }
