@@ -46,6 +46,11 @@
                 location.href = url;
             });
         }
+        else if(icon == 'back'){
+            alertDefaultInfo(title, message).then(()=>{
+                window.history.back();
+            });
+        }
         else{
             alertDefaultWarning('잘못된 접근', '메인 페이지로 돌아갑니다.').then(()=>{
                 location.href = 'login.do';

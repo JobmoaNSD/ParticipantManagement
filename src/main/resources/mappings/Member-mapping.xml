@@ -4,17 +4,18 @@
 <mapper namespace="MemberDAO">
     <!-- 로그인 확인용 쿼리 -->
     <select id="loginSelect" resultType="member">
-        SELECT LOGINPK memberLoginPK,
-               BRANCH memberBranch,
-               USERNAME memberUserName,
-               ROLE memberRole,
-               USERID memberUserID,
-               USERPW memberUserPW,
-               MANAGER memberISManager,
-               REGDATE memberRegDate,
-               UNIQUENUMBER memberUniqueNumber
-        FROM dbo.J_LOGIN
-        WHERE USERID=#{memberUserID} AND USERPW=#{memberUserPW}
+        SELECT
+            전담자번호 memberLoginPK,
+            지점 memberBranch,
+            이름 memberUserName,
+            권한 memberRole,
+            아이디 memberUserID,
+            비밀번호 memberUserPW,
+            관리자권한 memberISManager,
+            등록일 memberRegDate,
+            고유번호 memberUniqueNumber
+        FROM J_참여자관리_로그인정보
+        WHERE 아이디=#{memberUserID} AND 비밀번호=#{memberUserPW}
     </select>
 
 </mapper>

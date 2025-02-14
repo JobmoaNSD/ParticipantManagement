@@ -5,8 +5,8 @@
 
     <!-- 자격증 등록용 쿼리 -->
     <insert id="particcertifInsert">
-        INSERT INTO J_PARTICCERTIF
-        (JOBNO, CERTIF)
+        INSERT INTO J_참여자관리_자격증
+        (구직번호, 자격증)
         VALUES
         <foreach collection="particcertifCertifs" item="data" separator=",">
             (
@@ -19,48 +19,48 @@
     <!-- 자격증 업데이트 용 쿼리 사용안하는 중 -->
     <update id="particcertifUpdate">
         UPDATE
-        J_PARTICCERTIF
+            J_참여자관리_자격증
         SET
-            CERTIF = #{particcertifCertif}
+            자격증 = #{particcertifCertif}
         WHERE
-            JOBNO = ${particcertifJobNo}
+            구직번호 = ${particcertifJobNo}
           AND
-            CERTIF = ${particcertifCertif}
+            자격증 = ${particcertifCertif}
     </update>
 
     <!-- 자격증 삭제용 쿼리 -->
     <delete id="particcertifDelete">
         DELETE
         FROM
-            J_PARTICCERTIF
+            J_참여자관리_자격증
         WHERE
-            JOBNO = ${particcertifJobNo}
+            구직번호 = ${particcertifJobNo}
     </delete>
 
     <!-- 참여자 자격증 찾기용 -->
     <select id="particcertifSelectOne" resultType="particcertif">
         SELECT
-            PARTNO AS particcertifPartNo,
-            JOBNO AS particcertifJobNo,
-            CERTIF AS particcertifCertif
+            자격증번호 AS particcertifPartNo,
+            구직번호 AS particcertifJobNo,
+            자격증 AS particcertifCertif
         From
-            J_PARTICCERTIF
+            J_참여자관리_자격증
         WHERE
-            JOBNO=#{particcertifJobNo}
+            구직번호=#{particcertifJobNo}
         AND
-            CERTIF=#{particcertifCertif}
+            자격증=#{particcertifCertif}
     </select>
 
     <!-- 참여자 전체 자격증 확인용 쿼리 -->
     <select id="particcertifSelectALLParticOne" resultType="particcertif">
         SELECT
-            PARTNO AS particcertifPartNo,
-            JOBNO AS particcertifJobNo,
-            CERTIF AS particcertifCertif
+            자격증번호 AS particcertifPartNo,
+            구직번호 AS particcertifJobNo,
+            자격증 AS particcertifCertif
         From
-            J_PARTICCERTIF
+            J_참여자관리_자격증
         WHERE
-            JOBNO=#{particcertifJobNo}
+            구직번호=#{particcertifJobNo}
     </select>
 
 </mapper>

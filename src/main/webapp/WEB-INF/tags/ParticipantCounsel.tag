@@ -1,0 +1,137 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ tag language="java" pageEncoding="UTF-8" %>
+<%@ attribute name="counsel" type="com.jobmoa.app.biz.participantCounsel.CounselDTO" %>
+
+<%-- 상담정보 입력 폼 시작 --%>
+<div class="row card mt-3">
+    <div class="card-header">
+        <h1 class="card-title">상담정보</h1>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
+                <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                <input type="hidden" id="counselJobNo" name="counselJobNo" value="${not empty param.counselJobNo ? param.counselJobNo : 0}">
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="pb-2 mb-1 w-auto">
+                <label for="counselJobSkill" class="form-label">취업역량</label>
+                <select class="form-select" aria-label="Default select example" id="counselJobSkill" name="counselJobSkill">
+                    <option value=""></option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselLastCons" class="form-label" >최근상담일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="counselLastCons" name="counselLastCons" placeholder="yyyy-mm-dd" aria-label="최근상담일" value="${not empty counsel ? counsel.counselLastCons:""}">
+                </div>
+            </div>
+            <div class="w-auto">
+                <label for="counselProgress" class="form-label">진행단계</label>
+                <select class="form-select" aria-label="Default select example" id="counselProgress" name="counselProgress">
+                    <option selected value="IAP 전">IAP 전</option>
+                    <option value="IAP 후">IAP 후</option>
+                    <option value="미고보">미고보</option>
+                    <option value="고보일반">고보일반</option>
+                    <option value="등록창업">등록창업</option>
+                    <option value="미등록창업">미등록창업</option>
+                    <option value="미취업사후관리">미취업사후관리</option>
+                    <option value="미취업사후종료">미취업사후종료</option>
+                    <option value="유예">유예</option>
+                    <option value="취소">취소</option>
+                    <option value="이관">이관</option>
+                    <option value="중단">중단</option>
+                </select>
+            </div>
+            <div class="w-auto">
+                <label for="counselSUCS" class="form-label">성공금_충족여부</label>
+                <select class="form-select" aria-label="Default select example" id="counselSUCS" name="counselSUCS">
+                    <option selected value="고보미가입취업">고보미가입취업</option>
+                    <option value="본인">본인</option>
+                    <option value="알선">알선</option>
+                    <option value="소개취업">소개취업</option>
+                    <option value="1.5배알선">1.5배알선</option>
+                    <option value="창업">창업</option>
+                </select>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselInItCons" class="form-label">초기상담일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="counselInItCons" name="counselInItCons" placeholder="yyyy-mm-dd" aria-label="초기상담일" value="${not empty counsel ? counsel.counselInItCons:""}">
+                </div>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselJobEX" class="form-label">구직만료일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="counselJobEX" name="counselJobEX" placeholder="yyyy-mm-dd" aria-label="구직만료일" value="${not empty counsel ? counsel.counselJobEX:""}">
+                </div>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselIAPDate" class="form-label">IAP수립일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="counselIAPDate" name="counselIAPDate" placeholder="yyyy-mm-dd" aria-label="IAP수립일" value="${not empty counsel ? counsel.counselIAPDate:""}">
+                </div>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselStepPro" class="form-label">3단계진입일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="counselStepPro" name="counselStepPro" placeholder="yyyy-mm-dd" aria-label="3단계진입일" value="${not empty counsel ? counsel.counselStepPro:""}">
+                </div>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselEXPDate" class="form-label">기간만료(예정)일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="counselEXPDate" name="counselEXPDate" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일" value="${not empty counsel ? counsel.counselEXPDate:""}">
+                </div>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselClinic" class="form-label">클리닉실시일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="counselClinic" name="counselClinic" placeholder="yyyy-mm-dd" aria-label="클리닉실시일" value="${not empty counsel ? counsel.counselClinic:""}">
+                </div>
+            </div>
+            <div class="w-auto">
+                <label for="counselJobWant" class="form-label">희망직무</label>
+                <input type="text" class="form-control" id="counselJobWant" name="counselJobWant">
+            </div>
+            <div class="w-auto">
+                <label for="counselSalWant" class="form-label">희망급여(단위 만원)</label>
+                <input type="number" class="form-control" id="counselSalWant" name="counselSalWant" min="0" max="1000" placeholder="단위 만원" value="${not empty counsel ? counsel.counselSalWant:""}">
+            </div>
+            <div class="col-md-1 w-auto">
+                <label for="counselPlacement" class="form-label">알선요청</label>
+                <select class="form-select" aria-label="Default select example" id="counselPlacement" name="counselPlacement">
+                    <option value="미해당">미해당</option>
+                    <option value="해당">해당</option>
+                </select>
+            </div>
+            <%-- 교육내역 --%>
+            <div class="row col-md-12 education-div mt-1">
+                <div class="education-div-header">
+                    <label for="education" class="form-label">
+                        교육내역
+                        <i class="bi bi-patch-plus-fill education-div-plus"></i>
+                        <i class="bi bi-patch-minus education-div-minus" style="display: none"></i>
+                    </label>
+                </div>
+                <div class="education-div-content d-flex" id="education">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%-- 상담정보 입력 폼 끝 --%>

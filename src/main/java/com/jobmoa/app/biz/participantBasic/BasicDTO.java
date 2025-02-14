@@ -7,7 +7,6 @@ public class BasicDTO {
     //DB 변수
     private int basicJobNo; // PK(구직번호)
     private String basicRegDate; // 등록일
-    private String basicBranch; // 지점
     private String basicUserid; // 전담자_계정
     private String basicPartic; // 참여자
     private String basicDob; // 생년월일
@@ -19,7 +18,6 @@ public class BasicDTO {
     private String basicAddress; // 주소(시,구)
     private String basicAntecedents; // 경력
     private String basicSpecific; // 특정계층
-    private String basicPlacement; // 알선요청
     private boolean basicClose; // 마감여부
 
     //join 변수

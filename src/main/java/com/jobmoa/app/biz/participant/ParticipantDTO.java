@@ -27,7 +27,6 @@ public class ParticipantDTO {
     private String participantJobSkill; // 취업역량
     private String participantLastCons; // 최근상담일
     private String participantProgress; // 진행단계
-    private String participantSUCS; // 성공금충족여부
     private String participantInItCons; // 초기상담일
     private String participantJobEX; // 구직만료일
     private String participantIAPDate; // IAP수료일

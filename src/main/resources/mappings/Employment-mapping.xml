@@ -4,8 +4,8 @@
 <mapper namespace="EmploymentDAO">
     <!-- 취업정보 저장용 쿼리 -->
     <insert id="employmentInsert">
-        INSERT INTO J_EMPLOYMENT
-        (JOBNO, STARTDATE, PROCDATE, EMPTYPE, EMPLOYER, SALARY, JOBROLE, INCENTIVE, JOBCAT, MEMO, OTHERS)
+        INSERT INTO J_참여자관리
+        (취창업일, 취창업처리일, 취업유형, 취업처, 임금, 직무, 취업인센티브_구분, 일경험분류, 메모, 기타)
         VALUES
             (
                 #{employmentJobNo},
@@ -25,44 +25,43 @@
     <!-- 취업정보 업데이트 쿼리 -->
     <update id="employmentUpdate">
         UPDATE
-            J_EMPLOYMENT
+            J_참여자관리
         SET
-            STARTDATE = #{employmentStartDate},
-            PROCDATE = #{employmentProcDate},
-            EMPTYPE = #{employmentEmpType},
-            EMPLOYER = #{employmentLoyer},
-            SALARY = #{employmentSalary},
-            JOBROLE = #{employmentJobRole},
-            INCENTIVE = #{employmentIncentive},
-            JOBCAT = #{employmentJobcat},
-            MEMO = #{employmentMemo},
-            OTHERS = #{employmentOthers}
+            취창업일 = #{employmentStartDate},
+            취창업처리일 = #{employmentProcDate},
+            취업유형 = #{employmentEmpType},
+            취업처 = #{employmentLoyer},
+            임금 = #{employmentSalary},
+            직무 = #{employmentJobRole},
+            취업인센티브_구분 = #{employmentIncentive},
+            일경험분류 = #{employmentJobcat},
+            메모 = #{employmentMemo},
+            기타 = #{employmentOthers}
         WHERE
-            ENPLOYNO = #{employmentEnployNo}
+            구직번호 = #{employmentJobNo}
     </update>
 
     <!-- 취업정보 하나 확인용 쿼리 -->
     <select id="employmentSelectOne" resultType="employment">
         SELECT
-            ENPLOYNO AS employmentEnployNo,
-            JOBNO AS employmentJobNo,
+            구직번호 AS employmentJobNo,
             CASE
-                WHEN STARTDATE >= DATEADD(YEAR, -100, GETDATE()) THEN STARTDATE
+                WHEN 취창업일 >= DATEADD(YEAR, -100, GETDATE()) THEN 취창업일
                 END AS employmentStartDate,
             CASE
-                WHEN PROCDATE >= DATEADD(YEAR, -100, GETDATE()) THEN PROCDATE
+                WHEN 취창업처리일 >= DATEADD(YEAR, -100, GETDATE()) THEN 취창업처리일
                 END  AS employmentProcDate,
-            EMPTYPE AS employmentEmpType,
-            EMPLOYER AS employmentLoyer,
-            SALARY AS employmentSalary,
-            JOBROLE AS employmentJobRole,
-            INCENTIVE AS employmentIncentive,
-            JOBCAT AS employmentJobcat,
-            MEMO AS employmentMemo,
-            OTHERS AS employmentOthers
+            취업유형 AS employmentEmpType,
+            취업처 AS employmentLoyer,
+            임금 AS employmentSalary,
+            직무 AS employmentJobRole,
+            취업인센티브_구분 AS employmentIncentive,
+            일경험분류 AS employmentJobcat,
+            메모 AS employmentMemo,
+            기타 AS employmentOthers
         FROM
-            J_EMPLOYMENT
+            J_참여자관리
         WHERE
-            JOBNO=#{employmentJobNo}
+            구직번호=#{employmentJobNo}
     </select>
 </mapper>
