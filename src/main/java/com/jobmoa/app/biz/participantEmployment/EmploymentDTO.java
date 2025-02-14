@@ -6,8 +6,9 @@ import lombok.Data;
 public class EmploymentDTO {
 
     // DB 변수(컬럼)
-    private int employmentEnployNo; // 취업번호
     private int employmentJobNo; // 구직번호
+    private String employmentBranch; // 지점
+    private String employmentUserid; // 전담자_계정
     private String employmentStartDate; // 취창업일
     private String employmentProcDate; // 취창업처리일
     private String employmentEmpType; // 취업유형

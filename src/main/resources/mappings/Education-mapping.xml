@@ -5,8 +5,8 @@
 <mapper namespace="EducationDAO">
     <!-- 교육내역 등록용 쿼리 -->
     <insert id="educationInsert">
-        INSERT INTO J_EDUCATION
-        (JOBNO, EDUCATION)
+        INSERT INTO J_참여자관리_직업훈련
+        (구직번호, 직업훈련)
         VALUES
         <foreach collection="educations" item="data" separator=",">
             (
@@ -19,47 +19,47 @@
     <!-- 교육내역 업데이트 용 쿼리 사용안하는 중 -->
     <update id="educationUpdate">
         UPDATE
-            J_EDUCATION
+            J_참여자관리_직업훈련
         SET
-            EDUCATION = #{education}
+            직업훈련 = #{education}
         WHERE
-            JOBNO = ${educationJobNo}
+            구직번호 = ${educationJobNo}
           AND
-            EDUCATION = ${education}
+            직업훈련 = ${education}
     </update>
 
     <!-- 교육내역 삭제용 쿼리 -->
     <delete id="educationDelete">
         DELETE
         FROM
-            J_EDUCATION
+            J_참여자관리_직업훈련
         WHERE
-            JOBNO = ${educationJobNo}
+            구직번호 = ${educationJobNo}
     </delete>
 
     <!-- 참여자 교육내역 찾기용 -->
     <select id="educationSelectOne" resultType="education">
         SELECT
-            EDUCATIONNO AS educationNo,
-            JOBNO AS educationJobNo,
-            EDUCATION AS education
+            직업훈련번호 AS educationNo,
+            구직번호 AS educationJobNo,
+            직업훈련 AS education
         From
-            J_education
+            J_참여자관리_직업훈련
         WHERE
-            JOBNO=#{educationJobNo}
+            구직번호=#{educationJobNo}
           AND
-            EDUCATION=#{education}
+            직업훈련=#{education}
     </select>
 
     <!-- 참여자 전체 교육내역 확인용 쿼리 -->
     <select id="educationSelectALLOne" resultType="education">
         SELECT
-            EDUCATIONNO AS educationNo,
-            JOBNO AS educationJobNo,
-            EDUCATION AS education
+            직업훈련번호 AS educationNo,
+            구직번호 AS educationJobNo,
+            직업훈련 AS education
         From
-            J_education
+            J_참여자관리_직업훈련
         WHERE
-            JOBNO=#{educationJobNo}
+            구직번호=#{educationJobNo}
     </select>
 </mapper>

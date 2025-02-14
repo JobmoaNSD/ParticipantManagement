@@ -30,6 +30,27 @@ $(document).ready(function () {
         particcertif_div_content.children().last().remove();
         particcertifDivLength();
     });
+
 })
 
+function specialty(specialtyArr){
+    const particcertif_div_content = $(".particcertif-div-content");
 
+    if(specialtyArr == null || specialtyArr == '' || specialtyArr == undefined) {
+        const newDiv = $('<input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertifs" placeholder="자격증 입력">');
+        particcertif_div_content.append(newDiv);
+    }
+    //전달 받은 배열 만큼 div 태그를 생성한다.
+    else if(specialtyArr.length > 0 && specialtyArr != null) {
+        specialtyArr = specialtyArr.map(item => item);
+        console.log(specialtyArr);
+        specialtyArr.forEach((item) => {
+            // console.log(item.particcertifPartNo);
+            let newDiv = $('<input type="text" class="form-control w-auto particcertifCertif" name="particcertifCertifs" placeholder="자격증 입력" value="'+item.particcertif+'">'
+                + '<input type="hidden" name="particcertifPartNos" placeholder="자격증 PK" value="'+item.particcertifPartNo+'">');
+
+            particcertif_div_content.append(newDiv);
+        });
+    }
+
+}

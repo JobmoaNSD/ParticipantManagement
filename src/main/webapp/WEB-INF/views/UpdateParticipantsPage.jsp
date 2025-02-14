@@ -23,9 +23,6 @@
             content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard"
     />
     <!--end::Primary Meta Tags-->
-    <!-- jQuery JS -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
     <!--begin::Fonts-->
     <link
             rel="stylesheet"
@@ -67,63 +64,6 @@
             integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
             crossorigin="anonymous"
     />
-    <!-- apexcharts -->
-    <script
-            src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
-            integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
-            crossorigin="anonymous"
-    ></script>
-
-    <!-- sortablejs -->
-    <script
-            src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
-            integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ="
-            crossorigin="anonymous"
-    ></script>
-    <!--begin::Third Party Plugin(OverlayScrollbars)-->
-    <script
-            src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
-            integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
-            crossorigin="anonymous"
-    ></script>
-    <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-    <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-    ></script>
-    <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-    <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-            crossorigin="anonymous"
-    ></script>
-
-    <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="js/adminlte.js"></script>
-    <!--end::Required Plugin(AdminLTE)-->
-
-    <!-- datepicker CSS JS -->
-    <!-- Bootstrap Datepicker 로드 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="js/datepickerJS.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css">
-    <link rel="stylesheet" href="css/datepicker.css">
-
-    <!-- recommend JS -->
-    <script src="js/recommendJS.js"></script>
-    <link rel="stylesheet" href="css/recommend.css">
-
-
-    <!-- selectOption JS -->
-    <script src="js/selectOptionJS.js"></script>
-
-    <!-- sweetalert2 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <script src="js/sweetAlert.js"></script>
-
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -131,7 +71,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 기본정보 수정"/>
+    <mytag:gnb gnb_main_header="Sample Main header" gnb_sub_header="Sample Sub header"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->
@@ -139,33 +79,40 @@
         <!--begin::App Content-->
         <div class="app-content">
             <!--begin::Main content-->
-            <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
             <div class="container-fluid">
-                <div class="row pt-3">
-                    <div class="col-md-12">
-                        <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updatebasic.login" class="form-horizontal">
-                            <%-- 참여자 수정 버튼 시작 --%>
-                            <div class="row pb-2 mb-1">
-                                <div class="col-12 text-end">
-                                    <button type="button" class="btn btn-primary" id="btn_check">
-                                        참여자 수정
-                                    </button>
+                <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
+                <div class="container-fluid">
+                    <div class="row pt-3">
+                        <div class="col-md-12">
+                            <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/participantUpdate.login" class="form-horizontal">
+                                <%-- 참여자 수정 버튼 시작 --%>
+                                <div class="row pb-2 mb-1">
+                                    <div class="col-12 text-end">
+                                        <button type="button" class="btn btn-primary" id="btn_check">
+                                            참여자 수정
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <%-- 참여자 수정 버튼 끝 --%>
+                                <%-- 참여자 수정 버튼 끝 --%>
+                                <%-- 기본정보 입력 tag --%>
+                                <mytag:ParticipantBasic basic="${basic}"/>
 
-                            <%-- 참여자 기본정보 입력 tag --%>
-                            <mytag:ParticipantBasic basic="${basic}"/>
-                        </form>
+                                <%-- 상담정보 입력 tag --%>
+                                <mytag:ParticipantCounsel counsel="${consult}"/>
+
+                                <%-- 취업정보 입력 tag --%>
+                                <mytag:ParticipantEmployment employment="${employment}"/>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <!--end::Main content-->
             </div>
-            <!--end::Main content-->
-        </div>
-        <!--end::App Content-->
+            <!--end::App Content-->
     </main>
     <!--end::App Main-->
     <!--end:::App main content-->
+
     <!--begin::Footer-->
     <mytag:footer/>
     <!--end::Footer-->
@@ -174,7 +121,27 @@
 
 </body>
 <!--begin::Script-->
-<!--begin::OverlayScrollbars Configure-->
+<!--begin::Third Party Plugin(OverlayScrollbars)-->
+<script
+        src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
+        integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
+        crossorigin="anonymous"
+></script>
+<!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+<script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"
+></script>
+<!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"
+></script>
+<!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+<script src="js/adminlte.js"></script>
+<!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
 <script>
     const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
     const Default = {
@@ -182,8 +149,8 @@
         scrollbarAutoHide: 'leave',
         scrollbarClickScroll: true,
     };
-    document.addEventListener('DOMContentLoaded', function () {
-        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+    $.on('DOMContentLoaded', function () {
+        const sidebarWrapper = $.select(SELECTOR_SIDEBAR_WRAPPER);
         if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
             OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
                 scrollbars: {
@@ -199,8 +166,14 @@
 
 <!-- OPTIONAL SCRIPTS -->
 <!-- sortablejs -->
+<script
+        src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
+        integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ="
+        crossorigin="anonymous"
+></script>
+<!-- sortablejs -->
 <script>
-    const connectedSortables = document.querySelectorAll('.connectedSortable');
+    const connectedSortables = $.select('.connectedSortable');
     connectedSortables.forEach((connectedSortable) => {
         let sortable = new Sortable(connectedSortable, {
             group: 'shared',
@@ -208,11 +181,18 @@
         });
     });
 
-    const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
+    const cardHeaders = $.select('.connectedSortable .card-header');
     cardHeaders.forEach((cardHeader) => {
         cardHeader.style.cursor = 'move';
     });
 </script>
+<!-- apexcharts -->
+<script
+        src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
+        integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
+        crossorigin="anonymous"
+></script>
+
 
 <script>
     $(document).ready(function () {
@@ -250,8 +230,55 @@
 
         //특정계층 목록 내용 변경
         selectOption($("#basicSpecific"),"${basic.basicSpecific}");
+
+        //직업훈련 배열을 백단에서 전달받습니다.
+        let educationArr = JSON.parse('${educations}') ;
+        education(educationArr);
+
+        <%-- 목록 내용 변경 시작 --%>
+        //취업역량
+        selectOption($("#counselJobSkill"),"${counsel.counselJobSkill}");
+
+        //진행단계 목록 내용 변경
+        selectOption($("#counselProgress"),"${counsel.counselProgress}");
+
+        //알선요청 목록 내용 변경
+        selectOption($("#counselPlacement"),"${counsel.counselPlacement}");
+        <%-- 목록 내용 변경 끝 --%>
+
+        <%-- 각 ID 별 변수 --%>
+        //취업유형
+        const employmentEmpType = $("#employmentEmpType");
+        //취업인센티브
+        const employmentIncentive = $("#employmentIncentive");
+        //일경험
+        const employmentJobcat = $("#employmentJobcat");
+        //진행단계
+        const counselProgress = $("#counselProgress");
+
+        <%-- 목록 내용 변경 시작 --%>
+        //진행단계
+        selectOption(counselProgress,"${counselProgress}");
+
+        //취업유형
+        selectOption(employmentEmpType,"${employment.employmentEmpType}");
+
+        //취업인센티브_구분
+        selectOption(employmentIncentive,"${employment.employmentIncentive}");
+
+        //일경험 구분
+        selectOption(employmentJobcat,"${employment.employmentJobcat}");
+        <%-- 목록 내용 변경 끝 --%>
+
+        <%-- 취업유형 변경 시작 --%>
+        changeSelect(counselProgress, employmentEmpType,"${counselProgress}");
+        <%-- 취업유형 변경 끝 --%>
+
     });
 </script>
+
+<!-- educationDiv JS -->
+<script src="js/educationDiv.js"></script>
 
 <!-- particcertifDiv JS -->
 <script src="js/particcertifDiv.js"></script>

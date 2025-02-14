@@ -32,4 +32,22 @@ $(document).ready(function () {
     });
 })
 
+function education(educationArr){
+    const education_div_content = $(".education-div-content");
+    if(educationArr == null || educationArr == '' || educationArr == undefined) {
+        const newDiv = $('<input type="text" class="form-control w-auto education" name="educations" placeholder="교육 내역 입력">');
+        education_div_content.append(newDiv);
+    }
+    //전달 받은 배열 만큼 div 태그를 생성한다.
+    else if(educationArr.length > 0 && educationArr != null) {
+        educationArr = educationArr.map(item => item);
+        console.log(educationArr);
+
+        educationArr.forEach((item) => {
+            let newDiv = $('<input type="text" class="form-control w-auto education" name="educations" placeholder="교육 내역 입력" value="'+item.education+'">'
+                + '<input type="hidden" name="educationNos" placeholder="교육내역 PK" value="'+item.educationNo+'">');
+            education_div_content.append(newDiv);
+        });
+    }
+}
 

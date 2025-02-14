@@ -5,33 +5,33 @@
     <!-- 기본 쿼리 시작 -->
     <select id="selectAllParticipantBasic" resultType="participant">
         SELECT TOP (#{pageRows})
-            participantJobNo,
-            participantPartic,
-            participantGender,
-            participantLastCons,
-            participantProgress,
-            participantDob,
-            participantRegDate,
-            participantClose
+            구직번호 AS participantJobNo,
+            참여자 AS participantPartic,
+            성별 AS participantGender,
+            최근상담일 AS participantLastCons,
+            진행단계 AS participantProgress,
+            생년월일 AS participantDob,
+            등록일 AS participantRegDate,
+            마감 AS participantClose
         FROM (
                  SELECT
-                     ROW_NUMBER() OVER (ORDER BY ParticipantJobNo DESC) AS RowNum,
-                     ParticipantJobNo,
-                     ParticipantPartic,
-                     ParticipantGender,
+                     ROW_NUMBER() OVER (ORDER BY 구직번호 DESC) AS RowNum,
+                     구직번호,
+                     참여자,
+                     성별,
                      CASE
-                         WHEN ParticipantLastCons >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantLastCons
-                         END AS ParticipantLastCons,
-                     ParticipantProgress,
+                         WHEN 최근상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 최근상담일
+                         END AS 최근상담일,
+                     진행단계,
                      CASE
-                         WHEN ParticipantDob >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantDob
-                         END AS ParticipantDob,
+                         WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
+                         END AS 생년월일,
                      CASE
-                         WHEN ParticipantRegDate >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantRegDate
-                         END AS ParticipantRegDate,
-                     ParticipantClose
-                 FROM PARTICIPANTS_VIEW
-                 WHERE ParticipantUserid = #{participantUserid} ) AS SUB_QUERY
+                         WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
+                         END AS 등록일,
+                     마감
+                 FROM J_참여자관리
+                 WHERE 전담자_계정 = #{participantUserid} ) AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
 
@@ -47,93 +47,74 @@
     <!-- 검색 쿼리 시작 -->
     <select id="selectAllParticipantSearch" resultType="participant">
         SELECT TOP (#{pageRows})
-            participantJobNo,
-            participantPartic,
-            participantGender,
-            participantLastCons,
-            participantProgress,
-            participantDob,
-            participantRegDate,
-            participantClose
+            구직번호 AS participantJobNo,
+            참여자 AS participantPartic,
+            성별 AS participantGender,
+            최근상담일 AS participantLastCons,
+            진행단계 AS participantProgress,
+            생년월일 AS participantDob,
+            등록일 AS participantRegDate,
+            마감 AS participantClose
         FROM (
                  SELECT
-                     ROW_NUMBER() OVER (ORDER BY ParticipantJobNo DESC) AS RowNum,
-                     ParticipantJobNo,
-                     ParticipantPartic,
-                     ParticipantGender,
+                     ROW_NUMBER() OVER (ORDER BY 구직번호 DESC) AS RowNum,
+                     구직번호,
+                     참여자,
+                     성별,
                      CASE
-                         WHEN ParticipantLastCons >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantLastCons
-                         END AS ParticipantLastCons,
-                     ParticipantProgress,
+                         WHEN 최근상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 최근상담일
+                         END AS 최근상담일,
+                     진행단계,
                      CASE
-                         WHEN ParticipantDob >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantDob
-                         END AS ParticipantDob,
+                         WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
+                         END AS 생년월일,
                      CASE
-                         WHEN ParticipantRegDate >= DATEADD(YEAR, -100, GETDATE()) THEN ParticipantRegDate
-                         END AS ParticipantRegDate,
-                     ParticipantClose
-                 FROM PARTICIPANTS_VIEW
-                 WHERE ParticipantUserid = #{participantUserid} AND ${searchOption} like '%'+#{search}+'%') AS SUB_QUERY
+                         WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
+                         END AS 등록일,
+                     마감
+                 FROM J_참여자관리
+                 WHERE 전담자_계정 = #{participantUserid} AND ${searchOption} like '%'+#{search}+'%') AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
 
     <select id="selectCountParticipantSearch" resultType="participant">
         SELECT
-            COUNT(ParticipantJobNo) totalCount
-        FROM PARTICIPANTS_VIEW
+            COUNT(구직번호) totalCount
+        FROM J_참여자관리
         WHERE
-            ParticipantUserid = #{participantUserid} AND ${searchOption} like '%'+#{search}+'%'
+            전담자_계정 = #{participantUserid} AND ${searchOption} like '%'+#{search}+'%'
     </select>
     <!-- 검색 쿼리 끝 -->
 
     <!-- 참여자 전체 자격증 확인용 쿼리 시작 -->
     <select id="selectOneParticcertif" resultType="participant">
         SELECT
-            COUNT(JOBNO) AS participantCount
+            COUNT(구직번호) AS participantCount
         From
-            J_PARTICCERTIF
+            J_참여자관리_자격증
         WHERE
-            JOBNO=#{participantJobNo}
+            구직번호=#{participantJobNo}
     </select>
     <!-- 참여자 전체 자격증 확인용 쿼리 끝 -->
 
     <!-- 참여자 전체 상담 확인용 쿼리 시작 -->
     <select id="selectOneCounsel" resultType="participant">
         SELECT
-            COUNT(JOBNO) AS participantCount
+            COUNT(구직번호) AS participantCount
         From
-            J_COUNSEL
+            J_참여자관리
         WHERE
-            JOBNO=#{participantJobNo}
+            구직번호=#{participantJobNo}
     </select>
     <!-- 참여자 전체 상담 확인용 쿼리 끝 -->
 
-    <!-- 참여자 전체 취업 확인용 쿼리 시작 -->
-    <select id="selectOneEmployment" resultType="participant">
-        SELECT
-            COUNT(JOBNO) AS participantCount
-        From
-            J_EMPLOYMENT
-        WHERE
-            JOBNO=#{participantJobNo}
-    </select>
-    <!-- 참여자 전체 취업 확인용 쿼리 끝 -->
-
     <!-- 삭제 쿼리 -->
     <!-- 기본 정보 삭제 쿼리 -->
-    <delete id="participantBasicDelete">
-        DELETE FROM J_BASIC WHERE JOBNO = #{participantJobNo} AND USERID = #{participantUserid}
+    <delete id="participantDelete">
+        DELETE FROM J_참여자관리 WHERE 구직번호 = #{participantJobNo} AND 전담자_계정 = #{participantUserid}
     </delete>
     <!-- 자격증 정보 삭제 쿼리 -->
     <delete id="participantParticcertifDelete">
-        DELETE FROM J_PARTICCERTIF WHERE JOBNO = #{participantJobNo}
-    </delete>
-    <!-- 상담 정보 삭제 쿼리 -->
-    <delete id="participantCounselDelete">
-        DELETE FROM J_COUNSEL WHERE JOBNO = #{participantJobNo}
-    </delete>
-    <!-- 취업 정보 삭제 쿼리 -->
-    <delete id="participantEmploymentDelete">
-        DELETE FROM J_EMPLOYMENT WHERE JOBNO = #{participantJobNo}
+        DELETE FROM J_참여자관리_자격증 WHERE 구직번호 = #{participantJobNo}
     </delete>
 </mapper>

@@ -4,11 +4,10 @@
 <mapper namespace="BasicDAO">
     <!-- 기본정보 등록 쿼리문 -->
     <insert id="basicInsert">
-        INSERT INTO J_BASIC
-        (BRANCH, USERID, PARTIC, DOB, GENDER, RECRUIT, PARTTYPE, SCHOOL, SPECIALTY, ADDRESS, SPECIFIC, PLACEMENT, ANTECEDENTS)
+        INSERT INTO J_참여자관리
+        (전담자_계정, 참여자, 생년월일, 성별, 모집경로, 참여유형, 학교명, 전공, 주소, 특정계층, 경력)
         VALUES
         (
-         #{basicBranch},
          #{basicUserid},
          #{basicPartic},
          #{basicDob},
@@ -19,7 +18,6 @@
          #{basicSpecialty},
          #{basicAddress},
          #{basicSpecific},
-         #{basicPlacement},
          #{basicAntecedents}
         )
     </insert>
@@ -27,84 +25,82 @@
     <!-- 기본 정보 업데이트 쿼리문 -->
     <update id="basicUpdate">
         UPDATE
-            J_BASIC
+            J_참여자관리
         SET
-            PARTIC = #{basicPartic},
-            DOB = #{basicDob},
-            GENDER = #{basicGender},
-            RECRUIT = #{basicRecruit},
-            PARTTYPE = #{basicPartType},
-            SCHOOL = #{basicSchool},
-            SPECIALTY = #{basicSpecialty},
-            ADDRESS = #{basicAddress},
-            SPECIFIC = #{basicSpecific},
-            PLACEMENT = #{basicPlacement},
-            ANTECEDENTS = #{basicAntecedents}
+            참여자 = #{basicPartic},
+            생년월일 = #{basicDob},
+            성별 = #{basicGender},
+            모집경로 = #{basicRecruit},
+            참여유형 = #{basicPartType},
+            학교명 = #{basicSchool},
+            전공 = #{basicSpecialty},
+            주소 = #{basicAddress},
+            특정계층 = #{basicSpecific},
+            경력 = #{basicAntecedents}
         WHERE
-            JOBNO = #{basicJobNo}
+            구직번호 = #{basicJobNo} AND 전담자_계정 = #{basicUserid}
     </update>
 
     <!-- 마감 여부 update 쿼리 -->
     <update id="basicCloseUpdate">
         UPDATE
-            J_BASIC
+            J_참여자관리
         SET
-            [CLOSE] = #{basicClose}
+            [마감] = #{basicClose}
         WHERE
-            JOBNO = #{basicJobNo}
+            구직번호 = #{basicJobNo}
     </update>
 
     <!-- 마감 여부 확인용 쿼리 -->
     <select id="basicSelectClose" resultType="basic">
         SELECT
-            JOBNO AS basicJobNo,
-            [CLOSE] AS basicClose
+            구직번호 AS basicJobNo,
+            [마감] AS basicClose
         FROM
-            J_BASIC
+            J_참여자관리
         WHERE
-            JOBNO = #{basicJobNo}
+            구직번호 = #{basicJobNo}
     </select>
 
     <!-- 등록전 최신에 등록된 구직번호 확인용 쿼리 -->
     <select id="basicSelectJOBNO" resultType="basic">
-        SELECT TOP(1) JOBNO as basicJobNo FROM J_BASIC WHERE USERID = #{basicUserid} ORDER BY JOBNO DESC;
+        SELECT TOP(1) 구직번호 as basicJobNo FROM J_참여자관리 WHERE 전담자_계정 = #{basicUserid} ORDER BY 구직번호 DESC;
     </select>
 
     <!-- 전담자 아이디 구직번호 내 참여자인지 확인용 -->
     <select id="basicSelectOneJOBNO" resultType="basic">
         SELECT
-            JOBNO AS basicJobNo
+            구직번호 AS basicJobNo
         FROM
-            J_BASIC
+            J_참여자관리
         WHERE
-            JOBNO=#{basicJobNo}
+            구직번호=#{basicJobNo}
           AND
-            USERID=#{basicUserid}
+            전담자_계정=#{basicUserid}
     </select>
 
     <!-- 구직번호로 참여자 하나 검색하는 용 -->
     <select id="basicSelectPKONE" resultType="basic">
         SELECT
-            JOBNO AS basicJobNo,
-            PARTIC AS basicPartic,
+            구직번호 AS basicJobNo,
+            참여자 AS basicPartic,
             CASE
-                WHEN DOB >= DATEADD(YEAR, -100, GETDATE()) THEN DOB
+                WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
                 END AS basicDob,
-            GENDER AS basicGender,
-            RECRUIT AS basicRecruit,
-            PARTTYPE AS basicParttype,
-            ADDRESS AS basicAddress,
-            SCHOOL AS basicSchool,
-            SPECIALTY AS basicSpecialty,
-            ANTECEDENTS AS basicAntecedents,
-            SPECIFIC AS basicSpecific,
-            PLACEMENT AS basicPlacement
+            성별 AS basicGender,
+            참여자 AS basicRecruit,
+            참여유형 AS basicParttype,
+            주소 AS basicAddress,
+            학교명 AS basicSchool,
+            전공 AS basicSpecialty,
+            경력 AS basicAntecedents,
+            특정계층 AS basicSpecific
         FROM
-            J_BASIC
+            J_참여자관리
         WHERE
-            JOBNO=#{basicJobNo}
+            구직번호=#{basicJobNo}
           AND
-            USERID=#{basicUserid}
+            전담자_계정=#{basicUserid}
     </select>
     
 </mapper>

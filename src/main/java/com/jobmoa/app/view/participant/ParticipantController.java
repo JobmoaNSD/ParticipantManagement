@@ -14,6 +14,7 @@ import com.jobmoa.app.biz.participantCounsel.CounselDTO;
 import com.jobmoa.app.biz.participantCounsel.CounselServiceImpl;
 import com.jobmoa.app.biz.participantEmployment.EmploymentDTO;
 import com.jobmoa.app.biz.participantEmployment.EmploymentServiceImpl;
+import com.jobmoa.app.view.function.InfoBean;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,60 +142,20 @@ public class ParticipantController {
         log.info("loginId, loginBranch: [{}], [{}]", loginId,loginBranch);
         // 각 로그인 정보는 기본정보에 담아준다.
         basicDTO.setBasicUserid(loginId);
-        basicDTO.setBasicBranch(loginBranch);
 
         //기본정보는 참여자가 비어 있지 않다면 DAO로 바로 넘겨준다.
         if(basicDTO != null && basicDTO.getBasicPartic() != null){
+
             //기본정보의 저장에 문제가 있다면 False 를 반환 받아 나머지 정보는 저장되지 않게 한다.
-            boolean result = basicService.insert(basicDTO);
-            if(!result){
-                log.error("basicService insert error [{}],[{}]",result,basicDTO);
+            if(!basicService.insert(basicDTO,counselDTO,employmentDTO,particcertifDTO,educationDTO)){
+                log.error("basicService insert error [{}]",basicDTO);
                 message = "기본정보 등록에 실패하였습니다.";
                 icon = "error";
                 log.error(message);
-                model.addAttribute("url", url);
-                model.addAttribute("icon", icon);
-                model.addAttribute("title", title);
-                model.addAttribute("message", message);
-                return "views/info";
-            }
-
-            //기본정보가 문제없이 저장되었다면 JOBNO를 받아 변수에 추가한다.
-            basicDTO.setBasicCondition("basicSelectJOBNO");
-            int jobno = basicService.selectOne(basicDTO).getBasicJobNo();
-            //JOBNO를 상담정보, 취업정보, 자격증정보에 각각 추가한다.
-            counselDTO.setCounselJobNo(jobno);
-            employmentDTO.setEmploymentJobNo(jobno);
-            particcertifDTO.setParticcertifJobNo(jobno);
-            educationDTO.setEducationJobNo(jobno);
-            //3가지 정보들을 DB 저장한다.
-            if(!counselService.insert(counselDTO)){
-                log.error("아이디 [{}], 지점 [{}] counselService insert error", loginId,loginBranch);
-                icon = "warning";
-                message += "\n 상담정보 등록에 실패하였습니다.";
-            }
-            if(!employmentService.insert(employmentDTO)){
-                log.error("아이디 [{}], 지점 [{}] employmentService insert error", loginId,loginBranch);
-                icon = "warning";
-                message += "\n 취업정보 등록에 실패하였습니다.";
-            }
-            if(!particcertifService.insert(particcertifDTO)){
-                log.error("아이디 [{}], 지점 [{}] particcertifService insert error", loginId,loginBranch);
-                icon = "warning";
-                message += "\n 자격증정보 등록에 실패하였습니다.";
-            }
-            if(!educationService.insert(educationDTO)){
-                log.error("아이디 [{}], 지점 [{}] educationService insert error]", loginId,loginBranch);
-                icon = "warning";
-                message += "\n ";
             }
         }
 
-        model.addAttribute("url", url);
-        model.addAttribute("icon", icon);
-        model.addAttribute("title", title);
-        model.addAttribute("message", message);
-
+        InfoBean.info(model,url,icon,title,message);
         log.info("-----------------------------------");
         return "views/info";
     }
