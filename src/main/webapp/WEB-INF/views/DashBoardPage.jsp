@@ -291,10 +291,18 @@
 
                             <div class="col-md-4">
                                 <div class="row h-100">
-                                    <div class="flex-fill ex-chart-bar1 h-100">
+                                    <div class="flex-fill ex-chart-bar1 h-100 col-md-6">
                                         <div class="text-center d-flex justify-content-center h-100">
                                             <%--FIXME ex-chart-bar1 --%>
                                             <canvas id="ex-chart-bar1"></canvas>
+
+                                        </div>
+                                    </div>
+                                    <div class="flex-fill ex-chart-barZZ h-100 col-md-6">
+                                        <div class="text-center d-flex justify-content-center h-100">
+                                            <%--FIXME ex-chart-barZZ --%>
+                                            <canvas id="ex-chart-barZZ"></canvas>
+
                                         </div>
                                     </div>
                                 </div>
@@ -343,7 +351,7 @@
 
                                 <div class="col-md-2 h-100">
                                     <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                        <div class="flex-fill ex-chart-bar3 h-100">
                                             <div class="text-center d-flex justify-content-center h-100">
                                                 <%--FIXME ex-chart-bar3 --%>
                                                 <canvas id="ex-chart-bar3"></canvas>
@@ -354,7 +362,7 @@
 
                                 <div class="col-md-2 h-100" >
                                     <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                        <div class="flex-fill ex-chart-bar4 h-100">
                                             <div class="text-center d-flex justify-content-center h-100">
                                                 <%--FIXME ex-chart-bar4 --%>
                                                 <canvas id="ex-chart-bar4"></canvas>
@@ -365,7 +373,7 @@
 
                                 <div class="col-md-2 h-100" >
                                     <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                        <div class="flex-fill ex-chart-bar5 h-100">
                                             <div class="text-center d-flex justify-content-center h-100">
                                                 <%--FIXME ex-chart-bar5 --%>
                                                 <canvas id="ex-chart-bar5"></canvas>
@@ -376,7 +384,7 @@
 
                                 <div class="col-md-2 h-100" >
                                     <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar2 h-100">
+                                        <div class="flex-fill ex-chart-bar6 h-100">
                                             <div class="text-center d-flex justify-content-center h-100">
                                                 <%--FIXME ex-chart-bar6 --%>
                                                 <canvas id="ex-chart-bar6"></canvas>
@@ -385,6 +393,16 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-2 h-100" >
+                                    <div class="row h-100">
+                                        <div class="flex-fill ex-chart-bar7 h-100">
+                                            <div class="text-center d-flex justify-content-center h-100">
+                                                <%--FIXME ex-chart-bar7 --%>
+                                                <canvas id="ex-chart-bar7"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                                 <!-- 나의 성과 현황 끝 -->
                         </div>
@@ -526,10 +544,17 @@
     $('document').ready(function () {
         let data_title= ['잡모아 평균','지점 평균','전담자'];
         //chart 성공금 현황
+        //성공금 발생
         let id=$('#ex-chart-bar1');
-        let lable=['성공금 발생','인센티브'];
-        let data={title:data_title,text:[[60005715,45022120],[35021540,25124120],[42535410,32100210]]};
-        chart_bar_data_succes(id,lable,data);
+        let lable=['성공금 발생'];
+        let data={title:data_title,text:[60005715,35021540,42535410]};
+        chart_bar_data_my(id,lable,data);
+
+        //인센티브 발생
+        id=$('#ex-chart-barZZ');
+        lable=['인센티브'];
+        data={title:data_title,text:[45022120,25124120,32100210]};
+        chart_bar_data_my(id,lable,data);
 
         //chart 나의 성과 현황
         //취업자 수
@@ -556,9 +581,15 @@
         data={title:data_title,text:[15,21,30]};
         chart_bar_data_my(id,lable,data);
 
-        //고용 유지
+        //고용 유지 6개월
         id=$('#ex-chart-bar6');
-        lable=['고용 유지'];
+        lable=['고용 유지 6개월'];
+        data={title:data_title,text:[20,32,18]};
+        chart_bar_data_my(id,lable,data);
+
+        //고용 유지
+        id=$('#ex-chart-bar7');
+        lable=['고용 유지 12개월'];
         data={title:data_title,text:[20,32,18]};
         chart_bar_data_my(id,lable,data);
     })

@@ -19,6 +19,7 @@ public class EmploymentDTO {
     private String employmentJobcat; // 일경험분류
     private String employmentMemo; // 메모
     private String employmentOthers; // 기타정보
+    private String employmentQuit; // 기타정보
 
     // DB 외 변수
     private String employmentCondition; // 개발자 구분
