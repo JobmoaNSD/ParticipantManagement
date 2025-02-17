@@ -30,6 +30,13 @@
                     <input type="text" class="form-control datepicker_on" id="employmentProcDate" name="employmentProcDate" placeholder="yyyy-mm-dd" aria-label="취창업처리일" value="${not empty employment ? employment.employmentProcDate:""}">
                 </div>
             </div>
+            <div class="pb-2 mb-1 datepicker-div">
+                <label for="employmentQuit" class="form-label">퇴사일</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input type="text" class="form-control datepicker_on" id="employmentQuit" name="employmentQuit" placeholder="yyyy-mm-dd" aria-label="퇴사일" value="${not empty employment ? employment.employmentQuit:""}">
+                </div>
+            </div>
             <div class="w-auto">
                 <label for="employmentEmpType" class="form-label">취업유형</label>
                 <select class="form-select" aria-label="Default select example" id="employmentEmpType" name="employmentEmpType">

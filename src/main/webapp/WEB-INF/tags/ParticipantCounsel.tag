@@ -50,17 +50,6 @@
                     <option value="중단">중단</option>
                 </select>
             </div>
-            <div class="w-auto">
-                <label for="counselSUCS" class="form-label">성공금_충족여부</label>
-                <select class="form-select" aria-label="Default select example" id="counselSUCS" name="counselSUCS">
-                    <option selected value="고보미가입취업">고보미가입취업</option>
-                    <option value="본인">본인</option>
-                    <option value="알선">알선</option>
-                    <option value="소개취업">소개취업</option>
-                    <option value="1.5배알선">1.5배알선</option>
-                    <option value="창업">창업</option>
-                </select>
-            </div>
             <div class="datepicker-div">
                 <label for="counselInItCons" class="form-label">초기상담일</label>
                 <div class="input-group">

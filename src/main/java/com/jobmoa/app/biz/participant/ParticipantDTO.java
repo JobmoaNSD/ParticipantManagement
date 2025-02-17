@@ -47,6 +47,7 @@ public class ParticipantDTO {
     private String participantJobcat; // 일경험분류
     private String participantMemo; // 메모
     private String participantOthers; // 기타정보
+    private String participantQuit; // 기타정보
 
     //DB 외 정보
     private String participantCondition; // 개발자 구분

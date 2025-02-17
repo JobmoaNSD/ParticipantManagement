@@ -5,10 +5,9 @@
     <!-- 취업정보 저장용 쿼리 -->
     <insert id="employmentInsert">
         INSERT INTO J_참여자관리
-        (취창업일, 취창업처리일, 취업유형, 취업처, 임금, 직무, 취업인센티브_구분, 일경험분류, 메모, 기타)
+            (취창업일, 취창업처리일, 취업유형, 취업처, 임금, 직무, 취업인센티브_구분, 일경험분류, 메모, 기타,퇴사일)
         VALUES
             (
-                #{employmentJobNo},
                 #{employmentStartDate},
                 #{employmentProcDate},
                 #{employmentEmpType},
@@ -18,7 +17,8 @@
                 #{employmentIncentive},
                 #{employmentJobcat},
                 #{employmentMemo},
-                #{employmentOthers}
+                #{employmentOthers},
+                #{employmentQuit}
             )
     </insert>
 
@@ -36,7 +36,8 @@
             취업인센티브_구분 = #{employmentIncentive},
             일경험분류 = #{employmentJobcat},
             메모 = #{employmentMemo},
-            기타 = #{employmentOthers}
+            기타 = #{employmentOthers},
+            퇴사일 = #{employmentQuit}
         WHERE
             구직번호 = #{employmentJobNo}
     </update>
@@ -58,7 +59,8 @@
             취업인센티브_구분 AS employmentIncentive,
             일경험분류 AS employmentJobcat,
             메모 AS employmentMemo,
-            기타 AS employmentOthers
+            기타 AS employmentOthers,
+            퇴사일 AS employmentQuit
         FROM
             J_참여자관리
         WHERE
