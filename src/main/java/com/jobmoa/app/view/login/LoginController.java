@@ -24,8 +24,8 @@ public class LoginController {
         log.info("-----------------------------------");
         //Session에 저장되어 있는 Login DATA
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
-        String page = "views/login";
 
+        String page = "views/login";
         //Session이 비어있지 않다면 dashboard.login 페이지로 이동
         if (loginBean != null) {
             log.info("dashboard.login page 이동");

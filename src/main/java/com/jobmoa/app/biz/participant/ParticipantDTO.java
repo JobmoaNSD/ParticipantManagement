@@ -65,4 +65,23 @@ public class ParticipantDTO {
     private String searchFilter;
 
     private int participantCount;
+
+
+
+    //Query 조건용 변수 선언
+    private String dashBoardBranch;
+    private String dashBoardUserid;
+    private String dashBoardStartDate;
+    private String dashBoardEndDate;
+
+    //DashBoard에 전달해줄 변수 선언
+    private int[] dashBoardEmployedCount;
+    private int[] dashBoardReferredEmployedCount;
+    private int[] dashBoardEarlyEmployedCount;
+    private int[] dashBoardBetterJobCount;
+    private int[] dashBoardSixMonthRetentionCount;
+    private int[] dashBoardTwelveMonthRetentionCount;
+
+
+
 }

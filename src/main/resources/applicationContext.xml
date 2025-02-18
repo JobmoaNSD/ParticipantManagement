@@ -25,7 +25,7 @@
 
     <bean class="org.apache.commons.dbcp2.BasicDataSource" id="ds" destroy-method="close">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-        <property name="url" value="jdbc:sqlserver://localhost:1433;DatabaseName=J_CounselDB;trustServerCertificate=true;"/>
+        <property name="url" value="jdbc:sqlserver://58.151.241.130:1433;DatabaseName=J_CounselDB;trustServerCertificate=true;"/>
         <property name="username" value="Testaccount"/>
         <property name="password" value="jobmoano1!"/>
     </bean>

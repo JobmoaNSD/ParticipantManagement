@@ -224,7 +224,7 @@
         });
         <%-- form 전달 끝 --%>
 
-        //자격증 배열을 백단에서 전달받습니다.
+        //직업훈련 배열을 백단에서 전달받습니다.
         let educationArr = JSON.parse('${educations}') ;
         education(educationArr);
 

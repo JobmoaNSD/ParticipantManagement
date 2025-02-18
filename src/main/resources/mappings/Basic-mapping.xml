@@ -5,9 +5,10 @@
     <!-- 기본정보 등록 쿼리문 -->
     <insert id="basicInsert">
         INSERT INTO J_참여자관리
-        (전담자_계정, 참여자, 생년월일, 성별, 모집경로, 참여유형, 학교명, 전공, 주소, 특정계층, 경력)
+        (지점, 전담자_계정, 참여자, 생년월일, 성별, 모집경로, 참여유형, 학교명, 전공, 주소, 특정계층, 경력)
         VALUES
         (
+         #{basicBranch},
          #{basicUserid},
          #{basicPartic},
          #{basicDob},

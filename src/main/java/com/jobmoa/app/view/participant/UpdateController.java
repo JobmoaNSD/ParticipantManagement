@@ -1,7 +1,6 @@
 package com.jobmoa.app.view.participant;
 
 import com.jobmoa.app.biz.bean.LoginBean;
-import com.jobmoa.app.biz.participant.ParticipantDTO;
 import com.jobmoa.app.biz.participantEducation.EducationDTO;
 import com.jobmoa.app.biz.participantEducation.EducationServiceImpl;
 import com.jobmoa.app.biz.particcertif.ParticcertifDTO;
@@ -16,6 +15,7 @@ import com.jobmoa.app.view.function.InfoBean;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.internal.Function;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,25 +65,13 @@ public class UpdateController {
         List<ParticcertifDTO> datas = particcertifService.selectAll(particcertifDTO);
         log.info("datas : [{}]", datas);
         log.info("particcertifDTO : [{}]", particcertifDTO);
+
         //자격증을 JSON배열로 변경하여 전달
-        String particcertifArr = "[";
-        //datas 가 null 이 아니거나 size가 0 이상이면 반복문을 실행
-        if(datas != null || !datas.isEmpty()){
-            //반복문을 돌려서 자격증을 하나씩 꺼낸다.
-            for(ParticcertifDTO dto : datas){
-                //꺼내온 자격증을 Json형식으로 만들어 저장한다.
-                particcertifArr += "{\"particcertifPartNo\":\"" + dto.getParticcertifPartNo() + "\""
-                        +",\"particcertif\":\"" + dto.getParticcertifCertif()+ "\""
-                        + "},";
-            }
-            //마지막 ,는 필요없기 때문에 제외하고 ]를 닫는다.
-            int lastIndex = particcertifArr.lastIndexOf(",");
-            if (lastIndex != -1) {
-                particcertifArr = particcertifArr.substring(0, lastIndex);
-            }
-            log.info("particcertifArr : [{}]", particcertifArr);
-        }
-        particcertifArr += "]";
+        String particcertifArr = convertListToJsonArray(datas, item -> {
+            ParticcertifDTO dto = (ParticcertifDTO) item;  // 객체 캐스팅
+            return "{\"particcertifPartNo\":\"" + dto.getParticcertifPartNo() + "\","
+                    + "\"particcertif\":\"" + dto.getParticcertifCertif() + "\"}";
+        });
 
         //기본 정보와 자격증 정보를 전달한다.
         model.addAttribute("basic", basicDTO);
@@ -110,25 +98,13 @@ public class UpdateController {
         List<EducationDTO> datas = educationService.selectAll(educationDTO);
         log.info("education datas : [{}]", datas);
         log.info("update Counsel educationDTO : [{}]", educationDTO);
-        //자격증을 JSON배열로 변경하여 전달
-        String educationArr = "[";
-        //datas 가 null 이 아니거나 size가 0 이상이면 반복문을 실행
-        if(datas != null || !datas.isEmpty()){
-            //반복문을 돌려서 자격증을 하나씩 꺼낸다.
-            for(EducationDTO dto : datas){
-                //꺼내온 자격증을 Json형식으로 만들어 저장한다.
-                educationArr += "{\"educationNo\":\"" + dto.getEducationNo() + "\""
-                        +",\"education\":\"" + dto.getEducation()+ "\""
-                        + "},";
-            }
-            //마지막 ,는 필요없기 때문에 제외하고 ]를 닫는다.
-            int lastIndex = educationArr.lastIndexOf(",");
-            if (lastIndex != -1) {
-                educationArr = educationArr.substring(0, lastIndex);
-            }
-            log.info("educationArr : [{}]", educationArr);
-        }
-        educationArr += "]";
+
+        //직업훈련정보를 JSON배열로 변경하여 전달
+        String educationArr = convertListToJsonArray(datas, item -> {
+            EducationDTO dto = (EducationDTO) item;  // 객체 캐스팅
+            return "{\"educationNo\":\"" + dto.getEducationNo() + "\","
+                    + "\"education\":\"" + dto.getEducation() + "\"}";
+        });
 
         //불러온 상담 정보를 전달한다.
         model.addAttribute("educations",educationArr);
@@ -368,6 +344,78 @@ public class UpdateController {
         return "views/info";
     }
 
+    //------------------------한 페이지 참여자 업데이트 시작----------------------------------
+    @GetMapping("/participantUpdate.login")
+    public String updateParticipantsPage(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO,
+                                         CounselDTO counselDTO, EducationDTO educationDTO, ParticcertifDTO particcertifDTO) {
+        log.info("Start updateParticipantsPage log");
+        //참여자 선택시 모든 정보를 확인할 페이지
+        //구직번호, 전담자 정보를 변수로 저장
+        LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        String loginId = loginBean.getMemberUserID();
+        //각 정보를 조회
+        //기본 정보 조회
+        basicDTO.setBasicUserid(loginId);
+        basicDTO.setBasicCondition("basicSelectPKONE");
+        basicDTO = basicService.selectOne(basicDTO);
+        log.info("조회된 기본정로 basicDTO : [{}]", basicDTO);
+
+        //기본 정보 데이터가 이때 조회 되지 않는 참여자 혹은 전담자라면
+        //조회 불가 메시지를 띄운 후 참여자 조회 페이지로 전달
+        if(basicDTO == null){
+            String url = "participant.login";
+            String icon = "error";
+            String title = "참여자 조회 불가";
+            String message = "참여자가 없거나 \n 권한이 없는 참여자입니다.";
+            InfoBean.info(model, url, icon, title, message);
+            return "views/info";
+        }
+
+        //자격증 정보
+        particcertifDTO.setParticcertifJobNo(basicDTO.getBasicJobNo());
+        particcertifDTO.setParticcertifCondition("particcertifSelectALLParticOne");
+        List<ParticcertifDTO> particcertifList = particcertifService.selectAll(particcertifDTO);
+
+        //상담 정보 조회
+        counselDTO.setCounselJobNo(basicDTO.getBasicJobNo());
+        counselDTO.setCounselCondition("counselSelectOne");
+        counselDTO = counselService.selectOne(counselDTO);
+
+        //직업훈련 정보
+        educationDTO.setEducationJobNo(basicDTO.getBasicJobNo());
+        educationDTO.setEducationCondition("educationSelectALLOne");
+        List<EducationDTO> educationList = educationService.selectAll(educationDTO);
+
+        //취업 정보 조회
+        employmentDTO.setEmploymentJobNo(basicDTO.getBasicJobNo());
+        employmentDTO.setEmploymentCondition("employmentSelectOne");
+        employmentDTO = employmentService.selectOne(employmentDTO);
+
+        //자격증을 JSON배열로 변경하여 전달
+        String particcertifArr = convertListToJsonArray(particcertifList, item -> {
+            ParticcertifDTO dto = (ParticcertifDTO) item;  // 객체 캐스팅
+            return "{\"particcertifPartNo\":\"" + dto.getParticcertifPartNo() + "\","
+                    + "\"particcertif\":\"" + dto.getParticcertifCertif() + "\"}";
+        });
+
+        //직업훈련정보를 JSON배열로 변경하여 전달
+        String educationArr = convertListToJsonArray(educationList, item -> {
+            EducationDTO dto = (EducationDTO) item;  // 객체 캐스팅
+            return "{\"educationNo\":\"" + dto.getEducationNo() + "\","
+                    + "\"education\":\"" + dto.getEducation() + "\"}";
+        });
+
+        //조회된 내용을 정리하여 페이지로 전달.
+        model.addAttribute("basic", basicDTO);
+        model.addAttribute("counsel", counselDTO);
+        model.addAttribute("employment", employmentDTO);
+        model.addAttribute("educations", educationArr);
+        model.addAttribute("particcertifs", particcertifArr);
+
+        return "views/UpdateParticipantsPage";
+    }
+
+
     @PostMapping("/participantUpdate.login")
     public String update(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO,
                          CounselDTO counselDTO, EducationDTO educationDTO, ParticcertifDTO particcertifDTO){
@@ -382,26 +430,29 @@ public class UpdateController {
         //session에 있는 로그인 정보를 가져온다.
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
 
-        //로그인 정보에서 아이디, 지점을 가져온다.
+        //로그인 정보에서 아이디를 가져온다.
         String loginId = loginBean.getMemberUserID();
-        String loginBranch = loginBean.getMemberBranch();
 
-        //기본정보 DTO에 가져온 아이디, 지점을 추가한다.
+        //기본정보 DTO에 가져온 아이디를 추가한다.
         basicDTO.setBasicUserid(loginId);
-        basicDTO.setBasicCondition("basicUpdate");
-
-        boolean flag = basicService.update(basicDTO);
-        //기본정보 update 완료 여부를 확인해 info page로 정보를 전달한다.
-        if(!flag){
-            icon = "error";
-            title = "참여자 정보 업데이트에 실패했습니다.";
+        //상담정보, 취업정보, 자격증정보, 직업훈련정보에 구직번호를 추가한다.
+        counselDTO.setCounselJobNo(jobNo);
+        employmentDTO.setEmploymentJobNo(jobNo);
+        particcertifDTO.setParticcertifJobNo(jobNo);
+        educationDTO.setEducationJobNo(jobNo);
+        if(!basicService.update(basicDTO,counselDTO,employmentDTO,particcertifDTO,educationDTO)){
+            url="participantUpdate.login?basicJobNo="+jobNo;
+            icon="error";
+            title="참여자 업데이트 실패";
+            message="참여자 번호 : "+jobNo;
         }
-        //TODO 나머지 update 구문 추가해야함 02-14까지 진행 사항
 
-
+        //update 완료 여부를 확인해 info page로 정보를 전달한다.
         InfoBean.info(model, url, icon, title, message);
         return "views/info";
     }
+    //------------------------한 페이지 참여자 업데이트 끝----------------------------------
+
 
     private int getJobNo(int jobNo, BasicDTO basicDTO, HttpSession session){
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
@@ -420,4 +471,37 @@ public class UpdateController {
         return jobNo;
     }
 
+    /**
+     * 주어진 리스트를 JSON 배열 형식의 문자열로 변환하는 유틸리티 메서드입니다.
+     *
+     * @param list 변환할 객체 리스트
+     * @param getJsonString 변환할 개별 아이템을 JSON 문자열로 만드는 람다 함수
+     * @return 변환된 JSON 배열 문자열
+     */
+    private String convertListToJsonArray(List<?> list, Function<Object, String> getJsonString) {
+        // 리스트가 null이거나 비어있으면 빈 배열을 반환
+        if (list == null || list.isEmpty()) {
+            return "[]";
+        }
+
+        // JSON 배열을 상태적으로 생성하기 위한 StringBuilder 사용
+        StringBuilder jsonArrayBuilder = new StringBuilder("[");
+
+        // 리스트의 각 아이템을 JSON 형식으로 변환하여 추가
+        for (Object item : list) {
+            jsonArrayBuilder.append(getJsonString.apply(item)).append(",");
+        }
+
+        // 마지막에 추가된 ','(쉼표)를 제거하고 배열 닫기
+        if (jsonArrayBuilder.length() > 1) {
+            jsonArrayBuilder.setLength(jsonArrayBuilder.length() - 1);
+        }
+        jsonArrayBuilder.append("]");
+
+        // 로그에 변환 결과 출력
+        log.info("Converted JSON Array: [{}]", jsonArrayBuilder);
+
+        // 최종 JSON 배열 문자열 반환
+        return jsonArrayBuilder.toString();
+    }
 }
