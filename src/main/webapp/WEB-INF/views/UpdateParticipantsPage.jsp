@@ -23,6 +23,9 @@
             content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard"
     />
     <!--end::Primary Meta Tags-->
+    <!-- jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
     <!--begin::Fonts-->
     <link
             rel="stylesheet"
@@ -64,7 +67,26 @@
             integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
             crossorigin="anonymous"
     />
+    <!-- datepicker CSS JS -->
+    <!-- Bootstrap Datepicker 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/datepickerJS.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="css/datepicker.css">
 
+    <!-- recommend JS -->
+    <script src="js/recommendJS.js"></script>
+    <link rel="stylesheet" href="css/recommend.css">
+
+
+    <!-- selectOption JS -->
+    <script src="js/selectOptionJS.js"></script>
+
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script src="js/sweetAlert.js"></script>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -106,9 +128,10 @@
                         </div>
                     </div>
                 </div>
-                <!--end::Main content-->
             </div>
-            <!--end::App Content-->
+            <!--end::Main content-->
+        </div>
+        <!--end::App Content-->
     </main>
     <!--end::App Main-->
     <!--end:::App main content-->
@@ -142,6 +165,8 @@
 <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
 <script src="js/adminlte.js"></script>
 <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<!--begin::Script-->
+<!--begin::OverlayScrollbars Configure-->
 <script>
     const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
     const Default = {
@@ -149,8 +174,8 @@
         scrollbarAutoHide: 'leave',
         scrollbarClickScroll: true,
     };
-    $.on('DOMContentLoaded', function () {
-        const sidebarWrapper = $.select(SELECTOR_SIDEBAR_WRAPPER);
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
         if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
             OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
                 scrollbars: {
@@ -166,14 +191,8 @@
 
 <!-- OPTIONAL SCRIPTS -->
 <!-- sortablejs -->
-<script
-        src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
-        integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ="
-        crossorigin="anonymous"
-></script>
-<!-- sortablejs -->
 <script>
-    const connectedSortables = $.select('.connectedSortable');
+    const connectedSortables = document.querySelectorAll('.connectedSortable');
     connectedSortables.forEach((connectedSortable) => {
         let sortable = new Sortable(connectedSortable, {
             group: 'shared',
@@ -181,11 +200,12 @@
         });
     });
 
-    const cardHeaders = $.select('.connectedSortable .card-header');
+    const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
     cardHeaders.forEach((cardHeader) => {
         cardHeader.style.cursor = 'move';
     });
 </script>
+
 <!-- apexcharts -->
 <script
         src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"

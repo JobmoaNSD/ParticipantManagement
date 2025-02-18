@@ -214,7 +214,7 @@
                                             <tr class="text-center">
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
                                                 <td>${data.participantJobNo}</td>
-                                                <td>${data.participantPartic}</td>
+                                                <td><a href="/participantUpdate.login?basicJobNo=${data.participantJobNo}">${data.participantPartic}</a></td>
                                                 <td>${data.participantGender}</td>
                                                 <td>${data.participantLastCons}</td>
                                                 <td>${data.participantProgress}</td>

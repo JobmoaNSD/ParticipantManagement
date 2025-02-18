@@ -3,12 +3,14 @@ package com.jobmoa.app.biz.participantBasic;
 import com.jobmoa.app.biz.particcertif.ParticcertifDAO;
 import com.jobmoa.app.biz.particcertif.ParticcertifDTO;
 import com.jobmoa.app.biz.particcertif.ParticcertifService;
+import com.jobmoa.app.biz.particcertif.ParticcertifServiceImpl;
 import com.jobmoa.app.biz.participantCounsel.CounselDAO;
 import com.jobmoa.app.biz.participantCounsel.CounselDTO;
 import com.jobmoa.app.biz.participantCounsel.CounselService;
 import com.jobmoa.app.biz.participantEducation.EducationDAO;
 import com.jobmoa.app.biz.participantEducation.EducationDTO;
 import com.jobmoa.app.biz.participantEducation.EducationService;
+import com.jobmoa.app.biz.participantEducation.EducationServiceImpl;
 import com.jobmoa.app.biz.participantEmployment.EmploymentDAO;
 import com.jobmoa.app.biz.participantEmployment.EmploymentDTO;
 import com.jobmoa.app.biz.participantEmployment.EmploymentService;
@@ -32,10 +34,10 @@ public class BasicServiceImpl implements BasicService {
     private EmploymentDAO employmentDAO;
 
     @Autowired
-    private ParticcertifDAO particcertifDAO;
+    private ParticcertifServiceImpl particcertifService;
 
     @Autowired
-    private EducationDAO educationDAO;
+    private EducationServiceImpl educationService;
 
     @Override
     public boolean insert(BasicDTO basicDTO) {
@@ -73,11 +75,11 @@ public class BasicServiceImpl implements BasicService {
                 log.error("구직 번호 [{}] 취업 정보 등록 실패", jobno);
                 throw new RuntimeException("구직 번호 ["+jobno+"] 취업 정보 등록 실패");
             }
-            if(!particcertifDAO.insert(particcertifDTO)){
+            if(!particcertifService.insert(particcertifDTO)){
                 log.error("구직 번호 [{}] 자격증 정보 등록 실패", jobno);
                 throw new RuntimeException("구직 번호 ["+jobno+"] 자격증 정보 등록 실패");
             }
-            if(!educationDAO.insert(educationDTO)){
+            if(!educationService.insert(educationDTO)){
                 log.error("구직 번호 [{}] 직업훈련 정보 등록 실패", jobno);
                 throw new RuntimeException("구직 번호 ["+jobno+"] 직업훈련 정보 등록 실패");
             }
@@ -93,6 +95,25 @@ public class BasicServiceImpl implements BasicService {
             return false;
         }
         return basicDAO.update(basicDTO);
+    }
+
+    public boolean update(BasicDTO basicDTO, CounselDTO counselDTO,
+                          EmploymentDTO employmentDTO, ParticcertifDTO particcertifDTO, EducationDTO educationDTO) {
+        //기본정보 업데이트
+        basicDTO.setBasicCondition("basicUpdate");
+        boolean flag = basicDAO.update(basicDTO);
+        //상담정보 업데이트
+        counselDTO.setCounselCondition("counselUpdate");
+        flag = flag && counselDAO.update(counselDTO);
+        //취업정보 업데이트
+        employmentDTO.setEmploymentCondition("employmentUpdate");
+        flag = flag && employmentDAO.update(employmentDTO);
+        //자격증 업데이트
+        flag = flag && particcertifService.insert(particcertifDTO);
+        //직업훈련 업데이트
+        flag = flag && educationService.insert(educationDTO);
+
+        return flag;
     }
 
     @Override

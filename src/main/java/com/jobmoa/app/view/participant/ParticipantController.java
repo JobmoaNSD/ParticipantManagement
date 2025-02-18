@@ -142,6 +142,7 @@ public class ParticipantController {
         log.info("loginId, loginBranch: [{}], [{}]", loginId,loginBranch);
         // 각 로그인 정보는 기본정보에 담아준다.
         basicDTO.setBasicUserid(loginId);
+        basicDTO.setBasicBranch(loginBranch);
 
         //기본정보는 참여자가 비어 있지 않다면 DAO로 바로 넘겨준다.
         if(basicDTO != null && basicDTO.getBasicPartic() != null){
