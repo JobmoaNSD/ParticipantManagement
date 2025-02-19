@@ -4,6 +4,7 @@ import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.login.MemberDTO;
 import com.jobmoa.app.biz.login.MemberService;
 import com.jobmoa.app.biz.login.MemberServiceImpl;
+import com.jobmoa.app.view.function.InfoBean;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class LoginController {
 
     @Autowired
     private MemberServiceImpl memberService;
+
+    @Autowired
+    private InfoBean infoBean;
 
     @GetMapping("/login.do")
     public String loginController(HttpSession session){
@@ -74,13 +78,10 @@ public class LoginController {
         //info.jsp 페이지로 넘어갈때 활용
         //로그인 성공 : dashboard.login 페이지로 이동
         //로그인 실패 : login.do 페이지로 이동
-        model.addAttribute("url", url);
         //SweetAlert 사용중 아이콘 선택
         //성공 : success
         //실패 : error
-        model.addAttribute("icon", icon);
-        model.addAttribute("title", title);
-        model.addAttribute("message", message);
+        infoBean.info(model,url,icon,title,message);
         log.info("로그인 여부 : [{}]",title);
 
         //info 페이지로 이동

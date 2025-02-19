@@ -11,11 +11,11 @@ import com.jobmoa.app.biz.participantCounsel.CounselDTO;
 import com.jobmoa.app.biz.participantCounsel.CounselServiceImpl;
 import com.jobmoa.app.biz.participantEmployment.EmploymentDTO;
 import com.jobmoa.app.biz.participantEmployment.EmploymentServiceImpl;
+import com.jobmoa.app.view.function.ChangeJson;
 import com.jobmoa.app.view.function.InfoBean;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.internal.Function;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +40,12 @@ public class UpdateController {
 
     @Autowired
     private EducationServiceImpl educationService;
+
+    @Autowired
+    private ChangeJson changeJson;
+
+    @Autowired
+    private InfoBean infoBean;
 
     //Page Moves
     @GetMapping("/updatebasic.login")
@@ -67,7 +73,7 @@ public class UpdateController {
         log.info("particcertifDTO : [{}]", particcertifDTO);
 
         //자격증을 JSON배열로 변경하여 전달
-        String particcertifArr = convertListToJsonArray(datas, item -> {
+        String particcertifArr = changeJson.convertListToJsonArray(datas, item -> {
             ParticcertifDTO dto = (ParticcertifDTO) item;  // 객체 캐스팅
             return "{\"particcertifPartNo\":\"" + dto.getParticcertifPartNo() + "\","
                     + "\"particcertif\":\"" + dto.getParticcertifCertif() + "\"}";
@@ -100,7 +106,7 @@ public class UpdateController {
         log.info("update Counsel educationDTO : [{}]", educationDTO);
 
         //직업훈련정보를 JSON배열로 변경하여 전달
-        String educationArr = convertListToJsonArray(datas, item -> {
+        String educationArr = changeJson.convertListToJsonArray(datas, item -> {
             EducationDTO dto = (EducationDTO) item;  // 객체 캐스팅
             return "{\"educationNo\":\"" + dto.getEducationNo() + "\","
                     + "\"education\":\"" + dto.getEducation() + "\"}";
@@ -129,7 +135,7 @@ public class UpdateController {
             String icon = "back";
             String title = "상담정보 확인 불가";
             String message = "상담정보를 먼저 입력해주세요.";
-            InfoBean.info(model, url, icon, title, message);
+            infoBean.info(model, url, icon, title, message);
             return "views/info";
         }
 
@@ -164,7 +170,7 @@ public class UpdateController {
             icon = "error";
             title = "구직번호를 찾을 수 없습니다.";
             message = "";
-            InfoBean.info(model, url, icon, title, message);
+            infoBean.info(model, url, icon, title, message);
             return "views/info";
         }
 
@@ -202,7 +208,7 @@ public class UpdateController {
         }
 
         //확인용 로그
-        InfoBean.info(model, url, icon, title, message);
+        infoBean.info(model, url, icon, title, message);
 
         return "views/info";
     }
@@ -233,7 +239,7 @@ public class UpdateController {
                 icon = "error";
                 title = "구직번호를 찾을 수 없습니다.";
                 message = "";
-                InfoBean.info(model, url, icon, title, message);
+                infoBean.info(model, url, icon, title, message);
                 return "views/info";
             }
 
@@ -286,7 +292,7 @@ public class UpdateController {
             educationService.insert(educationDTO);
         }
 
-        InfoBean.info(model, url, icon, title, message);
+        infoBean.info(model, url, icon, title, message);
 
         return "views/info";
     }
@@ -339,7 +345,7 @@ public class UpdateController {
             }
         }
 
-        InfoBean.info(model, url, icon, title, message);
+        infoBean.info(model, url, icon, title, message);
 
         return "views/info";
     }
@@ -367,7 +373,7 @@ public class UpdateController {
             String icon = "error";
             String title = "참여자 조회 불가";
             String message = "참여자가 없거나 \n 권한이 없는 참여자입니다.";
-            InfoBean.info(model, url, icon, title, message);
+            infoBean.info(model, url, icon, title, message);
             return "views/info";
         }
 
@@ -392,14 +398,14 @@ public class UpdateController {
         employmentDTO = employmentService.selectOne(employmentDTO);
 
         //자격증을 JSON배열로 변경하여 전달
-        String particcertifArr = convertListToJsonArray(particcertifList, item -> {
+        String particcertifArr = changeJson.convertListToJsonArray(particcertifList, item -> {
             ParticcertifDTO dto = (ParticcertifDTO) item;  // 객체 캐스팅
             return "{\"particcertifPartNo\":\"" + dto.getParticcertifPartNo() + "\","
                     + "\"particcertif\":\"" + dto.getParticcertifCertif() + "\"}";
         });
 
         //직업훈련정보를 JSON배열로 변경하여 전달
-        String educationArr = convertListToJsonArray(educationList, item -> {
+        String educationArr = changeJson.convertListToJsonArray(educationList, item -> {
             EducationDTO dto = (EducationDTO) item;  // 객체 캐스팅
             return "{\"educationNo\":\"" + dto.getEducationNo() + "\","
                     + "\"education\":\"" + dto.getEducation() + "\"}";
@@ -448,7 +454,7 @@ public class UpdateController {
         }
 
         //update 완료 여부를 확인해 info page로 정보를 전달한다.
-        InfoBean.info(model, url, icon, title, message);
+        infoBean.info(model, url, icon, title, message);
         return "views/info";
     }
     //------------------------한 페이지 참여자 업데이트 끝----------------------------------
@@ -471,37 +477,5 @@ public class UpdateController {
         return jobNo;
     }
 
-    /**
-     * 주어진 리스트를 JSON 배열 형식의 문자열로 변환하는 유틸리티 메서드입니다.
-     *
-     * @param list 변환할 객체 리스트
-     * @param getJsonString 변환할 개별 아이템을 JSON 문자열로 만드는 람다 함수
-     * @return 변환된 JSON 배열 문자열
-     */
-    private String convertListToJsonArray(List<?> list, Function<Object, String> getJsonString) {
-        // 리스트가 null이거나 비어있으면 빈 배열을 반환
-        if (list == null || list.isEmpty()) {
-            return "[]";
-        }
 
-        // JSON 배열을 상태적으로 생성하기 위한 StringBuilder 사용
-        StringBuilder jsonArrayBuilder = new StringBuilder("[");
-
-        // 리스트의 각 아이템을 JSON 형식으로 변환하여 추가
-        for (Object item : list) {
-            jsonArrayBuilder.append(getJsonString.apply(item)).append(",");
-        }
-
-        // 마지막에 추가된 ','(쉼표)를 제거하고 배열 닫기
-        if (jsonArrayBuilder.length() > 1) {
-            jsonArrayBuilder.setLength(jsonArrayBuilder.length() - 1);
-        }
-        jsonArrayBuilder.append("]");
-
-        // 로그에 변환 결과 출력
-        log.info("Converted JSON Array: [{}]", jsonArrayBuilder);
-
-        // 최종 JSON 배열 문자열 반환
-        return jsonArrayBuilder.toString();
-    }
 }

@@ -511,28 +511,28 @@
         let denominator = 700;
 
         id = $('#chart_startdate');
-        const chart_startdate = {title:['미취업자','취업자'],text:[50,250]};
-        drawCenterText_text = '취업자 수\n'+'250'+'명';
+        const chart_startdate = {title:['미취업자','취업자'],text:JSON.parse('${dashBoardEmployedKPI}')};
+        drawCenterText_text = '취업자';
         chart_doughnut_data(id,chart_startdate,drawCenterText_text,denominator);
 
         id = $('#chart_gender');
-        const chart_gender = {title:['남', '여'],text:[300, 400]};
-        drawCenterText_text = '남\n'+'300'+'명'+' 여 '+'400'+'명';
+        const chart_gender = {title:['알선 취업자', '취업자'],text:JSON.parse('${dashBoardReferredEmployedKPI}')};
+        drawCenterText_text = '알선 취업자';
         chart_doughnut_data(id,chart_gender,drawCenterText_text,denominator);
 
         id = $('#ex-chart1');
-        const testdata1 = {title:['test1','test2'],text:[50,250]};
-        drawCenterText_text = '300';
+        const testdata1 = {title:['조기 취업자','취업자'],text:JSON.parse('${dashBoardEarlyEmployedKPI}')};
+        drawCenterText_text = '조기 취업자';
         chart_doughnut_data(id,testdata1,drawCenterText_text,denominator);
 
         id = $('#ex-chart2');
-        const testdata2 = {title:['test1','test2'],text:[300,250]};
-        drawCenterText_text = '300';
+        const testdata2 = {title:['나은 일자리','취업자'],text:JSON.parse('${dashBoardBetterJobKPI}')};
+        drawCenterText_text = '나은 일자리';
         chart_doughnut_data(id,testdata2,drawCenterText_text,denominator);
 
         id = $('#ex-chart3');
-        const testdata3 = {title:['test1','test2'],text:[900,900]};
-        drawCenterText_text = '300';
+        const testdata3 = {title:['test1','test2'],text:[1,10]};
+        drawCenterText_text = '????';
         chart_doughnut_data(id,testdata3,drawCenterText_text,denominator);
 
 
@@ -542,7 +542,7 @@
 <%-- FIXME Chart.js Bar Chart javascript Start --%>
 <script>
     $('document').ready(function () {
-        let data_title= ['잡모아 평균','지점 평균','전담자'];
+        let data_title = JSON.parse('${dashBoardDataTitle}');
         //chart 성공금 현황
         //성공금 발생
         let id=$('#ex-chart-bar1');
@@ -560,37 +560,37 @@
         //취업자 수
         id=$('#ex-chart-bar2');
         lable=['취업자 수'];
-        data={title:data_title,text:[41,32,40]};
+        data={title:data_title,text:JSON.parse('${dashBoardEmployedCount}')};
         chart_bar_data_my(id,lable,data);
 
         //알선 취업자 수
         id=$('#ex-chart-bar3');
         lable=['알선 취업자 수'];
-        data={title:data_title,text:[38,40,11]};
+        data={title:data_title,text:JSON.parse('${dashBoardReferredEmployedCount}')};
         chart_bar_data_my(id,lable,data);
 
         //조기 취업자 수
         id=$('#ex-chart-bar4');
         lable=['조기 취업자 수'];
-        data={title:data_title,text:[25,21,20]};
+        data={title:data_title,text:JSON.parse('${dashBoardEarlyEmployedCount}')};
         chart_bar_data_my(id,lable,data);
 
         //나은 일자리
         id=$('#ex-chart-bar5');
         lable=['나은 일자리'];
-        data={title:data_title,text:[15,21,30]};
+        data={title:data_title,text:JSON.parse('${dashBoardBetterJobCount}')};
         chart_bar_data_my(id,lable,data);
 
         //고용 유지 6개월
         id=$('#ex-chart-bar6');
         lable=['고용 유지 6개월'];
-        data={title:data_title,text:[20,32,18]};
+        data={title:data_title,text:JSON.parse('${dashBoardSixMonthRetentionCount}')};
         chart_bar_data_my(id,lable,data);
 
         //고용 유지
         id=$('#ex-chart-bar7');
         lable=['고용 유지 12개월'];
-        data={title:data_title,text:[20,32,18]};
+        data={title:data_title,text:JSON.parse('${dashBoardTwelveMonthRetentionCount}')};
         chart_bar_data_my(id,lable,data);
     })
 </script>

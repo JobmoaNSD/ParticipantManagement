@@ -1,9 +1,11 @@
 package com.jobmoa.app.view.function;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 @Slf4j
+@Controller
 public class InfoBean {
     public static void info(Model model, String url, String icon, String title, String message){
         log.info("infoModel url : [{}]", url);

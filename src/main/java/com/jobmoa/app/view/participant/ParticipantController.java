@@ -47,6 +47,9 @@ public class ParticipantController {
     @Autowired
     private EducationServiceImpl educationService;
 
+    @Autowired
+    private InfoBean infoBean;
+
     //Page 이동
     @GetMapping("participant.login")
     public String participantPageController(Model model, HttpSession session, ParticipantDTO participantDTO, PaginationBean paginationBean){
@@ -156,7 +159,7 @@ public class ParticipantController {
             }
         }
 
-        InfoBean.info(model,url,icon,title,message);
+        infoBean.info(model,url,icon,title,message);
         log.info("-----------------------------------");
         return "views/info";
     }
