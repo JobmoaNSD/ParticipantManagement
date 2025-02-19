@@ -52,6 +52,10 @@ public class ParticipantDTO {
     //DB 외 정보
     private String participantCondition; // 개발자 구분
 
+    //지점 전체 개수 및 인원
+    private int totalCountBranch;
+    private int totalCountUser;
+
     //페이지네이션 정보
     private int page;
     private int pageRows;
@@ -66,22 +70,39 @@ public class ParticipantDTO {
 
     private int participantCount;
 
-
-
     //Query 조건용 변수 선언
-    private String dashBoardBranch;
-    private String dashBoardUserid;
-    private String dashBoardStartDate;
-    private String dashBoardEndDate;
+    private String dashBoardYear;
+//    private String dashBoardEndDate;
 
     //DashBoard에 전달해줄 변수 선언
-    private int[] dashBoardEmployedCount;
-    private int[] dashBoardReferredEmployedCount;
-    private int[] dashBoardEarlyEmployedCount;
-    private int[] dashBoardBetterJobCount;
-    private int[] dashBoardSixMonthRetentionCount;
-    private int[] dashBoardTwelveMonthRetentionCount;
+    // 취업자 수
+    private int dashBoardEmployedCountTotal;
+    private int dashBoardEmployedCountBranch;
+    private int dashBoardEmployedCountUser;
 
+    // 알선 취업자 수
+    private int dashBoardReferredEmployedCountTotal;
+    private int dashBoardReferredEmployedCountBranch;
+    private int dashBoardReferredEmployedCountUser;
 
+    // 조기 취업자 수
+    private int dashBoardEarlyEmployedCountTotal;
+    private int dashBoardEarlyEmployedCountBranch;
+    private int dashBoardEarlyEmployedCountUser;
+
+    // 나은 일자리 수
+    private int dashBoardBetterJobCountTotal;
+    private int dashBoardBetterJobCountBranch;
+    private int dashBoardBetterJobCountUser;
+
+    // 고용유지 6개월
+    private int dashBoardSixMonthRetentionCountTotal;
+    private int dashBoardSixMonthRetentionCountBranch;
+    private int dashBoardSixMonthRetentionCountUser;
+
+    //고용유지 12개월
+    private int dashBoardTwelveMonthRetentionCountTotal;
+    private int dashBoardTwelveMonthRetentionCountBranch;
+    private int dashBoardTwelveMonthRetentionCountUser;
 
 }

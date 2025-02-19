@@ -25,7 +25,9 @@ public class ParticipantDAO {
 
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
         log.info("ParticipantDTO ParticipantDAO selectOne : [{}]",participantDTO);
+        log.info("ParticipantDTO ParticipantDAO selectOne condition : [{}]",participantDTO.getParticipantCondition());
         ParticipantDTO data = sqlSession.selectOne(ns+participantDTO.getParticipantCondition(), participantDTO);
+
         log.info("ParticipantDTO ParticipantDAO data : [{}]",data);
         return data;
     }

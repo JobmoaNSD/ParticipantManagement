@@ -24,7 +24,8 @@ function chart_doughnut_data(id,data,drawCenterText_text,denominator){
                 },
                 datalabels: {
                     formatter: function (value, context) {
-                        return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
+                        let result = Math.round(value / context.chart.getDatasetMeta(0).total * 100);
+                        return result != 0? result + "%" : "";
                     },
                     color: '#fff',
                 },
