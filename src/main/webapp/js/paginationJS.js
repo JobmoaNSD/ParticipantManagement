@@ -17,7 +17,7 @@ function paginationAddItems(page, startButton, endButton, totalButton) {
     addLi += pageEndLi(page, endButton, totalButton);
     //최종 코드 pagination div에 추가
     pagination.append(addLi);
-};
+}
 
 function pageStartLi(page) {
     let startLi = '<li class="page-item ' + (page <= 10 ? 'disabled' : '') + '">';
@@ -25,7 +25,7 @@ function pageStartLi(page) {
     startLi += '<li class="page-item ' + (page == 1 ? 'disabled' : '') + '">';
     startLi += '<a class="page-link" href="' + searchHref((page - 1)) + '"><i class="bi bi-chevron-compact-left" style="font-size: 12px;"></i></a> <li>';
     return startLi;
-};
+}
 
 function pageMiddleLi(page, startButton, endButton) {
     let middleLi = "";
@@ -34,7 +34,7 @@ function pageMiddleLi(page, startButton, endButton) {
         middleLi += '<a class="page-link" href="'+searchHref(i)+'">'+i+'</a> <li>';
     }
     return middleLi;
-};
+}
 
 function pageEndLi(page, endButton, totalButton) {
     let endLi = '<li class="page-item ' + (page >= totalButton ? 'disabled' : '') + '">';
@@ -42,7 +42,7 @@ function pageEndLi(page, endButton, totalButton) {
     endLi += '<li class="page-item ' + (endButton >= totalButton ? 'disabled' : '') + '">';
     endLi += '<a class="page-link" href="' + searchHref(((endButton - (endButton % 1))+1)) + '"><i class="bi bi-chevron-double-right" style="font-size: 12px;"></i></a> <li>';
     return endLi;
-};
+}
 
 function searchHref(page) {
     let href = '?page=' + (page);
@@ -57,6 +57,6 @@ function searchHref(page) {
             }
         });
         /*console.log('href :['+href+']');*/
-    };
+    }
     return href;
-};
+}

@@ -13,7 +13,7 @@ $(document).ready(function () {
             console.log("교육 내역 빼기 아이콘 숨기기")
             education_div_minus.hide();
         }
-    };
+    }
 
 //plus 버튼 클릭하면 class명 particcertif_div 추가 및 minus 표시, html 추가
     education_div_plus.on("click", function () {

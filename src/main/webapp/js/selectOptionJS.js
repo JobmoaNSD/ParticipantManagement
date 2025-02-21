@@ -25,8 +25,7 @@ function changeSelect(selectID, changeSelectID, selectValue){
         else if(selectID.val() == "고보일반"){
             option = [{text:"본인",value:"본인"},
                 {text: "알선",value: "알선"},
-                {text: "소개취업",value: "소개취업"},
-                {text: "1.5배알선",value: "1.5배알선"}
+                {text: "소개취업",value: "소개취업"}
             ]
         }
         else if(selectID.val() == "등록창업" || selectID.val() == "미등록창업"){

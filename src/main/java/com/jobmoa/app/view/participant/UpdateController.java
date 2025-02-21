@@ -135,7 +135,7 @@ public class UpdateController {
             String icon = "back";
             String title = "상담정보 확인 불가";
             String message = "상담정보를 먼저 입력해주세요.";
-            infoBean.info(model, url, icon, title, message);
+            InfoBean.info(model, url, icon, title, message);
             return "views/info";
         }
 
@@ -170,7 +170,7 @@ public class UpdateController {
             icon = "error";
             title = "구직번호를 찾을 수 없습니다.";
             message = "";
-            infoBean.info(model, url, icon, title, message);
+            InfoBean.info(model, url, icon, title, message);
             return "views/info";
         }
 
@@ -208,7 +208,7 @@ public class UpdateController {
         }
 
         //확인용 로그
-        infoBean.info(model, url, icon, title, message);
+        InfoBean.info(model, url, icon, title, message);
 
         return "views/info";
     }
@@ -239,7 +239,7 @@ public class UpdateController {
                 icon = "error";
                 title = "구직번호를 찾을 수 없습니다.";
                 message = "";
-                infoBean.info(model, url, icon, title, message);
+                InfoBean.info(model, url, icon, title, message);
                 return "views/info";
             }
 
@@ -292,7 +292,7 @@ public class UpdateController {
             educationService.insert(educationDTO);
         }
 
-        infoBean.info(model, url, icon, title, message);
+        InfoBean.info(model, url, icon, title, message);
 
         return "views/info";
     }
@@ -345,7 +345,7 @@ public class UpdateController {
             }
         }
 
-        infoBean.info(model, url, icon, title, message);
+        InfoBean.info(model, url, icon, title, message);
 
         return "views/info";
     }
@@ -373,7 +373,7 @@ public class UpdateController {
             String icon = "error";
             String title = "참여자 조회 불가";
             String message = "참여자가 없거나 \n 권한이 없는 참여자입니다.";
-            infoBean.info(model, url, icon, title, message);
+            InfoBean.info(model, url, icon, title, message);
             return "views/info";
         }
 
@@ -454,7 +454,7 @@ public class UpdateController {
         }
 
         //update 완료 여부를 확인해 info page로 정보를 전달한다.
-        infoBean.info(model, url, icon, title, message);
+        InfoBean.info(model, url, icon, title, message);
         return "views/info";
     }
     //------------------------한 페이지 참여자 업데이트 끝----------------------------------

@@ -60,7 +60,7 @@ public class ParticipantServiceImpl implements ParticipantService {
         //기본정보 삭제를 진행하고
         if(participantDAO.delete(participantDTO)){
             //각 삭제 쿼리를 실행할 condition
-            String[] conditions = {"Particcertif","Counsel","Employment"};
+            String[] conditions = {"Particcertif","Education"};
             //삭제가 되었다면 반복문을 용해 각 정보를 삭제한다.
             for(String condition : conditions){
                 //각 condition으로 검색해 값이 있으면 삭제 진행

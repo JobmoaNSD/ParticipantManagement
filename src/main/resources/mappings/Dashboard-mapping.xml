@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DashboardDAO">
+    <!-- Dashboard 조회 쿼리 시작 -->
+    <select id="selectMyResultDashboard" resultType="dashboard">
+        SELECT
+            -- 취업자 수 Query 조건
+            SUM(CASE WHEN YEAR(취창업일) = YEAR(#{dashBoardYear}) THEN 1 ELSE 0 END) AS dashBoardEmployedCountTotal,
+            SUM(CASE WHEN 지점 = #{dashboardBranch} AND YEAR(취창업일) = YEAR(#{dashBoardYear}) THEN 1 ELSE 0 END) AS dashBoardEmployedCountBranch,
+            SUM(CASE WHEN 전담자_계정 = #{dashboardUserID} AND YEAR(취창업일) = YEAR(#{dashBoardYear}) THEN 1 ELSE 0 END) AS dashBoardEmployedCountUser,
+            -- 알선 취업자 수 Query 조건
+            SUM(CASE WHEN 취업유형 != '' AND 취업유형 IN ('알선','소개취업') THEN 1 ELSE 0 END) AS dashBoardReferredEmployedCountTotal,
+            SUM(CASE WHEN 지점 = #{dashboardBranch} AND 취업유형 != '' AND 취업유형 IN ('알선','소개취업') THEN 1 ELSE 0 END) AS dashBoardReferredEmployedCountBranch,
+            SUM(CASE WHEN 전담자_계정 = #{dashboardUserID} AND 취업유형 != '' AND 취업유형 IN ('알선','소개취업') THEN 1 ELSE 0 END) AS dashBoardReferredEmployedCountUser,
+            -- 조기 취업자 수 Query 조건
+            SUM(CASE WHEN DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5) THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountTotal,
+            SUM(CASE WHEN 지점 = #{dashboardBranch} AND DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5) THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountBranch,
+            SUM(CASE WHEN 전담자_계정 = #{dashboardUserID} AND DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5) THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountUser,
+            -- 나은일자리 수 Query 조건
+            SUM(CASE WHEN (임금/10000 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반' THEN 1 ELSE 0 END) AS dashBoardBetterJobCountTotal,
+            SUM(CASE WHEN 지점 = #{dashboardBranch} AND (임금/10000 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반' THEN 1 ELSE 0 END) AS dashBoardBetterJobCountBranch,
+            SUM(CASE WHEN 전담자_계정 = #{dashboardUserID} AND (임금/10000 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반' THEN 1 ELSE 0 END) AS dashBoardBetterJobCountUser,
+            -- 고용유지 6개월 수 Query 조건
+            SUM(CASE WHEN 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 6 AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[<=]]> 11 THEN 1 ELSE 0 END) AS dashBoardSixMonthRetentionCountTotal,
+            SUM(CASE WHEN 지점 = #{dashboardBranch} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 6 AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[<=]]> 11 THEN 1 ELSE 0 END) AS dashBoardSixMonthRetentionCountBranch,
+            SUM(CASE WHEN 전담자_계정 = #{dashboardUserID} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 6 AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[<=]]> 11 THEN 1 ELSE 0 END) AS dashBoardSixMonthRetentionCountUser,
+            -- 고용유지 12개월 수 Query 조건
+            SUM(CASE WHEN 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 12 THEN 1 ELSE 0 END) AS dashBoardTwelveMonthRetentionCountTotal,
+            SUM(CASE WHEN 지점 = #{dashboardBranch} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 12 THEN 1 ELSE 0 END) AS dashBoardTwelveMonthRetentionCountBranch,
+            SUM(CASE WHEN 전담자_계정 = #{dashboardUserID} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 12 THEN 1 ELSE 0 END) AS dashBoardTwelveMonthRetentionCountUser
+        FROM
+            J_참여자관리
+        WHERE
+            YEAR(등록일) = YEAR(#{dashBoardYear}) AND 취창업일 != '';
+    </select>
+
+    <!-- 성공금 데이터 추출 시작 -->
+    <!-- 성공금 개인 데이터 추출 시작 -->
+    <select id="selectSuccessMoney" resultType="dashboard">
+        SELECT
+            -- 전체 성공금 인센티브
+            SUM(CONVERT(BIGINT, 성공금)) AS dashBoardSuccessMoneyTotal,
+            SUM(CONVERT(BIGINT, 인센티브)) AS dashBoardSuccessMoneyTotalIncentive,
+            -- 지점 성공금 인센티브
+            SUM(CASE WHEN 지점=#{dashboardBranch} THEN CONVERT(BIGINT, 성공금) ELSE 0 END) AS dashBoardSuccessMoneyBranch,
+            SUM(CASE WHEN 지점=#{dashboardBranch} THEN CONVERT(BIGINT, 인센티브) ELSE 0 END) AS dashBoardSuccessMoneyBranchIncentive,
+            -- 개인 성공금 인센티브
+            SUM(CASE WHEN 전담자_계정=#{dashboardUserID} THEN CONVERT(BIGINT, 성공금) ELSE 0 END) AS dashBoardSuccessMoneyUser,
+            SUM(CASE WHEN 전담자_계정=#{dashboardUserID} THEN CONVERT(BIGINT, 인센티브) ELSE 0 END) AS dashBoardSuccessMoneyUserIncentive
+        FROM
+            SUCCESSMONEY
+        WHERE
+            YEAR(등록일) = #{dashBoardYear};
+    </select>
+    <!-- 성공금 데이터 추출 끝 -->
+
+
+    <!-- 전체 지점 인원, 현재 지점 인원 -->
+    <select id="selectBranchAndUser" resultType="dashboard">
+        SELECT
+            (SELECT
+                 SUM(지점인원)
+             FROM
+                 J_참여자관리_지점) AS dashboardCountBranch,
+            지점인원 AS dashboardCountUser
+        FROM
+            J_참여자관리_지점
+        WHERE 지점 = #{dashboardBranch};
+    </select>
+
+    <!-- 전담자 개인 참여자 인원 -->
+    <select id="selectCountDashboard" resultType="dashboard">
+        SELECT
+            COUNT(구직번호) dashboardTotalCount
+        FROM
+            J_참여자관리
+        WHERE
+            전담자_계정 = #{dashboardUserID}
+    </select>
+    <!-- Dashboard 조회 쿼리 끝 -->
+
+    <!-- 참여자 통계 현재 참여자 수 시작 -->
+    <select id="selectTotalParticipant" resultType="dashboard">
+        SELECT
+            COUNT(등록일) dashBoardParticipatedCountOne,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID}) dashBoardParticipatedCountTotal,
+            YEAR(등록일) dashBoardParticipatedYear
+        FROM
+            J_참여자관리
+        WHERE
+            전담자_계정=#{dashboardUserID} AND
+            YEAR(등록일) <![CDATA[<=]]> #{dashBoardYear}
+        GROUP BY YEAR(등록일)
+        ORDER BY YEAR(등록일) DESC
+    </select>
+    <!-- 참여자 통계 현재 참여자 수 끝 -->
+
+    <!-- 참여자 통계 현재 진행자 수 시작 -->
+    <select id="selectCurrentParticipant" resultType="dashboard">
+        SELECT
+            COUNT(등록일) dashBoardParticipatedCountOne,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 마감 = 'false' AND 진행단계 IN ('1','2','%IAP%전%','%IAP%후%','미취업사후관리')) dashBoardParticipatedCountTotal,
+            YEAR(등록일) dashBoardParticipatedYear
+        FROM
+            J_참여자관리
+        WHERE
+            전담자_계정=#{dashboardUserID} AND
+            마감 = 'false' AND
+            진행단계 IN ('1','2','%IAP%전%','%IAP%후%','미취업사후관리') AND
+            YEAR(등록일) <![CDATA[<=]]> #{dashBoardYear}
+        GROUP BY YEAR(등록일)
+        ORDER BY YEAR(등록일) DESC
+    </select>
+    <!-- 참여자 통계 현재 진행자 수 끝 -->
+
+    <!-- 참여자 통계 현재 년도 참여자 수 시작 -->
+    <select id="selectNowParticipant" resultType="dashboard">
+        SELECT
+            SUM(case when 진행단계 = '1' or 진행단계 = '%IAP%전%' then 1 else 0 end) dashBoardParticipatedCountOne,
+            SUM(case when 진행단계 = '2' or 진행단계 = '%IAP%후%' then 1 else 0 end) dashBoardParticipatedCountTwo,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 마감 = 'false' AND YEAR(등록일) <![CDATA[=]]> #{dashBoardYear} AND 진행단계 IN ('1','2','%IAP%전%','%IAP%후%','미취업사후관리')) dashBoardParticipatedCountTotal,
+            YEAR(등록일) dashBoardParticipatedYear
+        FROM
+            J_참여자관리
+        WHERE
+            전담자_계정=#{dashboardUserID} AND
+            마감 = 'false' AND
+            진행단계 IN ('1','2','%IAP%전%','%IAP%후%','미취업사후관리') AND
+            YEAR(등록일) <![CDATA[=]]> #{dashBoardYear}
+        GROUP BY YEAR(등록일)
+        ORDER BY YEAR(등록일) DESC
+    </select>
+    <!-- 참여자 통계 현재 년도 참여자 수 끝 -->
+
+</mapper>

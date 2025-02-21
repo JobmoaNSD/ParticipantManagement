@@ -61,9 +61,8 @@
                 <select class="form-select" aria-label="Default select example" id="employmentIncentive" name="employmentIncentive">
                     <option value=""></option>
                     <option value="해당[컨설팅 알선 - 120%]">해당[컨설팅 알선 - 120%]</option>
-                    <option value="해당[알선취업 - 100%]">해당[알선취업 - 100%]</option>
-                    <option value="해당[외부구인정보 소개 - 100%]">해당[외부구인정보 소개 - 100%]</option>
-                    <option value="해당[대면상담 6회 - 100%]">해당[대면상담 6회 - 100%]</option>
+                    <option value="해당[알선취업(외부소개) - 100%]">해당[알선취업(외부소개) - 100%]</option>
+                    <option value="해당[대면상담 6회(알선3회) - 100%]">해당[대면상담 6회(알선3회) - 100%]</option>
                     <option value="해당[간접고용서비스 4회 - 50%]">해당[간접고용서비스 4회 - 50%]</option>
                     <option value="미해당[서비스 미제공]">미해당[서비스 미제공]</option>
                     <option value="미해당[1개월 미만 퇴사]">미해당[1개월 미만 퇴사]</option>
