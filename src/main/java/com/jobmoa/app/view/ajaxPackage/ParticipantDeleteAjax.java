@@ -42,7 +42,7 @@ public class ParticipantDeleteAjax {
         // 여러 구직번호가 넘어와 삭제할 예정이니 반복문(forEach)를 사용하여 삭제를 진행
         for(int jobNo : jobNos) {
             // condition 추가
-            participantDTO.setParticipantCondition("participantBasicDelete");
+            participantDTO.setParticipantCondition("participantDelete");
             //각 정보에 구직번호를 추가하고  기본정보 삭제 탭으로 전달한다.
             participantDTO.setParticipantJobNo(jobNo);
             //참여자 삭제를 확인한다.

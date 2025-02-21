@@ -10,6 +10,7 @@
         <typeAlias type="com.jobmoa.app.biz.participantEmployment.EmploymentDTO" alias="employment" />
         <typeAlias type="com.jobmoa.app.biz.particcertif.ParticcertifDTO" alias="particcertif" />
         <typeAlias type="com.jobmoa.app.biz.participantEducation.EducationDTO" alias="education" />
+        <typeAlias type="com.jobmoa.app.biz.dashboard.DashboardDTO" alias="dashboard" />
     </typeAliases>
 
 
@@ -21,5 +22,6 @@
         <mapper resource="mappings/Employment-mapping.xml" />
         <mapper resource="mappings/Particcertif-mapping.xml" />
         <mapper resource="mappings/Education-mapping.xml" />
+        <mapper resource="mappings/Dashboard-mapping.xml" />
     </mappers>
 </configuration>

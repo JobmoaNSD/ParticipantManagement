@@ -3,9 +3,9 @@ package com.jobmoa.app.biz.participantEmployment;
 import java.util.List;
 
 public interface EmploymentService {
-    public boolean insert(EmploymentDTO employmentDTO);
-    public boolean update(EmploymentDTO employmentDTO);
-    public boolean delete(EmploymentDTO employmentDTO);
-    public EmploymentDTO selectOne(EmploymentDTO employmentDTO);
-    public List<EmploymentDTO> selectAll(EmploymentDTO employmentDTO);
+    boolean insert(EmploymentDTO employmentDTO);
+    boolean update(EmploymentDTO employmentDTO);
+    boolean delete(EmploymentDTO employmentDTO);
+    EmploymentDTO selectOne(EmploymentDTO employmentDTO);
+    List<EmploymentDTO> selectAll(EmploymentDTO employmentDTO);
 }

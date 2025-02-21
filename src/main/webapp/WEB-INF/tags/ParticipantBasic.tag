@@ -75,9 +75,8 @@
                 <label for="basicSpecific" class="form-label">특정계층</label>
                 <select class="form-select" aria-label="Default select example" id="basicSpecific" name="basicSpecific">
                     <option value=""></option>
-                    <option value="중장년">중장년</option>
-                    <option value="?">?</option>
-                    <option value="?">?</option>
+                    <option value="O">O</option>
+                    <option value="">X</option>
                 </select>
             </div>
             <%--자격증 --%>

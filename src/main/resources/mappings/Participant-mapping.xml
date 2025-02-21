@@ -97,6 +97,17 @@
     </select>
     <!-- 참여자 전체 자격증 확인용 쿼리 끝 -->
 
+    <!-- 참여자 전체 직업훈련 확인용 쿼리 시작 -->
+    <select id="selectOneEducation" resultType="participant">
+        SELECT
+            COUNT(구직번호) AS participantCount
+        From
+            J_참여자관리_직업훈련
+        WHERE
+            구직번호=#{participantJobNo}
+    </select>
+    <!-- 참여자 전체 직업훈련 확인용 쿼리 끝 -->
+
     <!-- 참여자 전체 상담 확인용 쿼리 시작 -->
     <select id="selectOneCounsel" resultType="participant">
         SELECT
@@ -108,52 +119,6 @@
     </select>
     <!-- 참여자 전체 상담 확인용 쿼리 끝 -->
 
-    <!-- Dashboard 조회 쿼리 시작 -->
-    <select id="selectMyResultDashboard" resultType="participant">
-        SELECT
-            -- 취업자 수 Query 조건
-            SUM(CASE WHEN YEAR(취창업일) = YEAR(#{dashBoardYear}) THEN 1 ELSE 0 END) AS dashBoardEmployedCountTotal,
-            SUM(CASE WHEN 지점 = #{participantBranch} AND YEAR(취창업일) = YEAR(#{dashBoardYear}) THEN 1 ELSE 0 END) AS dashBoardEmployedCountBranch,
-            SUM(CASE WHEN 전담자_계정 = #{participantUserid} AND YEAR(취창업일) = YEAR(#{dashBoardYear}) THEN 1 ELSE 0 END) AS dashBoardEmployedCountUser,
-            -- 알선 취업자 수 Query 조건
-            SUM(CASE WHEN 취업유형 != '' AND 취업유형 IN ('알선','소개취업') THEN 1 ELSE 0 END) AS dashBoardReferredEmployedCountTotal,
-            SUM(CASE WHEN 지점 = #{participantBranch} AND 취업유형 != '' AND 취업유형 IN ('알선','소개취업') THEN 1 ELSE 0 END) AS dashBoardReferredEmployedCountBranch,
-            SUM(CASE WHEN 전담자_계정 = #{participantUserid} AND 취업유형 != '' AND 취업유형 IN ('알선','소개취업') THEN 1 ELSE 0 END) AS dashBoardReferredEmployedCountUser,
-            -- 조기 취업자 수 Query 조건
-            SUM(CASE WHEN DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5) THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountTotal,
-            SUM(CASE WHEN 지점 = #{participantBranch} AND DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5) THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountBranch,
-            SUM(CASE WHEN 전담자_계정 = #{participantUserid} AND DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5) THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountUser,
-            -- 나은일자리 수 Query 조건
-            SUM(CASE WHEN (임금/10000 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반' THEN 1 ELSE 0 END) AS dashBoardBetterJobCountTotal,
-            SUM(CASE WHEN 지점 = #{participantBranch} AND (임금/10000 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반' THEN 1 ELSE 0 END) AS dashBoardBetterJobCountBranch,
-            SUM(CASE WHEN 전담자_계정 = #{participantUserid} AND (임금/10000 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반' THEN 1 ELSE 0 END) AS dashBoardBetterJobCountUser,
-            -- 고용유지 6개월 수 Query 조건
-            SUM(CASE WHEN 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 6 AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[<=]]> 11 THEN 1 ELSE 0 END) AS dashBoardSixMonthRetentionCountTotal,
-            SUM(CASE WHEN 지점 = #{participantBranch} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 6 AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[<=]]> 11 THEN 1 ELSE 0 END) AS dashBoardSixMonthRetentionCountBranch,
-            SUM(CASE WHEN 전담자_계정 = #{participantUserid} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 6 AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[<=]]> 11 THEN 1 ELSE 0 END) AS dashBoardSixMonthRetentionCountUser,
-            -- 고용유지 12개월 수 Query 조건
-            SUM(CASE WHEN 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 12 THEN 1 ELSE 0 END) AS dashBoardTwelveMonthRetentionCountTotal,
-            SUM(CASE WHEN 지점 = #{participantBranch} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 12 THEN 1 ELSE 0 END) AS dashBoardTwelveMonthRetentionCountBranch,
-            SUM(CASE WHEN 전담자_계정 = #{participantUserid} AND 진행단계 = '고보일반' AND DATEDIFF(mm,취창업일,(CASE WHEN 퇴사일='' THEN GETDATE() ELSE 퇴사일 END)) <![CDATA[>=]]> 12 THEN 1 ELSE 0 END) AS dashBoardTwelveMonthRetentionCountUser
-        FROM
-            J_참여자관리
-        WHERE
-            YEAR(등록일) = YEAR(#{dashBoardYear}) AND 취창업일 != '';
-    </select>
-
-    <select id="selectBranchAndUser" resultType="participant">
-        SELECT
-            (SELECT
-                 SUM(지점인원)
-             FROM
-                 J_참여자관리_지점) AS totalCountBranch,
-            지점인원 AS totalCountUser
-        FROM
-            J_참여자관리_지점
-        WHERE 지점 = #{participantBranch};
-    </select>
-    <!-- Dashboard 조회 쿼리 끝 -->
-
     <!-- 삭제 쿼리 시작 -->
     <!-- 기본 정보 삭제 쿼리 -->
     <delete id="participantDelete">
@@ -162,6 +127,10 @@
     <!-- 자격증 정보 삭제 쿼리 -->
     <delete id="participantParticcertifDelete">
         DELETE FROM J_참여자관리_자격증 WHERE 구직번호 = #{participantJobNo}
+    </delete>
+    <!-- 자격증 정보 삭제 쿼리 -->
+    <delete id="participantEducationDelete">
+        DELETE FROM J_참여자관리_직업훈련 WHERE 구직번호 = #{participantJobNo}
     </delete>
     <!-- 삭제 쿼리 끝 -->
 

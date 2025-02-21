@@ -75,6 +75,12 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
+    <!-- 랜덤 색상 지정 -->
+    <script src="js/randomColorGenerator.js"></script>
+
+    <!-- 진행바 스타일 적용 -->
+    <link rel="stylesheet" href="css/dashboard.css">
+
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -96,13 +102,26 @@
                     <!-- begin::main 지점 / 다우톡 주요 공지사항 시작 -->
                     <div class="col-md-10 pt-1">
                         <div class="row">
-                            <div class="col-md-4 border-end border-dark border-2">
+                            <div class="col-md-2">
                                 <div class="h5">
                                     ${JOBMOA_LOGIN_DATA.memberBranch}지점
                                 </div>
                                 <div class="h3">
                                     ${JOBMOA_LOGIN_DATA.memberUserName} 상담사
                                 </div>
+                            </div>
+                            <div class="col-md-1 justify-content-between align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                                <div class="h6">
+                                    년도 조회
+                                </div>
+                                <div class="">
+                                    <select class="form-select form-select-sm" id="yearSelect">
+<%--                                        <option value="2025">2025</option>--%>
+<%--                                        <option value="2024">2024</option>--%>
+<%--                                        <option value="2023">2023</option>--%>
+                                    </select>
+                                </div>
+
                             </div>
                             <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
                                 <div class="h6 m-0">
@@ -149,17 +168,17 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item d-flex border-bottom-0">
                                             <div class="">
-                                                <div>집중알선대상자 XX명</div>
+                                                <div>구직 만료 도래자 XX명</div>
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex border-bottom-0">
                                             <div class="">
-                                                <div>15일 경과예정자 X명</div>
+                                                <div>15일경과 예정자 X명</div>
                                             </div>
                                         </li>
                                         <li class="list-group-item d-flex border-bottom-0">
                                             <div class="">
-                                                <div>구직촉진수당 신청 예정자 XX명</div>
+                                                <div>기간 만료 예정자 XX명</div>
                                             </div>
                                         </li>
                                     </ul>
@@ -173,30 +192,35 @@
                             <div class="row">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start">
-                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>
-                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>
-                                            <div class="progress rounded rounded-2">
-                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                            </div>
+                                        <div class="ms-2 me-auto text-start" id="thisYearParticipant">
+<%--                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>--%>
+<%--                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>--%>
+<%--                                            <div class="progress rounded rounded-2">--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                            </div>--%>
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start">
-                                            <div class="fw-bold">총 진행자 수 00명</div>
-                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>
-                                            <div class="progress rounded rounded-2">
-                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                            </div>
+                                        <div class="ms-2 me-auto text-start" id="currentParticipant">
+<%--                                            <div class="fw-bold">현재 진행자 수 00명</div>--%>
+<%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
+<%--                                            <div class="progress rounded rounded-2">--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                            </div>--%>
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start">
-                                            <div class="fw-bold">총 참여자 수 00명</div>
-                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>
-                                            <div class="progress rounded rounded-2">
-                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                            </div>
+                                        <div class="ms-2 me-auto text-start" id="totalParticipant">
+<%--                                            <div class="fw-bold">총 참여자 수 00명</div>--%>
+<%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
+<%--                                            <div class="progress rounded rounded-2">--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+<%--                                            </div>--%>
                                         </div>
                                     </li>
                                 </ul>
@@ -547,13 +571,13 @@
         //성공금 발생
         let id=$('#ex-chart-bar1');
         let lable=['성공금 발생'];
-        let data={title:data_title,text:[60005715,35021540,42535410]};
+        let data={title:data_title,text:JSON.parse('${dashBoardSuccessMoney}')};
         chart_bar_data_my(id,lable,data);
 
         //인센티브 발생
         id=$('#ex-chart-barZZ');
         lable=['인센티브'];
-        data={title:data_title,text:[45022120,25124120,32100210]};
+        data={title:data_title,text:JSON.parse('${dashBoardSuccessMoneyIncentive}')};
         chart_bar_data_my(id,lable,data);
 
         //chart 나의 성과 현황
@@ -595,4 +619,133 @@
     })
 </script>
 <%-- FIXME Chart.js Bar Chart javascript End --%>
+
+<%-- FIXME 참여자통계 Javascript Start --%>
+<script>
+        /*
+        * 백단에서 각 조건에 맞는 참여자 숫자 데이터 를 전달받습니다.
+        * 전달받은 숫자 데이터를 계산하여 % 형식으로 보여주고
+        * title, subtitle 형식에 맞게 html div 태그 형식으로 뿌려줍니다.
+        * */
+
+        $(document).ready(function () {
+            const thisYearParticipant = $('#thisYearParticipant');
+            const currentParticipant = $('#currentParticipant');
+            const totalParticipant = $('#totalParticipant');
+
+            // 총 참여자 수 계산
+            function calculateTotalParticipants(data) {
+                let total = 0;
+                $.each(data, function (_, value) {
+                    total += parseInt(value.data);
+                });
+                return total;
+            }
+
+            // 비율 계산
+            function calculatePercentage(total, data) {
+                let arr = [];
+                $.each(data, function (_, value) {
+                    arr[_] = ((parseInt(value.data) / total) * 100).toFixed(2);
+                })
+                console.log("arr:"+arr);
+                return arr;
+            }
+
+            // 유형별 서브타이틀 생성
+            function generateTypeSubtitle(data) {
+                let subtitle = '';
+                $.each(data, function (index, value) {
+                    subtitle += (index === 0 ? 'Ⅰ유형 ' : 'Ⅱ유형 ') + value.data + '명';
+                    if (index < data.length - 1) {
+                        subtitle += ' / ';
+                    }
+                });
+                return subtitle;
+            }
+
+            // 년도별 서브타이틀 생성
+            function generateYearSubtitle(data) {
+                let subtitle = '';
+                $.each(data, function (index, value) {
+                    subtitle += value.year + '년 ' + value.data + '명';
+                    if (index < data.length - 1) {
+                        subtitle += ' / ';
+                    }
+                });
+                return subtitle;
+            }
+
+            // 진행자 데이터 처리
+            function processParticipantData(targetElement, data, titleTemplate , subtitleTemplate) {
+                const total = calculateTotalParticipants(data);
+                const subtitle =  subtitleTemplate;
+                const percentage = calculatePercentage(total, data);
+                const title = titleTemplate + total + "명";
+                const divContent = createDiv(title, subtitle, percentage);
+                appendDiv(targetElement, divContent);
+            }
+
+            // DIV 생성
+            function createDiv(title, subtitle, percentage) {
+                let returnValue =
+                    "<div class='fw-bold'>"+title+"</div>"+
+                    "<div>"+subtitle+"</div>"+
+                    "<div class='progress rounded rounded-2'>";
+
+                percentage.map((data)=> {
+                    returnValue += "<div class='progress-bar' role='progressbar'" +
+                        "style='width: " + data + "%; background: linear-gradient(90deg, "+randomColor()+", "+randomColor()+");color: black;font-weight: bold;' aria-valuenow='" + data + "'" +
+                        "aria-valuemin='0' aria-valuemax='100'>" + data + "%</div>"
+                });
+
+                returnValue += "</div>";
+                return returnValue;
+            }
+
+            // DIV 추가
+            function appendDiv(target, divContent) {
+                target.append(divContent);
+            }
+
+            // 예제 데이터
+            const thisYearData = JSON.parse('${nowParticipantJsonData}');
+            const currentData = JSON.parse('${currentParticipantJsonData}');
+            const totalData = JSON.parse('${totalParticipantJsonData}');
+
+            // 각 참여자 데이터 처리
+            processParticipantData(thisYearParticipant, thisYearData, "2025년 총 참여자 수 ", generateTypeSubtitle(thisYearData));
+            processParticipantData(currentParticipant, currentData, "현재 진행자 수 ", generateYearSubtitle(currentData));
+            processParticipantData(totalParticipant, totalData, "총 참여자 수 ", generateYearSubtitle(totalData));
+        });
+</script>
+<%-- FIXME 참여자통계 Javascript End --%>
+
+<%-- FIXME 년도 조회 ajax Start --%>
+<script>
+    $(document).ready(function () {
+        const yearSelect = $('#yearSelect');
+
+        getYearData(yearSelect);
+
+        function getYearData(id) {
+            // 현재 날짜 및 시간 정보를 가져오기
+            var currentYear = new Date().getFullYear();
+
+            //id.append('<option value="'+currentYear+'">'+currentYear+'</option>');
+            for(var i=currentYear; i>=currentYear-5; i--){
+                id.append('<option value="'+i+'">'+i+'</option>');
+            }
+        }
+
+        yearSelect.val('${dashBoardYear}');
+
+        yearSelect.change(function () {
+           let year = $(this).val();
+           location.href = "/dashboard.login?dashBoardYear="+year;
+        });
+    })
+</script>
+<%-- FIXME 년도 조회 ajax End --%>
+
 </html>

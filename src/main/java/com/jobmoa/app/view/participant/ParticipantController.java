@@ -159,7 +159,7 @@ public class ParticipantController {
             }
         }
 
-        infoBean.info(model,url,icon,title,message);
+        InfoBean.info(model,url,icon,title,message);
         log.info("-----------------------------------");
         return "views/info";
     }

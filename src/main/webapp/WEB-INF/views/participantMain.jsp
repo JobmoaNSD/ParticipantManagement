@@ -402,7 +402,7 @@
                             .then((result) => {
                                 if(result){
                                     flag = true
-                                };
+                                }
                             });
                     }
                     else{

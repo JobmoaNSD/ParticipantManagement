@@ -15,7 +15,7 @@
         }).then((result) => {
             result.isConfirmed;
         });
-    };
+    }
 
     function alertDefaultWarning(title, text) {
         return Swal.fire({
@@ -25,7 +25,7 @@
         }).then((result) => {
             result.isConfirmed;
         });
-    };
+    }
 
     function alertDefaultInfo(title, text) {
         return Swal.fire({
@@ -35,7 +35,7 @@
         }).then((result) => {
             result.isConfirmed;
         });
-    };
+    }
 
     function alertDefaultQuestion(title, text) {
         return Swal.fire({
@@ -45,7 +45,7 @@
         }).then((result) => {
             result.isConfirmed;
         });
-    };
+    }
 
     function alertConfirmQuestion(title, text, confirmButtonText, cancelButtonText) {
         return Swal.fire({

@@ -71,14 +71,14 @@
     <!--begin::Sidebar-->
     <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <!--begin::Sidebar Brand-->
-        <div class="sidebar-brand">
+        <div class="sidebar-brand" style="height: 77px;">
             <!--begin::Brand Link-->
-            <a href="./index.jsp" class="brand-link">
+            <a href="./index.jsp" class="brand-link h-100 w-75">
                 <!--begin::Brand Image-->
                 <img
                         src="../../img/JobmoaLog.png"
                         alt="JOBMOA Logo"
-                        class="brand-image opacity-75 shadow"
+                        class="brand-image opacity-75 shadow  h-100 w-100"
                 />
                 <!--end::Brand Image-->
                 <!--begin::Brand Text-->

@@ -49,7 +49,7 @@ $('document').ready(function () {
                 console.log(e);
                 // e.date를 찍어보면 Thu Jun 27 2019 00:00:00 GMT+0900 (한국 표준시) 위와 같은 형태로 보인다.
             });
-    };
+    }
 });
 
 

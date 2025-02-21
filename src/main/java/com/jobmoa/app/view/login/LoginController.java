@@ -81,7 +81,7 @@ public class LoginController {
         //SweetAlert 사용중 아이콘 선택
         //성공 : success
         //실패 : error
-        infoBean.info(model,url,icon,title,message);
+        InfoBean.info(model,url,icon,title,message);
         log.info("로그인 여부 : [{}]",title);
 
         //info 페이지로 이동

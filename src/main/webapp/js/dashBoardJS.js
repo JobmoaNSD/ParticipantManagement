@@ -36,7 +36,7 @@ function chart_doughnut_data(id,data,drawCenterText_text,denominator){
             },
         },
     });
-};
+}
 
 
 //dashBoard Bar chart data
@@ -89,7 +89,7 @@ function chart_bar_data_succes(id,labels,data){
             }
         }
     });
-};
+}
 
 function chart_bar_data_my(id,labels,data){
     let data_label = JSON.parse(JSON.stringify(data)).title;
@@ -145,4 +145,4 @@ function chart_bar_data_my(id,labels,data){
             }
         }
     });
-};
+}
