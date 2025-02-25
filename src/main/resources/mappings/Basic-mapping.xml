@@ -89,7 +89,7 @@
                 WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
                 END AS basicDob,
             성별 AS basicGender,
-            참여자 AS basicRecruit,
+            모집경로 AS basicRecruit,
             참여유형 AS basicParttype,
             주소 AS basicAddress,
             학교명 AS basicSchool,

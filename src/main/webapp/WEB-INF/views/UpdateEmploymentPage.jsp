@@ -129,7 +129,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 수정"/>
+    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 취업정보 수정"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->
@@ -235,6 +235,52 @@
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
+
+            //취창업일
+            const employmentStartDate = $("#employmentStartDate").val();
+            //취창업처리일
+            const employmentProcDate = $("#employmentProcDate").val();
+            //퇴사일
+            const employmentQuit = $("#employmentQuit").val();
+            //취업유형
+            const employmentEmpType = $("#employmentEmpType").val();
+            //취업처
+            const employmentLoyer = $("#employmentEmpType").val();
+            //임금
+            const employmentSalary = $("#employmentSalary").val();
+            //취업인센티브_구분
+            const employmentIncentive = $("#employmentIncentive").val();
+
+            //취창업일이 비어있고 임금 OR 취업인센티브_구분이 비어있다면 함수를 내보낸다.
+            if(!employmentStartDate.length > 0){
+                //임금이 작성되어 있거나
+                flag = employmentSalary.length > 0;
+                //취업인센티브_구분이 선택되어 있다면
+                flag = flag || employmentIncentive.length > 0;
+
+                flag = flag || employmentProcDate.length > 0;
+                flag = flag || employmentQuit.length > 0;
+                flag = flag || employmentEmpType.length > 0;
+                flag = flag || employmentLoyer.length > 0;
+                if(flag){
+                    alertDefaultInfo("취창업일을 입력해주세요.","");
+                    return;
+                }
+            }
+            else {
+                //임금이 작성되어 있거나
+                if (!employmentSalary.length > 0){
+                    alertDefaultInfo("임금은 필수 입력입니다.","");
+                    return;
+                }
+                //취업인센티브_구분이 선택되어 있다면
+                if (!employmentIncentive.length > 0){
+                    alertDefaultInfo("취업인센티브_구분은 필수 입력입니다.","");
+                    return;
+                }
+            }
+
+
            const form = $("#newParticipantsForm");
            form.submit();
         });
@@ -254,9 +300,6 @@
         //진행단계
         selectOption(counselProgress,"${counselProgress}");
 
-        //취업유형
-        selectOption(employmentEmpType,"${employment.employmentEmpType}");
-
         //취업인센티브_구분
         selectOption(employmentIncentive,"${employment.employmentIncentive}");
 
@@ -266,6 +309,8 @@
 
         <%-- 취업유형 변경 시작 --%>
         changeSelect(counselProgress, employmentEmpType,"${counselProgress}");
+        //취업유형
+        selectOption(employmentEmpType,"${employment.employmentEmpType}");
         <%-- 취업유형 변경 끝 --%>
 
     });

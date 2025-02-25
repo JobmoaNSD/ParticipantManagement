@@ -17,14 +17,14 @@ public class ParticipantDAO {
     private static final String ns = "ParticipantDAO.";
 
     public List<ParticipantDTO> selectAll(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO);
+        //log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO);
         List<ParticipantDTO> datas = sqlSession.selectList(ns+participantDTO.getParticipantCondition(), participantDTO);
         log.info("datas : [{}]",datas.toString());
         return datas;
     }
 
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantDAO selectOne : [{}]",participantDTO);
+        //log.info("ParticipantDTO ParticipantDAO selectOne : [{}]",participantDTO);
         log.info("ParticipantDTO ParticipantDAO selectOne condition : [{}]",participantDTO.getParticipantCondition());
         ParticipantDTO data = sqlSession.selectOne(ns+participantDTO.getParticipantCondition(), participantDTO);
 
@@ -43,7 +43,7 @@ public class ParticipantDAO {
     }
 
     public boolean delete(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantDAO delete : [{}]",participantDTO);
+        //log.info("ParticipantDTO ParticipantDAO delete : [{}]",participantDTO);
         //쿼리가 실행되고 0이거나 작으면 false 0보다 크면 true 를 반환
         boolean flag = 0 < sqlSession.delete(ns+participantDTO.getParticipantCondition(), participantDTO);
         log.info("ParticipantDTO ParticipantDAO result : [{}]",flag);

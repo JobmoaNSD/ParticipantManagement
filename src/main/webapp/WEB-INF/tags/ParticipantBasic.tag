@@ -67,9 +67,9 @@
                 <input type="text" class="form-control" id="basicSpecialty" name="basicSpecialty" value="${not empty basic ? basic.basicSpecialty : ""}">
                 <div class="overflow-y-scroll recommend" id="basicSpecialtylist"></div>
             </div>
-            <div class="col-md-1 w-auto">
-                <label for="basicAntecedents" class="form-label">경력</label>
-                <input type="text" class="form-control" id="basicAntecedents" name="basicAntecedents" value="${not empty basic ? basic.basicAntecedents : ""}">
+            <div class="w-auto">
+                <label for="basicAntecedents" class="form-label">경력(년 단위)</label>
+                <input type="number" class="form-control" id="basicAntecedents" name="basicAntecedents" min="0" max="40" placeholder="년 단위" value="${not empty basic ? basic.basicAntecedents : ""}">
             </div>
             <div class="col-md-1 w-auto">
                 <label for="basicSpecific" class="form-label">특정계층</label>

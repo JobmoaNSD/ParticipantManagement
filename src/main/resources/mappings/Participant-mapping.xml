@@ -119,6 +119,52 @@
     </select>
     <!-- 참여자 전체 상담 확인용 쿼리 끝 -->
 
+    <!-- 외부 참여자 전달용 쿼리 시작 -->
+    <select id="selectExternal" resultType="participant">
+        SELECT
+            구직번호 AS participantJobNo,
+            참여자 AS participantPartic,
+            성별 AS participantGender,
+            주소 AS participantAddress,
+            학교명 AS participantSchool,
+            전공 AS participantSpecialty,
+            희망직무 AS participantJobWant,
+            자격증 AS certificationName,
+            희망연봉 AS participantSalWant,
+            상담사 AS participantUserName,
+            이메일 AS participantEmail,
+            전화번호 AS participantPhoneNumber,
+            고유번호 AS participantCode
+        FROM (
+            SELECT
+                ROW_NUMBER() OVER (ORDER BY 구직번호 DESC) AS RowNum,
+                구직번호,
+                참여자,
+                성별,
+                주소,
+                학교명,
+                전공,
+                희망직무,
+                자격증,
+                희망연봉,
+                상담사,
+                이메일,
+                전화번호,
+                고유번호
+            FROM
+                EXTERNALPARTICIPANT ) AS SUB_QUERY
+        WHERE
+            SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum;
+    </select>
+
+    <select id="selectExternalCount" resultType="participant">
+        SELECT
+            COUNT(구직번호) AS totalCount
+        FROM
+            EXTERNALPARTICIPANT;
+    </select>
+    <!-- 외부 참여자 전달용 쿼리 끝 -->
+
     <!-- 삭제 쿼리 시작 -->
     <!-- 기본 정보 삭제 쿼리 -->
     <delete id="participantDelete">

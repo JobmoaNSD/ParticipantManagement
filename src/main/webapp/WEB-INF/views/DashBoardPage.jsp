@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <html>
 <head>
@@ -100,9 +101,9 @@
                 <!-- begin::main content header 시작-->
                 <div class="header row d-flex justify-content-between align-items-center bg-white border border-black rounded-2 m-1">
                     <!-- begin::main 지점 / 다우톡 주요 공지사항 시작 -->
-                    <div class="col-md-10 pt-1">
+                    <div class="col-md-12 pt-1">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="row col-md-2">
                                 <div class="h5">
                                     ${JOBMOA_LOGIN_DATA.memberBranch}지점
                                 </div>
@@ -110,49 +111,49 @@
                                     ${JOBMOA_LOGIN_DATA.memberUserName} 상담사
                                 </div>
                             </div>
-                            <div class="col-md-1 justify-content-between align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                            <div class="col-md-3 ms-auto" style="width: 10%;">
                                 <div class="h6">
                                     년도 조회
                                 </div>
                                 <div class="">
                                     <select class="form-select form-select-sm" id="yearSelect">
-<%--                                        <option value="2025">2025</option>--%>
-<%--                                        <option value="2024">2024</option>--%>
-<%--                                        <option value="2023">2023</option>--%>
+                                        <%--                                        <option value="2025">2025</option>--%>
+                                        <%--                                        <option value="2024">2024</option>--%>
+                                        <%--                                        <option value="2023">2023</option>--%>
                                     </select>
                                 </div>
-
                             </div>
-                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-start border-dark border-2" style="width: 15%;">
                                 <div class="h6 m-0">
-                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">다우톡 공지사항</a>
+                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board"  target="_blank">다우톡 공지사항</a>
                                 </div>
                             </div>
-                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2" style="width: 10%;">
                                 <div class="h6 m-0">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 직무분석</a>
                                 </div>
                             </div>
-                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2" style="width: 15%;">
                                 <div class="h6 m-0">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 이력서 자소서 클리닉</a>
                                 </div>
                             </div>
-                            <div class="col-md-2 d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2">
+                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2" style="width: 10%;">
                                 <div class="h6 m-0">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 컨설팅 알선</a>
                                 </div>
                             </div>
+                            <!-- begin::main 다우톡 업무 메뉴얼 시작-->
+                            <div class="d-flex align-items-center justify-content-center pt-1" style="width: 15%;">
+                                <div class="h6 m-0">
+                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">업무 메뉴얼</a>
+                                </div>
+                            </div>
+                            <!-- begin::main 다우톡 업무 메뉴얼 끝-->
                         </div>
                     </div>
                     <!-- end::main 지점 / 다우톡 주요 공지사항 끝 -->
-                    <!-- begin::main 다우톡 업무 메뉴얼 시작-->
-                    <div class="col-md-2 d-flex align-items-center justify-content-center pt-1">
-                        <div class="h6 m-0">
-                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">업무 메뉴얼</a>
-                        </div>
-                    </div>
-                    <!-- begin::main 다우톡 업무 메뉴얼 끝-->
+
                 </div>
                 <!-- begin::main 기본 header 끝-->
 
@@ -166,21 +167,30 @@
                                 </div>
                                 <div class="row">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item d-flex border-bottom-0">
-                                            <div class="">
-                                                <div>구직 만료 도래자 XX명</div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item d-flex border-bottom-0">
-                                            <div class="">
-                                                <div>15일경과 예정자 X명</div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item d-flex border-bottom-0">
-                                            <div class="">
-                                                <div>기간 만료 예정자 XX명</div>
-                                            </div>
-                                        </li>
+                                        <c:if test="${not empty dailyDashboard}">
+                                            <li class="list-group-item d-flex border-bottom-0">
+                                                <div class="">
+                                                    <div>최근상담일 15일 경과자 ${dailyDashboard.dashBoardLastCons}명</div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex border-bottom-0">
+                                                <div class="">
+                                                    <div>구직 만료 도래자 ${dailyDashboard.dashBoardJobEX}명</div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex border-bottom-0">
+                                                <div class="">
+                                                    <div>기간 만료 예정자 ${dailyDashboard.dashBoardEXPDate}명</div>
+                                                </div>
+                                            </li>
+                                        </c:if>
+                                        <c:if test="${empty dailyDashboard}">
+                                            <li class="list-group-item d-flex border-bottom-0">
+                                                <div class="">
+                                                    <div>확인할 내역이 없습니다.</div>
+                                                </div>
+                                            </li>
+                                        </c:if>
                                     </ul>
                                 </div>
                             </div>
@@ -193,34 +203,34 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between">
                                         <div class="ms-2 me-auto text-start" id="thisYearParticipant">
-<%--                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>--%>
-<%--                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>--%>
-<%--                                            <div class="progress rounded rounded-2">--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                            </div>--%>
+                                            <%--                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>--%>
+                                            <%--                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>--%>
+                                            <%--                                            <div class="progress rounded rounded-2">--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                            </div>--%>
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
                                         <div class="ms-2 me-auto text-start" id="currentParticipant">
-<%--                                            <div class="fw-bold">현재 진행자 수 00명</div>--%>
-<%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
-<%--                                            <div class="progress rounded rounded-2">--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                            </div>--%>
+                                            <%--                                            <div class="fw-bold">현재 진행자 수 00명</div>--%>
+                                            <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
+                                            <%--                                            <div class="progress rounded rounded-2">--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                            </div>--%>
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
                                         <div class="ms-2 me-auto text-start" id="totalParticipant">
-<%--                                            <div class="fw-bold">총 참여자 수 00명</div>--%>
-<%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
-<%--                                            <div class="progress rounded rounded-2">--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-<%--                                            </div>--%>
+                                            <%--                                            <div class="fw-bold">총 참여자 수 00명</div>--%>
+                                            <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
+                                            <%--                                            <div class="progress rounded rounded-2">--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                            <%--                                            </div>--%>
                                         </div>
                                     </li>
                                 </ul>
@@ -315,18 +325,17 @@
 
                             <div class="col-md-4">
                                 <div class="row h-100">
-                                    <div class="flex-fill ex-chart-bar1 h-100 col-md-6">
+                                    <div class="flex-fill ex-chart-bar1 col-md-6 chart-div">
                                         <div class="text-center d-flex justify-content-center h-100">
                                             <%--FIXME ex-chart-bar1 --%>
                                             <canvas id="ex-chart-bar1"></canvas>
 
                                         </div>
                                     </div>
-                                    <div class="flex-fill ex-chart-barZZ h-100 col-md-6">
+                                    <div class="flex-fill ex-chart-barZZ col-md-6 chart-div">
                                         <div class="text-center d-flex justify-content-center h-100">
                                             <%--FIXME ex-chart-barZZ --%>
                                             <canvas id="ex-chart-barZZ"></canvas>
-
                                         </div>
                                     </div>
                                 </div>
@@ -337,7 +346,7 @@
                 </div>
                 <!-- end::main chart 본문 끝 -->
                 <!-- begin::sub chart 본문 시작 -->
-                <div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1" style="height: 300px;">
+                <div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1">
                     <div class="col-md-12">
                         <!-- begin::sub chart header 시작 -->
                         <div class="row">
@@ -358,77 +367,52 @@
                         </div>
                         <!-- begin::sub chart header 끝 -->
                         <!-- begin::sub chart body 시작 -->
-                        <div class="row text-center d-flex justify-content-center h-75" id="my-chart-div">
+                        <div class="row text-center d-flex justify-content-center" id="my-chart-div">
                             <!-- 나의 성과 현황 시작 -->
-                            <div class="row h-100">
-
-                                <div class="col-md-2 h-100">
-                                    <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar2 h-100">
-                                            <div class="text-center d-flex justify-content-center h-100">
-                                                <%--FIXME ex-chart-bar2 --%>
-                                                <canvas id="ex-chart-bar2"></canvas>
-                                            </div>
-                                        </div>
+                            <div class="row">
+                                <div class="col-md-2 chart-div">
+                                    <div class="text-center d-flex justify-content-center h-100">
+                                        <%--FIXME ex-chart-bar2 --%>
+                                        <canvas id="ex-chart-bar2"></canvas>
                                     </div>
                                 </div>
 
-                                <div class="col-md-2 h-100">
-                                    <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar3 h-100">
-                                            <div class="text-center d-flex justify-content-center h-100">
-                                                <%--FIXME ex-chart-bar3 --%>
-                                                <canvas id="ex-chart-bar3"></canvas>
-                                            </div>
-                                        </div>
+                                <div class="col-md-2 chart-div">
+                                    <div class="text-center d-flex justify-content-center h-100">
+                                        <%--FIXME ex-chart-bar3 --%>
+                                        <canvas id="ex-chart-bar3"></canvas>
                                     </div>
                                 </div>
 
-                                <div class="col-md-2 h-100" >
-                                    <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar4 h-100">
-                                            <div class="text-center d-flex justify-content-center h-100">
-                                                <%--FIXME ex-chart-bar4 --%>
-                                                <canvas id="ex-chart-bar4"></canvas>
-                                            </div>
-                                        </div>
+                                <div class="col-md-2 chart-div">
+                                    <div class="text-center d-flex justify-content-center h-100">
+                                        <%--FIXME ex-chart-bar4 --%>
+                                        <canvas id="ex-chart-bar4"></canvas>
                                     </div>
                                 </div>
 
-                                <div class="col-md-2 h-100" >
-                                    <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar5 h-100">
-                                            <div class="text-center d-flex justify-content-center h-100">
-                                                <%--FIXME ex-chart-bar5 --%>
-                                                <canvas id="ex-chart-bar5"></canvas>
-                                            </div>
-                                        </div>
+                                <div class="col-md-2 chart-div">
+                                    <div class="text-center d-flex justify-content-center h-100">
+                                        <%--FIXME ex-chart-bar5 --%>
+                                        <canvas id="ex-chart-bar5"></canvas>
                                     </div>
                                 </div>
 
-                                <div class="col-md-2 h-100" >
-                                    <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar6 h-100">
-                                            <div class="text-center d-flex justify-content-center h-100">
-                                                <%--FIXME ex-chart-bar6 --%>
-                                                <canvas id="ex-chart-bar6"></canvas>
-                                            </div>
-                                        </div>
+                                <div class="col-md-2 chart-div">
+                                    <div class="text-center d-flex justify-content-center h-100">
+                                        <%--FIXME ex-chart-bar6 --%>
+                                        <canvas id="ex-chart-bar6"></canvas>
                                     </div>
                                 </div>
 
-                                <div class="col-md-2 h-100" >
-                                    <div class="row h-100">
-                                        <div class="flex-fill ex-chart-bar7 h-100">
-                                            <div class="text-center d-flex justify-content-center h-100">
-                                                <%--FIXME ex-chart-bar7 --%>
-                                                <canvas id="ex-chart-bar7"></canvas>
-                                            </div>
-                                        </div>
+                                <div class="col-md-2 chart-div">
+                                    <div class="text-center d-flex justify-content-center h-100">
+                                        <%--FIXME ex-chart-bar7 --%>
+                                        <canvas id="ex-chart-bar7"></canvas>
                                     </div>
                                 </div>
                             </div>
-                                <!-- 나의 성과 현황 끝 -->
+                            <!--나의 성과 현황 끝 -->
                         </div>
                         <!-- begin::sub chart body 끝 -->
                     </div>
@@ -455,7 +439,9 @@
         integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
         crossorigin="anonymous"
 ></script>
-<!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+<!--end::Third Party Plugin(OverlayScrollbars)-->
+
+<!--begin::Required Plugin(popperjs for Bootstrap 5)-->
 <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -555,8 +541,8 @@
         chart_doughnut_data(id,testdata2,drawCenterText_text,denominator);
 
         id = $('#ex-chart3');
-        const testdata3 = {title:['test1','test2'],text:[1,10]};
-        drawCenterText_text = '????';
+        const testdata3 = {title:['마감','마감X'],text:JSON.parse('${dashBoardCloseKPI}')};
+        drawCenterText_text = '마감 참여자';
         chart_doughnut_data(id,testdata3,drawCenterText_text,denominator);
 
 
@@ -622,106 +608,107 @@
 
 <%-- FIXME 참여자통계 Javascript Start --%>
 <script>
-        /*
-        * 백단에서 각 조건에 맞는 참여자 숫자 데이터 를 전달받습니다.
-        * 전달받은 숫자 데이터를 계산하여 % 형식으로 보여주고
-        * title, subtitle 형식에 맞게 html div 태그 형식으로 뿌려줍니다.
-        * */
+    /*
+    * 백단에서 각 조건에 맞는 참여자 숫자 데이터 를 전달받습니다.
+    * 전달받은 숫자 데이터를 계산하여 % 형식으로 보여주고
+    * title, subtitle 형식에 맞게 html div 태그 형식으로 뿌려줍니다.
+    * */
 
-        $(document).ready(function () {
-            const thisYearParticipant = $('#thisYearParticipant');
-            const currentParticipant = $('#currentParticipant');
-            const totalParticipant = $('#totalParticipant');
+    $(document).ready(function () {
+        const thisYearParticipant = $('#thisYearParticipant');
+        const currentParticipant = $('#currentParticipant');
+        const totalParticipant = $('#totalParticipant');
 
-            // 총 참여자 수 계산
-            function calculateTotalParticipants(data) {
-                let total = 0;
-                $.each(data, function (_, value) {
-                    total += parseInt(value.data);
-                });
-                return total;
-            }
+        // 총 참여자 수 계산
+        function calculateTotalParticipants(data) {
+            let total = 0;
+            $.each(data, function (_, value) {
+                total += parseInt(value.data);
+            });
+            return total;
+        }
 
-            // 비율 계산
-            function calculatePercentage(total, data) {
-                let arr = [];
-                $.each(data, function (_, value) {
-                    arr[_] = ((parseInt(value.data) / total) * 100).toFixed(2);
-                })
-                console.log("arr:"+arr);
-                return arr;
-            }
+        // 비율 계산
+        function calculatePercentage(total, data) {
+            let arr = [];
+            $.each(data, function (_, value) {
+                arr[_] = ((parseInt(value.data) / total) * 100).toFixed(2);
+                isNaN(arr[_]) ? arr[_] = 0 : arr[_];
+            })
+            console.log("arr:"+arr);
+            return arr;
+        }
 
-            // 유형별 서브타이틀 생성
-            function generateTypeSubtitle(data) {
-                let subtitle = '';
-                $.each(data, function (index, value) {
-                    subtitle += (index === 0 ? 'Ⅰ유형 ' : 'Ⅱ유형 ') + value.data + '명';
-                    if (index < data.length - 1) {
-                        subtitle += ' / ';
-                    }
-                });
-                return subtitle;
-            }
+        // 유형별 서브타이틀 생성
+        function generateTypeSubtitle(data) {
+            let subtitle = '';
+            $.each(data, function (index, value) {
+                subtitle += (index === 0 ? 'Ⅰ유형 ' : 'Ⅱ유형 ') + value.data + '명';
+                if (index < data.length - 1) {
+                    subtitle += ' / ';
+                }
+            });
+            return subtitle;
+        }
 
-            // 년도별 서브타이틀 생성
-            function generateYearSubtitle(data) {
-                let subtitle = '';
-                $.each(data, function (index, value) {
-                    subtitle += value.year + '년 ' + value.data + '명';
-                    if (index < data.length - 1) {
-                        subtitle += ' / ';
-                    }
-                });
-                return subtitle;
-            }
+        // 년도별 서브타이틀 생성
+        function generateYearSubtitle(data) {
+            let subtitle = '';
+            $.each(data, function (index, value) {
+                subtitle += value.year + '년 ' + value.data + '명';
+                if (index < data.length - 1) {
+                    subtitle += ' / ';
+                }
+            });
+            return subtitle;
+        }
 
-            // 진행자 데이터 처리
-            function processParticipantData(targetElement, data, titleTemplate , subtitleTemplate) {
-                const total = calculateTotalParticipants(data);
-                const subtitle =  subtitleTemplate;
-                const percentage = calculatePercentage(total, data);
-                const title = titleTemplate + total + "명";
-                const divContent = createDiv(title, subtitle, percentage);
-                appendDiv(targetElement, divContent);
-            }
+        // 진행자 데이터 처리
+        function processParticipantData(targetElement, data, titleTemplate , subtitleTemplate) {
+            const total = calculateTotalParticipants(data);
+            const subtitle =  subtitleTemplate;
+            const percentage = calculatePercentage(total, data);
+            const title = titleTemplate + total + "명";
+            const divContent = createDiv(title, subtitle, percentage);
+            appendDiv(targetElement, divContent);
+        }
 
-            // DIV 생성
-            function createDiv(title, subtitle, percentage) {
-                let returnValue =
-                    "<div class='fw-bold'>"+title+"</div>"+
-                    "<div>"+subtitle+"</div>"+
-                    "<div class='progress rounded rounded-2'>";
+        // DIV 생성
+        function createDiv(title, subtitle, percentage) {
+            let returnValue =
+                "<div class='fw-bold'>"+title+"</div>"+
+                "<div>"+subtitle+"</div>"+
+                "<div class='progress rounded rounded-2'>";
 
-                percentage.map((data)=> {
-                    returnValue += "<div class='progress-bar' role='progressbar'" +
-                        "style='width: " + data + "%; background: linear-gradient(90deg, "+randomColor()+", "+randomColor()+");color: black;font-weight: bold;' aria-valuenow='" + data + "'" +
-                        "aria-valuemin='0' aria-valuemax='100'>" + data + "%</div>"
-                });
+            percentage.map((data)=> {
+                returnValue += "<div class='progress-bar' role='progressbar'" +
+                    "style='width: " + data + "%; background: linear-gradient(90deg, "+randomColor()+", "+randomColor()+");color: black;font-weight: bold;' aria-valuenow='" + data + "'" +
+                    "aria-valuemin='0' aria-valuemax='100'>" + data + "%</div>"
+            });
 
-                returnValue += "</div>";
-                return returnValue;
-            }
+            returnValue += "</div>";
+            return returnValue;
+        }
 
-            // DIV 추가
-            function appendDiv(target, divContent) {
-                target.append(divContent);
-            }
+        // DIV 추가
+        function appendDiv(target, divContent) {
+            target.append(divContent);
+        }
 
-            // 예제 데이터
-            const thisYearData = JSON.parse('${nowParticipantJsonData}');
-            const currentData = JSON.parse('${currentParticipantJsonData}');
-            const totalData = JSON.parse('${totalParticipantJsonData}');
+        // 데이터
+        let thisYearData = JSON.parse('${empty nowParticipantJsonData ?"[{\"year\":\"0\",\"data\":\"0\"}]":nowParticipantJsonData}');
+        let currentData = JSON.parse('${empty currentParticipantJsonData ?"[{\"year\":\"0\",\"data\":\"0\"}]":currentParticipantJsonData}');
+        let totalData = JSON.parse('${empty totalParticipantJsonData ?"[{\"year\":\"0\",\"data\":\"0\"}]":totalParticipantJsonData}');
 
-            // 각 참여자 데이터 처리
-            processParticipantData(thisYearParticipant, thisYearData, "2025년 총 참여자 수 ", generateTypeSubtitle(thisYearData));
-            processParticipantData(currentParticipant, currentData, "현재 진행자 수 ", generateYearSubtitle(currentData));
-            processParticipantData(totalParticipant, totalData, "총 참여자 수 ", generateYearSubtitle(totalData));
-        });
+        // 각 참여자 데이터 처리
+        processParticipantData(thisYearParticipant, thisYearData, ${dashBoardYear}+"년 총 참여자 수 ", generateTypeSubtitle(thisYearData));
+        processParticipantData(currentParticipant, currentData, "현재 진행자 수 ", generateYearSubtitle(currentData));
+        processParticipantData(totalParticipant, totalData, "총 참여자 수 ", generateYearSubtitle(totalData));
+    });
 </script>
 <%-- FIXME 참여자통계 Javascript End --%>
 
-<%-- FIXME 년도 조회 ajax Start --%>
+<%-- FIXME 년도 조회 Start --%>
 <script>
     $(document).ready(function () {
         const yearSelect = $('#yearSelect');
@@ -730,7 +717,8 @@
 
         function getYearData(id) {
             // 현재 날짜 및 시간 정보를 가져오기
-            var currentYear = new Date().getFullYear();
+            let currentDate = new Date();
+            let currentYear = currentDate.getFullYear();
 
             //id.append('<option value="'+currentYear+'">'+currentYear+'</option>');
             for(var i=currentYear; i>=currentYear-5; i--){
@@ -741,11 +729,11 @@
         yearSelect.val('${dashBoardYear}');
 
         yearSelect.change(function () {
-           let year = $(this).val();
-           location.href = "/dashboard.login?dashBoardYear="+year;
+            let year = $(this).val();
+            location.href = "/dashboard.login?dashBoardYear="+year;
         });
     })
 </script>
-<%-- FIXME 년도 조회 ajax End --%>
+<%-- FIXME 년도 조회 End --%>
 
 </html>

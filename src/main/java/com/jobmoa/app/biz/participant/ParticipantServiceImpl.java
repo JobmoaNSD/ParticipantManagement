@@ -15,7 +15,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public List<ParticipantDTO> selectAll(ParticipantDTO participantDTO) {
-        log.info("List<ParticipantDTO> ParticipantService selectAll : [{}]",participantDTO);
+        //log.info("List<ParticipantDTO> ParticipantService selectAll : [{}]",participantDTO);
         if(participantDTO == null || participantDTO.getParticipantCondition() == null) {
             log.error("selectAll participantDTO null OR participantCondition null");
             return null;
@@ -25,7 +25,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantService selectOne : [{}]",participantDTO);
+        //log.info("ParticipantDTO ParticipantService selectOne : [{}]",participantDTO);
         if(participantDTO == null || participantDTO.getParticipantCondition() == null) {
             log.error("selectOne participantDTO null OR participantCondition null");
             return null;
@@ -35,19 +35,19 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public boolean insert(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantService insert : [{}]",participantDTO);
+        //log.info("ParticipantDTO ParticipantService insert : [{}]",participantDTO);
         return participantDAO.insert(participantDTO);
     }
 
     @Override
     public boolean update(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantService update : [{}]",participantDTO);
+        //log.info("ParticipantDTO ParticipantService update : [{}]",participantDTO);
         return participantDAO.update(participantDTO);
     }
 
     @Override
     public boolean delete(ParticipantDTO participantDTO) {
-        log.info("ParticipantDTO ParticipantService delete : [{}]",participantDTO);
+        //log.info("ParticipantDTO ParticipantService delete : [{}]",participantDTO);
         //반환용 boolean flag 변수
         boolean flag = false;
 
@@ -87,7 +87,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     private boolean SelectCount(ParticipantDTO participantDTO, String condition){
         //값이 넘어올때 jobno는 있으니 condition 만 추가하여 값을 전달한다.
-        participantDTO.setParticipantCondition("selectOne"+condition);
+        //participantDTO.setParticipantCondition("selectOne"+condition);
         //자격증 개수를 받고
         int count = participantDAO.selectOne(participantDTO).getParticipantCount();
         //자격증이 0 보다 크면 true, 0이거나 작으면 false 반환

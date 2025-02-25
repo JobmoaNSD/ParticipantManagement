@@ -6,7 +6,7 @@ import lombok.Data;
 public class BasicDTO {
     //DB 변수
     private int basicJobNo; // PK(구직번호)
-    private String basicBranch;
+    private String basicBranch; //지점
     private String basicRegDate; // 등록일
     private String basicUserid; // 전담자_계정
     private String basicPartic; // 참여자

@@ -130,7 +130,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 수정"/>
+    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 상담정보 수정"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->

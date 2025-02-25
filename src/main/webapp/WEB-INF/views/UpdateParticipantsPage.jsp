@@ -83,6 +83,9 @@
     <!-- selectOption JS -->
     <script src="js/selectOptionJS.js"></script>
 
+    <!-- selectOption JS -->
+    <script src="js/InputLimits.js"></script>
+
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -93,7 +96,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="Sample Main header" gnb_sub_header="Sample Sub header"/>
+    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 관리"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->
@@ -219,6 +222,60 @@
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
+            //참여자 성명
+            const basicPartic = $("#basicPartic").val();
+            //취창업일
+            const employmentStartDate = $("#employmentStartDate").val();
+            //취창업처리일
+            const employmentProcDate = $("#employmentProcDate").val();
+            //퇴사일
+            const employmentQuit = $("#employmentQuit").val();
+            //취업유형
+            const employmentEmpType = $("#employmentEmpType").val();
+            //취업처
+            const employmentLoyer = $("#employmentEmpType").val();
+            //임금
+            const employmentSalary = $("#employmentSalary").val();
+            //취업인센티브_구분
+            const employmentIncentive = $("#employmentIncentive").val();
+
+            //flag 변수 생성
+            //각 변수들이 비어 있다면 값이 없는 것으로 간주하여 form 태그 실행 함수에서 내보낸다.
+            let flag = basicPartic.length > 0;
+            if(!flag){
+                alertDefaultInfo("참여자 성명은 필수 입력 입니다.","참여자를 입력해주세요.");
+                return;
+            }
+
+            //취창업일이 비어있고 임금 OR 취업인센티브_구분이 비어있다면 함수를 내보낸다.
+            if(!employmentStartDate.length > 0){
+                //임금이 작성되어 있거나
+                flag = employmentSalary.length > 0;
+                //취업인센티브_구분이 선택되어 있다면
+                flag = flag || employmentIncentive.length > 0;
+
+                flag = flag || employmentProcDate.length > 0;
+                flag = flag || employmentQuit.length > 0;
+                flag = flag || (employmentEmpType != null?employmentEmpType.length > 0:false);
+                flag = flag || (employmentLoyer != null?employmentLoyer.length > 0:false);
+                if(flag){
+                    alertDefaultInfo("취창업일을 입력해주세요.","");
+                    return;
+                }
+            }
+            else {
+                //임금이 작성되어 있거나
+                if (!employmentSalary.length > 0){
+                    alertDefaultInfo("임금은 필수 입력입니다.","");
+                    return;
+                }
+                //취업인센티브_구분이 선택되어 있다면
+                if (!employmentIncentive.length > 0){
+                    alertDefaultInfo("취업인센티브_구분은 필수 입력입니다.","");
+                    return;
+                }
+            }
+
             const form = $("#newParticipantsForm");
             form.submit();
         });
@@ -233,6 +290,16 @@
         //학교명 목록 리스트 출력
         recommendFunction("#basicSchool", "#basicSchoollist",xmlData("./XMLData/SchoolXMLData.xml", "school name"));
         <%-- 사용자 편의성을 위해 목록 리스트 출력 끝 --%>
+        let basicAntecedents = $("#basicAntecedents");
+        let counselSalWant = $("#counselSalWant");
+        let employmentSalary = $("#employmentSalary");
+
+        //경력 최소 최대 입력 값
+        inputLimits(basicAntecedents, 0, 40);
+        //희망급여 최소 최대 입력 값
+        inputLimits(counselSalWant, 0, 1000);
+        //임금 최소 최대 입력 값
+        inputLimits(employmentSalary, 0, 1000);
 
         //자격증 배열을 백단에서 전달받습니다.
         let specialtyArr = JSON.parse('${particcertifs}') ;
@@ -259,9 +326,6 @@
         //취업역량
         selectOption($("#counselJobSkill"),"${counsel.counselJobSkill}");
 
-        //진행단계 목록 내용 변경
-        selectOption($("#counselProgress"),"${counsel.counselProgress}");
-
         //알선요청 목록 내용 변경
         selectOption($("#counselPlacement"),"${counsel.counselPlacement}");
         <%-- 목록 내용 변경 끝 --%>
@@ -278,10 +342,7 @@
 
         <%-- 목록 내용 변경 시작 --%>
         //진행단계
-        selectOption(counselProgress,"${counselProgress}");
-
-        //취업유형
-        selectOption(employmentEmpType,"${employment.employmentEmpType}");
+        selectOption(counselProgress,"${counsel.counselProgress}");
 
         //취업인센티브_구분
         selectOption(employmentIncentive,"${employment.employmentIncentive}");
@@ -291,7 +352,9 @@
         <%-- 목록 내용 변경 끝 --%>
 
         <%-- 취업유형 변경 시작 --%>
-        changeSelect(counselProgress, employmentEmpType,"${counselProgress}");
+        changeSelect(counselProgress, employmentEmpType,"${counsel.counselProgress}");
+        //취업유형
+        selectOption(employmentEmpType,"${employment.employmentEmpType}");
         <%-- 취업유형 변경 끝 --%>
 
     });

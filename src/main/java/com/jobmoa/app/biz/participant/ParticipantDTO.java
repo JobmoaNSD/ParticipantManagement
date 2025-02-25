@@ -49,6 +49,12 @@ public class ParticipantDTO {
     private String participantOthers; // 기타정보
     private String participantQuit; // 기타정보
 
+    private String certificationName; //자격증 명칭
+    private String participantUserName; // 상담사 이름
+    private String participantEmail; // 이메일
+    private String participantPhoneNumber; // 전화 번호
+    private String participantCode; // 고유 번호
+
     //DB 외 정보
     private String participantCondition; // 개발자 구분
 
