@@ -60,7 +60,9 @@
             일경험분류 AS employmentJobcat,
             메모 AS employmentMemo,
             기타 AS employmentOthers,
-            퇴사일 AS employmentQuit
+            CASE
+                WHEN 퇴사일 >= DATEADD(YEAR, -100, GETDATE()) THEN 퇴사일
+                END  AS employmentQuit
         FROM
             J_참여자관리
         WHERE

@@ -9,6 +9,7 @@ import com.jobmoa.app.biz.dashboard.DashboardService;
 import com.jobmoa.app.view.function.ChangeJson;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,7 @@ public class DashboardMainController {
         log.info("Start dashboardMain Controller(GetMapping)");
         //넘어갈 변수 선언
         //취업자 수
-        int[][] resultCount = new int[12][3];
+        int[][] resultCount = new int[13][3];
 
         //내 성과에 표기될 문자를 입력
         String[] dashBoardText = {"잡모아 평균","지점 평균","전담자"};
@@ -57,7 +58,11 @@ public class DashboardMainController {
 
         //전체 참여자 개수 실행 쿼리
         dashboardDTO.setDashboardCondition("selectCountDashboard");
-        DashboardDTO totalCountQurey = dashboardService.selectOne(dashboardDTO);
+        DashboardDTO totalCountData = dashboardService.selectOne(dashboardDTO);
+
+        //전체 참여자 개수 실행 쿼리
+        dashboardDTO.setDashboardCondition("selectCountCloseDashboard");
+        DashboardDTO totalCloseCountData = dashboardService.selectOne(dashboardDTO);
 
         //메모리 주소값이 아닌 배열을 문자형식으로 반환
         String dashBoardDataTitle = objectMapper.writeValueAsString(dashBoardText);
@@ -66,11 +71,6 @@ public class DashboardMainController {
         //전체 지점 개수와 전담자 인원
         dashboardDTO.setDashboardCondition("selectBranchAndUser");
         DashboardDTO branchAndUser = dashboardService.selectOne(dashboardDTO);
-        log.info("branchAndUser : [{}]", branchAndUser);
-        //지점 개수
-        int branchCount = branchAndUser.getDashboardCountBranch();
-        //지점 전담자 인원
-        int userCount = branchAndUser.getDashboardCountUser();
 
         //성공금 & 인센티브 전체,지점,개인 금액 전달용 Query Condition
         dashboardDTO.setDashboardCondition("selectSuccessMoney");
@@ -89,11 +89,21 @@ public class DashboardMainController {
         dashboardDTO.setDashboardCondition("selectNowParticipant");
         DashboardDTO nowParticipant = dashboardService.selectOne(dashboardDTO);
 
+        //참여자 금일 업무현황
+        dashboardDTO.setDashboardCondition("selectDailyDashboard");
+        DashboardDTO dailyParticipant = dashboardService.selectOne(dashboardDTO);
 
 
-        if(myResultData != null && totalCountQurey != null){
+        if(myResultData != null && totalCountData != null && branchAndUser != null){
+            //지점 개수
+            int branchCount = branchAndUser.getDashboardCountBranch();
+            //지점 전담자 인원
+            int userCount = branchAndUser.getDashboardCountUser();
             //전체 참여자 개수
-            int totalCount = totalCountQurey.getDashboardTotalCount();
+            int totalCount = totalCountData.getDashboardTotalCount();
+            //전체 참여자 개수
+            int totalCloseCount = totalCloseCountData.getDashboardCloseCount();
+
             //나의 성과 현황 시작
             //취업자 수
             int userEmployed = myResultData.getDashBoardEmployedCountUser();
@@ -141,17 +151,18 @@ public class DashboardMainController {
             resultCount[8] = this.changingArray(userEmployed-userEarlyEmployed,userEarlyEmployed);
             //나은 일자리
             resultCount[9] = this.changingArray(userEmployed-userBetterJob,userBetterJob);
-            //고용 유지율
+            //마감 인원 비율
+            resultCount[10] = this.changingArray(totalCount-totalCloseCount,totalCount);
             //나의 KPI 달성률 끝
 
             //성공금 현황 시작
             //성공금 데이터
-            resultCount[10] = this.changingArray(
+            resultCount[11] = this.changingArray(
                     successMoney.getDashBoardSuccessMoneyTotal() / branchCount,
                     successMoney.getDashBoardSuccessMoneyBranch() / userCount,
                     successMoney.getDashBoardSuccessMoneyUser());
             //성공금 데이터
-            resultCount[11] = this.changingArray(
+            resultCount[12] = this.changingArray(
                     successMoney.getDashBoardSuccessMoneyTotalIncentive() / branchCount,
                     successMoney.getDashBoardSuccessMoneyBranchIncentive() / userCount,
                     successMoney.getDashBoardSuccessMoneyUserIncentive());
@@ -164,24 +175,24 @@ public class DashboardMainController {
             String nowParticipantJsonData = "";
 
 
-                totalParticipantJsonData = changeJson.convertListToJsonArray(totalParticipant,
-                        item -> { DashboardDTO dto = (DashboardDTO) item;// 객체 캐스팅
-                            return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
-                                    "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";});
+            totalParticipantJsonData = changeJson.convertListToJsonArray(totalParticipant,
+                    item -> { DashboardDTO dto = (DashboardDTO) item;// 객체 캐스팅
+                        return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
+                                "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";});
 
-                currentParticipantJsonData = changeJson.convertListToJsonArray(currentParticipant,
-                        item -> { DashboardDTO dto = (DashboardDTO) item;// 객체 캐스팅
-                            return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
-                                    "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";});
+            currentParticipantJsonData = changeJson.convertListToJsonArray(currentParticipant,
+                    item -> { DashboardDTO dto = (DashboardDTO) item;// 객체 캐스팅
+                        return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
+                                "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";});
             nowParticipantJsonData = "[]";
-                if(nowParticipant != null){
-                    nowParticipantJsonData = "[" +
-                            "{\"year\":" + "\"\"" +
-                            ",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountOne() + "\"},"+
-                            "{\"year\":" + "\"\"" +
-                            ",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountTwo() + "\"}"+
-                            "]";
-                }
+            if(nowParticipant != null){
+                nowParticipantJsonData = "[" +
+                        "{\"year\":" + "\"\"" +
+                        ",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountOne() + "\"},"+
+                        "{\"year\":" + "\"\"" +
+                        ",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountTwo() + "\"}"+
+                        "]";
+            }
 
 
             log.info("totalParticipantJsonData : [{}]",totalParticipantJsonData);
@@ -192,6 +203,11 @@ public class DashboardMainController {
             model.addAttribute("currentParticipantJsonData",currentParticipantJsonData);
             model.addAttribute("nowParticipantJsonData",nowParticipantJsonData);
             //참여자 현황 끝
+            
+            //금일 업무 현황 시작
+            model.addAttribute("dailyDashboard",dailyParticipant);
+            //금일 업무 현황 끝
+            
         }
 
         String[] myDashBoardName = {
@@ -205,6 +221,7 @@ public class DashboardMainController {
                 "dashBoardReferredEmployedKPI",//KPI 알선 취업자
                 "dashBoardEarlyEmployedKPI",//KPI 조기 취업자
                 "dashBoardBetterJobKPI",//KPI 나은 일자리
+                "dashBoardCloseKPI",//KPI 마감 인원
                 "dashBoardSuccessMoney",//성공금 전체,지점,개인
                 "dashBoardSuccessMoneyIncentive"//성공금 인센티브 전체,지점,개인
         };

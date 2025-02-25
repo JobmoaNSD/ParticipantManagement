@@ -2,6 +2,14 @@
     font-size: 10px;
     color: black;
     font-weight: bold;
-    width: 400px;
+    width: 100%;
     height: 25px;
+}
+
+canvas, .chart-div{
+    max-height: 300px;
+}
+
+#thisYearParticipant, #currentParticipant, #totalParticipant{
+    width: 45%;
 }

@@ -128,7 +128,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 조회 및 관리"/>
+    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 조회"/>
     <!--end:::App Gnb-->
 
     <!--begin:::App main content-->
@@ -152,9 +152,9 @@
                                     name="searchOption"
                                     id="search-Option"
                             >
-                                <option ${param.searchOption.equals("participantJobNo") ? 'selected' : ''} value="participantJobNo">구직번호</option>
-                                <option ${param.searchOption.equals("participantPartic") ? 'selected' : ''} value="participantPartic">참여자</option>
-                                <option ${param.searchOption.equals("participantProgress") ? 'selected' : ''} value="participantProgress">진행단계</option>
+                                <option ${param.searchOption.equals("구직번호") ? 'selected' : ''} value="구직번호">구직번호</option>
+                                <option ${param.searchOption.equals("참여자") ? 'selected' : ''} value="참여자">참여자</option>
+                                <option ${param.searchOption.equals("진행단계") ? 'selected' : ''} value="진행단계">진행단계</option>
                             </select>
                         </div>
                         <!-- 검색 입력 -->

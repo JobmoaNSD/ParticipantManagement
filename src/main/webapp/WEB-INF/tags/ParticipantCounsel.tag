@@ -94,7 +94,7 @@
             </div>
             <div class="w-auto">
                 <label for="counselJobWant" class="form-label">희망직무</label>
-                <input type="text" class="form-control" id="counselJobWant" name="counselJobWant">
+                <input type="text" class="form-control" id="counselJobWant" name="counselJobWant" value="${not empty counsel ? counsel.counselJobWant:""}">
             </div>
             <div class="w-auto">
                 <label for="counselSalWant" class="form-label">희망급여(단위 만원)</label>
@@ -103,8 +103,8 @@
             <div class="col-md-1 w-auto">
                 <label for="counselPlacement" class="form-label">알선요청</label>
                 <select class="form-select" aria-label="Default select example" id="counselPlacement" name="counselPlacement">
-                    <option value="미해당">미해당</option>
-                    <option value="해당">해당</option>
+                    <option value="미희망">미희망</option>
+                    <option value="희망">희망</option>
                 </select>
             </div>
             <%-- 교육내역 --%>

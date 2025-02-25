@@ -14,6 +14,7 @@ public class DashboardDTO {
     //지점 전체 개수 및 인원
     private int dashboardCountBranch;
     private int dashboardCountUser;
+    private int dashboardCloseCount;
 
     //Query 조건용 변수 선언
     private String dashBoardYear;
@@ -66,5 +67,10 @@ public class DashboardDTO {
     private int dashBoardParticipatedCountTotal;
     private int dashBoardParticipatedYear;
     private int dashBoardParticipatedInitiator;
+
+    //긍일 업무 현황 변수
+    private int dashBoardLastCons; // 최근상담일 15일 도래자
+    private int dashBoardJobEX; // 구직만료일 15일 도래자
+    private int dashBoardEXPDate; // 기간만료일 15일 도래자
 
 }
