@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>참여자 정보</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px auto;
-            max-height: 1200px;
             min-height: 800px;
             overflow-y: auto;
             width: 95%;
@@ -28,7 +28,7 @@
             background-color: #f4f4f4;
             font-weight: bold;
             position: sticky; /* 헤더 고정 */
-            top: 117px;
+            top: 127px;
             z-index: 100;
         }
 
@@ -42,7 +42,7 @@
         th:nth-child(1), th:nth-child(2), th:nth-child(3), th:nth-child(4),
         th:nth-child(5), th:nth-child(6), th:nth-child(7), th:nth-child(8),
         th:nth-child(9), th:nth-child(10), th:nth-child(11), th:nth-child(12){
-            width: 100px;
+            width: 10%;
         }
 
         tr:nth-child(even) {
@@ -147,7 +147,11 @@
         }
         /* Pagination End */
 
-
+        /* jobmoa Logo Style Start */
+        .sidebar-brand {
+            display: flex;
+            height: 0px;
+        }
 
     </style>
 
@@ -163,75 +167,92 @@
 
 </head>
 <body class="container">
-    <div class="header">
-        <p class="header-title">참여자 관리 정보
-            <p class="header-subTitle">외부 기업 제공용 페이지</p>
-        </p>
-        <div class="pageRowSelectDiv">
-            <select class="form-select shadow-sm" name="pageRows" id="pageRows">
-                <option ${param.pageRows.equals("10") ? 'selected' : ''} value="10">10</option>
-                <option ${param.pageRows.equals("20") ? 'selected' : ''} value="20">20</option>
-                <option ${param.pageRows.equals("30") ? 'selected' : ''} value="30">30</option>
-                <option ${param.pageRows.equals("40") ? 'selected' : ''} value="40">40</option>
-                <option ${param.pageRows.equals("50") ? 'selected' : ''} value="50">50</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-md-12 text-center ms-auto me-auto d-flex justify-content-center">
-        <table>
-            <thead>
-            <tr class="tr">
-                <th class="th1">구직번호</th>
-                <th>이름</th>
-                <th>성별</th>
-                <th>주소</th>
-                <th>학교명</th>
-                <th>전공</th>
-                <th>희망업무</th>
-                <th>자격증</th>
-                <th>희망연봉</th>
-                <th>상담사</th>
-                <th>연락처</th>
-                <th>이메일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:if test="${empty participantList}">
-                <tr>
-                    <td colspan="12">
-                        데이터 확인이 불가능한 상태입니다. 담당자에게 문의 부탁드립니다.
-                    </td>
-                </tr>
-            </c:if>
-            <c:if test="${not empty participantList}">
-                <!-- 데이터 출력 -->
-                <c:forEach var="participant" items="${participantList}">
-                    <tr>
-                        <td>${participant.participantJobNo}</td>
-                        <td>${participant.participantPartic}</td>
-                        <td>${participant.participantGender}</td>
-                        <td>${participant.participantAddress}</td>
-                        <td>${participant.participantSchool}</td>
-                        <td>${participant.participantSpecialty}</td>
-                        <td>${participant.participantJobWant}</td>
-                        <td>${participant.certificationName}</td>
-                        <td> ${participant.participantSalWant > 0 ? participant.participantSalWant+="만원" : ""}</td>
-                        <td>${participant.participantUserName}</td>
-                        <td>${participant.participantPhoneNumber}</td>
-                        <td>${participant.participantEmail}</td>
-                    </tr>
-                </c:forEach>
-            </c:if>
-            </tbody>
-        </table>
+<div class="header">
+    <div class="sidebar-brand">
+        <!--begin::Brand Link-->
+        <a href="./index.jsp">
+            <!--begin::Brand Image-->
+            <img
+                    src="../../img/JobmoaLog.png"
+                    alt="JOBMOA Logo"
+                    class="brand-image opacity-75 shadow  h-100 w-100"
+            />
+            <!--end::Brand Image-->
+            <!--begin::Brand Text-->
+            <%--                <span class="brand-text fw-light">AdminLTE 4</span>--%>
+            <!--end::Brand Text-->
+        </a>
+        <!--end::Brand Link-->
     </div>
 
-    <%-- 페이지네이션 시작 --%>
-    <div class="paginationDiv">
-        <ul class="pagination paginationUl">
-        </ul>
+    <p class="header-title">참여자 관리 정보
+    <p class="header-subTitle">외부 기업 제공용 페이지</p>
+    </p>
+    <div class="pageRowSelectDiv">
+        <select class="form-select shadow-sm" name="pageRows" id="pageRows">
+            <option ${param.pageRows.equals("10") ? 'selected' : ''} value="10">10</option>
+            <option ${param.pageRows.equals("20") ? 'selected' : ''} value="20">20</option>
+            <option ${param.pageRows.equals("30") ? 'selected' : ''} value="30">30</option>
+            <option ${param.pageRows.equals("40") ? 'selected' : ''} value="40">40</option>
+            <option ${param.pageRows.equals("50") ? 'selected' : ''} value="50">50</option>
+        </select>
     </div>
-    <%-- 페이지네이션 끝 --%>
+</div>
+<div class="col-md-12 text-center ms-auto me-auto d-flex justify-content-center">
+    <table>
+        <thead>
+        <tr class="tr">
+            <th>구직번호</th>
+            <th>이름</th>
+            <th>성별</th>
+            <th>주소</th>
+            <th>학교명</th>
+            <th>전공</th>
+            <th>희망업무</th>
+            <th>자격증</th>
+            <th>희망연봉</th>
+            <th>상담사</th>
+            <th>연락처</th>
+            <th>이메일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:if test="${empty participantList}">
+            <tr>
+                <td colspan="12">
+                    데이터 확인이 불가능한 상태입니다. 담당자에게 문의 부탁드립니다.
+                </td>
+            </tr>
+        </c:if>
+        <c:if test="${not empty participantList}">
+            <!-- 데이터 출력 -->
+            <c:forEach var="participant" items="${participantList}">
+                <tr>
+                    <td>${participant.participantJobNo}</td>
+                    <td>${participant.participantPartic}</td>
+                    <td>${participant.participantGender}</td>
+                    <td>${participant.participantAddress}</td>
+                    <td>${participant.participantSchool}</td>
+                    <td>${participant.participantSpecialty}</td>
+                    <td>${participant.participantJobWant}</td>
+                    <td>${participant.certificationName}</td>
+                    <td> ${participant.participantSalWant > 0 ? participant.participantSalWant+="만원" : ""}</td>
+                    <td>${participant.participantUserName}</td>
+                    <td>${participant.participantPhoneNumber}</td>
+                    <td>${participant.participantEmail}</td>
+                </tr>
+            </c:forEach>
+        </c:if>
+        </tbody>
+    </table>
+</div>
+
+<%-- 페이지네이션 시작 --%>
+<div class="paginationDiv">
+    <ul class="pagination paginationUl">
+    </ul>
+</div>
+<%-- 페이지네이션 끝 --%>
 </body>
 <script>
     $(document).ready(function() {
@@ -252,7 +273,7 @@
         let pageRows = $("#pageRows");
         pageRows.on("change", function() {
             let pageRows = $(this).val();
-            location.href = "/external/jobseekers?page="+page+"&pageRows=" + pageRows;
+            location.href = "/external/jobseekers?page=1&pageRows=" + pageRows;
         });
 
     });

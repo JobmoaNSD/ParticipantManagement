@@ -53,7 +53,17 @@ public class ParticipantManagement {
         // DB(J_참여자관리)로부터 참여자 목록 조회
         participantDTO.setParticipantCondition("selectExternal");
         List<ParticipantDTO> participantList = participantService.selectAll(participantDTO);
-        
+
+        // ParticipantDTO에서 이름 설정
+        for (ParticipantDTO p : participantList) {
+            String originalName = p.getParticipantPartic(); // 참여자 이름 가져오기
+            if (originalName != null && !originalName.isEmpty()) {
+                // 첫 글자 제외하고 나머지를 "O"로 변환
+                String maskedName = originalName.charAt(0) + originalName.substring(1).replaceAll(".", "O");
+                p.setParticipantPartic(maskedName); // 이름 업데이트
+            }
+        }
+
         // JSP로 데이터 전달
         model.addAttribute("participantList", participantList);
         // 현재 페이지

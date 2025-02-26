@@ -59,7 +59,7 @@ public class UpdateController {
         basicDTO.setBasicUserid(loginBean.getMemberUserID());
         // 구직번호와 맞는 기본정보 하나를 받아온다.
         basicDTO = basicService.selectOne(basicDTO);
-        log.info("basicDTO : [{}]", basicDTO);
+//        log.info("basicDTO : [{}]", basicDTO);
 
         //받아온 기본 정보의 jobno(구직번호)를 particcertif에 추가한다.
         int jobno = basicDTO.getBasicJobNo();
@@ -69,8 +69,8 @@ public class UpdateController {
 
         //구직번호를 추가한 자격증 데이터를 불러오고
         List<ParticcertifDTO> datas = particcertifService.selectAll(particcertifDTO);
-        log.info("datas : [{}]", datas);
-        log.info("particcertifDTO : [{}]", particcertifDTO);
+//        log.info("datas : [{}]", datas);
+//        log.info("particcertifDTO : [{}]", particcertifDTO);
 
         //자격증을 JSON배열로 변경하여 전달
         String particcertifArr = changeJson.convertListToJsonArray(datas, item -> {
@@ -94,7 +94,7 @@ public class UpdateController {
         //상담 정보를 불러온다.
         counselDTO.setCounselCondition("counselSelectOne");
         counselDTO = counselService.selectOne(counselDTO);
-        log.info("counselDTO : [{}]", counselDTO);
+//        log.info("counselDTO : [{}]", counselDTO);
 
         //검색할 DB를 확인하기 위해 condition 값을 추가.
         educationDTO.setEducationCondition("educationSelectALLOne");
@@ -102,8 +102,8 @@ public class UpdateController {
 
         //구직번호를 추가한 자격증 데이터를 불러오고
         List<EducationDTO> datas = educationService.selectAll(educationDTO);
-        log.info("education datas : [{}]", datas);
-        log.info("update Counsel educationDTO : [{}]", educationDTO);
+//        log.info("education datas : [{}]", datas);
+//        log.info("update Counsel educationDTO : [{}]", educationDTO);
 
         //직업훈련정보를 JSON배열로 변경하여 전달
         String educationArr = changeJson.convertListToJsonArray(datas, item -> {
@@ -124,7 +124,7 @@ public class UpdateController {
         //취업 정보를 불러온다.
         employmentDTO.setEmploymentCondition("employmentSelectOne");
         employmentDTO = employmentService.selectOne(employmentDTO);
-        log.info("updateEmploymentPage employmentDTO : [{}]", employmentDTO);
+//        log.info("updateEmploymentPage employmentDTO : [{}]", employmentDTO);
 
         //상담정보에서 진행단계를 불러오기 위해 counselDTO 에서 jobno(구직번호)로 검색
         counselDTO.setCounselCondition("counselSelectOneEmployment");
@@ -140,7 +140,7 @@ public class UpdateController {
         }
 
         //DTO 확인용 로그
-        log.info("updateEmploymentPage counselDTO : [{}]", counselDTO);
+//        log.info("updateEmploymentPage counselDTO : [{}]", counselDTO);
         //만약 counselDTO 가 null 이라면 "" 공백
         //아니라면 counselProgress 를 반환
         String counselProgress = counselDTO == null ? "" : counselDTO.getCounselProgress();
@@ -364,7 +364,7 @@ public class UpdateController {
         basicDTO.setBasicUserid(loginId);
         basicDTO.setBasicCondition("basicSelectPKONE");
         basicDTO = basicService.selectOne(basicDTO);
-        log.info("조회된 기본정로 basicDTO : [{}]", basicDTO);
+//        log.info("조회된 기본정로 basicDTO : [{}]", basicDTO);
 
         //기본 정보 데이터가 이때 조회 되지 않는 참여자 혹은 전담자라면
         //조회 불가 메시지를 띄운 후 참여자 조회 페이지로 전달

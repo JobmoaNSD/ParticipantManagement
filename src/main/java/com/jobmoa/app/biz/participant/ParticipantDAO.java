@@ -18,6 +18,7 @@ public class ParticipantDAO {
 
     public List<ParticipantDTO> selectAll(ParticipantDTO participantDTO) {
         //log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO);
+        log.info("ParticipantDTO ParticipantDAO selectAll condition : [{}]",participantDTO.getParticipantCondition());
         List<ParticipantDTO> datas = sqlSession.selectList(ns+participantDTO.getParticipantCondition(), participantDTO);
         log.info("datas : [{}]",datas.toString());
         return datas;
