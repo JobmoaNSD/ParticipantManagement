@@ -54,7 +54,6 @@ public class DashboardMainController {
         //실행될 쿼리
         dashboardDTO.setDashboardCondition("selectMyResultDashboard");
         DashboardDTO myResultData = dashboardService.selectOne(dashboardDTO);
-        log.info("myResultData : [{}]", myResultData);
 
         //전체 참여자 개수 실행 쿼리
         dashboardDTO.setDashboardCondition("selectCountDashboard");
@@ -101,7 +100,7 @@ public class DashboardMainController {
             int userCount = branchAndUser.getDashboardCountUser();
             //전체 참여자 개수
             int totalCount = totalCountData.getDashboardTotalCount();
-            //전체 참여자 개수
+            //전체 마감 참여자 개수
             int totalCloseCount = totalCloseCountData.getDashboardCloseCount();
 
             //나의 성과 현황 시작
@@ -152,7 +151,7 @@ public class DashboardMainController {
             //나은 일자리
             resultCount[9] = this.changingArray(userEmployed-userBetterJob,userBetterJob);
             //마감 인원 비율
-            resultCount[10] = this.changingArray(totalCount-totalCloseCount,totalCount);
+            resultCount[10] = this.changingArray(totalCount-totalCloseCount,totalCloseCount);
             //나의 KPI 달성률 끝
 
             //성공금 현황 시작

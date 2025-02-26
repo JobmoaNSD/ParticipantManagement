@@ -83,7 +83,7 @@
             J_참여자관리
         WHERE
             전담자_계정 = #{dashboardUserID}
-        AND
+          AND
             YEAR(등록일) = #{dashBoardYear}
     </select>
 
@@ -95,9 +95,9 @@
             J_참여자관리
         WHERE
             전담자_계정 = #{dashboardUserID}
-        AND
+          AND
             YEAR(등록일) = #{dashBoardYear}
-        AND
+          AND
             마감 = 'true'
     </select>
     <!-- Dashboard 조회 쿼리 끝 -->
@@ -158,16 +158,16 @@
         --15일 기준 최근상담일, 구직만료일, 기간만료일 전체 데이터
         SELECT
             -- 최근 상담일 15일 도래자
-            SUM(IIF(DATEDIFF(DAY,GETDATE(),최근상담일) <![CDATA[<=]]> 15,1,0)) AS dashBoardLastCons,
-            -- 구직가 만료일 15일 도래자
-            SUM(IIF(DATEDIFF(DAY,GETDATE(),구직만료일) <![CDATA[<=]]> 15 AND 구직만료일 <![CDATA[<>]]> '',1,0)) AS dashBoardJobEX,
+            SUM(IIF(DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 15 AND 최근상담일 <![CDATA[<>]]> '', 1, 0)) AS dashBoardLastCons,
+            -- 구직 만료일 15일 도래자
+            SUM(IIF(DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15 AND 구직만료일 <![CDATA[<>]]> '', 1, 0)) AS dashBoardJobEX,
             -- 기간 만료일 15일 도래자
-            SUM(IIF(DATEDIFF(DAY,GETDATE(),기간만료일) <![CDATA[<=]]> 15 AND DATEDIFF(DAY,GETDATE(),기간만료일) >= 0 AND 기간만료일 <![CDATA[<>]]> '',1,0)) AS dashBoardEXPDate
-        FROM
-            J_참여자관리
-        WHERE
-            전담자_계정 = #{dashboardUserID} AND
-            (마감 = 'false' AND 최근상담일 <![CDATA[<>]]> '')
+            SUM(IIF(DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15 AND DATEDIFF(DAY, GETDATE(), 기간만료일) >= 0 AND 기간만료일 <![CDATA[<>]]> '' AND 최근상담일 <![CDATA[<>]]> '', 1, 0)) AS dashBoardEXPDate,
+            -- 초기상담 미실시자
+            SUM(IIF(초기상담일 = '' OR 초기상담일 = null, 1, 0)) AS dashBoardInItCons
+        FROM J_참여자관리
+        WHERE 전담자_계정 = #{dashboardUserID}
+          AND 마감 = 'false'
     </select>
     <!-- 전담자 금일 업무 현황 끝 -->
 </mapper>

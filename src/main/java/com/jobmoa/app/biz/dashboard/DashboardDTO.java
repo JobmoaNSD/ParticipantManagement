@@ -72,5 +72,6 @@ public class DashboardDTO {
     private int dashBoardLastCons; // 최근상담일 15일 도래자
     private int dashBoardJobEX; // 구직만료일 15일 도래자
     private int dashBoardEXPDate; // 기간만료일 15일 도래자
+    private int dashBoardInItCons; // 초기상담일 미실시자
 
 }

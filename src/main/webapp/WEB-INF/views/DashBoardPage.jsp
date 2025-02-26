@@ -170,6 +170,11 @@
                                         <c:if test="${not empty dailyDashboard}">
                                             <li class="list-group-item d-flex border-bottom-0">
                                                 <div class="">
+                                                    <div>초기상담 미실시자 ${dailyDashboard.dashBoardInItCons}명</div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex border-bottom-0">
+                                                <div class="">
                                                     <div>최근상담일 15일 경과자 ${dailyDashboard.dashBoardLastCons}명</div>
                                                 </div>
                                             </li>

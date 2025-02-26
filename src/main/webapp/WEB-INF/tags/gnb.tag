@@ -71,7 +71,7 @@
     <!--begin::Sidebar-->
     <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <!--begin::Sidebar Brand-->
-        <div class="sidebar-brand" style="height: 77px;">
+        <div class="sidebar-brand" style="height: 150px;">
             <!--begin::Brand Link-->
             <a href="./index.jsp" class="brand-link h-100 w-75">
                 <!--begin::Brand Image-->
@@ -79,6 +79,7 @@
                         src="../../img/JobmoaLog.png"
                         alt="JOBMOA Logo"
                         class="brand-image opacity-75 shadow  h-100 w-100"
+                        style="max-height: 150px;"
                 />
                 <!--end::Brand Image-->
                 <!--begin::Brand Text-->
@@ -113,14 +114,9 @@
                                     <small><p>대시보드</p></small>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="./index.jsp" class="nav-link">
+                            <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
+                                <a href="#" class="nav-link">
                                     <small><p>일일업무보고</p></small>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a href="./index.jsp" class="nav-link">
-                                    <small><p>업무진행현황</p></small>
                                 </a>
                             </li>
                         </ul>
@@ -159,8 +155,8 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="./index.jsp" class="nav-link">
+                            <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
+                                <a href="#" class="nav-link">
                                     <small><p>알선기업</p></small>
                                 </a>
                             </li>

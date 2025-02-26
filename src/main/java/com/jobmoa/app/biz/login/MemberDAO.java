@@ -25,7 +25,7 @@ public class MemberDAO {
 
     public MemberDTO selectOne(MemberDTO memberDTO) {
         MemberDTO data = sqlSession.selectOne(ns+"loginSelect", memberDTO);
-        log.info("data : [{}]",data);
+        log.info("Login data : [{}]",data);
         return data;
     }
 

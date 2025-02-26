@@ -14,7 +14,8 @@ public class CounselServiceImpl implements CounselService {
 
     @Override
     public CounselDTO selectOne(CounselDTO counselDTO) {
-        log.info("counsel selectOne SQL counselDTO : [{}]",counselDTO);
+//        log.info("counsel selectOne SQL counselDTO : [{}]",counselDTO);
+        log.info("counsel selectOne SQL counselDTO : [{}]",counselDTO.getCounselCondition());
         // 데이터 초기화를 위해 선언
         CounselDTO data = null;
         //DAO에 selectOne 함수를 호출

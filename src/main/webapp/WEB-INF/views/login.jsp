@@ -10,6 +10,7 @@
 <head>
     <title>JobmoaLoginPage</title>
     <link rel="stylesheet" href="/css/loginPage.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <div class="login-container">

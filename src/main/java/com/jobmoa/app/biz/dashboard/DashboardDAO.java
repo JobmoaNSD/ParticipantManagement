@@ -17,18 +17,19 @@ public class DashboardDAO {
     private static final String ns = "DashboardDAO.";
 
     public List<DashboardDTO> selectAll(DashboardDTO dashboardDTO) {
-        log.info("DashboardDTO DashboardDAO selectAll : [{}]", dashboardDTO);
+//        log.info("DashboardDTO DashboardDAO selectAll : [{}]", dashboardDTO);
+        log.info("DashboardDTO DashboardDAO selectAll condition : [{}]", dashboardDTO.getDashboardCondition());
         List<DashboardDTO> datas = sqlSession.selectList(ns+ dashboardDTO.getDashboardCondition(), dashboardDTO);
-        log.info("datas : [{}]",datas.toString());
+        log.info("datas : [{}]",datas);
         return datas;
     }
 
     public DashboardDTO selectOne(DashboardDTO dashboardDTO) {
-        log.info("DashboardDTO DashboardDAO selectOne : [{}]", dashboardDTO);
+        //log.info("DashboardDTO DashboardDAO selectOne : [{}]", dashboardDTO);
         log.info("DashboardDTO DashboardDAO selectOne condition : [{}]", dashboardDTO.getDashboardCondition());
         DashboardDTO data = sqlSession.selectOne(ns+ dashboardDTO.getDashboardCondition(), dashboardDTO);
 
-        log.info("DashboardDTO DashboardDAO data : [{}]",data);
+        //log.info("DashboardDTO DashboardDAO data : [{}]",data);
         return data;
     }
 
