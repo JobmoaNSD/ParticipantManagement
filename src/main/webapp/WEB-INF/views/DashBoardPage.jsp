@@ -10,7 +10,11 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>잡모아</title>
+    <!-- Jobmoa 로고 탭 이미지 -->
+    <link rel="icon" href="/img/JobmoaLog.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
+
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE v4 | Dashboard" />
@@ -66,6 +70,9 @@
             crossorigin="anonymous"
     />
 
+    <!-- mouse pointer 모양 bootstrap 5 -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
     <!-- chart.js script -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
@@ -101,17 +108,17 @@
                 <!-- begin::main content header 시작-->
                 <div class="header row d-flex justify-content-between align-items-center bg-white border border-black rounded-2 m-1">
                     <!-- begin::main 지점 / 다우톡 주요 공지사항 시작 -->
-                    <div class="col-md-12 pt-1">
-                        <div class="row">
-                            <div class="row col-md-2">
-                                <div class="h5">
+<%--                    <div class="col-md-12 pt-0">--%>
+<%--                        <div class="row">--%>
+                            <div class="col-md-2">
+                                <div class="h5 mt-1">
                                     ${JOBMOA_LOGIN_DATA.memberBranch}지점
                                 </div>
-                                <div class="h3">
+                                <div class="h3 m-0">
                                     ${JOBMOA_LOGIN_DATA.memberUserName} 상담사
                                 </div>
                             </div>
-                            <div class="col-md-3 ms-auto" style="width: 10%;">
+                            <div class="col-md-1 d-flex flex-column align-items-center justify-content-center p-0 ms-auto border-end border-dark border-2">
                                 <div class="h6">
                                     년도 조회
                                 </div>
@@ -123,49 +130,39 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-start border-dark border-2" style="width: 15%;">
-                                <div class="h6 m-0">
+                            <div class="col-md-9 d-flex align-items-center justify-content-center p-0 ms-auto">
+                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board"  target="_blank">다우톡 공지사항</a>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2" style="width: 10%;">
-                                <div class="h6 m-0">
+                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 직무분석</a>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2" style="width: 15%;">
-                                <div class="h6 m-0">
+                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 이력서 자소서 클리닉</a>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center pt-1 border-end border-dark border-2" style="width: 10%;">
-                                <div class="h6 m-0">
+                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 컨설팅 알선</a>
                                 </div>
-                            </div>
-                            <!-- begin::main 다우톡 업무 메뉴얼 시작-->
-                            <div class="d-flex align-items-center justify-content-center pt-1" style="width: 15%;">
-                                <div class="h6 m-0">
+                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
                                     <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">업무 메뉴얼</a>
                                 </div>
                             </div>
-                            <!-- begin::main 다우톡 업무 메뉴얼 끝-->
-                        </div>
-                    </div>
+
+<%--                        </div>--%>
+<%--                    </div>--%>
                     <!-- end::main 지점 / 다우톡 주요 공지사항 끝 -->
 
                 </div>
                 <!-- begin::main 기본 header 끝-->
 
                 <!-- begin::main 업무 참여자 통계 시작 -->
-                <div class="row text-center bg-white border border-black rounded-2 pt-1 pb-1 m-1">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="row">
-                                <div class="row h2 ps-3">
+                <div class="row d-flex text-start bg-white border border-black rounded-2 pt-1 pb-1 m-1">
+                        <div class="col-md-3 p-0">
+                            <div class="col-md-12">
+                                <div class="col-md-12 h2 ps-1">
                                     금일 업무
                                 </div>
-                                <div class="row">
+                                <div class="col-md-12">
                                     <ul class="list-group list-group-flush">
                                         <c:if test="${not empty dailyDashboard}">
                                             <li class="list-group-item d-flex border-bottom-0">
@@ -201,7 +198,7 @@
                             </div>
                         </div>
                         <div class="col-md-8 border-start border-dark border-2">
-                            <div class="row h2 ps-3">
+                            <div class="row h2 ps-1">
                                 참여자 통계
                             </div>
                             <div class="row">
@@ -241,7 +238,6 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <!-- end::main 업무 참여자 통계 끝 -->
                 <!-- begin::main chart 본문 시작 -->
@@ -452,15 +448,18 @@
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"
 ></script>
-<!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
+<!--end::Required Plugin(popperjs for Bootstrap 5)-->
+<!--begin::Required Plugin(Bootstrap 5)-->
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"
 ></script>
-<!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+<!--end::Required Plugin(Bootstrap 5)-->
+<!--begin::Required Plugin(AdminLTE)-->
 <script src="js/adminlte.js"></script>
-<!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<!--end::Required Plugin(AdminLTE)-->
+<!--begin::OverlayScrollbars Configure-->
 <script>
     const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
     const Default = {

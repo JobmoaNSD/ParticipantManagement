@@ -59,10 +59,12 @@ public class ParticipantController {
         //session 에 있는 로그인 데이터
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
         String loginId = loginBean.getMemberUserID();
+        String loginBranch = loginBean.getMemberBranch();
 
         // -------------------------페이지네이션 시작------------------------------
         //참여자 정보 불러올때 사용하기 위해 전담자 아이디를 불러온다.
         participantDTO.setParticipantUserid(loginId);
+        participantDTO.setParticipantBranch(loginBranch);
         log.info("Login ID : [{}]", loginId);
 
         // 사용자가 선택한 페이지 수가 없다면 기본 페이지 1 고정

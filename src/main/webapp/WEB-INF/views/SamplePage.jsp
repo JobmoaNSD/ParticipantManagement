@@ -9,7 +9,10 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>잡모아</title>
+    <!-- Jobmoa 로고 탭 이미지 -->
+    <link rel="icon" href="/img/JobmoaLog.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE v4 | Dashboard" />
@@ -67,7 +70,8 @@
             integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
             crossorigin="anonymous"
     />
-
+    <!-- mouse pointer 모양 bootstrap 5 -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 

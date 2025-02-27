@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>참여자 정보</title>
+    <!-- Jobmoa 로고 탭 이미지 -->
+    <link rel="icon" href="/img/JobmoaLog.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
     <style>
         body {
             font-family: Arial, sans-serif;

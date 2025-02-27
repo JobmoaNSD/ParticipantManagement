@@ -9,7 +9,10 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>잡모아</title>
+    <!-- Jobmoa 로고 탭 이미지 -->
+    <link rel="icon" href="/img/JobmoaLog.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE v4 | Dashboard" />
@@ -98,6 +101,8 @@
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
             crossorigin="anonymous"
     ></script>
+    <!-- mouse pointer 모양 bootstrap 5 -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="js/adminlte.js"></script>
@@ -116,6 +121,9 @@
 
     <!-- selectOption JS -->
     <script src="js/selectOptionJS.js"></script>
+
+    <!-- inputLimits -->
+    <script src="js/inputLimits.js"></script>
 
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
@@ -312,6 +320,11 @@
         //취업유형
         selectOption(employmentEmpType,"${employment.employmentEmpType}");
         <%-- 취업유형 변경 끝 --%>
+
+        let employmentSalary = $("#employmentSalary");
+
+        //임금 최소 최대 입력 값
+        inputLimits(employmentSalary, 0, 1000);
 
     });
 </script>

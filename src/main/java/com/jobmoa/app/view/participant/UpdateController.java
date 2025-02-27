@@ -372,7 +372,7 @@ public class UpdateController {
             String url = "participant.login";
             String icon = "error";
             String title = "참여자 조회 불가";
-            String message = "참여자가 없거나 \n 권한이 없는 참여자입니다.";
+            String message = "참여자가 없거나 권한이 없는 참여자입니다.";
             InfoBean.info(model, url, icon, title, message);
             return "views/info";
         }

@@ -10,7 +10,10 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Title</title>
+    <title>잡모아</title>
+    <!-- Jobmoa 로고 탭 이미지 -->
+    <link rel="icon" href="/img/JobmoaLog.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE v4 | Dashboard" />
@@ -100,6 +103,9 @@
             crossorigin="anonymous"
     ></script>
 
+    <!-- mouse pointer 모양 bootstrap 5 -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="js/adminlte.js"></script>
     <!--end::Required Plugin(AdminLTE)-->
@@ -124,6 +130,9 @@
 
     <!-- selectOptionJS JS -->
     <script src="js/selectOptionJS.js"></script>
+
+    <!-- InputLimits JS -->
+    <script src="js/InputLimits.js"></script>
 
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
@@ -231,6 +240,17 @@
 
 <script>
     $(document).ready(function () {
+        let basicAntecedents = $("#basicAntecedents");
+        let counselSalWant = $("#counselSalWant");
+        let employmentSalary = $("#employmentSalary");
+
+        //경력 최소 최대 입력 값
+        inputLimits(basicAntecedents, 0, 40);
+        //희망급여 최소 최대 입력 값
+        inputLimits(counselSalWant, 0, 1000);
+        //임금 최소 최대 입력 값
+        inputLimits(employmentSalary, 0, 1000);
+
         <%-- form 전달 시작 --%>
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {

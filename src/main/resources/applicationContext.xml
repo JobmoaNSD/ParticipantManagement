@@ -60,8 +60,9 @@
 
     <!-- AOP 설정 -->
     <aop:config>
-        <!-- 첫 번째 포인트컷 정의: BasicService.insert(..) 메서드에 적용 -->
+        <!-- 첫 번째 포인트컷 정의: 모든Impl 에 적용 -->
         <aop:pointcut id="txPointcut" expression="execution(* com.jobmoa.app.biz.*.*Impl.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
+
 </beans>
