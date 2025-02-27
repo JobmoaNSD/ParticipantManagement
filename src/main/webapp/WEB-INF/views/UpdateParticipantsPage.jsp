@@ -9,7 +9,10 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>잡모아</title>
+    <!-- Jobmoa 로고 탭 이미지 -->
+    <link rel="icon" href="/img/JobmoaLog.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE v4 | Dashboard" />
@@ -68,6 +71,9 @@
             crossorigin="anonymous"
     />
     <!-- datepicker CSS JS -->
+    <!-- mouse pointer 모양 bootstrap 5 -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
     <!-- Bootstrap Datepicker 로드 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -83,7 +89,7 @@
     <!-- selectOption JS -->
     <script src="js/selectOptionJS.js"></script>
 
-    <!-- selectOption JS -->
+    <!-- InputLimits JS -->
     <script src="js/InputLimits.js"></script>
 
     <!-- sweetalert2 -->

@@ -24,7 +24,7 @@ public class LoginController {
     private InfoBean infoBean;
 
     @GetMapping("/login.do")
-    public String loginController(HttpSession session){
+    public String loginController(HttpSession session) throws Exception {
         log.info("-----------------------------------");
         //Session에 저장되어 있는 Login DATA
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");

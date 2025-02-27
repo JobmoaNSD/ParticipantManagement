@@ -13,6 +13,15 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/error404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/error500.jsp</location>
+    </error-page>
+
     <servlet>
         <servlet-name>ds</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -23,6 +32,7 @@
         <url-pattern>*.do</url-pattern>
         <url-pattern>*.login</url-pattern>
         <url-pattern>/external/*</url-pattern>
+        <url-pattern>/chatBot/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

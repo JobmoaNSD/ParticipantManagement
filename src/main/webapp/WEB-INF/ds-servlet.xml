@@ -11,10 +11,10 @@
     <context:component-scan base-package="com.jobmoa.app.view.login"/>
     <context:component-scan base-package="com.jobmoa.app.view.participant"/>
     <context:component-scan base-package="com.jobmoa.app.view.dashboard"/>
-    <context:component-scan base-package="com.jobmoa.app.view.restController"/>
     <context:component-scan base-package="com.jobmoa.app.view.ajaxPackage"/>
     <context:component-scan base-package="com.jobmoa.app.view.management"/>
     <context:component-scan base-package="com.jobmoa.app.view.function"/>
+    <context:component-scan base-package="com.jobmoa.app.view.chatBot"/>
 
     <!-- jackson bean -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">

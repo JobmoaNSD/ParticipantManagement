@@ -20,21 +20,21 @@
                 <label for="employmentStartDate" class="form-label">취창업일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일" value="${not empty employment ? employment.employmentStartDate:""}">
+                    <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일" value="${not empty employment ? employment.employmentStartDate:""}" autocomplete="off">
                 </div>
             </div>
             <div class="datepicker-div">
                 <label for="employmentProcDate" class="form-label" >취창업처리일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="employmentProcDate" name="employmentProcDate" placeholder="yyyy-mm-dd" aria-label="취창업처리일" value="${not empty employment ? employment.employmentProcDate:""}">
+                    <input type="text" class="form-control datepicker_on" id="employmentProcDate" name="employmentProcDate" placeholder="yyyy-mm-dd" aria-label="취창업처리일" value="${not empty employment ? employment.employmentProcDate:""}" autocomplete="off">
                 </div>
             </div>
             <div class="pb-2 mb-1 datepicker-div">
                 <label for="employmentQuit" class="form-label">퇴사일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="employmentQuit" name="employmentQuit" placeholder="yyyy-mm-dd" aria-label="퇴사일" value="${not empty employment ? employment.employmentQuit:""}">
+                    <input type="text" class="form-control datepicker_on" id="employmentQuit" name="employmentQuit" placeholder="yyyy-mm-dd" aria-label="퇴사일" value="${not empty employment ? employment.employmentQuit:""}" autocomplete="off">
                 </div>
             </div>
             <div class="w-auto">

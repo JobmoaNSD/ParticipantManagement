@@ -8,19 +8,19 @@
             -- 취업자 수 Query 조건
             ISNULL(SUM(IIF(YEAR(취창업일) = YEAR(#{dashBoardYear}), 1, 0)), 0) AS dashBoardEmployedCountTotal,
             ISNULL(SUM(IIF(지점 = #{dashboardBranch} AND YEAR(취창업일) = YEAR(#{dashBoardYear}), 1, 0)),0) AS dashBoardEmployedCountBranch,
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND YEAR(취창업일) = YEAR(#{dashBoardYear}), 1, 0)),0) AS dashBoardEmployedCountUser,
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND YEAR(취창업일) = YEAR(#{dashBoardYear}), 1, 0)),0) AS dashBoardEmployedCountUser,
             -- 알선 취업자 수 Query 조건
             ISNULL(SUM(IIF(취업유형 != '' AND 취업유형 IN ('알선', '소개취업'), 1, 0)), 0) AS dashBoardReferredEmployedCountTotal,
             ISNULL(SUM(IIF(지점 = #{dashboardBranch} AND 취업유형 != '' AND 취업유형 IN ('알선', '소개취업'), 1, 0)),0) AS dashBoardReferredEmployedCountBranch,
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 취업유형 != '' AND 취업유형 IN ('알선', '소개취업'), 1, 0)),0) AS dashBoardReferredEmployedCountUser,
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND 취업유형 != '' AND 취업유형 IN ('알선', '소개취업'), 1, 0)),0) AS dashBoardReferredEmployedCountUser,
             -- 조기 취업자 수 Query 조건
             ISNULL(SUM(IIF(DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5), 1, 0)),0) AS dashBoardEarlyEmployedCountTotal,
             ISNULL(SUM(IIF(지점 = #{dashboardBranch} AND DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5), 1, 0)),0) AS dashBoardEarlyEmployedCountBranch,
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5), 1, 0)),0) AS dashBoardEarlyEmployedCountUser,
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND DATEDIFF(mm, 초기상담일, 취창업일) IN (0, 1, 2, 3, 4, 5), 1, 0)),0) AS dashBoardEarlyEmployedCountUser,
             -- 나은일자리 수 Query 조건
             ISNULL(SUM(IIF((임금 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반', 1, 0)), 0) AS dashBoardBetterJobCountTotal,
             ISNULL(SUM(IIF(지점 = #{dashboardBranch} AND (임금  <![CDATA[>=]]> 229) AND 진행단계 = '고보일반', 1, 0)),0) AS dashBoardBetterJobCountBranch,
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND (임금 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반', 1, 0)),0) AS dashBoardBetterJobCountUser,
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND (임금 <![CDATA[>=]]> 229) AND 진행단계 = '고보일반', 1, 0)),0) AS dashBoardBetterJobCountUser,
             -- 고용유지 6개월 수 Query 조건
             ISNULL(SUM(IIF(진행단계 = '고보일반' AND
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[>=]]> 6 AND
@@ -28,7 +28,7 @@
             ISNULL(SUM(IIF(지점 = #{dashboardBranch} AND 진행단계 = '고보일반' AND
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[>=]]> 6 AND
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[<=]]> 11, 1, 0)),0) AS dashBoardSixMonthRetentionCountBranch,
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 진행단계 = '고보일반' AND
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND 진행단계 = '고보일반' AND
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[>=]]> 6 AND
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[<=]]> 11, 1, 0)),0) AS dashBoardSixMonthRetentionCountUser,
             -- 고용유지 12개월 수 Query 조건
@@ -36,7 +36,7 @@
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[>=]]> 12, 1, 0)),0) AS dashBoardTwelveMonthRetentionCountTotal,
             ISNULL(SUM(IIF(지점 = #{dashboardBranch} AND 진행단계 = '고보일반' AND
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[>=]]> 12, 1, 0)),0) AS dashBoardTwelveMonthRetentionCountBranch,
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 진행단계 = '고보일반' AND
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND 진행단계 = '고보일반' AND
                            DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) <![CDATA[>=]]> 12, 1, 0)),0) AS dashBoardTwelveMonthRetentionCountUser
         FROM J_참여자관리
         WHERE YEAR(등록일) = YEAR(#{dashBoardYear})
@@ -54,8 +54,8 @@
             ISNULL(SUM(IIF(지점 = #{dashboardBranch}, CONVERT(BIGINT, 성공금), 0)),0)      AS dashBoardSuccessMoneyBranch,
             ISNULL(SUM(IIF(지점 = #{dashboardBranch}, CONVERT(BIGINT, 인센티브), 0)),0)     AS dashBoardSuccessMoneyBranchIncentive,
             -- 개인 성공금 인센티브
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID}, CONVERT(BIGINT, 성공금), 0)),0)  AS dashBoardSuccessMoneyUser,
-            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID}, CONVERT(BIGINT, 인센티브), 0)),0) AS dashBoardSuccessMoneyUserIncentive
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}, CONVERT(BIGINT, 성공금), 0)),0)  AS dashBoardSuccessMoneyUser,
+            ISNULL(SUM(IIF(전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}, CONVERT(BIGINT, 인센티브), 0)),0) AS dashBoardSuccessMoneyUserIncentive
         FROM SUCCESSMONEY
         WHERE YEAR(등록일) = #{dashBoardYear};
     </select>
@@ -82,7 +82,7 @@
         FROM
             J_참여자관리
         WHERE
-            전담자_계정 = #{dashboardUserID}
+            전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}
           AND
             YEAR(등록일) = #{dashBoardYear}
     </select>
@@ -94,7 +94,7 @@
         FROM
             J_참여자관리
         WHERE
-            전담자_계정 = #{dashboardUserID}
+            전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}
           AND
             YEAR(등록일) = #{dashBoardYear}
           AND
@@ -106,7 +106,7 @@
     <select id="selectTotalParticipant" resultType="dashboard">
         SELECT
             COUNT(등록일) dashBoardParticipatedCountOne,
-            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID}) dashBoardParticipatedCountTotal,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}) dashBoardParticipatedCountTotal,
             YEAR(등록일) dashBoardParticipatedYear
         FROM
             J_참여자관리
@@ -122,7 +122,7 @@
     <select id="selectCurrentParticipant" resultType="dashboard">
         SELECT
             COUNT(등록일) dashBoardParticipatedCountOne,
-            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 마감 = 'false' AND 진행단계 IN ('1', '2', '3', '미취업사후관리', 'IAP 전', 'IAP 후')) dashBoardParticipatedCountTotal,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND 마감 = 'false' AND 진행단계 IN ('1', '2', '3', '미취업사후관리', 'IAP 전', 'IAP 후')) dashBoardParticipatedCountTotal,
             YEAR(등록일) dashBoardParticipatedYear
         FROM
             J_참여자관리
@@ -144,7 +144,7 @@
             COUNT(구직번호) AS dashBoardParticipatedCountTotal,
             YEAR(등록일) AS dashBoardParticipatedYear
         FROM J_참여자관리
-        WHERE 전담자_계정 = #{dashboardUserID}
+        WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}
           AND 마감 = 'false'
           AND 진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후')
           AND YEAR(등록일) <![CDATA[=]]> #{dashBoardYear}
@@ -166,7 +166,7 @@
             -- 초기상담 미실시자
             SUM(IIF(초기상담일 = '' OR 초기상담일 = null, 1, 0)) AS dashBoardInItCons
         FROM J_참여자관리
-        WHERE 전담자_계정 = #{dashboardUserID}
+        WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}
           AND 마감 = 'false'
     </select>
     <!-- 전담자 금일 업무 현황 끝 -->

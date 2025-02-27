@@ -6,6 +6,6 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class PointCutConfig {
 
-    @Pointcut("execution(* com.jobmoa.app.biz.*.*Service.*(..))")
+    @Pointcut("execution(* com.jobmoa.app.biz.*.*Impl.*(..))")
     public void daoLogPointcut() {}
 }

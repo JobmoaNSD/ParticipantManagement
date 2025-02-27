@@ -20,7 +20,7 @@ public class ParticipantDAO {
         //log.info("ParticipantDTO ParticipantDAO selectAll : [{}]", participantDTO);
         log.info("ParticipantDTO ParticipantDAO selectAll condition : [{}]",participantDTO.getParticipantCondition());
         List<ParticipantDTO> datas = sqlSession.selectList(ns+participantDTO.getParticipantCondition(), participantDTO);
-        log.info("datas : [{}]",datas.toString());
+        //log.info("datas : [{}]",datas.toString());
         return datas;
     }
 
@@ -29,7 +29,7 @@ public class ParticipantDAO {
         log.info("ParticipantDTO ParticipantDAO selectOne condition : [{}]",participantDTO.getParticipantCondition());
         ParticipantDTO data = sqlSession.selectOne(ns+participantDTO.getParticipantCondition(), participantDTO);
 
-        log.info("ParticipantDTO ParticipantDAO data : [{}]",data);
+        //log.info("ParticipantDTO ParticipantDAO data : [{}]",data);
         return data;
     }
 

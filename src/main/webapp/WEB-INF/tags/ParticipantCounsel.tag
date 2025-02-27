@@ -30,7 +30,7 @@
                 <label for="counselLastCons" class="form-label" >최근상담일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselLastCons" name="counselLastCons" placeholder="yyyy-mm-dd" aria-label="최근상담일" value="${not empty counsel ? counsel.counselLastCons:""}">
+                    <input type="text" class="form-control datepicker_on" id="counselLastCons" name="counselLastCons" placeholder="yyyy-mm-dd" aria-label="최근상담일" value="${not empty counsel ? counsel.counselLastCons:""}"  autocomplete="off">
                 </div>
             </div>
             <div class="w-auto">
@@ -54,42 +54,42 @@
                 <label for="counselInItCons" class="form-label">초기상담일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselInItCons" name="counselInItCons" placeholder="yyyy-mm-dd" aria-label="초기상담일" value="${not empty counsel ? counsel.counselInItCons:""}">
+                    <input type="text" class="form-control datepicker_on" id="counselInItCons" name="counselInItCons" placeholder="yyyy-mm-dd" aria-label="초기상담일" value="${not empty counsel ? counsel.counselInItCons:""}" autocomplete="off">
                 </div>
             </div>
             <div class="datepicker-div">
                 <label for="counselJobEX" class="form-label">구직만료일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselJobEX" name="counselJobEX" placeholder="yyyy-mm-dd" aria-label="구직만료일" value="${not empty counsel ? counsel.counselJobEX:""}">
+                    <input type="text" class="form-control datepicker_on" id="counselJobEX" name="counselJobEX" placeholder="yyyy-mm-dd" aria-label="구직만료일" value="${not empty counsel ? counsel.counselJobEX:""}" autocomplete="off">
                 </div>
             </div>
             <div class="datepicker-div">
                 <label for="counselIAPDate" class="form-label">IAP수립일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselIAPDate" name="counselIAPDate" placeholder="yyyy-mm-dd" aria-label="IAP수립일" value="${not empty counsel ? counsel.counselIAPDate:""}">
+                    <input type="text" class="form-control datepicker_on" id="counselIAPDate" name="counselIAPDate" placeholder="yyyy-mm-dd" aria-label="IAP수립일" value="${not empty counsel ? counsel.counselIAPDate:""}" autocomplete="off">
                 </div>
             </div>
             <div class="datepicker-div">
                 <label for="counselStepPro" class="form-label">3단계진입일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselStepPro" name="counselStepPro" placeholder="yyyy-mm-dd" aria-label="3단계진입일" value="${not empty counsel ? counsel.counselStepPro:""}">
+                    <input type="text" class="form-control datepicker_on" id="counselStepPro" name="counselStepPro" placeholder="yyyy-mm-dd" aria-label="3단계진입일" value="${not empty counsel ? counsel.counselStepPro:""}" autocomplete="off">
                 </div>
             </div>
             <div class="datepicker-div">
                 <label for="counselEXPDate" class="form-label">기간만료(예정)일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselEXPDate" name="counselEXPDate" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일" value="${not empty counsel ? counsel.counselEXPDate:""}">
+                    <input type="text" class="form-control datepicker_on" id="counselEXPDate" name="counselEXPDate" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일" value="${not empty counsel ? counsel.counselEXPDate:""}" autocomplete="off">
                 </div>
             </div>
             <div class="datepicker-div">
                 <label for="counselClinic" class="form-label">클리닉실시일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselClinic" name="counselClinic" placeholder="yyyy-mm-dd" aria-label="클리닉실시일" value="${not empty counsel ? counsel.counselClinic:""}">
+                    <input type="text" class="form-control datepicker_on" id="counselClinic" name="counselClinic" placeholder="yyyy-mm-dd" aria-label="클리닉실시일" value="${not empty counsel ? counsel.counselClinic:""}" autocomplete="off">
                 </div>
             </div>
             <div class="w-auto">

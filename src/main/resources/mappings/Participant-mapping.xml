@@ -31,7 +31,10 @@
                          END AS 등록일,
                      마감
                  FROM J_참여자관리
-                 WHERE 전담자_계정 = #{participantUserid} ) AS SUB_QUERY
+                 WHERE
+                     전담자_계정 = #{participantUserid} AND
+                     지점 = #{participantBranch}
+                 ) AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
 
@@ -73,7 +76,10 @@
                          END AS 등록일,
                      마감
                  FROM J_참여자관리
-                 WHERE 전담자_계정 = #{participantUserid} AND ${searchOption} like '%'+#{search}+'%') AS SUB_QUERY
+                 WHERE 전담자_계정 = #{participantUserid} AND
+                     지점 = #{participantBranch} AND
+                     ${searchOption} like '%'+#{search}+'%'
+                 ) AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
 

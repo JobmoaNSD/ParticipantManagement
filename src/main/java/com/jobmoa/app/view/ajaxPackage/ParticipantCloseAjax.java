@@ -2,7 +2,6 @@ package com.jobmoa.app.view.ajaxPackage;
 
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.participantBasic.BasicDTO;
-import com.jobmoa.app.biz.participantBasic.BasicService;
 import com.jobmoa.app.biz.participantBasic.BasicServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;

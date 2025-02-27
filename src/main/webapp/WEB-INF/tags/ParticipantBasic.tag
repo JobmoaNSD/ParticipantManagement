@@ -24,7 +24,7 @@
                 <label for="basicDob" class="form-label" >생년월일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="basicDob" name="basicDob" placeholder="yyyy-mm-dd" aria-label="생년월일" value="${not empty basic ? basic.basicDob : ""}">
+                    <input type="text" class="form-control datepicker_on" id="basicDob" name="basicDob" placeholder="yyyy-mm-dd" aria-label="생년월일" value="${not empty basic ? basic.basicDob : ""}"  autocomplete="off">
                 </div>
             </div>
             <div class="col-md-1 w-auto">
