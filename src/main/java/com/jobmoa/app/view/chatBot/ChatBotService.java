@@ -11,7 +11,8 @@ public class ChatBotService {
 
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
-    @Value("")//openAI 에서 발급된 API 키 입력
+    //TODO FIXME openAI 에서 발급된 API 키 입력
+    @Value("")
     private String openAiApiKey;
 
     public String getChatGPTResponse(String userMessage) throws Exception {
@@ -19,7 +20,7 @@ public class ChatBotService {
 
         log.info("userMessage : [{}]",userMessage);
         log.info("OPENAI_API_URL : [{}]",OPENAI_API_URL);
-        log.info("openAiApiKey : [{}]",openAiApiKey);
+//        log.info("openAiApiKey : [{}]",openAiApiKey);
 
         // 요청 JSON 생성
         String requestBodyJson = """
