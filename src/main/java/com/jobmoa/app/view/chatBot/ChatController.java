@@ -11,7 +11,7 @@ public class ChatController {
 
     @GetMapping("/chatgpt")
     public String chatBot(){
-        return "chatBot/TestChatBot2";
+        return "chatBot/ChatBot";
     }
 
 }
