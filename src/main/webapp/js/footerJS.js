@@ -29,7 +29,7 @@ $(document).ready(function () {
     // circleButton.addEventListener("click", function () {
     //     iframeModal.style.display = "flex"; // 모달 보이기
     // });
-    circleButton.add("click",function(){
+    circleButton.on("click",function(){
         iframeModal.fadeIn(); // 모달 보이기
     });
 
@@ -37,7 +37,7 @@ $(document).ready(function () {
     // closeButton.addEventListener("click", function () {
     //     iframeModal.style.display = "none"; // 모달 숨기기
     // });
-    closeButton.add("click",function(){
+    closeButton.on("click",function(){
         iframeModal.fadeOut(); // 모달 숨기기
     });
 
