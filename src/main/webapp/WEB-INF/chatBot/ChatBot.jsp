@@ -14,6 +14,13 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="/js/chatBotAsync.js"></script>
+    <script >
+        $(document).ready(function () {
+            const threadId = ${threadId};
+            const chatbotThreadId = $('#chatbotThreadId');
+            chatbotThreadId.val(threadId.id);
+        });
+    </script>
 
     <link rel="stylesheet" href="/css/chatBot.css"/>
 </head>
@@ -21,6 +28,8 @@
 <div id="chatLog">
 </div>
 <div id="chatLoading">ChatGPT가 내용을 출력하고 있습니다<div class="loader"></div></div>
+<input type="hidden" id="chatbotThreadId" name="threadId"/>
+<input type="hidden" id="chatbotAssistantsId" name="assistantsId" value="asst_hADGesOnyThGcGUTTVePkWNM"/>
 <div id="sendBox">
     <textarea id="userInput" placeholder="질문을 입력해주세요." minlength="0" maxlength="1000"></textarea>
     <button id="sendMassage">보내기</button>

@@ -5,5 +5,7 @@ import lombok.Data;
 @Data
 public class ChatRequest {
     private String userMessage;
+    private String threadId;
+    private String assistantsId;
 
 }

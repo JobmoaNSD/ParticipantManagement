@@ -3,7 +3,7 @@ $('document').ready(function () {
     const charCount = $("#charCount"); // 글자 수 출력 요소
     const chatLoading = $("#chatLoading"); // 답변 생성 내용 요소
     const userInputLimits = $("#userInputLimits"); // 사용자 입력 값 제한 요소
-    
+
     chatLoading.hide();
     userInputLimits.hide();
     //사용자 글자 상한 제한
@@ -25,6 +25,12 @@ $('document').ready(function () {
 
     //chatgpt 비동기 함수
     async function sendMessage() {
+        //어시스턴스 아이디와 쓰레드 아이디를 가져옵니다.
+        const chatbotThreadId = $("#chatbotThreadId").val();
+        const chatbotAssistantsId = $("#chatbotAssistantsId").val();
+        console.log(chatbotThreadId);
+        console.log(chatbotAssistantsId);
+
         /* chatGPT가 대화내역을 산출할때 */
         /* 내용을 출력중이라는 내용을 보여준다. */
         chatLoading.show();
@@ -53,7 +59,7 @@ $('document').ready(function () {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({userMessage: userMessage})
+                body: JSON.stringify({userMessage: userMessage,threadId: chatbotThreadId,assistantsId: chatbotAssistantsId})
             });
             //전달받은 내용 로그
             // console.log(response);
@@ -62,7 +68,7 @@ $('document').ready(function () {
             //비동기로 전달받은 값을 html로 전환
             // let botResponse = await JSON.parse(response);// marked.js로 마크다운을 HTML로 변환
             botResponse = JSON.parse(await response.json());// marked.js로 마크다운을 HTML로 변환
-            botResponse = botResponse.content
+            // botResponse = botResponse.content //기본 형식
             //전환된 텍스트를 로그로 확인
             // console.log(botResponse);
             // console.log(marked.parse(botResponse));

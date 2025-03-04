@@ -15,7 +15,7 @@ h1 {
 /* 채팅 기록 창 */
 #chatLog {
     height: 500px;
-    width: 80%;
+    width: 90%;
     max-height: 500px;
     margin: 20px auto;
     overflow-y: auto; /* 세로 스크롤 활성화 */
@@ -68,7 +68,7 @@ h1 {
 
 /* 전송 창 (입력 및 버튼 위치) */
 #sendBox {
-    width: 50%;
+    width: 90%;
     margin: 20px auto; /* 가로 중앙 정렬 */
     display: flex;
     align-items: center;
