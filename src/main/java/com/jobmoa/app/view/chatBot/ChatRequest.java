@@ -7,5 +7,6 @@ public class ChatRequest {
     private String userMessage;
     private String threadId;
     private String assistantsId;
+    private String runId;
 
 }
