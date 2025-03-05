@@ -30,7 +30,7 @@ public class ChatController {
         // 요청 JSON 생성
         String requestBodyJson = "";
 
-        return chatBotFunction.chatBotRequestJson(requestBodyJson,"/threads");
+        return chatBotFunction.chatBotRequestJson(requestBodyJson,"/threads",true);
     }
 
 }

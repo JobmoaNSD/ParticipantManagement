@@ -66,20 +66,19 @@ $('document').ready(function () {
             // console.log(response.status);
 
             //비동기로 전달받은 값을 html로 전환
-            // let botResponse = await JSON.parse(response);// marked.js로 마크다운을 HTML로 변환
-            botResponse = JSON.parse(await response.json());// marked.js로 마크다운을 HTML로 변환
+            //botResponse = JSON.parse(await response);// marked.js로 마크다운을 HTML로 변환
+            botResponse = await response.json();// marked.js로 마크다운을 HTML로 변환
             // botResponse = botResponse.content //기본 형식
             //전환된 텍스트를 로그로 확인
             // console.log(botResponse);
             // console.log(marked.parse(botResponse));
-
         }
         catch (e) {
             botResponse = "chat gpt가 답변을 생성하지 못했습니다.";
         }
         finally {
             //html 태그를 등록
-            chatLog.append("<div class='user'><p>"+userMessage.replace("\\n","<br>")+"</p></div><br>");
+            chatLog.append("<div class='user'><p>"+userMessage.replace(/\\n/g, "<br>")+"</p></div><br>");
             chatLog.append("<div class='chatBot'>"+marked.parse(botResponse)+"</div><br>");
             userInput.val("");
 

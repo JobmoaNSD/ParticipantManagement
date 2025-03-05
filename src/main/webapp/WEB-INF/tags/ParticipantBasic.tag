@@ -76,7 +76,7 @@
                 <select class="form-select" aria-label="Default select example" id="basicSpecific" name="basicSpecific">
                     <option value=""></option>
                     <option value="O">O</option>
-                    <option value="">X</option>
+                    <option value="X">X</option>
                 </select>
             </div>
             <%--자격증 --%>
