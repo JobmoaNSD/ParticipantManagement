@@ -3,7 +3,6 @@ package com.jobmoa.app.view.login;
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.login.MemberDTO;
 import com.jobmoa.app.biz.login.MemberService;
-import com.jobmoa.app.biz.login.MemberServiceImpl;
 import com.jobmoa.app.view.function.InfoBean;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     @Autowired
-    private MemberServiceImpl memberService;
+    private MemberService memberService;
 
     @Autowired
     private InfoBean infoBean;
@@ -49,7 +48,9 @@ public class LoginController {
         String url = "login.do";
         String icon = "error";
         String title = "로그인 실패";
-        String message = "";
+        String message = "" +
+                "" +
+                "";
 
         memberDTO = memberService.selectOne(memberDTO);
         log.info("loginDTO : [{}]",memberDTO);

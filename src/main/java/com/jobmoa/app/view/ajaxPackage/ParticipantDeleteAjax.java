@@ -2,7 +2,6 @@ package com.jobmoa.app.view.ajaxPackage;
 
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.participant.ParticipantDTO;
-import com.jobmoa.app.biz.participant.ParticipantService;
 import com.jobmoa.app.biz.participant.ParticipantServiceImpl;
 import com.jobmoa.app.biz.participantBasic.BasicDTO;
 import jakarta.servlet.http.HttpSession;

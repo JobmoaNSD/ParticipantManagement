@@ -1,10 +1,10 @@
--- db122266.dbo.J_참여자관리 definition
+-- J_참여자관리 definition
 
 -- Drop table
 
--- DROP TABLE db122266.dbo.J_참여자관리;
+-- DROP TABLE J_참여자관리;
 
-CREATE TABLE db122266.dbo.J_참여자관리 (
+CREATE TABLE J_참여자관리 (
                                       구직번호 int IDENTITY(1,1) NOT NULL,
                                       등록일 date DEFAULT getdate() NULL,
                                       전담자_계정 nvarchar(50) COLLATE Korean_Wansung_CI_AS NULL,
@@ -47,13 +47,13 @@ CREATE TABLE db122266.dbo.J_참여자관리 (
 );
 
 
--- db122266.dbo.J_참여자관리_로그인정보 definition
+-- J_참여자관리_로그인정보 definition
 
 -- Drop table
 
--- DROP TABLE db122266.dbo.J_참여자관리_로그인정보;
+-- DROP TABLE J_참여자관리_로그인정보;
 
-CREATE TABLE db122266.dbo.J_참여자관리_로그인정보 (
+CREATE TABLE J_참여자관리_로그인정보 (
                                             전담자번호 int IDENTITY(1,1) NOT NULL,
                                             지점 nvarchar(10) COLLATE Korean_Wansung_CI_AS NOT NULL,
                                             이름 nvarchar(20) COLLATE Korean_Wansung_CI_AS NOT NULL,
@@ -69,13 +69,13 @@ CREATE TABLE db122266.dbo.J_참여자관리_로그인정보 (
 );
 
 
--- db122266.dbo.J_참여자관리_지점 definition
+-- J_참여자관리_지점 definition
 
 -- Drop table
 
--- DROP TABLE db122266.dbo.J_참여자관리_지점;
+-- DROP TABLE J_참여자관리_지점;
 
-CREATE TABLE db122266.dbo.J_참여자관리_지점 (
+CREATE TABLE J_참여자관리_지점 (
                                          지점번호 int IDENTITY(1,1) NOT NULL,
                                          지점 nvarchar(10) COLLATE Korean_Wansung_CI_AS NULL,
                                          지점인원 int NULL,
@@ -83,13 +83,13 @@ CREATE TABLE db122266.dbo.J_참여자관리_지점 (
 );
 
 
--- db122266.dbo.J_참여자관리_자격증 definition
+-- J_참여자관리_자격증 definition
 
 -- Drop table
 
--- DROP TABLE db122266.dbo.J_참여자관리_자격증;
+-- DROP TABLE J_참여자관리_자격증;
 
-CREATE TABLE db122266.dbo.J_참여자관리_자격증 (
+CREATE TABLE J_참여자관리_자격증 (
                                           자격증번호 int IDENTITY(1,1) NOT NULL,
                                           구직번호 int NOT NULL,
                                           자격증 nvarchar(150) COLLATE Korean_Wansung_CI_AS NULL,
@@ -97,13 +97,13 @@ CREATE TABLE db122266.dbo.J_참여자관리_자격증 (
 );
 
 
--- db122266.dbo.J_참여자관리_직업훈련 definition
+-- J_참여자관리_직업훈련 definition
 
 -- Drop table
 
--- DROP TABLE db122266.dbo.J_참여자관리_직업훈련;
+-- DROP TABLE J_참여자관리_직업훈련;
 
-CREATE TABLE db122266.dbo.J_참여자관리_직업훈련 (
+CREATE TABLE J_참여자관리_직업훈련 (
                                            직업훈련번호 int IDENTITY(1,1) NOT NULL,
                                            구직번호 int NOT NULL,
                                            직업훈련 nvarchar(150) COLLATE Korean_Wansung_CI_AS NULL,
@@ -304,13 +304,13 @@ CREATE VIEW dbo.EXTERNALPARTICIPANT AS SELECT
 
 -- 사용자 이메일 자동 생성 쿼리
 CREATE TRIGGER trg_SetEmail
-    ON db122266.dbo.J_참여자관리_로그인정보
+    ON J_참여자관리_로그인정보
     AFTER INSERT
     AS
 BEGIN
-    UPDATE db122266.dbo.J_참여자관리_로그인정보
+    UPDATE J_참여자관리_로그인정보
     SET 이메일 = t.아이디 + '@jobmoa.com'
-    FROM db122266.dbo.J_참여자관리_로그인정보 AS t
+    FROM J_참여자관리_로그인정보 AS t
              INNER JOIN inserted AS i
                         ON t.아이디 = i.아이디;
 END;

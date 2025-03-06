@@ -7,8 +7,8 @@
     <meta charset="UTF-8">
     <title>참여자 정보</title>
     <!-- Jobmoa 로고 탭 이미지 -->
-    <link rel="icon" href="/img/JobmoaLog.png"/>
-    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
+    <link rel="icon" href="/img/JobmoaLogo.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLogo.png"/>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -176,7 +176,7 @@
         <a href="./index.jsp">
             <!--begin::Brand Image-->
             <img
-                    src="../../img/JobmoaLog.png"
+                    src="../../img/JobmoaLogo.png"
                     alt="JOBMOA Logo"
                     class="brand-image opacity-75 shadow  h-100 w-100"
             />

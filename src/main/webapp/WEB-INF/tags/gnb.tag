@@ -76,9 +76,9 @@
             <a href="./index.jsp" class="brand-link h-100 w-75">
                 <!--begin::Brand Image-->
                 <img
-                        src="../../img/JobmoaLog.png"
+                        src="../../img/JobmoaLogo.svg"
                         alt="JOBMOA Logo"
-                        class="brand-image opacity-75 shadow  h-100 w-100"
+                        class="h-100 w-100"
                         style="max-height: 150px;"
                 />
                 <!--end::Brand Image-->

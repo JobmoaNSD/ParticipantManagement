@@ -6,12 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <html>
 <head>
     <title>잡모아</title>
     <!-- Jobmoa 로고 탭 이미지 -->
-    <link rel="icon" href="/img/JobmoaLog.png"/>
-    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
+    <mytag:Logo/>
 
     <link rel="stylesheet" href="/css/loginPage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,8 +35,7 @@
                 <button type="submit" class="btn">Login</button>
             </div>
             <div class="link-group">
-                <a href="#">Forgot Password?</a>
-                <a href="#">Sign Up</a>
+                <a href="#" onclick="alert('준비중인 서비스입니다.')">Forgot Password?</a>
             </div>
         </form>
     </div>

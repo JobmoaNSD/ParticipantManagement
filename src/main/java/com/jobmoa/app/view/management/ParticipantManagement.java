@@ -3,7 +3,7 @@ package com.jobmoa.app.view.management;
 
 import com.jobmoa.app.biz.bean.PaginationBean;
 import com.jobmoa.app.biz.participant.ParticipantDTO;
-import com.jobmoa.app.biz.participant.ParticipantServiceImpl;
+import com.jobmoa.app.biz.participant.ParticipantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,13 +17,13 @@ import java.util.List;
 public class ParticipantManagement {
 
     @Autowired
-    private ParticipantServiceImpl participantService; // 서비스 클래스 의존성 주입
+    private ParticipantService participantService; // 서비스 클래스 의존성 주입
 
     //participant_management_page.jsp
     @GetMapping("/jobseekers")
     public String viewParticipants(Model model, ParticipantDTO participantDTO, PaginationBean paginationBean) {
         log.info("viewParticipants Start");
-        
+
         // 사용자가 선택한 페이지 수가 없다면 기본 페이지 1 고정
         int page = participantDTO.getPage() <= 0 ? 1 : participantDTO.getPage();
         log.info("ParticipantManagement page : [{}]", page);
@@ -34,38 +34,45 @@ public class ParticipantManagement {
 
         // 사용자에게 보여질 버튼 개수
         int limitButton = 10;
-        
+
         //글 개수 쿼리 컨디션
         participantDTO.setParticipantCondition("selectExternalCount");
 
         // 게시글 개수
-        int totalCount = participantService.selectOne(participantDTO).getTotalCount();
-        log.info("ParticipantManagement totalCount : [{}]", totalCount);
+        ParticipantDTO participantTotalCountDTO = participantService.selectOne(participantDTO);
 
-        paginationBean.paginationProject(page,pageRows,limitButton,totalCount);
-        // -------------------------페이지네이션 끝------------------------------
-        // 한 페이지에 보여줄 데이터를 출력하기 위해 OFFSET PAGEROWS 를 추가
-        participantDTO.setStartPage(paginationBean.getStartPage());
-        participantDTO.setEndPage(paginationBean.getEndPage());
-        participantDTO.setPageRows(pageRows);
-        
-        
-        // DB(J_참여자관리)로부터 참여자 목록 조회
-        participantDTO.setParticipantCondition("selectExternal");
-        List<ParticipantDTO> participantList = participantService.selectAll(participantDTO);
+//        log.info("ParticipantManagement participantTotalCountDTO : [{}]", participantTotalCountDTO);
 
-        // ParticipantDTO에서 이름 설정
-        for (ParticipantDTO p : participantList) {
-            String originalName = p.getParticipantPartic(); // 참여자 이름 가져오기
-            if (originalName != null && !originalName.isEmpty()) {
-                // 첫 글자 제외하고 나머지를 "O"로 변환
-                String maskedName = originalName.charAt(0) + originalName.substring(1).replaceAll(".", "O");
-                p.setParticipantPartic(maskedName); // 이름 업데이트
+        if(participantTotalCountDTO != null){
+            int totalCount = participantTotalCountDTO.getTotalCount();
+            log.info("ParticipantManagement totalCount : [{}]", totalCount);
+
+            paginationBean.paginationProject(page,pageRows,limitButton,totalCount);
+            // -------------------------페이지네이션 끝------------------------------
+            // 한 페이지에 보여줄 데이터를 출력하기 위해 OFFSET PAGEROWS 를 추가
+            participantDTO.setStartPage(paginationBean.getStartPage());
+            participantDTO.setEndPage(paginationBean.getEndPage());
+            participantDTO.setPageRows(pageRows);
+
+
+            // DB(J_참여자관리)로부터 참여자 목록 조회
+            participantDTO.setParticipantCondition("selectExternal");
+            List<ParticipantDTO> participantList = participantService.selectAll(participantDTO);
+
+            // ParticipantDTO에서 이름 설정
+            for (ParticipantDTO p : participantList) {
+                String originalName = p.getParticipantPartic(); // 참여자 이름 가져오기
+                if (originalName != null && !originalName.isEmpty()) {
+                    // 첫 글자 제외하고 나머지를 "O"로 변환
+                    String maskedName = originalName.charAt(0) + originalName.substring(1).replaceAll(".", "O");
+                    p.setParticipantPartic(maskedName); // 이름 업데이트
+                }
             }
-        }
 
-        // JSP로 데이터 전달
-        model.addAttribute("participantList", participantList);
+            // JSP로 데이터 전달
+            model.addAttribute("participantList", participantList);
+
+        }
         // 현재 페이지
         model.addAttribute("page", page);
         // 시작 버튼
