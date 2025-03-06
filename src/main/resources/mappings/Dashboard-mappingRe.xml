@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DashboardDAO">
+    <!-- Dashboard 조회 쿼리 - 최적화 버전 -->
+    <select id="selectMyResultDashboard" resultType="dashboard">
+        SELECT
+            -- 취업자 관련 지표 (공통 조건 활용)
+            ISNULL(SUM(IIF(YEAR(취창업일) = YEAR(#{dashBoardYear}), 1, 0)), 0) AS dashBoardEmployedCountTotal,
+            ISNULL(SUM(IIF(지점조건 AND YEAR(취창업일) = YEAR(#{dashBoardYear}), 1, 0)), 0) AS dashBoardEmployedCountBranch,
+            ISNULL(SUM(IIF(개인조건 AND YEAR(취창업일) = YEAR(#{dashBoardYear}), 1, 0)), 0) AS dashBoardEmployedCountUser,
+
+            -- 알선 취업자 관련 지표
+            ISNULL(SUM(IIF(알선조건, 1, 0)), 0) AS dashBoardReferredEmployedCountTotal,
+            ISNULL(SUM(IIF(지점조건 AND 알선조건, 1, 0)), 0) AS dashBoardReferredEmployedCountBranch,
+            ISNULL(SUM(IIF(개인조건 AND 알선조건, 1, 0)), 0) AS dashBoardReferredEmployedCountUser,
+
+            -- 조기 취업자 관련 지표
+            ISNULL(SUM(IIF(조기취업조건, 1, 0)), 0) AS dashBoardEarlyEmployedCountTotal,
+            ISNULL(SUM(IIF(지점조건 AND 조기취업조건, 1, 0)), 0) AS dashBoardEarlyEmployedCountBranch,
+            ISNULL(SUM(IIF(개인조건 AND 조기취업조건, 1, 0)), 0) AS dashBoardEarlyEmployedCountUser,
+
+            -- 나은일자리 관련 지표
+            ISNULL(SUM(IIF(나은일자리조건, 1, 0)), 0) AS dashBoardBetterJobCountTotal,
+            ISNULL(SUM(IIF(지점조건 AND 나은일자리조건, 1, 0)), 0) AS dashBoardBetterJobCountBranch,
+            ISNULL(SUM(IIF(개인조건 AND 나은일자리조건, 1, 0)), 0) AS dashBoardBetterJobCountUser,
+
+            -- 고용유지 6개월 관련 지표
+            ISNULL(SUM(IIF(고용유지6개월조건, 1, 0)), 0) AS dashBoardSixMonthRetentionCountTotal,
+            ISNULL(SUM(IIF(지점조건 AND 고용유지6개월조건, 1, 0)), 0) AS dashBoardSixMonthRetentionCountBranch,
+            ISNULL(SUM(IIF(개인조건 AND 고용유지6개월조건, 1, 0)), 0) AS dashBoardSixMonthRetentionCountUser,
+
+            -- 고용유지 12개월 관련 지표
+            ISNULL(SUM(IIF(고용유지12개월조건, 1, 0)), 0) AS dashBoardTwelveMonthRetentionCountTotal,
+            ISNULL(SUM(IIF(지점조건 AND 고용유지12개월조건, 1, 0)), 0) AS dashBoardTwelveMonthRetentionCountBranch,
+            ISNULL(SUM(IIF(개인조건 AND 고용유지12개월조건, 1, 0)), 0) AS dashBoardTwelveMonthRetentionCountUser
+        FROM J_참여자관리
+                 CROSS APPLY (
+            SELECT
+                지점 = #{dashboardBranch} AS 지점조건,
+                    전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AS 개인조건,
+                    취업유형 != '' AND 취업유형 IN ('알선', '소개취업') AS 알선조건,
+                     DATEDIFF(mm, 초기상담일, 취창업일) BETWEEN 0 AND 5 AS 조기취업조건,
+                     임금 >= 229 AND 진행단계 = '고보일반' AS 나은일자리조건,
+                진행단계 = '고보일반' AND
+                       DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) BETWEEN 6 AND 11 AS 고용유지6개월조건,
+                    진행단계 = '고보일반' AND
+                           DATEDIFF(mm, 취창업일, (IIF(퇴사일 = '', GETDATE(), 퇴사일))) >= 12 AS 고용유지12개월조건
+        ) AS Conditions
+        WHERE YEAR(등록일) = YEAR(#{dashBoardYear})
+          AND 취창업일 != ''
+        OPTION (OPTIMIZE FOR UNKNOWN);
+    </select>
+
+    <!-- 성공금 데이터 추출 - 최적화 버전 -->
+    <select id="selectSuccessMoney" resultType="dashboard">
+        SELECT
+            -- 전체 성공금 인센티브
+            ISNULL(SUM(CONVERT(BIGINT, 성공금)), 0) AS dashBoardSuccessMoneyTotal,
+            ISNULL(SUM(CONVERT(BIGINT, 인센티브)), 0) AS dashBoardSuccessMoneyTotalIncentive,
+            -- 지점 성공금 인센티브
+            ISNULL(SUM(IIF(지점 = #{dashboardBranch}, CONVERT(BIGINT, 성공금), 0)), 0) AS dashBoardSuccessMoneyBranch,
+            ISNULL(SUM(IIF(지점 = #{dashboardBranch}, CONVERT(BIGINT, 인센티브), 0)), 0) AS dashBoardSuccessMoneyBranchIncentive,
+            -- 개인 성공금 인센티브
+            ISNULL(SUM(IIF(개인조건, CONVERT(BIGINT, 성공금), 0)), 0) AS dashBoardSuccessMoneyUser,
+            ISNULL(SUM(IIF(개인조건, CONVERT(BIGINT, 인센티브), 0)), 0) AS dashBoardSuccessMoneyUserIncentive
+        FROM SUCCESSMONEY
+                 CROSS APPLY (
+            SELECT 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AS 개인조건
+        ) AS Conditions
+        WHERE YEAR(등록일) = #{dashBoardYear}
+        OPTION (OPTIMIZE FOR UNKNOWN);
+    </select>
+
+    <!-- 전체 지점 인원, 현재 지점 인원 - 최적화 버전 -->
+    <select id="selectBranchAndUser" resultType="dashboard">
+        SELECT
+            branch_total.지점인원_합계 AS dashboardCountBranch,
+            current_branch.지점인원 AS dashboardCountUser
+        FROM
+                (SELECT 지점, 지점인원 FROM J_참여자관리_지점 WHERE 지점 = #{dashboardBranch}) AS current_branch
+                    CROSS JOIN
+                (SELECT SUM(지점인원) AS 지점인원_합계 FROM J_참여자관리_지점) AS branch_total;
+    </select>
+
+    <!-- 전담자 개인/마감 참여자 인원 - 통합 최적화 버전 -->
+    <select id="selectCountDashboard" resultType="dashboard">
+        SELECT
+            COUNT(*) AS dashboardTotalCount,
+            SUM(IIF(마감 = 'true', 1, 0)) AS dashboardCloseCount
+        FROM J_참여자관리
+        WHERE 전담자_계정 = #{dashboardUserID}
+          AND 지점 = #{dashboardBranch}
+          AND YEAR(등록일) = #{dashBoardYear};
+    </select>
+
+    <!-- 참여자 통계 - 통합 최적화 버전 -->
+    <select id="selectParticipantStatistics" resultType="dashboard">
+        WITH ParticipantData AS (
+        SELECT
+        구직번호,
+        등록일,
+        마감,
+        진행단계,
+        YEAR(등록일) AS 등록년도
+        FROM J_참여자관리
+        WHERE 전담자_계정 = #{dashboardUserID}
+        AND 지점 = #{dashboardBranch}
+        AND YEAR(등록일) <= #{dashBoardYear}
+        )
+        SELECT
+        -- 총 참여자 수
+        (SELECT COUNT(*) FROM ParticipantData) AS dashBoardParticipatedCountTotal,
+
+        -- 현재 진행 중인 참여자 수
+        (SELECT COUNT(*)
+        FROM ParticipantData
+        WHERE 마감 = 'false'
+        AND 진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후')
+        ) AS dashBoardCurrentParticipatedCountTotal,
+
+        -- 현재 년도 단계별 참여자 수
+        (SELECT COUNT(*)
+        FROM ParticipantData
+        WHERE 등록년도 = #{dashBoardYear}
+        AND 마감 = 'false'
+        AND (진행단계 = '1' OR 진행단계 = 'IAP 전')
+        ) AS dashBoardParticipatedCountOne,
+
+        (SELECT COUNT(*)
+        FROM ParticipantData
+        WHERE 등록년도 = #{dashBoardYear}
+        AND 마감 = 'false'
+        AND (진행단계 = '2' OR 진행단계 = 'IAP 후')
+        ) AS dashBoardParticipatedCountTwo,
+
+        (SELECT COUNT(*)
+        FROM ParticipantData
+        WHERE 등록년도 = #{dashBoardYear}
+        AND 마감 = 'false'
+        AND 진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후')
+        ) AS dashBoardParticipatedCountYearTotal,
+
+        #{dashBoardYear} AS dashBoardParticipatedYear;
+    </select>
+
+    <!-- 전담자 금일 업무 현황 - 최적화 버전 -->
+    <select id="selectDailyDashboard" resultType="dashboard">
+        SELECT
+        -- 최근 상담일 15일 도래자
+        SUM(IIF(DATEDIFF(DAY, 최근상담일, GETDATE()) >= 15 AND 최근상담일 != '', 1, 0)) AS dashBoardLastCons,
+        -- 구직 만료일 15일 도래자
+        SUM(IIF(DATEDIFF(DAY, GETDATE(), 구직만료일) <= 15 AND 구직만료일 != '', 1, 0)) AS dashBoardJobEX,
+        -- 기간 만료일 15일 도래자
+        SUM(IIF(DATEDIFF(DAY, GETDATE(), 기간만료일) BETWEEN 0 AND 15 AND 기간만료일 != '' AND 최근상담일 != '', 1, 0)) AS dashBoardEXPDate,
+        -- 초기상담 미실시자
+        SUM(IIF(초기상담일 = '' OR 초기상담일 IS NULL, 1, 0)) AS dashBoardInItCons
+        FROM J_참여자관리 WITH (NOLOCK)
+        WHERE 전담자_계정 = #{dashboardUserID}
+        AND 지점 = #{dashboardBranch}
+        AND 마감 = 'false';
+    </select>
+</mapper>

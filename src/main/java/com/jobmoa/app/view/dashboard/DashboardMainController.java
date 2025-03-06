@@ -9,7 +9,6 @@ import com.jobmoa.app.biz.dashboard.DashboardService;
 import com.jobmoa.app.view.function.ChangeJson;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -166,7 +165,6 @@ public class DashboardMainController {
                     successMoney.getDashBoardSuccessMoneyBranchIncentive() / userCount,
                     successMoney.getDashBoardSuccessMoneyUserIncentive());
             //성공금 현황 끝
-
 
             // 참여자 현황 시작
             String totalParticipantJsonData = "";

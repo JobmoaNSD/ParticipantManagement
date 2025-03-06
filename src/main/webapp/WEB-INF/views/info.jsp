@@ -7,14 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>잡모아</title>
     <!-- Jobmoa 로고 탭 이미지 -->
-    <link rel="icon" href="/img/JobmoaLog.png"/>
-    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
+    <mytag:Logo/>
     <!-- mouse pointer 모양 bootstrap 5 -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <!-- jQuery -->

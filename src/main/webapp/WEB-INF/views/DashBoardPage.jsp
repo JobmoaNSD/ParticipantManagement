@@ -12,8 +12,7 @@
 <head>
     <title>잡모아</title>
     <!-- Jobmoa 로고 탭 이미지 -->
-    <link rel="icon" href="/img/JobmoaLog.png"/>
-    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
+    <mytag:Logo/>
 
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

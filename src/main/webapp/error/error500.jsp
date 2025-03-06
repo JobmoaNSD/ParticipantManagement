@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>500Error 발생</title>
     <!-- Jobmoa 로고 탭 이미지 -->
-    <link rel="icon" href="/img/JobmoaLog.png"/>
-    <link rel="apple-touch-icon" href="/img/JobmoaLog.png"/>
+    <link rel="icon" href="/img/JobmoaLogo.png"/>
+    <link rel="apple-touch-icon" href="/img/JobmoaLogo.png"/>
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
