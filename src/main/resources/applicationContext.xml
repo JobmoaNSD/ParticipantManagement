@@ -24,11 +24,12 @@
     <context:component-scan base-package="com.jobmoa.app.biz.participantEducation"/>
     <context:component-scan base-package="com.jobmoa.app.biz.dashboard"/>
 
+    <!--FIXME TODO url username password 수정 해서 배포-->
     <bean class="org.apache.commons.dbcp2.BasicDataSource" id="ds" destroy-method="close">
         <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
-        <property name="url" value="jdbc:sqlserver://:1433;DatabaseName=;trustServerCertificate=true;"/>
-        <property name="username" value=""/>
-        <property name="password" value=""/>
+        <property name="url" value="jdbc:sqlserver://192.168.0.10:1433;DatabaseName=J_CounselDB;trustServerCertificate=true;"/>
+        <property name="username" value="Testaccount"/>
+        <property name="password" value="jobmoano1!"/>
     </bean>
 
     <bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate">

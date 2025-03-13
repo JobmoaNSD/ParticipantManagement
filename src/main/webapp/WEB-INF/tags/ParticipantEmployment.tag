@@ -10,14 +10,14 @@
             <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" style="font-size: 1.5rem;">
                 <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
                 <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-                <input type="hidden" id="employmentJobNo" name="employmentJobNo" value="${not empty param.basicJobNo ? param.basicJobNo : 0}">
+                <input type="hidden" id="employmentJobNo" name="employmentJobNo" value="${not empty param.employmentJobNo ? param.employmentJobNo : 0}">
             </button>
         </div>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="pb-2 mb-1 datepicker-div">
-                <label for="employmentStartDate" class="form-label">취창업일</label>
+                <label for="employmentStartDate" class="form-label">취창업일<span class="text-danger">*</span></label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
                     <input type="text" class="form-control datepicker_on" id="employmentStartDate" name="employmentStartDate" placeholder="yyyy-mm-dd" aria-label="취창업일" value="${not empty employment ? employment.employmentStartDate:""}" autocomplete="off">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="w-auto">
-                <label for="employmentEmpType" class="form-label">취업유형</label>
+                <label for="employmentEmpType" class="form-label">취업유형<span class="text-danger">*</span></label>
                 <select class="form-select" aria-label="Default select example" id="employmentEmpType" name="employmentEmpType">
 
                 </select>
@@ -48,7 +48,7 @@
                 <input type="text" class="form-control" id="employmentLoyer" name="employmentLoyer" value="${not empty employment ? employment.employmentLoyer:""}">
             </div>
             <div class="w-auto">
-                <label for="employmentSalary" class="form-label">임금(단위 만원)</label>
+                <label for="employmentSalary" class="form-label">임금(단위 만원)<span class="text-danger">*</span></label>
                 <input type="number" class="form-control" id="employmentSalary" name="employmentSalary" min="0" max="1000" placeholder="단위 만원" value="${not empty employment ? employment.employmentSalary:""}">
 
             </div>
@@ -57,7 +57,7 @@
                 <input type="text" class="form-control" id="employmentJobRole" name="employmentJobRole" value="${not empty employment ? employment.employmentJobRole:""}">
             </div>
             <div class="w-auto">
-                <label for="employmentIncentive" class="form-label">취업인센티브_구분</label>
+                <label for="employmentIncentive" class="form-label">취업인센티브_구분<span class="text-danger">*</span></label>
                 <select class="form-select" aria-label="Default select example" id="employmentIncentive" name="employmentIncentive">
                     <option value=""></option>
                     <option value="해당[컨설팅 알선 - 120%]">해당[컨설팅 알선 - 120%]</option>

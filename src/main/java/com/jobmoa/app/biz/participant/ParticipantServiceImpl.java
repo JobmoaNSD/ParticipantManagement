@@ -87,7 +87,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     private boolean SelectCount(ParticipantDTO participantDTO, String condition){
         //값이 넘어올때 jobno는 있으니 condition 만 추가하여 값을 전달한다.
-        //participantDTO.setParticipantCondition("selectOne"+condition);
+        participantDTO.setParticipantCondition("selectOne"+condition);
         //자격증 개수를 받고
         int count = participantDAO.selectOne(participantDTO).getParticipantCount();
         //자격증이 0 보다 크면 true, 0이거나 작으면 false 반환

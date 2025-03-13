@@ -17,11 +17,11 @@
     <div class="card-body">
         <div class="row default-card-body">
             <div class="col-md-1 pb-2 mb-1 w-auto">
-                <label for="basicPartic" class="form-label">참여자</label>
+                <label for="basicPartic" class="form-label">참여자<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="basicPartic" name="basicPartic" value="${not empty basic ? basic.basicPartic : ""}">
             </div>
             <div class="col-md-1 datepicker-div">
-                <label for="basicDob" class="form-label" >생년월일</label>
+                <label for="basicDob" class="form-label" >생년월일<span class="text-danger">*</span></label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
                     <input type="text" class="form-control datepicker_on" id="basicDob" name="basicDob" placeholder="yyyy-mm-dd" aria-label="생년월일" value="${not empty basic ? basic.basicDob : ""}"  autocomplete="off">
@@ -54,16 +54,16 @@
                 </select>
             </div>
             <div class="col-md-1 w-auto">
-                <label for="basicAddress" class="form-label">주소(시,구)</label>
+                <label for="basicAddress" class="form-label">주소(시,구)<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="basicAddress" name="basicAddress" value="${not empty basic ? basic.basicAddress : ""}">
             </div>
             <div class="col-md-1 w-auto">
-                <label for="basicSchool" class="form-label">학교명</label>
+                <label for="basicSchool" class="form-label">학교명<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="basicSchool" name="basicSchool" value="${not empty basic ? basic.basicSchool : ""}">
                 <div class="overflow-y-scroll recommend" id="basicSchoollist"></div>
             </div>
             <div class="col-md-1 w-auto">
-                <label for="basicSpecialty" class="form-label">전공</label>
+                <label for="basicSpecialty" class="form-label">전공<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="basicSpecialty" name="basicSpecialty" value="${not empty basic ? basic.basicSpecialty : ""}">
                 <div class="overflow-y-scroll recommend" id="basicSpecialtylist"></div>
             </div>

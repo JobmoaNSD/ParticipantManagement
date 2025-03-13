@@ -47,7 +47,7 @@
                 END AS counselInItCons,
             CASE
                 WHEN 구직만료일 >= DATEADD(YEAR, -100, GETDATE()) THEN 구직만료일
-                END AS conselJobEX,
+                END AS counselJobEX,
             CASE
                 WHEN IAP수료일 >= DATEADD(YEAR, -100, GETDATE()) THEN IAP수료일
                 END AS counselIAPDate,

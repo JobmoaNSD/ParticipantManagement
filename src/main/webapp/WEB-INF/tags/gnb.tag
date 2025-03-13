@@ -90,7 +90,7 @@
         </div>
         <!--end::Sidebar Brand-->
         <!--begin::Sidebar Wrapper-->
-        <div class="sidebar-wrapper" style="max-height: 100vh; overflow: hidden;">
+        <div class="sidebar-wrapper" style="max-height: 500px; overflow: hidden;">
             <nav class="mt-2">
                 <!--begin::Sidebar Menu-->
                 <ul
@@ -114,8 +114,8 @@
                                     <small><p>대시보드</p></small>
                                 </a>
                             </li>
-                            <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item">
+                                <a href="./report.login" class="nav-link">
                                     <small><p>일일업무보고</p></small>
                                 </a>
                             </li>
