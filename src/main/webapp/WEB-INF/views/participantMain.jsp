@@ -155,8 +155,8 @@
                                     name="searchOption"
                                     id="search-Option"
                             >
-                                <option ${param.searchOption.equals("구직번호") ? 'selected' : ''} value="구직번호">구직번호</option>
                                 <option ${param.searchOption.equals("참여자") ? 'selected' : ''} value="참여자">참여자</option>
+                                <option ${param.searchOption.equals("구직번호") ? 'selected' : ''} value="구직번호">구직번호</option>
                                 <option ${param.searchOption.equals("진행단계") ? 'selected' : ''} value="진행단계">진행단계</option>
                             </select>
                         </div>
@@ -357,9 +357,24 @@
         //검색 버튼 변수
         const searchBtn = $('#searchBtn');
 
-        searchBtn.on('click', function () {
+        function searchFunction() {
+            if (search.val() == ''){
+                alert("검색어를 입력해주세요.");
+                return;
+            }
             location.href = '/participant.login?page=1&searchOption=' + search_option.val() + '&search=' + search.val() + '&pageRows=' + pageRows.val();
+        }
+
+        searchBtn.on('click', function () {
+            searchFunction();
         });
+
+        search.on('keypress', function (e) {
+            if (e.keyCode == 13) {
+                searchFunction();
+            }
+        });
+
 
         <%-- 검색 스크립트 끝 --%>
 

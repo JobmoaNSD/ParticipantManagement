@@ -314,3 +314,6 @@ BEGIN
              INNER JOIN inserted AS i
                         ON t.아이디 = i.아이디;
 END;
+
+
+

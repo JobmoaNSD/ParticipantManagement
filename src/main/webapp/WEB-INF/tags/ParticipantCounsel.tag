@@ -17,7 +17,7 @@
     <div class="card-body">
         <div class="row">
             <div class="pb-2 mb-1 w-auto">
-                <label for="counselJobSkill" class="form-label">취업역량</label>
+                <label for="counselJobSkill" class="form-label">취업역량<span class="text-danger">*</span></label>
                 <select class="form-select" aria-label="Default select example" id="counselJobSkill" name="counselJobSkill">
                     <option value=""></option>
                     <option value="A">A</option>
@@ -93,11 +93,11 @@
                 </div>
             </div>
             <div class="w-auto">
-                <label for="counselJobWant" class="form-label">희망직무</label>
+                <label for="counselJobWant" class="form-label">희망직무<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="counselJobWant" name="counselJobWant" value="${not empty counsel ? counsel.counselJobWant:""}">
             </div>
             <div class="w-auto">
-                <label for="counselSalWant" class="form-label">희망급여(단위 만원)</label>
+                <label for="counselSalWant" class="form-label">희망급여(단위 만원)<span class="text-danger">*</span></label>
                 <input type="number" class="form-control" id="counselSalWant" name="counselSalWant" min="0" max="1000" placeholder="단위 만원" value="${not empty counsel ? counsel.counselSalWant:""}">
             </div>
             <div class="col-md-1 w-auto">

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: no1fc
-  Date: 24. 12. 30.
-  Time: 오후 5:16
+  Date: 25. 3. 13.
+  Time: 오후 4:31
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -71,13 +71,41 @@
     />
     <!-- mouse pointer 모양 bootstrap 5 -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .section-title {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .approval-section {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .approval-box {
+            display: inline-block;
+            border: 1px solid #000;
+            padding: 10px;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="Sample Main header" gnb_sub_header="Sample Sub header"/>
+    <mytag:gnb gnb_main_header="실적관리" gnb_sub_header="일일업무보고"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->
@@ -86,10 +114,110 @@
         <div class="app-content">
             <!--begin::Main content-->
             <div class="container-fluid">
-            <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
+                <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
+                <h1>지점 국민취업지원제도 업무진행현황 일일보고</h1>
 
-            <mytag:samplePageMain content_header_name="Sample Page"/>
+                <!-- 결재란 -->
+                <div class="approval-section">
+                    <div class="approval-box">
+                        <div>지점관리자</div>
+                        <div style="height: 60px;"></div>
+                    </div>
+                    <div class="approval-box">
+                        <div>대표</div>
+                        <div style="height: 60px;"></div>
+                    </div>
+                    <div class="approval-box">
+                        <div>회장</div>
+                        <div style="height: 60px;"></div>
+                    </div>
+                </div>
 
+                <div>2025년 3월 13일 목요일</div>
+
+                <!-- 1. 배정 현황 -->
+                <h3>1. 배정 현황</h3>
+                <table>
+                    <tr>
+                        <th colspan="6">2024년 총 서비스 대상 인원(전산 배정 인원)</th>
+                        <th colspan="2">금일 배정인원</th>
+                        <th>상담사 수</th>
+                        <th>평균 배정인원</th>
+                        <th>배정목표</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">합계</td>
+                        <td colspan="2">Ⅱ유형</td>
+                        <td colspan="2">Ⅰ유형</td>
+                        <td>Ⅱ유형</td>
+                        <td>Ⅰ유형</td>
+                        <td>0</td>
+                        <td>#DIV/0!</td>
+                        <td>100</td>
+                    </tr>
+                </table>
+
+                <!-- 2. 알선취업 성과 현황 -->
+                <h3>2. 알선취업 성과 현황</h3>
+                <table>
+                    <tr>
+                        <th rowspan="2">구분</th>
+                        <th colspan="2">금일 누적 실적</th>
+                        <th colspan="2">금주 누적 실적</th>
+                        <th colspan="2">금월 누적 실적</th>
+                        <th colspan="2">금년 누적 실적</th>
+                    </tr>
+                    <tr>
+                        <th>일반 취업</th>
+                        <th>알선 취업</th>
+                        <th>일반 취업</th>
+                        <th>알선 취업</th>
+                        <th>일반 취업</th>
+                        <th>알선 취업</th>
+                        <th>일반 취업</th>
+                        <th>알선 취업</th>
+                    </tr>
+                    <!-- 상담사별 행 10개 추가 -->
+                    <tr>
+                        <td>합계</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <!-- 3. 총괄 진행현황 -->
+                <h3>3. 총괄 진행현황</h3>
+                <table>
+                    <tr>
+                        <th>구분</th>
+                        <th>취소</th>
+                        <th>참여자 합계</th>
+                        <th>현진행자(유예포함)</th>
+                        <th>3단계 진행자</th>
+                        <th>기간만료</th>
+                        <th>중단</th>
+                        <th>성과 불인정 취업</th>
+                        <th>성과 인정 취업</th>
+                        <th>알선취업</th>
+                        <th>평가 취업률</th>
+                        <th>알선취업률</th>
+                        <th>229만원 이상 취업률</th>
+                        <th>고용유지율</th>
+                        <th>조기취업실적</th>
+                        <th>취업인센티브 발생률</th>
+                    </tr>
+                    <!-- 각 연도별 데이터 행 추가 -->
+                </table>
+
+                <!-- 4. 기타사항 -->
+                <h3>4. 기타사항</h3>
+                <textarea style="width: 100%; height: 100px;"></textarea>
             </div>
             <!--end::Main content-->
         </div>
