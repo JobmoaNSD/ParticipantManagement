@@ -157,6 +157,19 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.18.2</version> <!-- 최신 버전으로 교체 -->
         </dependency>
+
+        <!-- Apache POI for Excel -->
+        <!-- Excel 생성 의존성 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>

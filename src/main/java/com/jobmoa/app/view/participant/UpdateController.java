@@ -16,6 +16,7 @@ import com.jobmoa.app.view.function.InfoBean;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -155,7 +156,7 @@ public class UpdateController {
 
     //update Mappings
     @PostMapping("/updatebasic.login")
-    public String update(Model model, HttpSession session, BasicDTO basicDTO, ParticcertifDTO particcertifDTO){
+    public String update(Model model, int page, HttpSession session, BasicDTO basicDTO, ParticcertifDTO particcertifDTO){
         //업데이트 여부에 따라 페이지가 다르기 때문에 각 변수를 선언
         String url = "updatebasic.login";
         String icon = "seuccess";
@@ -207,6 +208,11 @@ public class UpdateController {
             message = "자격증 등록중 문제가 발생했습니다.";
         }
 
+        //page 값이 0보다 크다면 추가후 이동
+        if(page > 0){
+            url += "?page="+page;
+        }
+
         //확인용 로그
         InfoBean.info(model, url, icon, title, message);
 
@@ -214,7 +220,7 @@ public class UpdateController {
     }
 
     @PostMapping("/updatecounsel.login")
-    public String update(Model model, HttpSession session, BasicDTO basicDTO, CounselDTO counselDTO, EducationDTO educationDTO){
+    public String update(Model model, int page, HttpSession session, BasicDTO basicDTO, CounselDTO counselDTO, EducationDTO educationDTO){
         //info 페이지로 넘길 변수 선언
         String url = "updatecounsel.login";
         String icon = "";
@@ -234,7 +240,7 @@ public class UpdateController {
 
             //구직번호가 없다면 오류를 반환하고 조회페이지로 반환
             log.info("상담정보 jobNo : [{}]", jobNo);
-            if(jobNo <= 0 && counselJobNo <= 0){
+            if(jobNo <= 0){
                 url = "participant.login";
                 icon = "error";
                 title = "구직번호를 찾을 수 없습니다.";
@@ -292,13 +298,17 @@ public class UpdateController {
             educationService.insert(educationDTO);
         }
 
+        //page 값이 0보다 크다면 추가후 이동
+        if(page > 0){
+            url += "?page="+page;
+        }
         InfoBean.info(model, url, icon, title, message);
 
         return "views/info";
     }
 
     @PostMapping("/updateemployment.login")
-    public String update(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO, CounselDTO counselDTO){
+    public String update(Model model, int page, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO, CounselDTO counselDTO){
         //info 페이지로 넘길 변수 선언
         String url = "updateemployment.login";
         String icon = "";
@@ -343,6 +353,11 @@ public class UpdateController {
                 icon = "error";
                 title = "취업정보 추가 실패";
             }
+        }
+
+        //page 값이 0보다 크다면 추가후 이동
+        if(page > 0){
+            url += "?page="+page;
         }
 
         InfoBean.info(model, url, icon, title, message);
@@ -423,7 +438,7 @@ public class UpdateController {
 
 
     @PostMapping("/participantUpdate.login")
-    public String update(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO,
+    public String update(Model model, int page, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO,
                          CounselDTO counselDTO, EducationDTO educationDTO, ParticcertifDTO particcertifDTO){
         String url = "participant.login";
         String icon = "success";
@@ -451,6 +466,12 @@ public class UpdateController {
             icon="error";
             title="참여자 업데이트 실패";
             message="참여자 번호 : "+jobNo;
+        }
+
+        log.info("test [{}]",page);
+        //page 값이 0보다 크다면 page 값을 추가후 이동
+        if(page > 0){
+            url += "?page="+page;
         }
 
         //update 완료 여부를 확인해 info page로 정보를 전달한다.

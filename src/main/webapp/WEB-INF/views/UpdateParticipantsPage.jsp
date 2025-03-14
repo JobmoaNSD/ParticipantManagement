@@ -124,6 +124,10 @@
                                     </div>
                                 </div>
                                 <%-- 참여자 수정 버튼 끝 --%>
+
+                                <%-- 업데이트 종료 후 이동될 페이지 --%>
+                                <input type="hidden" name="page" value="${param.page}">
+
                                 <%-- 기본정보 입력 tag --%>
                                 <mytag:ParticipantBasic basic="${basic}"/>
 
