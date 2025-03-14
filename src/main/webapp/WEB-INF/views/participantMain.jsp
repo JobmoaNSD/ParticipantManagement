@@ -217,7 +217,10 @@
                                             <tr class="text-center">
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
                                                 <td>${data.participantJobNo}</td>
-                                                <td><a href="/participantUpdate.login?basicJobNo=${data.participantJobNo}">${data.participantPartic}</a></td>
+                                                <td><a
+                                                        href="/participantUpdate.login?basicJobNo=${data.participantJobNo}&page=${param.page == null ? '1' : param.page}">
+                                                        ${data.participantPartic}
+                                                </a></td>
                                                 <td>${data.participantGender}</td>
                                                 <td>${data.participantLastCons}</td>
                                                 <td>${data.participantProgress}</td>
@@ -342,7 +345,7 @@
                 // 현재 버튼의 부모 tr 요소 탐색
                 const number = getJobNumber($(this).closest('tr'));
                 // console.log('/update'+$btn[1]+'?'+$btn[1]+'JobNo=' + number)
-                location.href = '/update' + $btn[1] + '.login?' + $btn[1] + 'JobNo=' + number;
+                location.href = '/update' + $btn[1] + '.login?' + $btn[1] + 'JobNo=' + number + '&page=${param.page == null ? '1' : param.page}';
             });
         })
         <%-- 수정 버튼별 구직번호 전달 스크립트 끝 --%>

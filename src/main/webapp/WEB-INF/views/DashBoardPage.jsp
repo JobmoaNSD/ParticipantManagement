@@ -171,7 +171,7 @@
                                             </li>
                                             <li class="list-group-item d-flex border-bottom-0">
                                                 <div class="">
-                                                    <div>최근상담일 15일 경과자 ${dailyDashboard.dashBoardLastCons}명</div>
+                                                    <div>최근상담일 21일 경과자 ${dailyDashboard.dashBoardLastCons}명</div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item d-flex border-bottom-0">

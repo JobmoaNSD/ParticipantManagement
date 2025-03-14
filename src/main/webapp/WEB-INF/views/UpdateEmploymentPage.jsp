@@ -176,6 +176,8 @@
                                     </button>
                                 </div>
                             </div>
+                            <%-- 업데이트 종료 후 이동될 페이지 --%>
+                            <input type="hidden" name="page" value="${param.page}">
                             <%-- 참여자 수정 버튼 끝 --%>
                             <mytag:ParticipantEmployment employment="${employment}"/>
                         </form>
@@ -288,8 +290,8 @@
             }
 
 
-           const form = $("#newParticipantsForm");
-           form.submit();
+            const form = $("#newParticipantsForm");
+            form.submit();
         });
         <%-- form 전달 끝 --%>
 
