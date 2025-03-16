@@ -77,11 +77,10 @@ public class ParticipantController {
 
         // 사용자에게 보여질 버튼 개수
         int limitButton = 10;
-
         String search = participantDTO.getSearch();
+
         String selectCondition = "selectAllParticipantBasic";
         String selectCountCondition = "selectCountParticipant";
-
         if(search != null && !search.equals("")){
             selectCondition = "selectAllParticipantSearch";
             selectCountCondition = "selectCountParticipantSearch";

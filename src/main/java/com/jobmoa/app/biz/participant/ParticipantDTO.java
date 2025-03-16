@@ -68,6 +68,7 @@ public class ParticipantDTO {
     //검색 변수
     private String searchOption;
     private String search;
+    private String searchType;
     private String searchFilter;
 
     private int participantCount;

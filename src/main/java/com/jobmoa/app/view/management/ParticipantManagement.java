@@ -3,7 +3,7 @@ package com.jobmoa.app.view.management;
 
 import com.jobmoa.app.biz.bean.PaginationBean;
 import com.jobmoa.app.biz.participant.ParticipantDTO;
-import com.jobmoa.app.biz.participant.ParticipantService;
+import com.jobmoa.app.biz.participant.ParticipantServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ParticipantManagement {
 
     @Autowired
-    private ParticipantService participantService; // 서비스 클래스 의존성 주입
+    private ParticipantServiceImpl participantService; // 서비스 클래스 의존성 주입
 
     //participant_management_page.jsp
     @GetMapping("/jobseekers")
