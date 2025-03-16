@@ -147,7 +147,8 @@
                         <h3>참여자 조회</h3>
                     </div>
                     <%-- 참여자 검색 시작 --%>
-                    <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto" >
+                    <form class="row col-md-12 pt-3 pb-0 ms-auto me-auto" id="searchForm" name="searchForm" method="GET" action="/participant.login">
+                        <input type="hidden" name="page" value="1">
                         <!-- 검색 조건 선택 -->
                         <div class="col-md-2 ms-auto">
                             <select
@@ -158,6 +159,7 @@
                                 <option ${param.searchOption.equals("참여자") ? 'selected' : ''} value="참여자">참여자</option>
                                 <option ${param.searchOption.equals("구직번호") ? 'selected' : ''} value="구직번호">구직번호</option>
                                 <option ${param.searchOption.equals("진행단계") ? 'selected' : ''} value="진행단계">진행단계</option>
+                                <option ${param.searchOption.equals("학교명") ? 'selected' : ''} value="학교명">학교</option>
                             </select>
                         </div>
                         <!-- 검색 입력 -->
@@ -173,7 +175,7 @@
                         </div>
                         <%-- 검색버튼 --%>
                         <div class="col-md-1 text-center btn btn-secondary" id="searchBtn">
-                            검색
+                            검색<i class="bi bi-search"></i>
                         </div>
                         <div class="col-md-1 ps-1 pe-1 text-center me-auto">
                             <select class="form-select shadow-sm" name="pageRows" id="pageRows">
@@ -184,7 +186,42 @@
                                 <option ${param.pageRows.equals("50") ? 'selected' : ''} value="50">50</option>
                             </select>
                         </div>
-                    </div>
+                        <div class="navbar-expand mt-3">
+                            <ul class="navbar-nav w-75 ms-auto me-auto">
+                                <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="allType" value="all" ${param.searchType.equals("all") ? 'checked' : ''}>
+                                        <label class="form-check-label" for="allType">전체</label>
+                                    </div>
+                                </li>
+                                <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="noInitialConsult" value="noInitial" ${param.searchType.equals("noInitial") ? 'checked' : ''}>
+                                        <label class="form-check-label" for="noInitialConsult">초기상담 미실시자</label>
+                                    </div>
+                                </li>
+                                <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="recentConsult21" value="recent21" ${param.searchType.equals("recent21") ? 'checked' : ''}>
+                                        <label class="form-check-label" for="recentConsult21">최근상담일 21일</label>
+                                    </div>
+                                </li>
+                                <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="jobExpire15" value="jobExpire" ${param.searchType.equals("jobExpire") ? 'checked' : ''}>
+                                        <label class="form-check-label" for="jobExpire15">구직 만료 15일 도래자</label>
+                                    </div>
+                                </li>
+                                <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="periodExpire15" value="periodExpire" ${param.searchType.equals("periodExpire") ? 'checked' : ''}>
+                                        <label class="form-check-label" for="periodExpire15">기간 만료 15일 예정자</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+
                     <%-- 참여자 검색 끝 --%>
                     <%-- 참여자 테이블 시작 --%>
                     <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto mt-auto">
@@ -209,7 +246,7 @@
                                 <c:choose>
                                     <c:when test="${empty datas}">
                                         <td class="text-center" colspan="10">
-                                            신규 참여자를 등록해주세요.
+                                            검색된 참여자가 없습니다.
                                         </td>
                                     </c:when>
                                     <c:when test="${not empty datas}">
@@ -361,11 +398,9 @@
         const searchBtn = $('#searchBtn');
 
         function searchFunction() {
-            if (search.val() == ''){
-                alert("검색어를 입력해주세요.");
-                return;
-            }
-            location.href = '/participant.login?page=1&searchOption=' + search_option.val() + '&search=' + search.val() + '&pageRows=' + pageRows.val();
+
+
+            $('#searchForm').submit();
         }
 
         searchBtn.on('click', function () {

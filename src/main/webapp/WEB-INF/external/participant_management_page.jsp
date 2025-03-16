@@ -173,7 +173,7 @@
 <div class="header">
     <div class="sidebar-brand">
         <!--begin::Brand Link-->
-        <a href="./index.jsp">
+        <a href="/external/jobseekers">
             <!--begin::Brand Image-->
             <img
                     src="../../img/JobmoaLogo.png"
@@ -213,7 +213,7 @@
             <th>전공</th>
             <th>희망업무</th>
             <th>자격증</th>
-            <th>희망연봉</th>
+            <th>희망연봉/월급</th>
             <th>상담사</th>
             <th>연락처</th>
             <th>이메일</th>
