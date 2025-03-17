@@ -115,7 +115,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link" onclick="alert('미구현된 서비스입니다.'); return ;"><%--./report.login--%>
+                                <a href="./report.login" class="nav-link"><%--onclick="alert('미구현된 서비스입니다.'); return ;"--%>
                                     <small><p>일일업무보고</p></small>
                                 </a>
                             </li>

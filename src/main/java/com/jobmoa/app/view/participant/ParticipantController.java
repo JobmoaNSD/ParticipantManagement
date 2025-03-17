@@ -72,7 +72,7 @@ public class ParticipantController {
         log.info("participantController page : [{}]", page);
 
         //사용자가 볼 게시글의 개수 0이라면 10 고정
-        int pageRows = participantDTO.getPageRows() <= 0 ? 10 : participantDTO.getPageRows();
+        int pageRows = participantDTO.getPageRows() <= 0 ? 100 : participantDTO.getPageRows();
         log.info("participantController pageRows : [{}]", pageRows);
 
         // 사용자에게 보여질 버튼 개수
