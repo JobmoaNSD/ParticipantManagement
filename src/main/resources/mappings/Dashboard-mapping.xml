@@ -122,14 +122,14 @@
     <select id="selectCurrentParticipant" resultType="dashboard">
         SELECT
             COUNT(등록일) dashBoardParticipatedCountOne,
-            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND 마감 = 'false' AND 진행단계 IN ('1', '2', '3', '미취업사후관리', 'IAP 전', 'IAP 후')) dashBoardParticipatedCountTotal,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND 마감 = 'false' AND 진행단계 IN ('1', '2', '3', '미취업사후관리', 'IAP 전', 'IAP 후','유예')) dashBoardParticipatedCountTotal,
             YEAR(등록일) dashBoardParticipatedYear
         FROM
             J_참여자관리
         WHERE
             전담자_계정=#{dashboardUserID} AND
             마감 = 'false' AND
-            진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후') AND
+            진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후','유예') AND
             YEAR(등록일) <![CDATA[<=]]> #{dashBoardYear}
         GROUP BY YEAR(등록일)
         ORDER BY YEAR(등록일) DESC
@@ -146,7 +146,7 @@
         FROM J_참여자관리
         WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}
           AND 마감 = 'false'
-          AND 진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후')
+          AND 진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후','유예')
           AND YEAR(등록일) <![CDATA[=]]> #{dashBoardYear}
         GROUP BY YEAR(등록일)
         ORDER BY YEAR(등록일) DESC

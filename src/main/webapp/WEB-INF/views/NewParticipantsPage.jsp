@@ -254,11 +254,18 @@
         const btn_check = $("#btn_check") // 전송 버튼을 추가
         btn_check.on("click", function () {
             const basicPartic = $("#basicPartic").val();
+            let progressVal = $("#counselProgress").val();
 
             if(basicPartic.length <= 0){
                 alertDefaultInfo("참여자 성명은 필수 입력 입니다.","참여자를 입력해주세요.");
                 return;
             }
+            else if (progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
+                progressVal == "미취업사후종료" || progressVal == "유예" || progressVal == "이관" || progressVal == "중단"){
+                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"는 중단종료일이 필수도 입력되어야 합니다.");
+                return;
+            }
+
             const form = $("#newParticipantsForm");
             form.submit();
         });

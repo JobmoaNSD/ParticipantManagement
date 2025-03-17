@@ -33,6 +33,7 @@ public class ParticipantDTO {
     private String participantStepPro; // 3단계진입일
     private String participantEXPDate; // 기간만료(예정)일
     private String participantClinic; // 클리닉실시일
+    private String participantEndDate; // 중단종료일
     private String participantJobWant; // 희망직무
     private int participantSalWant; // 희망급여
 

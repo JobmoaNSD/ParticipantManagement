@@ -18,7 +18,8 @@
             클리닉실시일 = #{counselClinic},
             희망직무 = #{counselJobWant},
             희망급여 = #{counselSalWant},
-            알선요청 = #{counselPlacement}
+            알선요청 = #{counselPlacement},
+            중단종료일 = #{counselEndDate}
         WHERE
             구직번호 = #{counselJobNo}
     </update>
@@ -57,6 +58,9 @@
             CASE
                 WHEN 기간만료일 >= DATEADD(YEAR, -100, GETDATE()) THEN 기간만료일
                 END AS counselEXPDate,
+            CASE
+                WHEN 중단종료일 >= DATEADD(YEAR, -100, GETDATE()) THEN 중단종료일
+                END AS counselEndDate,
             CASE
                 WHEN 클리닉실시일 >= DATEADD(YEAR, -100, GETDATE()) THEN 클리닉실시일
                 END AS counselClinic,

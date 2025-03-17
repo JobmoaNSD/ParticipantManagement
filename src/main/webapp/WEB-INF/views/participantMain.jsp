@@ -179,11 +179,11 @@
                         </div>
                         <div class="col-md-1 ps-1 pe-1 text-center me-auto">
                             <select class="form-select shadow-sm" name="pageRows" id="pageRows">
-                                <option ${param.pageRows.equals("10") ? 'selected' : ''} value="10">10</option>
-                                <option ${param.pageRows.equals("20") ? 'selected' : ''} value="20">20</option>
-                                <option ${param.pageRows.equals("30") ? 'selected' : ''} value="30">30</option>
-                                <option ${param.pageRows.equals("40") ? 'selected' : ''} value="40">40</option>
-                                <option ${param.pageRows.equals("50") ? 'selected' : ''} value="50">50</option>
+                                <option ${param.pageRows.equals("100") ? 'selected' : ''} value="100">100</option>
+                                <option ${param.pageRows.equals("90") ? 'selected' : ''} value="90">90</option>
+                                <option ${param.pageRows.equals("80") ? 'selected' : ''} value="80">80</option>
+                                <option ${param.pageRows.equals("70") ? 'selected' : ''} value="70">70</option>
+                                <option ${param.pageRows.equals("60") ? 'selected' : ''} value="60">60</option>
                             </select>
                         </div>
                         <div class="navbar-expand mt-3">
