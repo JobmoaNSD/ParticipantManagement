@@ -14,37 +14,28 @@ public class ReportDAO {
     @Autowired
     private SqlSessionTemplate sqlSession;
 
-    private static final String ns = "CounselDAO.";
+    private static final String ns = "ReportDAO.";
 
-    public ReportDTO selectOne(ReportDTO counselDTO) {
-        String condition = counselDTO.getCounselCondition();
-        log.info("counsel selectOne SQL counselDTO : [{}]",condition);
-        ReportDTO data = sqlSession.selectOne(ns+condition, counselDTO);
-        log.info("data : [{}]",data);
+    public ReportDTO selectOne(ReportDTO reportDTO) {
+        String condition = reportDTO.getReportCondition();
+        log.info("Report selectOne SQL reportDTO : [{}]",condition);
+        ReportDTO data = sqlSession.selectOne(ns+condition, reportDTO);
         return data;
     }
-    public List<ReportDTO> selectAll(ReportDTO counselDTO) {
-        return null;
+    public List<ReportDTO> selectAll(ReportDTO reportDTO) {
+        String condition = reportDTO.getReportCondition();
+        log.info("Report selectAll SQL reportDTO : [{}]",condition);
+        List<ReportDTO> datas = sqlSession.selectList(ns+condition, reportDTO);
+        //log.info("data : [{}]",datas);
+        return datas;
     }
-    public boolean insert(ReportDTO counselDTO) {
-        // 0보다 크면 True (성공)
-        // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.insert(ns+"counselInsert", counselDTO) > 0;
-        log.info("counsel insert SQL flag : [{}]",flag);
-        return flag;
+    public boolean insert(ReportDTO reportDTO) {
+        return false;
     }
-    public boolean update(ReportDTO counselDTO) {
-        // 0보다 크면 True (성공)
-        // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.update(ns+counselDTO.getCounselCondition(), counselDTO) > 0;
-        log.info("counsel update SQL flag : [{}]",flag);
-        return flag;
+    public boolean update(ReportDTO reportDTO) {
+        return false;
     }
-    public boolean delete(ReportDTO counselDTO) {
-        // 0보다 크면 True (성공)
-        // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.delete(ns+"counselDelete", counselDTO) > 0;
-        log.info("counsel delete SQL flag : [{}]",flag);
-        return flag;
+    public boolean delete(ReportDTO reportDTO) {
+        return false;
     }
 }

@@ -15,12 +15,14 @@ public class MemberDAO {
 
     private static final String ns = "MemberDAO.";
 
-    public List<MemberDTO> selectAll(MemberDTO loginDTO) {
-/*        log.info("loginDTO : [{}]",loginDTO);
-        List<MemberDTO> datas = sqlSession.selectList(ns+"selectAll");
-        log.info("datas : [{}]",datas);*/
-        return null;
-//        return datas;
+    public List<MemberDTO> selectAll(MemberDTO memberDTO) {
+        log.info("MemberCondition : [{}]",memberDTO.getMemberCondition());
+        log.info("memberDTO : [{}]",memberDTO);
+        List<MemberDTO> datas = sqlSession.selectList(ns+memberDTO.getMemberCondition(), memberDTO);
+        if(datas == null) datas = null;
+        log.info("datas : [{}]",datas);
+//        return null;
+        return datas;
     }
 
     public MemberDTO selectOne(MemberDTO memberDTO) {

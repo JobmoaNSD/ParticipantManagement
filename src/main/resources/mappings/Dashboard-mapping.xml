@@ -106,12 +106,13 @@
     <select id="selectTotalParticipant" resultType="dashboard">
         SELECT
             COUNT(등록일) dashBoardParticipatedCountOne,
-            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch}) dashBoardParticipatedCountTotal,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID}) dashBoardParticipatedCountTotal,
             YEAR(등록일) dashBoardParticipatedYear
         FROM
             J_참여자관리
         WHERE
             전담자_계정=#{dashboardUserID} AND
+            지점 = #{dashboardBranch} AND
             YEAR(등록일) <![CDATA[<=]]> #{dashBoardYear}
         GROUP BY YEAR(등록일)
         ORDER BY YEAR(등록일) DESC
@@ -122,12 +123,13 @@
     <select id="selectCurrentParticipant" resultType="dashboard">
         SELECT
             COUNT(등록일) dashBoardParticipatedCountOne,
-            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 지점 = #{dashboardBranch} AND 마감 = 'false' AND 진행단계 IN ('1', '2', '3', '미취업사후관리', 'IAP 전', 'IAP 후','유예')) dashBoardParticipatedCountTotal,
+            (SELECT COUNT(구직번호) FROM J_참여자관리 WHERE 전담자_계정 = #{dashboardUserID} AND 마감 = 'false' AND 진행단계 IN ('1', '2', '3', '미취업사후관리', 'IAP 전', 'IAP 후','유예')) dashBoardParticipatedCountTotal,
             YEAR(등록일) dashBoardParticipatedYear
         FROM
             J_참여자관리
         WHERE
             전담자_계정=#{dashboardUserID} AND
+            지점 = #{dashboardBranch} AND
             마감 = 'false' AND
             진행단계 IN ('1','2','3','미취업사후관리','IAP 전','IAP 후','유예') AND
             YEAR(등록일) <![CDATA[<=]]> #{dashBoardYear}
@@ -139,8 +141,8 @@
     <!-- 참여자 통계 현재 년도 참여자 수 시작 -->
     <select id="selectNowParticipant" resultType="dashboard">
         SELECT
-            ISNULL(SUM(IIF(진행단계 = '1' OR 진행단계 = 'IAP 전', 1, 0)), 0) AS dashBoardParticipatedCountOne,
-            ISNULL(SUM(IIF(진행단계 = '2' OR 진행단계 = 'IAP 후', 1, 0)), 0) AS dashBoardParticipatedCountTwo,
+            ISNULL(SUM(IIF(참여유형 = '1', 1, 0)), 0) AS dashBoardParticipatedCountOne,
+            ISNULL(SUM(IIF(참여유형 = '2', 1, 0)), 0) AS dashBoardParticipatedCountTwo,
             COUNT(구직번호) AS dashBoardParticipatedCountTotal,
             YEAR(등록일) AS dashBoardParticipatedYear
         FROM J_참여자관리

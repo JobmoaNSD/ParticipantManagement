@@ -3,9 +3,9 @@ package com.jobmoa.app.biz.report;
 import java.util.List;
 
 public interface ReportService {
-    ReportDTO selectOne(ReportDTO counselDTO);
-    List<ReportDTO> selectAll(ReportDTO counselDTO);
-    boolean insert(ReportDTO counselDTO);
-    boolean update(ReportDTO counselDTO);
-    boolean delete(ReportDTO counselDTO);
+    ReportDTO selectOne(ReportDTO reportDTO);
+    List<ReportDTO> selectAll(ReportDTO reportDTO);
+    boolean insert(ReportDTO reportDTO);
+    boolean update(ReportDTO reportDTO);
+    boolean delete(ReportDTO reportDTO);
 }
