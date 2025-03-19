@@ -36,6 +36,9 @@ public class ParticipantDTO {
     private String participantEndDate; // 중단종료일
     private String participantJobWant; // 희망직무
     private int participantSalWant; // 희망급여
+    
+    //Counsel DB 외 컬럼
+    private String participantAdventCons; // 상담도래자
 
     //Employment DB 컬럼
     private String participantStartDate; // 취창업일

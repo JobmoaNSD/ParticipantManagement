@@ -6,7 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>잡모아</title>
@@ -71,6 +73,12 @@
     />
     <!-- mouse pointer 모양 bootstrap 5 -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <!-- CSS 추가 -->
+    <link rel="stylesheet" href="css/dailyWorkReportCss.css">
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -89,15 +97,47 @@
             <div class="container-fluid">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <div class="row">
-                    <div class="col-12">
-                        <a href="/downloadExcel.login" class="button">엑셀 다운로드</a>
-                    </div>
-                </div>
+                    <form action="/downloadExcel.login" method="GET">
+                        <div class="col-md-12 d-flex align-items-center justify-content-end">
+                            <button type="submit" class="excel-download-btn mt-3 mb-2">
+                                <i class="bi bi-file-earmark-excel-fill"></i>
+                                엑셀 다운로드
+                            </button>
+                            <input type="hidden" name="branch" value="${JOBMOA_LOGIN_DATA.memberBranch}">
+                            <input type="hidden" id="year" name="year" value="">
+                        </div>
 
-                <div class="row">
-                    <mytag:DailyWorkReport/>
+                        <!-- 전체 리스트를 감싸는 컨테이너 추가 -->
+                        <div class="user-list" id="sortableList">
+                            <c:choose>
+                                <c:when test="${empty users}">
+                                    <div class="user-item">
+                                        <span>선택할 사용자가 없습니다.</span>
+                                    </div>
+                                </c:when>
+                                <c:when test="${not empty users}">
+                                    <c:forEach var="user" items="${users}" varStatus="status">
+                                        <!-- 기존 user-item div들이 여기에 반복됨 -->
+                                        <div class="user-item" data-id="${user.memberUserID}">
+                                            <div class="drag-handle d-flex align-items-center">
+                                                <span class="verticalEllipsis">&#8942;</span>
+                                                <span class="position-input">${status.count}</span>
+                                                <label for="checkbox_${user.memberUserID}" class="toggle"
+                                                style="min-width: 75px;">
+                                                        ${user.memberUserName}
+                                                </label>
+                                                <span class="checkbox-wrapper-3">
+                                                    <input type="checkbox" id="checkbox_${user.memberUserID}" name="userIds" value="${user.memberUserID}" checked />
+                                                    <label for="checkbox_${user.memberUserID}" class="toggle"><span></span></label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:when>
+                            </c:choose>
+                        </div>
+                    </form>
                 </div>
-
             </div>
             <!--end::Main content-->
         </div>
@@ -180,4 +220,46 @@
         integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
         crossorigin="anonymous"
 ></script>
+
+
+
+
+<!-- JavaScript 추가 순서지정 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script>
+    $(document).ready(function() {
+        let year = $('#year');
+        let today = new Date();
+        year.val(today.getFullYear());
+
+
+        // sortable 초기화
+        $("#sortableList").sortable({
+            items: ".user-item",             // 정렬 대상
+            handle: ".drag-handle",          // 드래그 핸들
+            axis: "y",                       // 세로 방향으로만 이동 가능
+            cursor: "move",                  // 드래그 시 커서 모양
+            opacity: 0.6,                    // 드래그 중인 항목의 투명도
+            update: function(event, ui) {    // 정렬이 완료된 후 실행
+                updateOrder();
+            }
+        });
+
+        // 순서 업데이트 함수
+        function updateOrder() {
+            $('.user-item').each(function(index) {
+                // 순서 번호 업데이트
+                $(this).find('.position-input').text(index + 1);
+
+                // 선택적: 서버에 순서 정보 전송
+                let userId = $(this).data('id');
+                let newPosition = index + 1;
+
+                // 콘솔에 순서 변경 로그 출력
+                console.log(`User ID: ${userId}, New Position: ${newPosition}`);
+            });
+        }
+    });
+</script>
+
 </html>

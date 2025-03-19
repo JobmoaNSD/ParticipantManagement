@@ -1,0 +1,146 @@
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.drag-handle {
+    cursor: move;
+    font-size: 20px;
+    user-select: none;
+
+    width: 100%;
+}
+
+.verticalEllipsis {
+    cursor: move;
+    margin-right: 15px;
+    color: #666;
+    font-size: 15px;
+    user-select: none;
+}
+
+.position-input {
+    margin-right: 15px;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* 드래그 중인 항목 스타일 */
+.ui-sortable-helper {
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* 드래그 중 빈 공간 표시 */
+.ui-sortable-placeholder {
+    visibility: visible !important;
+    background-color: #f1f1f1;
+    border: 1px dashed #ccc;
+}
+
+.checkbox-wrapper-3 input[type="checkbox"] {
+    visibility: hidden;
+    display: none;
+}
+
+.checkbox-wrapper-3 .toggle {
+    position: relative;
+    display: block;
+    width: 40px;
+    height: 20px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transform: translate3d(0, 0, 0);
+}
+.checkbox-wrapper-3 .toggle:before {
+    content: "";
+    position: relative;
+    top: 3px;
+    left: 3px;
+    width: 34px;
+    height: 14px;
+    display: block;
+    background: #9A9999;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+.checkbox-wrapper-3 .toggle span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(154, 153, 153, 0.5);
+    transition: all 0.2s ease;
+}
+.checkbox-wrapper-3 .toggle span:before {
+    content: "";
+    position: absolute;
+    display: block;
+    margin: -18px;
+    width: 56px;
+    height: 56px;
+    background: rgba(79, 46, 220, 0.5);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 1;
+    pointer-events: none;
+}
+
+.checkbox-wrapper-3  input[type="checkbox"]:checked + .toggle:before {
+    background: #947ADA;
+}
+.checkbox-wrapper-3 input[type="checkbox"]:checked + .toggle span {
+    background: #4F2EDC;
+    transform: translateX(20px);
+    transition: all 0.2s cubic-bezier(0.8, 0.4, 0.3, 1.25), background 0.15s ease;
+    box-shadow: 0 3px 8px rgba(79, 46, 220, 0.2);
+}
+.checkbox-wrapper-3 input[type="checkbox"]:checked + .toggle span:before {
+    transform: scale(1);
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+/* excel DownLoad Button Css 추가 */
+.excel-download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 추가: 가로 중앙 정렬 */
+    text-align: center; /* 추가: 텍스트 중앙 정렬 */
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #1d6f42;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 150px; /* 추가: 버튼의 최소 너비 설정 */
+}
+
+.excel-download-btn:hover {
+    background-color: #155a35;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.excel-download-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.excel-download-btn i {
+    font-size: 18px;
+}

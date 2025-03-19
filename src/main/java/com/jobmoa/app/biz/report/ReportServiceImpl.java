@@ -7,47 +7,50 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Slf4j
-@Service("counselService")
+@Service("reportService")
 public class ReportServiceImpl implements ReportService {
     @Autowired
-    private ReportDAO counselDAO;
+    private ReportDAO reportDAO;
 
     @Override
-    public ReportDTO selectOne(ReportDTO counselDTO) {
-//        log.info("counsel selectOne SQL counselDTO : [{}]",counselDTO);
-        log.info("counsel selectOne SQL counselDTO : [{}]",counselDTO.getCounselCondition());
+    public ReportDTO selectOne(ReportDTO reportDTO) {
+        log.info("Report selectOne SQL ReportServiceImpl : [{}]",reportDTO.getReportCondition());
         // 데이터 초기화를 위해 선언
         ReportDTO data = null;
-        //DAO에 selectOne 함수를 호출
+        //DAO에 selectAll 함수를 호출
         //만약 condition 값이 있고 DTO 데이터가 null이 아니면 selectOne 진행
-        if(counselDTO != null && counselDTO.getCounselCondition() != null) {
-            data = counselDAO.selectOne(counselDTO);
+        if(reportDTO.getReportCondition() != null) {
+            data = reportDAO.selectOne(reportDTO);
         }
-        log.info("data : [{}]",data);
         return data;
     }
 
     @Override
-    public List<ReportDTO> selectAll(ReportDTO counselDTO) {
-        return List.of();
-    }
-
-    @Override
-    public boolean insert(ReportDTO counselDTO) {
-        return counselDAO.insert(counselDTO);
-    }
-
-    @Override
-    public boolean update(ReportDTO counselDTO) {
-        boolean flag = false;
-        if(counselDTO != null && counselDTO.getCounselCondition() != null) {
-            flag = counselDAO.update(counselDTO);
+    public List<ReportDTO> selectAll(ReportDTO reportDTO) {
+        log.info("Report selectAll SQL ReportServiceImpl : [{}]",reportDTO.getReportCondition());
+        // 데이터 초기화를 위해 선언
+        List<ReportDTO> datas = null;
+        //DAO에 selectAll 함수를 호출
+        //만약 condition 값이 있고 DTO 데이터가 null이 아니면 selectOne 진행
+        if(reportDTO.getReportCondition() != null) {
+            datas = reportDAO.selectAll(reportDTO);
         }
-        return flag;
+        log.info("datas : [{}]",datas);
+        return datas;
     }
 
     @Override
-    public boolean delete(ReportDTO counselDTO) {
+    public boolean insert(ReportDTO reportDTO) {
+        return false;
+    }
+
+    @Override
+    public boolean update(ReportDTO reportDTO) {
+        return false;
+    }
+
+    @Override
+    public boolean delete(ReportDTO reportDTO) {
         return false;
     }
 }

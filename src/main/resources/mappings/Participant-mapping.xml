@@ -9,27 +9,32 @@
             참여자 AS participantPartic,
             성별 AS participantGender,
             최근상담일 AS participantLastCons,
+            상담도래자 AS participantAdventCons,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
             등록일 AS participantRegDate,
             마감 AS participantClose
         FROM (
                  SELECT
-                     ROW_NUMBER() OVER (ORDER BY 구직번호 DESC) AS RowNum,
-                     구직번호,
-                     참여자,
-                     성별,
-                     CASE
-                         WHEN 최근상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 최근상담일
-                         END AS 최근상담일,
-                     진행단계,
-                     CASE
-                         WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
-                         END AS 생년월일,
-                     CASE
-                         WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
-                         END AS 등록일,
-                     마감
+                    ROW_NUMBER() OVER (ORDER BY 구직번호 DESC) AS RowNum,
+                    구직번호,
+                    참여자,
+                    성별,
+                    CASE
+                        WHEN 최근상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 최근상담일
+                        END AS 최근상담일,
+                    진행단계,
+                    CASE
+                        WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
+                        END AS 생년월일,
+                    CASE
+                        WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
+                        END AS 등록일,
+                    CASE
+                        WHEN 최근상담일 <![CDATA[<>]]> ''
+                        THEN DATEDIFF(DAY, 최근상담일, GETDATE())
+                        END AS 상담도래자,
+                    마감
                  FROM J_참여자관리
                  WHERE
                      전담자_계정 = #{participantUserid} AND
@@ -97,6 +102,7 @@
             참여자 AS participantPartic,
             성별 AS participantGender,
             최근상담일 AS participantLastCons,
+            상담도래자 AS participantAdventCons,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
             등록일 AS participantRegDate,
@@ -117,6 +123,10 @@
                      CASE
                          WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
                          END AS 등록일,
+                     CASE
+                        WHEN 최근상담일 <![CDATA[<>]]> ''
+                        THEN DATEDIFF(DAY, 최근상담일, GETDATE())
+                        END AS 상담도래자,
                      마감
                  FROM J_참여자관리
                  WHERE 전담자_계정 = #{participantUserid} AND

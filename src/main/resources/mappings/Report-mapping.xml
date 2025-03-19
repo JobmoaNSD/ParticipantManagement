@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReportDAO">
+    <!-- 기본 쿼리 시작 -->
+    <select id="reportSelectProgressAll" resultType="report">
+        <foreach collection="userIds" item="userId" index="index"
+            open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">
+            SELECT #{userId} AS 아이디, #{index} AS 순서
+        </foreach>
+        SELECT
+            C.이름 AS counselorName,
+            A.등록년도 AS registYear,
+            A.지점 AS branch,
+            A.취소자 AS cancelCount,
+            A.전체참여자 AS totalParticipants,
+            A.현진행자 AS currentProgress,
+            A.[3단계진행자] AS thirdStageCount,
+            A.종료자 AS completedCount,
+            A.중단자 AS discontinuedCount,
+            A.[성과 불인정 취업] AS nonApprovedEmployment,
+            A.[성과 인정 취업] AS approvedEmployment,
+            A.전체취업자 AS totalEmployment,
+            A.알선취업 AS referralEmployment,
+            A.나은일자리 AS betterJobCount,
+            A.조기취업자 AS earlyEmployment,
+            A.고용유지 AS employmentRetention,
+            A.IAP수립1달 AS iapEstablishMonth,
+            A.인센발생 AS incentiveOccurred,
+            A.인센미발생 AS incentiveNotOccurred,
+            A.평가취업률 AS evaluationEmploymentRate,
+            A.알선취업률 AS referralEmploymentRate,
+            A.나은일자리비율 AS betterJobRate,
+            A.고용유지율 AS retentionRate,
+            A.조기취업자비율 AS earlyEmploymentRate,
+            A.취업인센티브발생율 AS incentiveOccurrenceRate
+        FROM 진행현황 A
+            LEFT JOIN 상담사순서 B
+            ON B.아이디 = A.아이디
+            LEFT OUTER JOIN J_참여자관리_로그인정보 C
+            ON C.아이디 = B.아이디
+        WHERE
+            A.등록년도 = #{year} AND
+            A.지점 = #{branch} AND
+            A.아이디 IN
+                <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                #{userId}
+                </foreach>
+        ORDER BY B.순서 ASC
+    </select>
+
+    <select id="reportSelectStatusAll" resultType="report">
+        <foreach collection="userIds" item="userId" index="index"
+                 open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">
+            SELECT #{userId} AS 아이디, #{index} AS 순서
+        </foreach>
+        SELECT
+            C.이름 AS counselorName,
+            A.등록년도 AS registYear,
+            A.지점 AS branch,
+            A.종료참여자 AS completedCount,
+            A.전체취업자 AS totalEmployment,
+            A.알선취업 AS referralEmployment,
+            A.[성과 인정 취업] AS approvedEmployment,
+            A.[성과 불인정 취업] AS nonApprovedEmployment,
+            A.고용유지 AS employmentRetention,
+            A.나은일자리 AS betterJobCount,
+            A.IAP수립1달 AS iapEstablishMonth,
+            A.인센발생 AS incentiveOccurred,
+            A.인센미발생 AS incentiveNotOccurred,
+            A.취업률 AS employmentRate,
+            A.평가취업률 AS evaluationEmploymentRate,
+            A.알선취업률 AS referralEmploymentRate,
+            A.나은일자리비율 AS betterJobRate,
+            A.고용유지율 AS retentionRate,
+            A.취업인센티브발생율 AS incentiveOccurrenceRate
+        FROM 평가실적 A
+            LEFT JOIN 상담사순서 B
+            ON B.아이디 = A.아이디
+            LEFT OUTER JOIN J_참여자관리_로그인정보 C
+            ON C.아이디 = B.아이디
+        WHERE
+            A.등록년도 = #{year} AND
+            A.지점 = #{branch} AND
+            A.아이디 IN
+            <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+                #{userId}
+            </foreach>
+            ORDER BY B.순서 ASC
+    </select>
+
+    <select id="reportSelectAssignOne" resultType="report">
+        SELECT SUM(IIF(참여유형 = '1', 1, 0)) AS type1,
+               SUM(IIF(참여유형 = '2', 1, 0)) AS type2
+        FROM J_참여자관리
+        WHERE 참여유형 <![CDATA[<>]]> ''
+          AND 지점 = #{branch}
+          AND YEAR(등록일) = #{year}
+          AND (전담자_계정 IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        )
+    </select>
+</mapper>

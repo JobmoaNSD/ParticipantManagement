@@ -18,4 +18,12 @@
         WHERE 아이디=#{memberUserID} AND 비밀번호=#{memberUserPW}
     </select>
 
+    <select id="loginSelectAll" resultType="member">
+        SELECT
+            이름 memberUserName,
+            아이디 memberUserID
+        FROM J_참여자관리_로그인정보
+        WHERE 지점=#{memberBranch}
+    </select>
+
 </mapper>

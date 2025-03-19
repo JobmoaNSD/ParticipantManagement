@@ -234,6 +234,7 @@
                                     <th>참여자</th>
                                     <th>성별</th>
                                     <th>최근상담일</th>
+                                    <th>상담경과일</th>
                                     <th>진행단계</th>
                                     <th>생년월일</th>
                                     <th>등록일</th>
@@ -260,6 +261,7 @@
                                                 </a></td>
                                                 <td>${data.participantGender}</td>
                                                 <td>${data.participantLastCons}</td>
+                                                <td class="adventCons-td">${data.participantAdventCons}</td>
                                                 <td>${data.participantProgress}</td>
                                                 <td>${data.participantDob}</td>
                                                 <td>${data.participantRegDate}</td>
@@ -509,6 +511,25 @@
                 });
             });
         <%-- 마감 여부 끝 --%>
+
+        <%-- 최근상담일 기준 색 필터 시작 --%>
+        let adventCons = $('.adventCons-td');
+        adventCons.each(function () {
+            let adventCons = $(this).text();
+            if(adventCons.length == 0 || adventCons == null || adventCons == ''){
+
+            }
+            else if(adventCons > 21) {
+                $(this).css('background-color', 'rgba(255,58,58,0.55)');
+            }
+            else if (adventCons > 15) {
+                $(this).css('background-color', 'rgba(255,249,0,0.51)');
+            }
+            else{
+                $(this).css('background-color', 'rgba(0,255,0,0.51)');
+            }
+        });
+        <%-- 최근상담일 기준 색 필터 끝 --%>
     });
 </script>
 
