@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="datepicker-div">
-                <label for="counselEndDate" class="form-label">중단종료일</label>
+                <label for="counselEndDate" class="form-label">최종종료일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
                     <input type="text" class="form-control datepicker_on" id="counselEndDate" name="counselEndDate" placeholder="yyyy-mm-dd" aria-label="중단종료일" value="${not empty counsel ? counsel.counselEndDate:""}" autocomplete="off">
@@ -106,6 +106,16 @@
                 <select class="form-select" aria-label="Default select example" id="counselPlacement" name="counselPlacement">
                     <option value="미희망">미희망</option>
                     <option value="희망">희망</option>
+                </select>
+            </div>
+            <div class="col-md-1 w-auto">
+                <label for="counselEmploymentService" class="form-label">간접고용서비스</label>
+                <select class="form-select" aria-label="Default select example" id="counselEmploymentService" name="counselEmploymentService">
+                    <option value=""></option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
                 </select>
             </div>
             <%-- 교육내역 --%>

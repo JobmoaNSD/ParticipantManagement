@@ -24,6 +24,7 @@ public class CounselDTO {
     private String counselSalWant; // 희망급여
     private String counselEducation; // 직업훈련
     private String counselPlacement; // 알선요청
+    private String counselEmploymentService; // 간접고용서비스
 
     // DB 외 변수
     private String counselCondition; //개발자 구분

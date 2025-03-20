@@ -19,7 +19,8 @@
             희망직무 = #{counselJobWant},
             희망급여 = #{counselSalWant},
             알선요청 = #{counselPlacement},
-            중단종료일 = #{counselEndDate}
+            중단종료일 = #{counselEndDate},
+            간접고용서비스 = #{counselEmploymentService}
         WHERE
             구직번호 = #{counselJobNo}
     </update>
@@ -66,7 +67,8 @@
                 END AS counselClinic,
             희망직무 AS counselJobWant,
             희망급여 AS counselSalWant,
-            알선요청 AS counselPlacement
+            알선요청 AS counselPlacement,
+            간접고용서비스 AS counselEmploymentService
         FROM
             J_참여자관리
         WHERE

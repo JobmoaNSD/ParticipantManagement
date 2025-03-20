@@ -6,7 +6,7 @@
 
 <!--begin::Footer-->
 <footer class="app-footer">
-    <!-- iframe 모달 -->
+<%--    <!-- iframe 모달 -->
     <div class="iframe-modal" id="iframeModal">
         <div class="iframe-container">
             <!-- 닫기 버튼 -->
@@ -18,7 +18,7 @@
     </div>
 
     <!-- 동그란 버튼 -->
-    <div class="circle-button" id="circleButton">챗봇</div>
+    <div class="circle-button" id="circleButton">챗봇</div>--%>
     <!--begin::To the end-->
     <div class="float-end d-none d-sm-inline">기업 전화번호 : <a href="tel:02-2607-9119">02-2607-9119 (609)</a></div>
     <!--end::To the end-->

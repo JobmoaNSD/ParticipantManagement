@@ -253,6 +253,9 @@
 
         //알선요청 목록 내용 변경
         selectOption($("#counselPlacement"),"${counsel.counselPlacement}");
+
+        //간접고용서비스 목록 내용 변경
+        selectOption($("#counselEmploymentService"),"${counsel.counselEmploymentService}");
         <%-- 목록 내용 변경 끝 --%>
 
         let basicAntecedents = $("#basicAntecedents");

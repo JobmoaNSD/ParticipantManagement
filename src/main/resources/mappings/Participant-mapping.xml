@@ -9,10 +9,11 @@
             참여자 AS participantPartic,
             성별 AS participantGender,
             최근상담일 AS participantLastCons,
-            상담도래자 AS participantAdventCons,
+            상담경과일 AS participantAdventCons,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
             등록일 AS participantRegDate,
+            간접고용서비스 AS participantEmploymentService,
             마감 AS participantClose
         FROM (
                  SELECT
@@ -31,35 +32,43 @@
                         WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
                         END AS 등록일,
                     CASE
-                        WHEN 최근상담일 <![CDATA[<>]]> ''
-                        THEN DATEDIFF(DAY, 최근상담일, GETDATE())
-                        END AS 상담도래자,
+                        WHEN 최근상담일 <![CDATA[<>]]> '' AND 마감='false' THEN DATEDIFF(DAY, 최근상담일, GETDATE())
+                        END AS 상담경과일,
+                    간접고용서비스,
                     마감
                  FROM J_참여자관리
                  WHERE
                      전담자_계정 = #{participantUserid} AND
                      지점 = #{participantBranch}
-        <choose>
-            <when test="searchType != null and searchType == 'noInitial'">
-                AND 초기상담일 = '' AND (마감 = 'false' OR 마감 = '')
-            </when>
-            <when test="searchType != null and searchType == 'recent21'">
-                AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
-                AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
-            </when>
-            <when test="searchType != null and searchType == 'jobExpire'">
-                AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
-                AND 구직만료일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
-            </when>
-            <when test="searchType != null and searchType == 'periodExpire'">
-                AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
-                AND 기간만료일 <![CDATA[<>]]> ''
-                AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
-            </when>
-        </choose>
+                 <choose>
+                     <when test="endDateOption == 'false'">
+                         AND (마감 = 'false' OR 마감 = '')
+                     </when>
+                     <when test="endDateOption == 'true'">
+                         AND 마감 = 'true'
+                     </when>
+                 </choose>
+                <choose>
+                    <when test="searchType != null and searchType == 'noInitial'">
+                        AND 초기상담일 = ''
+                    </when>
+                    <when test="searchType != null and searchType == 'recent21'">
+                        AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
+                        AND 최근상담일 <![CDATA[<>]]> ''
+                    </when>
+                    <when test="searchType != null and searchType == 'jobExpire'">
+                        AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
+                        AND 구직만료일 <![CDATA[<>]]> ''
+                    </when>
+                    <when test="searchType != null and searchType == 'periodExpire'">
+                        AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
+                        AND 기간만료일 <![CDATA[<>]]> ''
+                        AND 최근상담일 <![CDATA[<>]]> ''
+                    </when>
+                    <when test="searchType != null and searchType == 'employment'">
+                        AND 취창업일 <![CDATA[<>]]> ''
+                    </when>
+                </choose>
              ) AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
@@ -71,24 +80,32 @@
         WHERE
             전담자_계정 = #{participantUserid}
         <choose>
+            <when test="endDateOption == 'false'">
+                AND (마감 = 'false' OR 마감 = '')
+            </when>
+            <when test="endDateOption == 'true'">
+                AND 마감 = 'true'
+            </when>
+        </choose>
+        <choose>
             <when test="searchType != null and searchType == 'noInitial'">
-                AND 초기상담일 = '' AND (마감 = 'false' OR 마감 = '')
+                AND 초기상담일 = ''
             </when>
             <when test="searchType != null and searchType == 'recent21'">
                 AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
                 AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
             </when>
             <when test="searchType != null and searchType == 'jobExpire'">
                 AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
                 AND 구직만료일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
             </when>
             <when test="searchType != null and searchType == 'periodExpire'">
                 AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
                 AND 기간만료일 <![CDATA[<>]]> ''
                 AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
+            </when>
+            <when test="searchType != null and searchType == 'employment'">
+                AND 취창업일 <![CDATA[<>]]> ''
             </when>
         </choose>
 
@@ -102,10 +119,11 @@
             참여자 AS participantPartic,
             성별 AS participantGender,
             최근상담일 AS participantLastCons,
-            상담도래자 AS participantAdventCons,
+            상담경과일 AS participantAdventCons,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
             등록일 AS participantRegDate,
+            간접고용서비스 AS participantEmploymentService,
             마감 AS participantClose
         FROM (
                  SELECT
@@ -124,35 +142,45 @@
                          WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
                          END AS 등록일,
                      CASE
-                        WHEN 최근상담일 <![CDATA[<>]]> ''
+                        WHEN 최근상담일 <![CDATA[<>]]> ''  AND 마감='false'
                         THEN DATEDIFF(DAY, 최근상담일, GETDATE())
-                        END AS 상담도래자,
+                        END AS 상담경과일,
+                     간접고용서비스,
                      마감
                  FROM J_참여자관리
-                 WHERE 전담자_계정 = #{participantUserid} AND
+                 WHERE
+                     전담자_계정 = #{participantUserid} AND
                      지점 = #{participantBranch} AND
                      ${searchOption} like '%'+#{search}+'%'
-        <choose>
-            <when test="searchType != null and searchType == 'noInitial'">
-                AND 초기상담일 = '' AND (마감 = 'false' OR 마감 = '')
-            </when>
-            <when test="searchType != null and searchType == 'recent21'">
-                AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
-                AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
-            </when>
-            <when test="searchType != null and searchType == 'jobExpire'">
-                AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
-                AND 구직만료일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
-            </when>
-            <when test="searchType != null and searchType == 'periodExpire'">
-                AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
-                AND 기간만료일 <![CDATA[<>]]> ''
-                AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
-            </when>
-        </choose>
+                    <choose>
+                        <when test="endDateOption == 'false'">
+                            AND (마감 = 'false' OR 마감 = '')
+                        </when>
+                        <when test="endDateOption == 'true'">
+                            AND 마감 = 'true'
+                        </when>
+                    </choose>
+                    <choose>
+                        <when test="searchType != null and searchType == 'noInitial'">
+                            AND 초기상담일 = ''
+                        </when>
+                        <when test="searchType != null and searchType == 'recent21'">
+                            AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
+                            AND 최근상담일 <![CDATA[<>]]> ''
+                        </when>
+                        <when test="searchType != null and searchType == 'jobExpire'">
+                            AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
+                            AND 구직만료일 <![CDATA[<>]]> ''
+                        </when>
+                        <when test="searchType != null and searchType == 'periodExpire'">
+                            AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
+                            AND 기간만료일 <![CDATA[<>]]> ''
+                            AND 최근상담일 <![CDATA[<>]]> ''
+                        </when>
+                        <when test="searchType != null and searchType == 'employment'">
+                            AND 취창업일 <![CDATA[<>]]> ''
+                        </when>
+                    </choose>
              ) AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
@@ -164,24 +192,32 @@
         WHERE
             전담자_계정 = #{participantUserid} AND ${searchOption} like '%'+#{search}+'%'
         <choose>
+            <when test="endDateOption == 'false'">
+                AND (마감 = 'false' OR 마감 = '')
+            </when>
+            <when test="endDateOption == 'true'">
+                AND 마감 = 'true'
+            </when>
+        </choose>
+        <choose>
             <when test="searchType != null and searchType == 'noInitial'">
-                AND 초기상담일 = '' AND (마감 = 'false' OR 마감 = '')
+                AND 초기상담일 = ''
             </when>
             <when test="searchType != null and searchType == 'recent21'">
                 AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
                 AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
             </when>
             <when test="searchType != null and searchType == 'jobExpire'">
                 AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
                 AND 구직만료일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
             </when>
             <when test="searchType != null and searchType == 'periodExpire'">
                 AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
                 AND 기간만료일 <![CDATA[<>]]> ''
                 AND 최근상담일 <![CDATA[<>]]> ''
-                AND (마감 = 'false' OR 마감 = '')
+            </when>
+            <when test="searchType != null and searchType == 'employment'">
+                AND 취창업일 <![CDATA[<>]]> ''
             </when>
         </choose>
     </select>
