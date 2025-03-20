@@ -36,6 +36,7 @@ public class ParticipantDTO {
     private String participantEndDate; // 중단종료일
     private String participantJobWant; // 희망직무
     private int participantSalWant; // 희망급여
+    private String participantEmploymentService; // 간접고용서비스
     
     //Counsel DB 외 컬럼
     private String participantAdventCons; // 상담도래자
@@ -70,6 +71,7 @@ public class ParticipantDTO {
     private int endPage;
 
     //검색 변수
+    private String endDateOption;
     private String searchOption;
     private String search;
     private String searchType;

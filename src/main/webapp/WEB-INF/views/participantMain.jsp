@@ -150,7 +150,17 @@
                     <form class="row col-md-12 pt-3 pb-0 ms-auto me-auto" id="searchForm" name="searchForm" method="GET" action="/participant.login">
                         <input type="hidden" name="page" value="1">
                         <!-- 검색 조건 선택 -->
-                        <div class="col-md-2 ms-auto">
+
+                        <div class="col-md-3 ms-auto d-flex justify-content-center">
+                            <select
+                                    class="form-select shadow-sm  w-75 me-3"
+                                    name="endDateOption"
+                                    id="endDate-Option"
+                            >
+                                <option ${param.endDateOption.equals("all") ? 'selected' : ''} value="allType">전체</option>
+                                <option ${param.endDateOption.equals("false") ? 'selected' : ''} value="false">진행중</option>
+                                <option ${param.endDateOption.equals("true") ? 'selected' : ''} value="true">마감</option>
+                            </select>
                             <select
                                     class="form-select shadow-sm"
                                     name="searchOption"
@@ -190,8 +200,8 @@
                             <ul class="navbar-nav w-75 ms-auto me-auto">
                                 <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="searchType" id="allType" value="all" ${param.searchType.equals("all") ? 'checked' : ''}>
-                                        <label class="form-check-label" for="allType">전체</label>
+                                        <input class="form-check-input" type="radio" name="searchType" id="allType" value="" ${(param.searchType.equals("") or param.searchType eq null) ? 'checked' : ''}>
+                                        <label class="form-check-label" for="allType">옵션 선택</label>
                                     </div>
                                 </li>
                                 <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
@@ -218,6 +228,12 @@
                                         <label class="form-check-label" for="periodExpire15">기간 만료 15일 예정자</label>
                                     </div>
                                 </li>
+                                <li class="nav-item d-none d-md-block w-auto btn-link ms-auto me-auto">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="searchType" id="employment" value="employment" ${param.searchType.equals("employment") ? 'checked' : ''}>
+                                        <label class="form-check-label" for="employment">취업자</label>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </form>
@@ -238,6 +254,7 @@
                                     <th>진행단계</th>
                                     <th>생년월일</th>
                                     <th>등록일</th>
+                                    <th>간접고용서비스</th>
                                     <th>마감</th>
                                     <th>수정</th>
                                 </tr>
@@ -256,6 +273,7 @@
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
                                                 <td>${data.participantJobNo}</td>
                                                 <td><a
+                                                        class="selectParticipant"
                                                         href="/participantUpdate.login?basicJobNo=${data.participantJobNo}&page=${param.page == null ? '1' : param.page}">
                                                         ${data.participantPartic}
                                                 </a></td>
@@ -265,6 +283,7 @@
                                                 <td>${data.participantProgress}</td>
                                                 <td>${data.participantDob}</td>
                                                 <td>${data.participantRegDate}</td>
+                                                <td>${data.participantEmploymentService eq '' or data.participantEmploymentService eq null?0:data.participantEmploymentService} 회</td>
                                                 <td class="text-center isClose_td">
                                                     <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'} isClose_span">
                                                             ${data.participantClose ? '마감' : '진행중'}
@@ -384,10 +403,20 @@
                 // 현재 버튼의 부모 tr 요소 탐색
                 const number = getJobNumber($(this).closest('tr'));
                 // console.log('/update'+$btn[1]+'?'+$btn[1]+'JobNo=' + number)
-                location.href = '/update' + $btn[1] + '.login?' + $btn[1] + 'JobNo=' + number + '&page=${param.page == null ? '1' : param.page}';
+                location.href = '/update' + $btn[1] + '.login?' + searchMainHref($btn[1] + 'JobNo='+number) ;
             });
         })
         <%-- 수정 버튼별 구직번호 전달 스크립트 끝 --%>
+
+        //TODO FIXME a 태그 검색 param 추가 로직 추가해야함
+        <%-- a태그 href search 값 변경 시작 --%>
+        function searchMainHref(search) {
+            const search_option = $('#search-Option').val();
+            const search_type = $('#searchType').val();
+            const pageRows = $('#pageRows').val();
+            const page = $('#page').val();
+            return search + '&searchType=' + search_type + '&pageRows=' + pageRows + '&page=' + page + '&searchOption=' + search_option;
+        }
 
         <%-- 검색 스크립트 시작 --%>
         //필터 변수
@@ -530,6 +559,29 @@
             }
         });
         <%-- 최근상담일 기준 색 필터 끝 --%>
+
+        <%-- param 값 조회, &값으로 문자열 반환 --%>
+        function searchMainHref(jobno) {
+            let href = jobno;
+            let search = window.location.search.split('&');
+            search[0] = search[0].replace('?', '');
+            if (search[0] != null || search[0] != undefined) {
+/*                console.log('search :['+search+']');*/
+                search.forEach(function (item) {
+/*                    console.log('item['+item+']');
+                    console.log('search['+search.indexOf(item)+']');*/
+                    if (search.indexOf(item) >= 0) {
+                        href += '&' + item
+                    }
+                });
+                /*console.log('href :['+href+']');*/
+            }
+            //마지막이 &라면 지우고 href 변수에 추가
+            if (href.charAt(href.length - 1) == '&') {
+                href = href + 'page=1';
+            }
+            return href;
+        }
     });
 </script>
 

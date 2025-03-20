@@ -358,6 +358,9 @@
 
         //일경험 구분
         selectOption(employmentJobcat,"${employment.employmentJobcat}");
+
+        //간접고용서비스 목록 내용 변경
+        selectOption($("#counselEmploymentService"),"${counsel.counselEmploymentService}");
         <%-- 목록 내용 변경 끝 --%>
 
         <%-- 취업유형 변경 시작 --%>

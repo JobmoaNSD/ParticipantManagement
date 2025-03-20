@@ -49,8 +49,7 @@
                 <select class="form-select" aria-label="Default select example" id="basicPartType" name="basicPartType">
                     <option selected value="1">1</option>
                     <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="5">5</option>
+                    <option value="이관">이관</option>
                 </select>
             </div>
             <div class="col-md-1 w-auto">
