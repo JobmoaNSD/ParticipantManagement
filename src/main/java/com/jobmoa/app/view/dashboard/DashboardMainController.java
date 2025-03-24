@@ -58,7 +58,7 @@ public class DashboardMainController {
         dashboardDTO.setDashboardCondition("selectCountDashboard");
         DashboardDTO totalCountData = dashboardService.selectOne(dashboardDTO);
 
-        //전체 참여자 개수 실행 쿼리
+        //전체 마감 참여자 개수 실행 쿼리
         dashboardDTO.setDashboardCondition("selectCountCloseDashboard");
         DashboardDTO totalCloseCountData = dashboardService.selectOne(dashboardDTO);
 

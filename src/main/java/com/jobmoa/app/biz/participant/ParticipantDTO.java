@@ -77,6 +77,10 @@ public class ParticipantDTO {
     private String searchType;
     private String searchFilter;
 
+    //정렬 변수
+    private String column;
+    private String order;
+
     private int participantCount;
 
 }

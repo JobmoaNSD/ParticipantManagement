@@ -149,6 +149,17 @@
                 <div class="row pt-3">
                     <div class="col-md-12">
                         <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updatecounsel.login" class="form-horizontal">
+                            <%-- 업데이트 종료 후 이동될 페이지 --%>
+                            <input type="hidden" name="page" value="${param.page}">
+                            <input type="hidden" name="endDateOption" value="${param.endDateOption}">
+                            <input type="hidden" name="participantRegDate" value="${param.participantRegDate}">
+                            <input type="hidden" name="searchOption" value="${param.searchOption}">
+                            <input type="hidden" name="search" value="${param.search}">
+                            <input type="hidden" name="pageRows" value="${param.pageRows}">
+                            <input type="hidden" name="searchType" value="${param.searchType}">
+                            <input type="hidden" name="column" value="${param.column}">
+                            <input type="hidden" name="order" value="${param.order}">
+
                             <%-- 참여자 수정 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
                                 <div class="col-12 text-end">
@@ -158,9 +169,6 @@
                                 </div>
                             </div>
                             <%-- 참여자 수정 버튼 끝 --%>
-
-                            <%-- 업데이트 종료 후 이동될 페이지 --%>
-                            <input type="hidden" name="page" value="${param.page}">
 
                             <%-- 참여자 상담정보 입력 tag --%>
                             <mytag:ParticipantCounsel counsel="${counsel}"/>
@@ -230,9 +238,10 @@
         btn_check.on("click", function () {
             const form = $("#newParticipantsForm");
             let progressVal = $("#counselProgress").val();
-            if (progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
-                progressVal == "미취업사후종료" || progressVal == "유예" || progressVal == "이관" || progressVal == "중단"){
-                alert("현재 선택한 진행단계의 "+progressVal+"는 중단종료일이 필수도 입력되어야 합니다.");
+            let counselStopDate = $("#counselEndDate").val();
+            if ((progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
+                progressVal == "미취업사후종료" || progressVal == "유예" || progressVal == "이관" || progressVal == "중단") && counselStopDate == ""){
+                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 중단종료일이 필수로 입력되어야 합니다.");
                 return;
             }
 

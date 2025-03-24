@@ -93,7 +93,7 @@ public class DailyWorkReport3 {
             String branch = reportDTO.getBranch() == null ?"":reportDTO.getBranch();
 
             //상단 일일보고 제목을 지정
-            setCellValue(setRowValue(sheet,0), 1, branch+"지점 국민취업지원제도 업무진행현황 일일보고");
+            setCellValue(setRowValue(sheet,0), 0, branch+"지점 국민취업지원제도 업무진행현황 일일보고");
             log.info("createExcel branch : [{}]",branch);
 
             //배정 인원
@@ -105,7 +105,7 @@ public class DailyWorkReport3 {
 
             //민간위탁기관 평가 실적
             //제목을 지정
-            setCellValue(setRowValue(sheet,24), 1, year+"년 민간위탁기관 평가 실적");
+            setCellValue(setRowValue(sheet,24), 0, year+"년 민간위탁기관 평가 실적");
             //요청 년도 참여자 생성
             reportDTO.setReportCondition("reportSelectStatusAll");
             List<ReportDTO> datas = reportService.selectAll(reportDTO);
@@ -254,6 +254,7 @@ public class DailyWorkReport3 {
         setCellValue(row, colIndex++, data.getReferralEmploymentRate());   // 알선취업률
         setCellValue(row, colIndex++, data.getBetterJobRate());           // 229만원 이상 취업률
         setCellValue(row, colIndex++, data.getRetentionRate());           // 고용유지율
+        colIndex++;//위치를 맞추기 위해 한번더 +1을 실행
         colIndex++;//위치를 맞추기 위해 한번더 +1을 실행
         setCellValue(row, colIndex++, data.getIncentiveOccurrenceRate()); // 취업인센티브 발생률
         setCellValue(row, colIndex, data.getIncentiveNotOccurred());      // 취업인센티브 미발생자

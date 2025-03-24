@@ -544,7 +544,7 @@
         chart_doughnut_data(id,testdata2,drawCenterText_text,denominator);
 
         id = $('#ex-chart3');
-        const testdata3 = {title:['마감','마감X'],text:JSON.parse('${dashBoardCloseKPI}')};
+        const testdata3 = {title:['마감X','마감'],text:JSON.parse('${dashBoardCloseKPI}')};
         drawCenterText_text = '마감 참여자';
         chart_doughnut_data(id,testdata3,drawCenterText_text,denominator);
 

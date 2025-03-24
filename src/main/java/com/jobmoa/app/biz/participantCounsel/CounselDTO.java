@@ -7,6 +7,7 @@ public class CounselDTO {
 
     // DB 변수(컬럼)
     private int counselJobNo; // 구직번호
+    private String counselPartic; // 참여자 성명
     private String counselBranch; // 지점
     private String counselUserid; // 전담자_계정
     private String counselJobSkill; // 취업역량

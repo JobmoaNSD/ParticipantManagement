@@ -150,6 +150,17 @@
                 <div class="row pt-3">
                     <div class="col-md-12">
                         <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updatebasic.login" class="form-horizontal">
+                            <%-- 업데이트 종료 후 이동될 페이지 --%>
+                            <input type="hidden" name="page" value="${param.page}">
+                            <input type="hidden" name="endDateOption" value="${param.endDateOption}">
+                            <input type="hidden" name="participantRegDate" value="${param.participantRegDate}">
+                            <input type="hidden" name="searchOption" value="${param.searchOption}">
+                            <input type="hidden" name="search" value="${param.search}">
+                            <input type="hidden" name="pageRows" value="${param.pageRows}">
+                            <input type="hidden" name="searchType" value="${param.searchType}">
+                            <input type="hidden" name="column" value="${param.column}">
+                            <input type="hidden" name="order" value="${param.order}">
+
                             <%-- 참여자 수정 버튼 시작 --%>
                             <div class="row pb-2 mb-1">
                                 <div class="col-12 text-end">
@@ -159,10 +170,6 @@
                                 </div>
                             </div>
                             <%-- 참여자 수정 버튼 끝 --%>
-
-                            <%-- 업데이트 종료 후 이동될 페이지 --%>
-                            <input type="hidden" name="page" value="${param.page}">
-
                             <%-- 참여자 기본정보 입력 tag --%>
                             <mytag:ParticipantBasic basic="${basic}"/>
                         </form>
