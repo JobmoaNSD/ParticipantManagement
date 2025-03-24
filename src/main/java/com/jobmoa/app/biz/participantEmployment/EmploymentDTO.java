@@ -7,6 +7,7 @@ public class EmploymentDTO {
 
     // DB 변수(컬럼)
     private int employmentJobNo; // 구직번호
+    private String employmentPartic; // 참여자 성명
     private String employmentBranch; // 지점
     private String employmentUserid; // 전담자_계정
     private String employmentStartDate; // 취창업일

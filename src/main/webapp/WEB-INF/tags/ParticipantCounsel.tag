@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="datepicker-div">
-                <label for="counselEndDate" class="form-label">최종종료일</label>
+                <label for="counselEndDate" class="form-label">진행종료일</label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
                     <input type="text" class="form-control datepicker_on" id="counselEndDate" name="counselEndDate" placeholder="yyyy-mm-dd" aria-label="중단종료일" value="${not empty counsel ? counsel.counselEndDate:""}" autocomplete="off">

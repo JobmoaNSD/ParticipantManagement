@@ -115,6 +115,17 @@
                     <div class="row pt-3">
                         <div class="col-md-12">
                             <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/participantUpdate.login" class="form-horizontal">
+                                <%-- 업데이트 종료 후 이동될 페이지 --%>
+                                <input type="hidden" name="page" value="${param.page}">
+                                <input type="hidden" name="endDateOption" value="${param.endDateOption}">
+                                <input type="hidden" name="participantRegDate" value="${param.participantRegDate}">
+                                <input type="hidden" name="searchOption" value="${param.searchOption}">
+                                <input type="hidden" name="search" value="${param.search}">
+                                <input type="hidden" name="pageRows" value="${param.pageRows}">
+                                <input type="hidden" name="searchType" value="${param.searchType}">
+                                <input type="hidden" name="column" value="${param.column}">
+                                <input type="hidden" name="order" value="${param.order}">
+
                                 <%-- 참여자 수정 버튼 시작 --%>
                                 <div class="row pb-2 mb-1">
                                     <div class="col-12 text-end">
@@ -124,9 +135,6 @@
                                     </div>
                                 </div>
                                 <%-- 참여자 수정 버튼 끝 --%>
-
-                                <%-- 업데이트 종료 후 이동될 페이지 --%>
-                                <input type="hidden" name="page" value="${param.page}">
 
                                 <%-- 기본정보 입력 tag --%>
                                 <mytag:ParticipantBasic basic="${basic}"/>
@@ -233,6 +241,10 @@
         btn_check.on("click", function () {
             //참여자 성명
             const basicPartic = $("#basicPartic").val();
+            //진행단계
+            let progressVal = $("#counselProgress").val();
+            //진행종료일
+            let counselStopDate = $("#counselEndDate").val();
             //취창업일
             const employmentStartDate = $("#employmentStartDate").val();
             //취창업처리일
@@ -242,7 +254,7 @@
             //취업유형
             const employmentEmpType = $("#employmentEmpType").val();
             //취업처
-            const employmentLoyer = $("#employmentEmpType").val();
+            const employmentLoyer = $("#employmentLoyer").val();
             //임금
             const employmentSalary = $("#employmentSalary").val();
             //취업인센티브_구분
@@ -253,6 +265,11 @@
             let flag = basicPartic.length > 0;
             if(!flag){
                 alertDefaultInfo("참여자 성명은 필수 입력 입니다.","참여자를 입력해주세요.");
+                return;
+            }
+            else if ((progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
+                progressVal == "미취업사후종료" || progressVal == "유예" || progressVal == "이관" || progressVal == "중단") && counselStopDate == ""){
+                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 중단종료일이 필수로 입력되어야 합니다.");
                 return;
             }
 

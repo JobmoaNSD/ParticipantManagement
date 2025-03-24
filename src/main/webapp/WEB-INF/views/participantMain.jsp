@@ -120,6 +120,9 @@
     <!-- selectOptionJS JS 파일 -->
     <script src="js/selectOptionJS.js"></script>
 
+    <!-- Excel 다운 버튼 CSS 추가 -->
+    <link rel="stylesheet" href="css/dailyWorkReportCss.css">
+
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -143,23 +146,37 @@
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
 
                 <div class="row col-md-11 pt-5 me-auto ms-auto">
-                    <div class="col-md-12 text-center">
-                        <h3>참여자 조회</h3>
+                    <div class="col-md-12 text-center d-flex align-items-center justify-content-center ">
+                        <h3 class="flex-fill">참여자 조회</h3>
+                        <button id="excelDownload" class="excel-download-btn mt-3 mb-2 me-2">
+                            <i class="bi bi-file-earmark-excel-fill"></i>
+                            엑셀 다운로드
+                        </button>
                     </div>
                     <%-- 참여자 검색 시작 --%>
                     <form class="row col-md-12 pt-3 pb-0 ms-auto me-auto" id="searchForm" name="searchForm" method="GET" action="/participant.login">
                         <input type="hidden" name="page" value="1">
                         <!-- 검색 조건 선택 -->
 
-                        <div class="col-md-3 ms-auto d-flex justify-content-center">
+                        <div class="col-md-3 ms-auto d-flex justify-content-center pe-1">
                             <select
-                                    class="form-select shadow-sm  w-75 me-3"
+                                    class="form-select shadow-sm  w-75 me-2"
                                     name="endDateOption"
                                     id="endDate-Option"
                             >
                                 <option ${param.endDateOption.equals("all") ? 'selected' : ''} value="allType">전체</option>
                                 <option ${param.endDateOption.equals("false") ? 'selected' : ''} value="false">진행중</option>
                                 <option ${param.endDateOption.equals("true") ? 'selected' : ''} value="true">마감</option>
+                            </select>
+                            <select
+                                    class="form-select shadow-sm w-75 me-2"
+                                    name="participantRegDate"
+                                    id="year">
+                                <option ${param.participantRegDate.equals("All") ? 'selected' : ''} value="All">년도</option>
+                                <option ${param.participantRegDate.equals("2025") ? 'selected' : ''} value="2025">2025</option>
+                                <option ${param.participantRegDate.equals("2024") ? 'selected' : ''} value="2024">2024</option>
+                                <option ${param.participantRegDate.equals("2023") ? 'selected' : ''} value="2023">2023</option>
+                                <option ${param.participantRegDate.equals("2022") ? 'selected' : ''} value="2022">2022</option>
                             </select>
                             <select
                                     class="form-select shadow-sm"
@@ -173,7 +190,7 @@
                             </select>
                         </div>
                         <!-- 검색 입력 -->
-                        <div class="col-md-7">
+                        <div class="col-md-7 ps-1">
                             <input
                                     type="text"
                                     class="form-control shadow-sm"
@@ -238,6 +255,7 @@
                         </div>
                     </form>
 
+
                     <%-- 참여자 검색 끝 --%>
                     <%-- 참여자 테이블 시작 --%>
                     <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto mt-auto">
@@ -246,16 +264,37 @@
                                 <thead class="table-dark text-white">
                                 <tr class="text-center">
                                     <th class="text-center"><input type="button" class="btn btn-danger" id="delete_btn" value="삭제"></th>
-                                    <th>구직번호</th>
-                                    <th>참여자</th>
-                                    <th>성별</th>
-                                    <th>최근상담일</th>
-                                    <th>상담경과일</th>
-                                    <th>진행단계</th>
-                                    <th>생년월일</th>
-                                    <th>등록일</th>
-                                    <th>간접고용서비스</th>
-                                    <th>마감</th>
+                                    <th class="table-Column">
+                                        <span class="column">구직번호</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">참여자</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">성별</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">최근상담일</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">상담경과일</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">진행단계</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">생년월일</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">등록일</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">간접고용서비스</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">마감</span>
+                                    </th>
+                                    </th>
                                     <th>수정</th>
                                 </tr>
                                 </thead>
@@ -263,7 +302,7 @@
 
                                 <c:choose>
                                     <c:when test="${empty datas}">
-                                        <td class="text-center" colspan="10">
+                                        <td class="text-center" colspan="12">
                                             검색된 참여자가 없습니다.
                                         </td>
                                     </c:when>
@@ -274,7 +313,7 @@
                                                 <td>${data.participantJobNo}</td>
                                                 <td><a
                                                         class="selectParticipant"
-                                                        href="/participantUpdate.login?basicJobNo=${data.participantJobNo}&page=${param.page == null ? '1' : param.page}">
+                                                        href="/participantUpdate.login">
                                                         ${data.participantPartic}
                                                 </a></td>
                                                 <td>${data.participantGender}</td>
@@ -403,20 +442,102 @@
                 // 현재 버튼의 부모 tr 요소 탐색
                 const number = getJobNumber($(this).closest('tr'));
                 // console.log('/update'+$btn[1]+'?'+$btn[1]+'JobNo=' + number)
-                location.href = '/update' + $btn[1] + '.login?' + searchMainHref($btn[1] + 'JobNo='+number) ;
+                location.href = '/update' + $btn[1] + '.login?' + searchMainHref($btn[1] + 'JobNo=' + number);
             });
         })
         <%-- 수정 버튼별 구직번호 전달 스크립트 끝 --%>
 
-        //TODO FIXME a 태그 검색 param 추가 로직 추가해야함
+        <%-- aTag 시작 --%>
+        aHrefChange();
         <%-- a태그 href search 값 변경 시작 --%>
-        function searchMainHref(search) {
-            const search_option = $('#search-Option').val();
-            const search_type = $('#searchType').val();
-            const pageRows = $('#pageRows').val();
-            const page = $('#page').val();
-            return search + '&searchType=' + search_type + '&pageRows=' + pageRows + '&page=' + page + '&searchOption=' + search_option;
+
+        function aHrefChange() {
+            let selectATag = $('.selectParticipant');
+            selectATag.each(function () {
+                let aTag = $(this);
+                const jobNo = getJobNumber(aTag.closest('tr'));
+                aTag.attr('href', aTag.attr('href') + '?' + searchMainHref('basicJobNo=' + jobNo));
+            })
         }
+
+        <%-- 내림차순 오름차순 조회 함수 --%>
+        /*<th className="table-Column">
+            <span className="order">
+                <i className="bi bi-sort-up-alt"></i>
+                <i className="bi bi-sort-down"></i>
+            </span>
+        </th>*/
+        let tableColumn = $('.table-Column');
+        let columnParam = '${param.column}';
+        let orderParam = '${param.order}';
+        let columns = $('.column');
+
+        if(columnParam != null && columnParam != ''){
+            columns.each(function () {
+                let columnValue = $(this).text();
+                let form = $('#searchForm');
+
+                if(columnValue == columnParam){
+                    if(orderParam == 'desc'){
+                        $(this).append('<span class="order desc"><i class="bi bi-sort-down"></i></span>');
+                        $(this).find('.order').val('desc');
+                        form.append('<input type="hidden" name="column" value="'+columnValue+'">');
+                        form.append('<input type="hidden" name="order" value="desc">');
+                    }
+                    else if(orderParam == 'asc'){
+                        $(this).append('<span class="order asc"><i class="bi bi-sort-up-alt"></i></span>');
+                        $(this).find('.order').val('asc');
+                        form.append('<input type="hidden" name="column" value="'+columnValue+'">');
+                        form.append('<input type="hidden" name="order" value="asc">');
+                    }
+                }
+            })
+        }
+
+        tableColumn.each(function () {
+            $(this).on('click', function () {
+                sort($(this));
+            });
+        });
+
+        function removeOrder(attribute){
+            attribute.find('.order').remove();
+            let returnValue;
+            tableColumn.each(function () {
+                let columnValue = $(this).find('.column').text();
+                let findValue = attribute.find('.column').text();
+
+                if(columnValue == findValue){
+                    returnValue = columnValue;
+                }
+                $(this).find('.order').remove();
+            });
+            return returnValue;
+        };
+
+        function sort(attribute){
+            let orderValue = attribute.find('.order').val();
+            let columnValue = removeOrder(attribute);
+            console.log('sort column : [' + columnValue+'] order : [' + orderValue+']');
+
+            if (orderValue == 'desc') {
+                // attribute.append('<span class="order asc"><i class="bi bi-sort-down"></i></span>');
+                // attribute.find('.order').val('asc');
+                // console.log(searchMainHref('column=' + columnValue + '&order=asc'));
+
+                location.replace('/participant.login?'+sortHref('column=' + columnValue + '&order=asc'));
+                // location.href = '/participant.login?' + searchMainHref('column=' + columnValue + '&order=asc');
+            }
+            else{
+                // attribute.append('<span class="order desc"><i class="bi bi-sort-up-alt"></i></span>');
+                // attribute.find('.order').val('desc');
+                // console.log(searchMainHref('column=' + columnValue + '&order=desc'));
+
+                location.replace('/participant.login?'+sortHref('column=' + columnValue + '&order=desc'));
+                // location.href = '/participant.login?' + searchMainHref('column=' + columnValue + '&order=desc');
+            }
+        }
+
 
         <%-- 검색 스크립트 시작 --%>
         //필터 변수
@@ -429,8 +550,6 @@
         const searchBtn = $('#searchBtn');
 
         function searchFunction() {
-
-
             $('#searchForm').submit();
         }
 
@@ -487,18 +606,17 @@
                     if (data.length > 0) {
                         alertDefaultInfo('삭제되지 않은 인원이 있습니다.' + '<br>' + data.length + ' 명 \n 구직번호 : ' + data + '<br>')
                             .then((result) => {
-                                if(result){
+                                if (result) {
                                     flag = true
                                 }
                             });
-                    }
-                    else{
+                    } else {
                         flag = true;
                     }
                     if (flag) location.reload();
                 },
                 error: function (data) {
-                    alertDefaultError('오류발생','삭제중 오류가 발생했습니다.');
+                    alertDefaultError('오류발생', '삭제중 오류가 발생했습니다.');
                     console.log(data);
                 }
             });
@@ -508,73 +626,73 @@
 
         <%-- 마감 여부 시작 --%>
         const isCloses = $('.isClose_td');
-            isCloses.on('click', function () {
-                const close_span = $(this).find('span');
-                const number = getJobNumber(close_span.closest('tr'));
-                console.log(number);
-                let isClose = false;
-                if(close_span.hasClass('badge bg-success isClose_span')){
-                    isClose = true;
-                }
+        isCloses.on('click', function () {
+            const close_span = $(this).find('span');
+            const number = getJobNumber(close_span.closest('tr'));
+            console.log(number);
+            let isClose = false;
+            if (close_span.hasClass('badge bg-success isClose_span')) {
+                isClose = true;
+            }
 
-                $.ajax({
-                    url: 'ParticipantClose.login',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    data: JSON.stringify({basicJobNo: number, basicClose: isClose}),
-                    success: function (data) {
-                        console.log(data == true);
-                        if(data){
-                            close_span.removeClass('badge bg-success isClose_span').addClass('badge bg-danger isClose_span')
-                            close_span.text("마감")
-                        }
-                        else{
-                            close_span.removeClass('badge bg-danger isClose_span').addClass('badge bg-success isClose_span')
-                            close_span.text("진행중")
-                        }
-                    },
-                    error: function (data) {
-
+            $.ajax({
+                url: 'ParticipantClose.login',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({basicJobNo: number, basicClose: isClose}),
+                success: function (data) {
+                    console.log(data == true);
+                    if (data) {
+                        close_span.removeClass('badge bg-success isClose_span').addClass('badge bg-danger isClose_span')
+                        close_span.text("마감")
+                    } else {
+                        close_span.removeClass('badge bg-danger isClose_span').addClass('badge bg-success isClose_span')
+                        close_span.text("진행중")
                     }
-                });
+                },
+                error: function (data) {
+
+                }
             });
+        });
         <%-- 마감 여부 끝 --%>
 
         <%-- 최근상담일 기준 색 필터 시작 --%>
         let adventCons = $('.adventCons-td');
         adventCons.each(function () {
             let adventCons = $(this).text();
-            if(adventCons.length == 0 || adventCons == null || adventCons == ''){
+            if (adventCons.length == 0 || adventCons == null || adventCons == '') {
 
-            }
-            else if(adventCons > 21) {
+            } else if (adventCons > 21) {
                 $(this).css('background-color', 'rgba(255,58,58,0.55)');
-            }
-            else if (adventCons > 15) {
+            } else if (adventCons > 15) {
                 $(this).css('background-color', 'rgba(255,249,0,0.51)');
-            }
-            else{
+            } else {
                 $(this).css('background-color', 'rgba(0,255,0,0.51)');
             }
         });
         <%-- 최근상담일 기준 색 필터 끝 --%>
 
         <%-- param 값 조회, &값으로 문자열 반환 --%>
+
         function searchMainHref(jobno) {
-            let href = jobno;
+            let href=jobno;
+            //url param data delete & order change
             let search = window.location.search.split('&');
             search[0] = search[0].replace('?', '');
             if (search[0] != null || search[0] != undefined) {
-/*                console.log('search :['+search+']');*/
+                /*                console.log('search :['+search+']');*/
                 search.forEach(function (item) {
-/*                    console.log('item['+item+']');
-                    console.log('search['+search.indexOf(item)+']');*/
+                    /*                    console.log('item['+item+']');
+                                        console.log('search['+search.indexOf(item)+']');*/
                     if (search.indexOf(item) >= 0) {
                         href += '&' + item
+                        // console.log('href :['+item+']');
                     }
                 });
-                /*console.log('href :['+href+']');*/
+                // href = '&'+jobno;
+                // console.log('href :['+href+']');
             }
             //마지막이 &라면 지우고 href 변수에 추가
             if (href.charAt(href.length - 1) == '&') {
@@ -582,6 +700,56 @@
             }
             return href;
         }
+
+        function sortHref(jobno) {
+            let href='';
+            //url param data delete & order change
+            let search = deleteParam(location.href,['column','order']).split('&');
+            search[0] = search[0].replace('?', '');
+            if (search[0] != null || search[0] != undefined) {
+                /*                console.log('search :['+search+']');*/
+                search.forEach(function (item) {
+                    /*                    console.log('item['+item+']');
+                                        console.log('search['+search.indexOf(item)+']');*/
+                    if (search.indexOf(item) >= 0) {
+                        href += item+'&'
+                        // console.log('href :['+item+']');
+                    }
+                });
+                // console.log('href :['+href+']');
+            }
+            href = href + jobno;
+            //마지막이 &라면 지우고 href 변수에 추가
+            if (href.charAt(href.length - 1) == '&') {
+                href = href.replace('&','');
+            }
+
+            return href;
+        }
+
+
+        function deleteParam(urlValue, deleteParams){
+            //url에 있는 컬럼중 column, order param value 를 삭제하고 페이지 이동
+            let url = new URL(urlValue);
+            // console.log('deleteParam url :['+url+']');
+            const searchParam = new URLSearchParams(url.search);
+            // console.log('deleteParam searchParam :['+searchParam+']');
+
+            //전달받은 삭제를 원하는 param data 값을 확인 후 삭제를 진행
+            deleteParams.map((value) => {
+                searchParam.delete(value);
+                // console.log('deleteParam value :['+value+']');
+                // console.log('deleteParam searchParam :['+searchParam+']');
+            })
+            // console.log('deleteParam url :['+url+']');
+            // console.log('deleteParam searchParam :['+searchParam+']');
+            return url.search = searchParam.toString();
+        }
+
+        let excelDownloadButton = $('#excelDownload');
+        excelDownloadButton.on('click', function () {
+            location.href = '/participantExcel.login';
+        });
     });
 </script>
 
