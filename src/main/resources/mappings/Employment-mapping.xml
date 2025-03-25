@@ -46,6 +46,7 @@
     <select id="employmentSelectOne" resultType="employment">
         SELECT
             구직번호 AS employmentJobNo,
+            참여자 AS employmentPartic,
             CASE
                 WHEN 취창업일 >= DATEADD(YEAR, -100, GETDATE()) THEN 취창업일
                 END AS employmentStartDate,

@@ -39,6 +39,7 @@
     <select id="counselSelectOne" resultType="counsel">
         SELECT
             구직번호 AS counselJobNo,
+            참여자 AS counselPartic,
             취업역량 AS counselJobSkill,
             CASE
                 WHEN 최근상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 최근상담일
