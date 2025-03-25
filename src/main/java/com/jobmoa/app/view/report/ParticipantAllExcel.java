@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,7 +34,7 @@ public class ParticipantAllExcel {
     @Autowired
     private ParticipantServiceImpl participantService;
 
-    private byte[] templateBytes;  // 템플릿 파일을 캐싱할 바이트 배열
+    private byte[] templateBytes2;  // 템플릿 파일을 캐싱할 바이트 배열
 
     // 서버 시작 시 템플릿 파일을 한 번만 읽어 캐싱
     @PostConstruct
@@ -48,8 +47,8 @@ public class ParticipantAllExcel {
             while ((len = is.read(buffer)) > -1) {
                 baos.write(buffer, 0, len);
             }
-            templateBytes = baos.toByteArray();
-            log.info("Excel template loaded into memory successfully, size: {} bytes", templateBytes.length);
+            templateBytes2 = baos.toByteArray();
+            log.info("Excel template loaded into memory successfully, size: {} bytes", templateBytes2.length);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load Excel template during initialization", e);
         }
@@ -66,8 +65,8 @@ public class ParticipantAllExcel {
 
     private void createExcel(HttpServletResponse response,ParticipantDTO participantDTO){
         // 1. 캐싱된 템플릿을 메모리에서 로드
-        try (XSSFWorkbook workbook = new XSSFWorkbook(new ByteArrayInputStream(templateBytes))) {
-            if (templateBytes == null) {
+        try (XSSFWorkbook workbook = new XSSFWorkbook(new ByteArrayInputStream(templateBytes2))) {
+            if (templateBytes2 == null) {
                 throw new IllegalStateException("템플릿 파일이 로드되지 않았습니다.");
             }
             Sheet sheet = workbook.getSheetAt(0); // 첫 번째 시트 사용
