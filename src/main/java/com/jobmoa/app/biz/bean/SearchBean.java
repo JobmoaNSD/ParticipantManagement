@@ -15,6 +15,7 @@ public class SearchBean {
     private String searchType;
     private String column;
     private String order;
+    private String participantRegDate;
 
     @Override
     public String toString() {
@@ -23,19 +24,23 @@ public class SearchBean {
         this.endDateOption = (this.endDateOption == null)?"":this.endDateOption;
         this.searchOption = (this.searchOption == null)?"":this.searchOption;
         this.searchType = (this.searchType == null)?"":this.searchType;
-        String pageString = (this.page == 0)?"1":this.page+"";
-        String pageRowsString = (this.pageRows == 0)?"100":this.pageRows+"";
+        int pageString = (this.page == 0)?1:this.page;
+        int pageRowsString = (this.pageRows == 0)?100:this.pageRows;
         this.column = (this.column == null)?"":this.column;
         this.order = (this.order == null)?"":this.order;
+        this.participantRegDate = (this.participantRegDate == null)?"All":this.participantRegDate;
 
-        return "page=" + pageString +
+        String returnValue ="page=" + pageString +
                 "&endDateOption=" + endDateOption +
                 "&searchOption=" + searchOption +
                 "&search=" + search +
                 "&pageRows=" + pageRowsString +
                 "&searchType=" + searchType +
                 "&column=" + column +
-                "&order=" + order;
+                "&order=" + order +
+                "&participantRegDate=" + participantRegDate;
+
+        return returnValue;
     }
 
 }

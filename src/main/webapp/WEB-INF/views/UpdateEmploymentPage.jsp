@@ -136,7 +136,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 취업정보 수정"/>
+    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="${employment.employmentPartic} 참여자 취업정보 수정"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->
@@ -149,16 +149,8 @@
                 <div class="row pt-3">
                     <div class="col-md-12">
                         <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/updateemployment.login" class="form-horizontal">
-                            <%-- 업데이트 종료 후 이동될 페이지 --%>
-                            <input type="hidden" name="page" value="${param.page}">
-                            <input type="hidden" name="endDateOption" value="${param.endDateOption}">
-                            <input type="hidden" name="participantRegDate" value="${param.participantRegDate}">
-                            <input type="hidden" name="searchOption" value="${param.searchOption}">
-                            <input type="hidden" name="search" value="${param.search}">
-                            <input type="hidden" name="pageRows" value="${param.pageRows}">
-                            <input type="hidden" name="searchType" value="${param.searchType}">
-                            <input type="hidden" name="column" value="${param.column}">
-                            <input type="hidden" name="order" value="${param.order}">
+                            <%-- 검색 필터 hiddenInput tag --%>
+                            <mytag:searchHiddenInput/>
 
                             <%-- 참여자 수정 버튼 시작 --%>
                             <div class="row pb-2 mb-1">

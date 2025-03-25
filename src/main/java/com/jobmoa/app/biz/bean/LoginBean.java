@@ -12,3 +12,4 @@ public class LoginBean {
     private String memberRole;
     private String memberUniqueNumber;
 }
+
