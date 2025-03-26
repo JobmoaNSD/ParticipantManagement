@@ -57,7 +57,7 @@
             cancelButtonColor: '#d33',
             confirmButtonText: confirmButtonText,
             cancelButtonText: cancelButtonText,
-            reverseButtons: true, // 버튼 순서 거꾸로
+            reverseButtons: false, // 버튼 순서 거꾸로
 
         }).then((result) => {
             return result.isConfirmed;
@@ -74,7 +74,7 @@
             cancelButtonColor: '#d33',
             confirmButtonText: confirmButtonText,
             cancelButtonText: cancelButtonText,
-            reverseButtons: true, // 버튼 순서 거꾸로
+            reverseButtons: false, // 버튼 순서 거꾸로
 
         }).then((result) => {
             return result.isConfirmed;

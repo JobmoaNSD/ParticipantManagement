@@ -94,6 +94,7 @@
                SUM(IIF(참여유형 = '2', 1, 0)) AS type2
         FROM J_참여자관리
         WHERE 참여유형 <![CDATA[<>]]> ''
+          AND 진행단계 <![CDATA[<>]]> '취소'
           AND 지점 = #{branch}
           AND YEAR(등록일) = #{year}
           AND (전담자_계정 IN

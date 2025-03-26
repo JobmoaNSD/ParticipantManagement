@@ -98,38 +98,130 @@
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <div class="row">
                     <form action="/downloadExcel.login" method="GET">
-                        <div class="col-md-12 d-flex align-items-center justify-content-end">
-                            <button type="submit" class="excel-download-btn mt-3 mb-2">
-                                <i class="bi bi-file-earmark-excel-fill"></i>
-                                엑셀 다운로드
-                            </button>
-                            <input type="hidden" name="branch" value="${JOBMOA_LOGIN_DATA.memberBranch}">
-                            <input type="hidden" id="year" name="year" value="">
-                        </div>
 
+                        <div class="row col-md-12 mt-3">
+                            <div class="col-md-2 text-center">
+                                <div class="border border-1 border-dark">
+                                    금일 배정인원
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center border border-1 border-dark p-1">
+                                    <div>
+                                        <label for="todayPersonnelOneType" class="form-label">1유형</label>
+                                        <input type="number" id="todayPersonnelOneType" class="form-control w-75 ms-auto me-auto" value="0">
+                                    </div>
+                                    <div>
+                                        <label for="todayPersonnelOneType" class="form-label">2유형</label>
+                                        <input type="number" id="todayPersonnelTwoType" class="form-control w-75 ms-auto me-auto" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end justify-content-end">
+                                <button type="submit" class="excel-download-btn mt-3 mb-2">
+                                    <i class="bi bi-file-earmark-excel-fill"></i>
+                                    엑셀 다운로드
+                                </button>
+                                <input type="hidden" name="branch" value="${JOBMOA_LOGIN_DATA.memberBranch}">
+                                <input type="hidden" id="year" name="year" value="">
+                            </div>
+                        </div>
                         <!-- 전체 리스트를 감싸는 컨테이너 추가 -->
-                        <div class="user-list" id="sortableList">
+                        <div class="user-list text-center" id="sortableList">
                             <c:choose>
                                 <c:when test="${empty users}">
                                     <div class="user-item">
-                                        <span>선택할 사용자가 없습니다.</span>
+                                        <span>선택할 전담자가 없습니다.</span>
                                     </div>
                                 </c:when>
                                 <c:when test="${not empty users}">
                                     <c:forEach var="user" items="${users}" varStatus="status">
                                         <!-- 기존 user-item div들이 여기에 반복됨 -->
                                         <div class="user-item" data-id="${user.memberUserID}">
-                                            <div class="drag-handle d-flex align-items-center">
-                                                <span class="verticalEllipsis">&#8942;</span>
-                                                <span class="position-input">${status.count}</span>
-                                                <label for="checkbox_${user.memberUserID}" class="toggle"
-                                                style="min-width: 75px;">
-                                                        ${user.memberUserName}
-                                                </label>
-                                                <span class="checkbox-wrapper-3">
-                                                    <input type="checkbox" id="checkbox_${user.memberUserID}" name="userIds" value="${user.memberUserID}" checked />
-                                                    <label for="checkbox_${user.memberUserID}" class="toggle"><span></span></label>
-                                                </span>
+                                            <div class="drag-handle d-flex align-items-center justify-content-center">
+                                                <div class="row col-md-2 d-flex align-items-center">
+                                                    <span class="verticalEllipsis col-md-1">&#8942;</span>
+                                                    <span class="position-input col-md-1">${status.count}</span>
+                                                    <label for="checkbox_${user.memberUserID}" class="toggle col-md-3"
+                                                           style="min-width: 75px;">
+                                                            ${user.memberUserName}
+                                                    </label>
+                                                    <span class="checkbox-wrapper-3 col-md-3">
+                                                        <input type="checkbox" id="checkbox_${user.memberUserID}" name="userIds" value="${user.memberUserID}" checked />
+                                                        <label for="checkbox_${user.memberUserID}" class="toggle"><span></span></label>
+                                                    </span>
+
+                                                </div>
+                                                <!-- TODO FIXME 27~28일 내로 실적 배정인원 저장 가능하게 로직 수정할 것 -->
+                                                <div class="row">
+                                                    <div class="col-md-2 ps-1 pe-1">
+                                                        <div class="border border-1 border-dark">
+                                                            금일 누적 실적
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-center border border-1 border-dark p-1">
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">일반 취업</label>
+                                                                <input type="number" id="todayPersonnelOneType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">알선 취업</label>
+                                                                <input type="number" id="todayPersonnelTwoType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 ps-1 pe-1">
+                                                        <div class="border border-1 border-dark">
+                                                            금주 누적 실적
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-center border border-1 border-dark p-1">
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">일반 취업</label>
+                                                                <input type="number" id="todayPersonnelOneType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">알선 취업</label>
+                                                                <input type="number" id="todayPersonnelTwoType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 ps-1 pe-1">
+                                                        <div class="border border-1 border-dark">
+                                                            금월 누적 실적
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-center border border-1 border-dark p-1">
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">일반 취업</label>
+                                                                <input type="number" id="todayPersonnelOneType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">알선 취업</label>
+                                                                <input type="number" id="todayPersonnelTwoType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 ps-1 pe-1">
+                                                        <div class="border border-1 border-dark">
+                                                            금년 누적 실적
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-center border border-1 border-dark p-1">
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">일반 취업</label>
+                                                                <input type="number" id="todayPersonnelOneType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                            <div>
+                                                                <label for="todayPersonnelOneType" class="form-label">알선 취업</label>
+                                                                <input type="number" id="todayPersonnelTwoType" class="form-control w-75 ms-auto me-auto" value="0">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </c:forEach>

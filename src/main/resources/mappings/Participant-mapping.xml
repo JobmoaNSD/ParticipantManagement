@@ -235,9 +235,6 @@
                     </choose>
              ) AS SUB_QUERY
         WHERE SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
-        <if test="column != null">
-            ORDER BY ${column} ${order}
-        </if>
     </select>
 
     <select id="selectCountParticipantSearch" resultType="participant">

@@ -433,6 +433,13 @@
             return currentRow.find('td').eq(1).text();
         }
 
+        //선택 버튼의 구직번호 불러올 함수
+        function getParticipantName(currentRow) {
+            // '참여자' 열의 텍스트 추출 (참여자가 3번째 열이라고 가정)
+            // console.log('마감 버튼 클릭, 참여자 이름:', currentRow.find('td').eq(2).text());
+            return currentRow.find('td').eq(2).text();
+        }
+
         //참여자 정보 수정을 위한 버튼 배열
         const btns = [[$('.btn-basic'), 'basic'], [$('.btn-counsel'), 'counsel'], [$('.btn-employment'), 'employment']];
 
@@ -582,6 +589,7 @@
 
         <%-- 참여자 삭제 체크 시작 --%>
         let jobNo = [];
+        let participantNames = [];
         const getCheckedValues = (items) => {
             jobNo = [];
             items.each(function () {
@@ -593,32 +601,43 @@
         $('#delete_btn').on('click', () => {
             const delete_items = $('.delete:checked');
             getCheckedValues(delete_items)
-            $.ajax({
-                url: 'participantDelete.login',
-                type: 'POST',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify({basicJobNos: jobNo}),
-                success: function (data) {
-                    console.log(data);
-                    console.log(data.length);
-                    let flag = false;
-                    if (data.length > 0) {
-                        alertDefaultInfo('삭제되지 않은 인원이 있습니다.' + '<br>' + data.length + ' 명 \n 구직번호 : ' + data + '<br>')
-                            .then((result) => {
-                                if (result) {
-                                    flag = true
-                                }
-                            });
-                    } else {
-                        flag = true;
-                    }
-                    if (flag) location.reload();
-                },
-                error: function (data) {
-                    alertDefaultError('오류발생', '삭제중 오류가 발생했습니다.');
-                    console.log(data);
+
+            let title = "선택된 참여자를 삭제합니다."
+            let text = "삭제가 완료되면 복구가 불가능합니다."
+            let confirmButtonText = "삭제"
+            let cancelButtonText = "취소"
+
+            alertConfirmQuestion(title, text, confirmButtonText, cancelButtonText).then((result) => {
+                if (!result) {
+                    return;
                 }
+                $.ajax({
+                    url: 'participantDelete.login',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify({basicJobNos: jobNo}),
+                    success: function (data) {
+                        console.log(data);
+                        console.log(data.length);
+                        let flag = false;
+                        if (data.length > 0) {
+                            alertDefaultInfo('삭제되지 않은 인원이 있습니다.' + '<br>' + data.length + ' 명 \n 구직번호 : ' + data + '<br>')
+                                .then((result) => {
+                                    if (result) {
+                                        flag = true
+                                    }
+                                });
+                        } else {
+                            flag = true;
+                        }
+                        if (flag) location.reload();
+                    },
+                    error: function (data) {
+                        alertDefaultError('오류발생', '삭제중 오류가 발생했습니다.');
+                        console.log(data);
+                    }
+                });
             });
         });
 
@@ -629,32 +648,48 @@
         isCloses.on('click', function () {
             const close_span = $(this).find('span');
             const number = getJobNumber(close_span.closest('tr'));
+            const participantName = getParticipantName(close_span.closest('tr'));
+            let title = participantName + " 참여자 선택"
+            let text = "마감 처리 하시겠습니까?"
+            let confirmButtonText = "마감"
+            if(close_span.text() == "마감"){
+                text = "진행중으로 변경 하시겠습니까?"
+                confirmButtonText = "확인"
+            }
+            let cancelButtonText = "취소"
+
             console.log(number);
             let isClose = false;
             if (close_span.hasClass('badge bg-success isClose_span')) {
                 isClose = true;
             }
 
-            $.ajax({
-                url: 'ParticipantClose.login',
-                type: 'POST',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify({basicJobNo: number, basicClose: isClose}),
-                success: function (data) {
-                    console.log(data == true);
-                    if (data) {
-                        close_span.removeClass('badge bg-success isClose_span').addClass('badge bg-danger isClose_span')
-                        close_span.text("마감")
-                    } else {
-                        close_span.removeClass('badge bg-danger isClose_span').addClass('badge bg-success isClose_span')
-                        close_span.text("진행중")
-                    }
-                },
-                error: function (data) {
-
+            alertConfirmQuestion(title, text, confirmButtonText, cancelButtonText).then((result) => {
+                if (!result) {
+                    return;
                 }
-            });
+                $.ajax({
+                    url: 'ParticipantClose.login',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: JSON.stringify({basicJobNo: number, basicClose: isClose}),
+                    success: function (data) {
+                        console.log(data == true);
+                        if (data) {
+                            close_span.removeClass('badge bg-success isClose_span').addClass('badge bg-danger isClose_span')
+                            close_span.text("마감")
+                        } else {
+                            close_span.removeClass('badge bg-danger isClose_span').addClass('badge bg-success isClose_span')
+                            close_span.text("진행중")
+                        }
+                    },
+                    error: function (data) {
+
+                    }
+                });
+            })
+
         });
         <%-- 마감 여부 끝 --%>
 
