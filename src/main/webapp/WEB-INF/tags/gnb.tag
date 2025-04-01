@@ -2,6 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ attribute name="gnb_main_header"%>
 <%@ attribute name="gnb_sub_header"%>
+<%@ attribute name="gnb_sub_menu_header"%>
 
     <!--begin::Header-->
     <nav class="app-header navbar navbar-expand bg-body">
@@ -16,6 +17,7 @@
                 </li>
                 <li class="nav-item d-none d-md-block"><div class="nav-link">${gnb_main_header}</div></li>
                 <li class="nav-item d-none d-md-block"><div class="nav-link">${gnb_sub_header}</div></li>
+                <li class="nav-item d-none d-md-block"><div class="nav-link">${gnb_sub_menu_header}</div></li>
             </ul>
             <!--end::Start Navbar Links-->
             <!--begin::End Navbar Links-->

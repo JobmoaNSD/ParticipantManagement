@@ -22,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -99,7 +100,7 @@ public class ParticipantAllExcel {
              */
 
             // 4. 파일 다운로드 설정
-            String fileName = URLEncoder.encode(participantDTO.getParticipantUserid() + "_전체참여자_" + LocalDate.now() + ".xlsx", "UTF-8");
+            String fileName = URLEncoder.encode(participantDTO.getParticipantUserid() + "_전체참여자_" + LocalDate.now() + ".xlsx", StandardCharsets.UTF_8);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
             workbook.write(response.getOutputStream());
@@ -165,7 +166,7 @@ public class ParticipantAllExcel {
     private void setProgress(Row row, int colIndex, ParticipantDTO data) {
         setCellValue(row, colIndex++, data.getParticipantJobNo());      // 구직번호
         setCellValue(row, colIndex++, data.getParticipantRegDate());    // 등록일
-        setCellValue(row, colIndex++, data.getParticipantUserid());     // 전담자_계정
+        setCellValue(row, colIndex++, data.getParticipantUserName());     // 전담자_계정
         setCellValue(row, colIndex++, data.getParticipantPartic());     // 참여자
         setCellValue(row, colIndex++, data.getParticipantDob());        // 생년월일
         setCellValue(row, colIndex++, data.getParticipantGender());     // 성별

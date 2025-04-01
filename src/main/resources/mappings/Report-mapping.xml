@@ -103,4 +103,33 @@
         </foreach>
         )
     </select>
+
+
+    <select id="reportSelectPerformanceAll" resultType="report">
+        <foreach collection="userIds" item="userId" index="index"
+                 open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">
+            SELECT #{userId} AS 아이디, #{index} AS 순서
+        </foreach>
+        SELECT
+            이름 counselorName,
+            A.아이디 userID,
+            금일일반취업 memberTodayEmployment,
+            금일알선취업 memberTodayPlacement,
+            금주일반취업 memberToWeekEmployment,
+            금주알선취업 memberToWeekPlacement,
+            금월일반취업 memberToMonthEmployment,
+            금월알선취업 memberToMonthPlacement,
+            금년일반취업 memberToYearEmployment,
+            금년알선취업 memberToYearPlacement
+        FROM J_참여자관리_로그인정보 A
+        JOIN 상담사순서 B
+        ON A.아이디 = B.아이디
+        WHERE 지점=#{branch}
+        AND A.아이디 IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        ORDER BY B.순서 ASC
+    </select>
+
 </mapper>

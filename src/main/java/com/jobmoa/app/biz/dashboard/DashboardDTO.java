@@ -74,4 +74,13 @@ public class DashboardDTO {
     private int dashBoardEXPDate; // 기간만료일 15일 도래자
     private int dashBoardInItCons; // 초기상담일 미실시자
 
+    //성공금 상세 현황 변수
+    private int dashBoardJobNo; // 성공금 상세 현황 구직번호
+    private String dashBoardDate; // 성공금 상세 현황 날짜
+    private String dashBoardUserName; // 성공금 상세 현황 전담자_이름
+    private String dashBoardPartic; // 성공금 상세 현황 참여자_성명
+    private int dashBoardSuccessMoney; // 성공금 상세 현황 성공금
+    private int dashBoardIncentive; // 성공금 상세 현황 인센티브
+    private String dashBoardUserBranch; // dashBoardBranch 오류발생으로 새로운 지점 변수 생성
+
 }

@@ -20,10 +20,50 @@
 
     <select id="loginSelectAll" resultType="member">
         SELECT
-            이름 memberUserName,
-            아이디 memberUserID
-        FROM J_참여자관리_로그인정보
-        WHERE 지점=#{memberBranch}
+            A.이름 memberUserName,
+            A.아이디 memberUserID,
+            B.유형1 memberType1,
+            B.유형2 memberType2,
+            A.금일일반취업 memberTodayEmployment,
+            A.금일알선취업 memberTodayPlacement,
+            A.금주일반취업 memberToWeekEmployment,
+            A.금주알선취업 memberToWeekPlacement,
+            A.금월일반취업 memberToMonthEmployment,
+            A.금월알선취업 memberToMonthPlacement,
+            A.금년일반취업 memberToYearEmployment,
+            A.금년알선취업 memberToYearPlacement,
+            A.실적저장일 endUpdateStatus
+        FROM J_참여자관리_로그인정보 A
+        JOIN J_참여자관리_지점 B
+        ON A.지점 = B.지점
+        WHERE A.지점=#{memberBranch}
     </select>
+
+    <update id="memberStatsUpdate">
+        <foreach collection="userIds" item="userId" index="index" separator=";">
+            UPDATE J_참여자관리_로그인정보
+            SET
+                금일일반취업 = #{memberTodayEmployments[${index}]},
+                금일알선취업 = #{memberTodayPlacements[${index}]},
+                금주일반취업 = #{memberToWeekEmployments[${index}]},
+                금주알선취업 = #{memberToWeekPlacements[${index}]},
+                금월일반취업 = #{memberToMonthEmployments[${index}]},
+                금월알선취업 = #{memberToMonthPlacements[${index}]},
+                금년일반취업 = #{memberToYearEmployments[${index}]},
+                금년알선취업 = #{memberToYearPlacements[${index}]},
+                실적저장일 = getdate()
+            WHERE 아이디 = #{userId}
+        </foreach>
+    </update>
+
+    <update id="assignmentStatusUpdate">
+            UPDATE J_참여자관리_지점
+            SET
+                유형1=#{memberType1},
+                유형2=#{memberType2}
+            WHERE 지점 = #{memberBranch}
+    </update>
+
+
 
 </mapper>

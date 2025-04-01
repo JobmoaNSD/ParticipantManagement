@@ -67,6 +67,11 @@ public class ParticipantController {
         participantDTO.setParticipantBranch(loginBranch);
         log.info("Login ID : [{}]", loginId);
 
+        //마감 여부가 없으면 기본 false로 진행
+        String isClose = participantDTO.getEndDateOption() == null ? "false" : participantDTO.getEndDateOption();
+        participantDTO.setEndDateOption(isClose);
+        log.info("participantController isClose : [{}]", isClose);
+
         // 사용자가 선택한 페이지 수가 없다면 기본 페이지 1 고정
         int page = participantDTO.getPage() <= 0 ? 1 : participantDTO.getPage();
         log.info("participantController page : [{}]", page);
@@ -114,6 +119,8 @@ public class ParticipantController {
         model.addAttribute("endButton", paginationBean.getEndButton());
         // 실제 버튼 개수
         model.addAttribute("totalButton", paginationBean.getTotalButton());
+        // 검색된 참여자 개수
+        model.addAttribute("totalCount", totalCount);
 
         log.info("End participantController");
         log.info("-----------------------------------");

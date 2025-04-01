@@ -16,31 +16,34 @@ public class MemberDAO {
     private static final String ns = "MemberDAO.";
 
     public List<MemberDTO> selectAll(MemberDTO memberDTO) {
-        log.info("MemberCondition : [{}]",memberDTO.getMemberCondition());
-        log.info("memberDTO : [{}]",memberDTO);
+        log.info("MemberCondition selectAll: [{}]",memberDTO.getMemberCondition());
+//        log.info("memberDTO : [{}]",memberDTO);
         List<MemberDTO> datas = sqlSession.selectList(ns+memberDTO.getMemberCondition(), memberDTO);
         if(datas == null) datas = null;
-        log.info("datas : [{}]",datas);
+//        log.info("datas : [{}]",datas);
 //        return null;
         return datas;
     }
 
     public MemberDTO selectOne(MemberDTO memberDTO) {
-        MemberDTO data = sqlSession.selectOne(ns+"loginSelect", memberDTO);
-        log.info("Login data : [{}]",data);
+        log.info("MemberCondition selectOne: [{}]",memberDTO.getMemberCondition());
+        MemberDTO data = sqlSession.selectOne(ns+memberDTO.getMemberCondition(), memberDTO);
+//        log.info("Login data : [{}]",data);
         return data;
     }
 
 
-    public boolean insert(MemberDTO loginDTO) {
+    public boolean insert(MemberDTO memberDTO) {
         return false;
     }
 
-    public boolean update(MemberDTO loginDTO) {
-        return false;
+    public boolean update(MemberDTO memberDTO) {
+        log.info("MemberCondition update: [{}]",memberDTO.getMemberCondition());
+        boolean flag = sqlSession.update(ns+memberDTO.getMemberCondition(), memberDTO) > 0;
+        return flag;
     }
 
-    public boolean delete(MemberDTO loginDTO) {
+    public boolean delete(MemberDTO memberDTO) {
         return false;
     }
 

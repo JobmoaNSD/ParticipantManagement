@@ -23,6 +23,7 @@
     <context:component-scan base-package="com.jobmoa.app.biz.participantEmployment"/>
     <context:component-scan base-package="com.jobmoa.app.biz.participantEducation"/>
     <context:component-scan base-package="com.jobmoa.app.biz.dashboard"/>
+    <context:component-scan base-package="com.jobmoa.app.biz.report"/>
 
     <!--FIXME TODO url username password 수정 해서 배포-->
     <bean class="org.apache.commons.dbcp2.BasicDataSource" id="ds" destroy-method="close">
