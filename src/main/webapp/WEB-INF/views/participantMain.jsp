@@ -164,9 +164,9 @@
                                     name="endDateOption"
                                     id="endDate-Option"
                             >
-                                <option ${param.endDateOption.equals("all") ? 'selected' : ''} value="allType">전체</option>
                                 <option ${param.endDateOption.equals("false") ? 'selected' : ''} value="false">진행중</option>
                                 <option ${param.endDateOption.equals("true") ? 'selected' : ''} value="true">마감</option>
+                                <option ${param.endDateOption.equals("allType") ? 'selected' : ''} value="allType">전체</option>
                             </select>
                             <select
                                     class="form-select shadow-sm w-75 me-2"
@@ -259,6 +259,12 @@
                     <%-- 참여자 검색 끝 --%>
                     <%-- 참여자 테이블 시작 --%>
                     <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto mt-auto">
+                        <div class="col-md-12 text-end">
+                                현재 화면 참여자 <span class="text-center countSpan">X</span>명
+                        </div>
+                        <div class="col-md-12 text-end">
+                                검색된 참여자 <span class="text-center totalCountSpan">${totalCount}</span>명
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover shadow-sm">
                                 <thead class="table-dark text-white">
@@ -417,6 +423,11 @@
 <script>
 
     $(document).ready(function () {
+        //table tr 개수 지정
+        let trCount = $('.align-middle tr').length;
+        let trCountSpan = $('.countSpan');
+        trCountSpan.text(trCount);
+
         // DOM 로드 후 툴팁 활성화
         <%-- 툴팁 활성화 스크립트 시작 --%>
         $('[data-bs-toggle="tooltip"]').tooltip({
@@ -520,7 +531,7 @@
                 $(this).find('.order').remove();
             });
             return returnValue;
-        };
+        }
 
         function sort(attribute){
             let orderValue = attribute.find('.order').val();

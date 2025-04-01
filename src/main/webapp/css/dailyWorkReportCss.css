@@ -118,11 +118,11 @@
     text-align: center; /* 추가: 텍스트 중앙 정렬 */
     gap: 8px;
     padding: 10px 20px;
-    background-color: #1d6f42;
+    background-color: #198754;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -131,7 +131,7 @@
 }
 
 .excel-download-btn:hover {
-    background-color: #155a35;
+    background-color: #157347;
     transform: translateY(-1px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
@@ -143,4 +143,171 @@
 
 .excel-download-btn i {
     font-size: 18px;
+}
+
+
+
+/* 테이블 스타일링 */
+#status-table {
+    background-color: #ffffff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#status-thead {
+    background-color: #f8f9fa;
+}
+
+#status-thead th {
+    padding: 1rem;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.status-tbody-tr th {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* 입력 필드 스타일링 */
+.status-tbody-tr input {
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    transition: border-color 0.15s ease-in-out;
+    text-align: center;
+}
+
+.status-tbody-tr input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* 좌측 사용자 리스트 스타일링 */
+.user-list {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    padding: 1rem !important;
+}
+
+.user-item {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    background-color: #f8f9fa;
+}
+
+/* 배정인원 섹션 스타일링 */
+.personnel-section {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* 반응형 스타일링 */
+@media (max-width: 768px) {
+    .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .user-list {
+        margin-bottom: 1rem;
+    }
+
+    #status-table {
+        font-size: 0.875rem;
+    }
+
+    .status-tbody-tr input {
+        padding: 0.25rem 0.5rem;
+    }
+}
+/* 배정인원 컨테이너 스타일링 */
+.personnel-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+}
+
+/* 헤더 스타일링 */
+.personnel-header {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+    color: #212529;
+    text-align: center;
+}
+
+/* 내용 영역 스타일링 */
+.personnel-content {
+    padding: 16px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 유형 그룹 스타일링 */
+.type-group {
+    flex: 1;
+    text-align: center;
+}
+
+/* 라벨 스타일링 */
+.type-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* 입력 필드 스타일링 */
+.type-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.type-input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .personnel-content {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .type-group {
+        width: 100%;
+    }
+}
+
+.status-tbody-span {
+    font-size: 13px;
+    font-weight: 500;
+}
+.status-thead-th-name{
+    width: 200px;
+}
+
+/* 2의 배수 위치마다 왼쪽 테두리 적용 */
+.status-tbody-tr th:nth-child(2n) {
+    border-left: 1px solid #dee2e6;
 }

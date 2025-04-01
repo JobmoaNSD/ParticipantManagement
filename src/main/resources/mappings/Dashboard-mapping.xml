@@ -174,4 +174,26 @@
           AND (마감 = 'false' OR 마감 = '')
     </select>
     <!-- 전담자 금일 업무 현황 끝 -->
+
+    <!-- 성공금 현황 시작 -->
+    <select id="selectSuccessMoneyDetails" resultType="dashboard">
+        SELECT TOP(100)
+        A.구직번호 AS dashBoardJobNo,
+        A.등록일 AS dashBoardDate,
+        A.참여자 AS dashBoardPartic,
+        A.전담자_계정 AS dashBoardUserId,
+        B.이름 AS dashBoardUserName,
+        A.지점 AS dashBoardUserBranch,
+        A.성공금 AS dashBoardSuccessMoney,
+        A.인센티브 AS dashBoardIncentive
+        FROM SUCCESSMONEY A
+                 RIGHT JOIN J_참여자관리_로그인정보 B
+                            ON A.전담자_계정 = B.아이디
+        WHERE
+            A.성공금 <![CDATA[<>]]> '' AND
+            A.전담자_계정 = 'koss' AND
+            A.지점='성남';
+    </select>
+    <!-- 성공금 현황 끝 -->
+
 </mapper>

@@ -21,7 +21,7 @@ function inputLimits(id,min,max) {
         // 값이 최대값보다 크면 최대값으로 설정
         if (value > max) {
             $(this).val(max);
-            return;
+
         }
     });
 }

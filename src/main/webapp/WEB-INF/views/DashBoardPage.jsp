@@ -266,9 +266,9 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="row h2 ps-3">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm" id="success-btn">
+                                                <a type="button" class="btn btn-outline-secondary btn-sm" id="success-btn" href="successMoney.login">
                                                     상세보기<i class="bi bi-arrow-bar-right"></i>
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

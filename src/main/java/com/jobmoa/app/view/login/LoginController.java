@@ -48,10 +48,9 @@ public class LoginController {
         String url = "login.do";
         String icon = "error";
         String title = "로그인 실패";
-        String message = "" +
-                "" +
-                "";
+        String message = "";
 
+        memberDTO.setMemberCondition("loginSelect");
         memberDTO = memberService.selectOne(memberDTO);
         log.info("loginDTO : [{}]",memberDTO);
 

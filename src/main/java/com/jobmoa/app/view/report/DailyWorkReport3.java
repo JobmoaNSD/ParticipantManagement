@@ -9,8 +9,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.Session;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -63,7 +62,6 @@ public class DailyWorkReport3 {
     // 보고서 페이지 요청 처리
     @GetMapping("report.login")
     public String reportPage(Model model, MemberDTO memberDTO, HttpSession session) {
-
         LoginBean loginBean = (LoginBean) session.getAttribute("JOBMOA_LOGIN_DATA");
 
         String branch = loginBean.getMemberBranch();
@@ -80,7 +78,23 @@ public class DailyWorkReport3 {
 
     // 엑셀 다운로드 요청 처리
     @GetMapping("downloadExcel.login")
-    public void downloadExcel(HttpServletResponse response, ReportDTO reportDTO){
+    public void downloadExcel(HttpServletResponse response, ReportDTO reportDTO, MemberDTO memberDTO){
+        log.info("downloadExcel.login memberDTO : [{}]",memberDTO);
+        String branch = reportDTO.getBranch();
+
+        reportDTO.setTodayPersonnelOneType(memberDTO.getMemberType1());
+        reportDTO.setTodayPersonnelTwoType(memberDTO.getMemberType2());
+
+        memberDTO.setMemberBranch(branch);
+        memberDTO.setMemberCondition("memberStatsUpdate");
+        boolean updateFlag = memberService.update(memberDTO);
+
+        memberDTO.setMemberCondition("assignmentStatusUpdate");
+        boolean updateAssignmentFlag = memberService.update(memberDTO);
+
+        log.info("memberList downloadExcel.login : memberStatsUpdate[{}] assignmentStatusUpdate[{}]",updateFlag,updateAssignmentFlag);
+
+        //엑셀 파일 다운로드 시작
         createExcel(response,reportDTO);
     }
 
@@ -102,6 +116,16 @@ public class DailyWorkReport3 {
             setCellValue(setRowValue(sheet,8),2,assignOne.getType1());
             setCellValue(setRowValue(sheet,8),4,assignOne.getType2());
             log.info("createExcel assignOne : [{}],[{}]",assignOne.getType1(), assignOne.getType2());
+
+            //금일 배정 인원
+            setCellValue(setRowValue(sheet,8),6,reportDTO.getTodayPersonnelOneType());
+            setCellValue(setRowValue(sheet,8),8,reportDTO.getTodayPersonnelTwoType());
+            log.info("createExcel assignOne : [{}],[{}]",reportDTO.getTodayPersonnelOneType(), reportDTO.getTodayPersonnelTwoType());
+
+            //누적 실적
+            reportDTO.setReportCondition("reportSelectPerformanceAll");
+            List<ReportDTO> PerformanceAll = reportService.selectAll(reportDTO);
+            createRow(sheet,12,PerformanceAll,reportDTO.getReportCondition());
 
             //민간위탁기관 평가 실적
             //제목을 지정
@@ -153,7 +177,7 @@ public class DailyWorkReport3 {
              */
 
             // 4. 파일 다운로드 설정
-            String fileName = URLEncoder.encode(branch + "_일일보고서_" + LocalDate.now() + ".xlsx", "UTF-8");
+            String fileName = URLEncoder.encode(branch + "_일일보고서_" + LocalDate.now() + ".xlsx", StandardCharsets.UTF_8);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
             workbook.write(response.getOutputStream());
@@ -185,6 +209,17 @@ public class DailyWorkReport3 {
                 //행을 초기화 하여 값을 출력
                 int colIndex = 0;
                 setProgress(row,colIndex,data);
+                startRow++;
+            }
+        }
+        else if(condition.equals("reportSelectPerformanceAll")){
+            for (ReportDTO data : datas) {
+                //row 값 가져오기
+                Row row = setRowValue(sheet,startRow);
+
+                //행을 초기화 하여 값을 출력
+                int colIndex = 0;
+                setPerformance(row,colIndex,data);
                 startRow++;
             }
         }
@@ -254,9 +289,26 @@ public class DailyWorkReport3 {
         setCellValue(row, colIndex++, data.getReferralEmploymentRate());   // 알선취업률
         setCellValue(row, colIndex++, data.getBetterJobRate());           // 229만원 이상 취업률
         setCellValue(row, colIndex++, data.getRetentionRate());           // 고용유지율
-        colIndex++;//위치를 맞추기 위해 한번더 +1을 실행
-        colIndex++;//위치를 맞추기 위해 한번더 +1을 실행
+        colIndex+=2;//위치를 맞추기 위해 한번더 +2을 실행
         setCellValue(row, colIndex++, data.getIncentiveOccurrenceRate()); // 취업인센티브 발생률
         setCellValue(row, colIndex, data.getIncentiveNotOccurred());      // 취업인센티브 미발생자
+    }
+    private void setPerformance(Row row, int colIndex, ReportDTO data){
+        setCellValue(row, colIndex++, data.getCounselorName());        // 이름
+        setCellValue(row, colIndex, data.getMemberTodayEmployment());    // 금일 일반 취업
+        colIndex+=2;
+        setCellValue(row, colIndex, data.getMemberTodayPlacement());     // 금일 알선 취업
+        colIndex+=2;
+        setCellValue(row, colIndex, data.getMemberToWeekEmployment());   // 금주 일반 취업
+        colIndex+=2;
+        setCellValue(row, colIndex, data.getMemberToWeekPlacement());    // 금주 알선 취업
+        colIndex+=2;
+        setCellValue(row, colIndex, data.getMemberToMonthEmployment());  // 금월 일반 취업
+        colIndex+=2;
+        setCellValue(row, colIndex, data.getMemberToMonthPlacement());   // 금월 알선 취업
+        colIndex+=2;
+        setCellValue(row, colIndex, data.getMemberToYearEmployment());   // 금년 일반 취업
+        colIndex+=2;
+        setCellValue(row, colIndex, data.getMemberToYearPlacement());    // 금년 알선 취업
     }
 }

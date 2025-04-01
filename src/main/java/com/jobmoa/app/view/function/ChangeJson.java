@@ -13,9 +13,9 @@ public class ChangeJson {
      * 주어진 리스트를 JSON 배열 형식의 문자열로 변환하는 유틸리티 메서드입니다.
      * 사용 방법
      *changeJson.convertListToJsonArray(datas, item -> {
-     *             EducationDTO dto = (EducationDTO) item;  // 객체 캐스팅
-     *             return "{\"jsonID\":\"" + jsonDATA + "\","
-     *                     + "\"jsonID\":\"" + jsonDATA + "\"}";
+     *             ExDTO dto = (ExDTO) item;  // 객체 캐스팅
+     *             return "{\"jsonID\":\"" + dto.jsonDATA + "\","
+     *                     + "\"jsonID\":\"" + dto.jsonDATA + "\"}";
      *
      * @param list 변환할 객체 리스트
      * @param getJsonString 변환할 개별 아이템을 JSON 문자열로 만드는 람다 함수
@@ -42,7 +42,7 @@ public class ChangeJson {
         jsonArrayBuilder.append("]");
 
         // 로그에 변환 결과 출력
-        log.info("Converted JSON Array: [{}]", jsonArrayBuilder);
+        //log.info("Converted JSON Array: [{}]", jsonArrayBuilder);
 
         // 최종 JSON 배열 문자열 반환
         return jsonArrayBuilder.toString();

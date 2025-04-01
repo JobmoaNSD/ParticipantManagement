@@ -21,7 +21,7 @@ public class SearchBean {
     public String toString() {
         //SearchBean 으로 들어온 값이 null or 0 이면 값을 제거 후 등록
         this.search = (this.search == null || this.search.isEmpty())?"":this.search;
-        this.endDateOption = (this.endDateOption == null || this.endDateOption.isEmpty())?"allType":this.endDateOption;
+        this.endDateOption = (this.endDateOption == null || this.endDateOption.isEmpty())?"false":this.endDateOption;
         this.searchOption = (this.searchOption == null || this.searchOption.isEmpty())?"참여자":this.searchOption;
         this.searchType = (this.searchType == null || this.searchType.isEmpty())?"":this.searchType;
         int pageString = (this.page == 0)?1:this.page;

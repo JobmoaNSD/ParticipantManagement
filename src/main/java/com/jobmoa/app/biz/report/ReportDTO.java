@@ -38,7 +38,19 @@ public class ReportDTO {
     private double incentiveOccurrenceRate;       // 취업인센티브발생율
 
     // DB 외 변수
-    private String userIds[]; //사용자 계정
+    private String[] userIds; //사용자 계정
+    private int todayPersonnelOneType; // 금일 배정 인원 1유형
+    private int todayPersonnelTwoType; // 금일 배정 인원 2유형
+
+    private int memberTodayEmployment;// 금일 누적 실적 일반 취업
+    private int memberTodayPlacement;// 금일 누적 실적 알선 취업
+    private int memberToWeekEmployment;// 주간 누적 실적 일반 취업
+    private int memberToWeekPlacement;// 주간 누적 실적 알선 취업
+    private int memberToMonthEmployment;// 월간 누적 실적 일반 취업
+    private int memberToMonthPlacement;// 월간 누적 실적 알선 취업
+    private int memberToYearEmployment;// 연간 누적 실적 일반 취업
+    private int memberToYearPlacement;// 연간 누적 실적 알선 취업
+    
     private String year; // 등록년도
     private String reportCondition; //개발자 구분
 

@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.dashboard.DashboardDTO;
 import com.jobmoa.app.biz.dashboard.DashboardService;
+import com.jobmoa.app.biz.dashboard.DashboardServiceImpl;
 import com.jobmoa.app.view.function.ChangeJson;
+import com.jobmoa.app.view.function.InfoBean;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,13 @@ import java.util.List;
 @Controller
 public class DashboardMainController {
     @Autowired
-    private DashboardService dashboardService;
+    private DashboardServiceImpl dashboardService;
+
+    @Autowired
+    private ChangeJson changeJson;
 
     @GetMapping("/dashboard.login")
-    public String dashboardMain(Model model, HttpSession session, DashboardDTO dashboardDTO, ObjectMapper objectMapper, ChangeJson changeJson) throws JsonProcessingException {
+    public String dashboardMain(Model model, HttpSession session, DashboardDTO dashboardDTO, ObjectMapper objectMapper) throws JsonProcessingException {
         log.info("-----------------------------------");
         log.info("Start dashboardMain Controller(GetMapping)");
         //넘어갈 변수 선언
@@ -200,11 +205,11 @@ public class DashboardMainController {
             model.addAttribute("currentParticipantJsonData",currentParticipantJsonData);
             model.addAttribute("nowParticipantJsonData",nowParticipantJsonData);
             //참여자 현황 끝
-            
+
             //금일 업무 현황 시작
             model.addAttribute("dailyDashboard",dailyParticipant);
             //금일 업무 현황 끝
-            
+
         }
 
         String[] myDashBoardName = {
@@ -244,5 +249,38 @@ public class DashboardMainController {
         for(int i = 0; i < array.length; i++){
             model.addAttribute(myDashBoardName[i],objectMapper.writeValueAsString(array[i]));
         }
+    }
+
+    @GetMapping("/successMoney.login")
+    public String successMoney(Model model, HttpSession session, DashboardDTO dashboardDTO) {
+        //session 값에 저장된 login Data를 Bean class에 저장
+        LoginBean loginBean = (LoginBean) session.getAttribute("JOBMOA_LOGIN_DATA");
+        //login ID, 지점 변수를 생성
+        String userID = loginBean.getMemberUserID();
+        String branch = loginBean.getMemberBranch();
+        //생성된 ID, 지점 변수를 DashboardDTO에 저장
+        dashboardDTO.setDashboardUserID(userID);
+        dashboardDTO.setDashboardBranch(branch);
+
+        //dashboard selectAll을 진행
+        //selectSuccessMoneyDetails condition을 추가
+        dashboardDTO.setDashboardCondition("selectSuccessMoneyDetails");
+        List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
+        if(datas == null || datas.size() == 0){
+            return "redirect:dashboard.login";
+        }
+
+        String detailsJson = changeJson.convertListToJsonArray(datas, item -> {
+            DashboardDTO dto = (DashboardDTO) item;  // 객체 캐스팅
+            return "{\"date\":\"" + dto.getDashBoardDate() + "\","
+                    + "\"data\":\"" + dto.getDashBoardSuccessMoney() + "\"}";
+        });
+
+        log.info("successMoney detailsJson : [{}]", detailsJson);
+        log.info("successMoney datas : [{}]", datas);
+        model.addAttribute("successMoneyDetails", datas);
+        model.addAttribute("successMoneyJson", detailsJson);
+
+        return "views/DashBoardSuccessMoneyPage";
     }
 }
