@@ -181,7 +181,7 @@
         A.구직번호 AS dashBoardJobNo,
         A.등록일 AS dashBoardDate,
         A.참여자 AS dashBoardPartic,
-        A.전담자_계정 AS dashBoardUserId,
+        A.전담자_계정 AS dashBoardUserID,
         B.이름 AS dashBoardUserName,
         A.지점 AS dashBoardUserBranch,
         A.성공금 AS dashBoardSuccessMoney,
@@ -191,8 +191,8 @@
                             ON A.전담자_계정 = B.아이디
         WHERE
             A.성공금 <![CDATA[<>]]> '' AND
-            A.전담자_계정 = 'koss' AND
-            A.지점='성남';
+            A.전담자_계정 = #{dashboardUserID} AND
+            A.지점=#{dashBoardUserBranch};
     </select>
     <!-- 성공금 현황 끝 -->
 

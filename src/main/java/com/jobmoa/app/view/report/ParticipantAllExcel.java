@@ -56,11 +56,11 @@ public class ParticipantAllExcel {
     }
 
     @GetMapping("/participantExcel.login")
-    public void participantExcel(HttpServletResponse response, ParticipantDTO participantDTO, HttpSession session){
+    public void participantExcel(HttpServletResponse response, ParticipantDTO participantDTO, HttpSession session, String condition){
         LoginBean loginBean = (LoginBean) session.getAttribute("JOBMOA_LOGIN_DATA");
         participantDTO.setParticipantUserid(loginBean.getMemberUserID());
         participantDTO.setParticipantBranch(loginBean.getMemberBranch());
-        participantDTO.setParticipantCondition("participantExcel");
+        participantDTO.setParticipantCondition(condition);
         createExcel(response,participantDTO);
     }
 
@@ -77,7 +77,7 @@ public class ParticipantAllExcel {
             } catch (Exception e){
                 log.error(e.getMessage());
             }
-            log.info("createExcel datas : [{}]",datas);
+            //log.info("createExcel datas : [{}]",datas);
             createRow(sheet,1,datas);
 
             // 수식이 포함된 셀들의 계산을 실행
@@ -99,8 +99,14 @@ public class ParticipantAllExcel {
              * - 수식이 많은 경우 한 번에 처리 가능
              */
 
+            //지점 전체 참여자 다운 요청이면 앞 부분을 지점으로 변경
+            String title = participantDTO.getParticipantUserid();
+            if(participantDTO.getParticipantCondition().equals("participantBranchExcel")){
+                title = participantDTO.getParticipantBranch();
+            }
+
             // 4. 파일 다운로드 설정
-            String fileName = URLEncoder.encode(participantDTO.getParticipantUserid() + "_전체참여자_" + LocalDate.now() + ".xlsx", StandardCharsets.UTF_8);
+            String fileName = URLEncoder.encode(title + "_전체참여자_" + LocalDate.now() + ".xlsx", StandardCharsets.UTF_8);
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
             workbook.write(response.getOutputStream());
