@@ -165,6 +165,37 @@
                         </ul>
                     </li>
                     <!--end::알선기업관리-->
+                    <!--begin::지점관리-->
+                    <!--TODO FIXME 권한 확인하고 어디까지 열어둘지 확인해야함-->
+                    <c:if test="${JOBMOA_LOGIN_DATA.memberRole eq '상담'}">
+                    <li class="nav-item ${gnb_main_header eq '지점관리' ? 'menu-open' : ''}">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-building-fill-gear"></i>
+                            <p>
+                                지점관리
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="branchParitic.login" class="nav-link">
+                                    <small><p>지점전체참여자</p></small>
+                                </a>
+                            </li>
+                            <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
+                                <a href="#" class="nav-link">
+                                    <small><p>데이터이관</p></small>
+                                </a>
+                            </li>
+                            <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
+                                <a href="#" class="nav-link">
+                                    <small><p>아이디관리</p></small>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    </c:if>
+                    <!--end::알선기업관리-->
 <%--                    <li class="nav-header">DOCUMENTATIONS</li>--%>
 <%--                    <li class="nav-item">--%>
 <%--                        <a href="./docs/introduction.html" class="nav-link">--%>

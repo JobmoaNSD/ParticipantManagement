@@ -16,6 +16,7 @@
     <context:component-scan base-package="com.jobmoa.app.view.function"/>
     <context:component-scan base-package="com.jobmoa.app.view.report"/>
     <context:component-scan base-package="com.jobmoa.app.view.chatBot"/>
+    <context:component-scan base-package="com.jobmoa.app.view.branchManagement"/>
 
     <!-- jackson bean -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">

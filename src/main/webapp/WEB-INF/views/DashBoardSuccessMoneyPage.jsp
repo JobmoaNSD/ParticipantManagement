@@ -109,9 +109,10 @@
                 <div class="row d-flex align-items-center justify-content-center h-100">
                     <div id="chart-data-container" class="row col-md-6 overflow-auto h-100 p-0 ms-auto me-auto">
                             <table id="chart-data-table" class="table table-striped table-bordered text-center">
-                                <thead class="table-dark">
+                                <thead class="table-dark ">
                                 <tr class="position-sticky top-0">
                                     <th>구직번호</th>
+                                    <th>등록일</th>
                                     <th>상담사</th>
                                     <th>참여자</th>
                                     <th>성공금</th>
@@ -130,6 +131,7 @@
                                         <c:forEach items="${successMoneyDetails}" var="data">
                                             <tr>
                                                 <td>${data.dashBoardJobNo}</td>
+                                                <td>${data.dashBoardDate}</td>
                                                 <td>${data.dashBoardUserName}</td>
                                                 <td>${data.dashBoardPartic}</td>
                                                 <td>${data.dashBoardSuccessMoney}</td>
@@ -245,7 +247,8 @@
 
 <script>
     $(document).ready(function () {
-        let data = JSON.parse('${successMoneyJson}');
+        let successMoneyJson = JSON.parse('${successMoneyJson}');
+        let incentiveJson = JSON.parse('${incentiveJson}');
 
         const generateTimeSeriesData = (data) => {
             return data.map(item => [
@@ -254,9 +257,11 @@
             ]);
         };
 
-        const transformedData = generateTimeSeriesData(data);
+        const transSuccessMoney = generateTimeSeriesData(successMoneyJson);
+        const transIncentive = generateTimeSeriesData(incentiveJson);
 
-        console.log(transformedData);
+        console.log(transSuccessMoney);
+        console.log(transIncentive);
 
         let options1 = {
             chart: {
@@ -300,7 +305,7 @@
             },
             series: [
                 {
-                    data: transformedData
+                    data: transSuccessMoney
                 }
             ],
             tooltip: {
@@ -312,7 +317,7 @@
                     datetimeFormatter: {
                         year: 'yyyy년',
                         month: 'yy년 MM월',
-                        day: 'MM월 dd일',
+                        day: 'dd일',
                         hour: 'HH:mm',
                     }
                 }
@@ -324,10 +329,8 @@
         };
 
         let chart1 = new ApexCharts(document.querySelector("#chart-area"), options1);
-        chart1.render();
-        chart1 = new ApexCharts(document.querySelector("#chart-area1"), options1);
-        chart1.render();
 
+        chart1.render();
 
         let options2 = {
             chart: {
@@ -345,14 +348,11 @@
                         color: "#fff",
                         opacity: 0.4
                     },
-                },
-                title: {
-                    text: '테스트'
                 }
             },
             colors: ["#FF0080"],
             series: [{
-                data:transformedData
+                data:transSuccessMoney
             }],
             stroke: {
                 width: 2
@@ -383,12 +383,130 @@
         };
 
         let chart2 = new ApexCharts(document.querySelector("#chart-bar"), options2);
+
         chart2.render();
 
-        chart2 = new ApexCharts(document.querySelector("#chart-bar1"), options2);
-        chart2.render();
+        let options3 = {
+            chart: {
+                id: "chart3",
+                type: "bar",
+                height: 150,
+                foreColor: "#ccc",
+                toolbar: {
+                    autoSelected: "pan",
+                    show: false
+                }
+            },
+            colors: ["#00BAEC"],
+            stroke: {
+                width: 3
+            },
+            grid: {
+                borderColor: "#555",
+                clipMarkers: false,
+                yaxis: {
+                    lines: {
+                        show: false
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            fill: {
+                gradient: {
+                    enabled: true,
+                    opacityFrom: 0.55,
+                    opacityTo: 0
+                }
+            },
+            markers: {
+                size: 5,
+                colors: ["#000524"],
+                strokeColor: "#00BAEC",
+                strokeWidth: 3
+            },
+            series: [
+                {
+                    data: transIncentive
+                }
+            ],
+            tooltip: {
+                theme: "dark"
+            },
+            xaxis: {
+                type: "datetime",
+                labels:{
+                    datetimeFormatter: {
+                        year: 'yyyy년',
+                        month: 'yy년 MM월',
+                        day: 'dd일',
+                        hour: 'HH:mm',
+                    }
+                }
+            },
+            yaxis: {
+                min: 0,
+                tickAmount: 4
+            }
+        };
+
+        let chart3 = new ApexCharts(document.querySelector("#chart-area1"), options3);
+        chart3.render();
 
 
+        let options4 = {
+            chart: {
+                id: "chart4",
+                height: 200,
+                type: "bar",
+                foreColor: "#ccc",
+                brush: {
+                    target: "chart3",
+                    enabled: true
+                },
+                selection: {
+                    enabled: true,
+                    fill: {
+                        color: "#fff",
+                        opacity: 0.4
+                    },
+                }
+            },
+            colors: ["#FF0080"],
+            series: [{
+                data:transIncentive
+            }],
+            stroke: {
+                width: 2
+            },
+            grid: {
+                borderColor: "#444"
+            },
+            markers: {
+                size: 0
+            },
+            xaxis: {
+                type: "datetime",
+                tooltip: {
+                    enabled: false
+                },
+                labels:{
+                    datetimeFormatter: {
+                        year: 'yy년',
+                        month: 'yy년 MM월',
+                        day: 'dd일',
+                        hour: 'HH:mm',
+                    }
+                }
+            },
+            yaxis: {
+                tickAmount: 2
+            }
+        };
+
+        let chart4 = new ApexCharts(document.querySelector("#chart-bar1"), options4);
+        chart4.render();
     })
 
 

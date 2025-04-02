@@ -260,26 +260,40 @@ public class DashboardMainController {
         String branch = loginBean.getMemberBranch();
         //생성된 ID, 지점 변수를 DashboardDTO에 저장
         dashboardDTO.setDashboardUserID(userID);
-        dashboardDTO.setDashboardBranch(branch);
+        dashboardDTO.setDashBoardUserBranch(branch);
 
         //dashboard selectAll을 진행
         //selectSuccessMoneyDetails condition을 추가
         dashboardDTO.setDashboardCondition("selectSuccessMoneyDetails");
         List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
         if(datas == null || datas.size() == 0){
-            return "redirect:dashboard.login";
+            log.info("successMoney datas is null or datas size is 0");
+            String url="dashboard.login";
+            String icon="warning";
+            String title="조회된 성공금이 없습니다.";
+            String message="확인이 필요합니다.";
+            InfoBean.info(model, url, icon, title, message);
+            return "views/info";
         }
 
-        String detailsJson = changeJson.convertListToJsonArray(datas, item -> {
+        String successMoneyJson = changeJson.convertListToJsonArray(datas, item -> {
             DashboardDTO dto = (DashboardDTO) item;  // 객체 캐스팅
             return "{\"date\":\"" + dto.getDashBoardDate() + "\","
                     + "\"data\":\"" + dto.getDashBoardSuccessMoney() + "\"}";
         });
 
-        log.info("successMoney detailsJson : [{}]", detailsJson);
+        String incentiveJson = changeJson.convertListToJsonArray(datas, item -> {
+            DashboardDTO dto = (DashboardDTO) item;  // 객체 캐스팅
+            return "{\"date\":\"" + dto.getDashBoardDate() + "\","
+                    + "\"data\":\"" + dto.getDashBoardIncentive() + "\"}";
+        });
+
+        log.info("successMoney successMoneyJson : [{}]", successMoneyJson);
+        log.info("successMoney incentiveJson : [{}]", incentiveJson);
         log.info("successMoney datas : [{}]", datas);
         model.addAttribute("successMoneyDetails", datas);
-        model.addAttribute("successMoneyJson", detailsJson);
+        model.addAttribute("successMoneyJson", successMoneyJson);
+        model.addAttribute("incentiveJson", incentiveJson);
 
         return "views/DashBoardSuccessMoneyPage";
     }

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: no1fc
-  Date: 24. 12. 30.
-  Time: 오후 5:16
+  Date: 25. 4. 2.
+  Time: 오전 11:16
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -134,7 +134,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="참여자 조회"/>
+    <mytag:gnb gnb_main_header="지점관리" gnb_sub_header="지점전체참여자"/>
     <!--end:::App Gnb-->
 
     <!--begin:::App main content-->
@@ -154,7 +154,7 @@
                         </button>
                     </div>
                     <%-- 참여자 검색 시작 --%>
-                    <form class="row col-md-12 pt-3 pb-0 ms-auto me-auto" id="searchForm" name="searchForm" method="GET" action="/participant.login">
+                    <form class="row col-md-12 pt-3 pb-0 ms-auto me-auto" id="searchForm" name="searchForm" method="GET" action="/branchParitic.login">
                         <input type="hidden" name="page" value="1">
                         <!-- 검색 조건 선택 -->
 
@@ -184,6 +184,7 @@
                                     id="search-Option"
                             >
                                 <option ${param.searchOption.equals("참여자") ? 'selected' : ''} value="참여자">참여자</option>
+                                <option ${param.searchOption.equals("전담자") ? 'selected' : ''} value="전담자">전담자</option>
                                 <option ${param.searchOption.equals("구직번호") ? 'selected' : ''} value="구직번호">구직번호</option>
                                 <option ${param.searchOption.equals("진행단계") ? 'selected' : ''} value="진행단계">진행단계</option>
                                 <option ${param.searchOption.equals("학교명") ? 'selected' : ''} value="학교명">학교</option>
@@ -260,10 +261,10 @@
                     <%-- 참여자 테이블 시작 --%>
                     <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto mt-auto">
                         <div class="col-md-12 text-end">
-                                현재 화면 참여자 <span class="text-center countSpan">X</span>명
+                            현재 화면 참여자 <span class="text-center countSpan">X</span>명
                         </div>
                         <div class="col-md-12 text-end">
-                                검색된 참여자 <span class="text-center totalCountSpan">${totalCount}</span>명
+                            검색된 참여자 <span class="text-center totalCountSpan">${totalCount}</span>명
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover shadow-sm">
@@ -272,6 +273,9 @@
                                     <th class="text-center"><input type="button" class="btn btn-danger" id="delete_btn" value="삭제"></th>
                                     <th class="table-Column">
                                         <span class="column">구직번호</span>
+                                    </th>
+                                    <th class="table-Column">
+                                        <span class="column">전담자</span>
                                     </th>
                                     <th class="table-Column">
                                         <span class="column">참여자</span>
@@ -297,10 +301,6 @@
                                     <th class="table-Column">
                                         <span class="column">간접고용서비스</span>
                                     </th>
-                                    <th class="table-Column">
-                                        <span class="column">마감</span>
-                                    </th>
-                                    <th>수정</th>
                                 </tr>
                                 </thead>
                                 <tbody class="align-middle">
@@ -316,6 +316,7 @@
                                             <tr class="text-center">
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
                                                 <td>${data.participantJobNo}</td>
+                                                <td>${data.participantUserName}</td>
                                                 <td><a
                                                         class="selectParticipant"
                                                         href="/participantUpdate.login">
@@ -328,24 +329,6 @@
                                                 <td>${data.participantDob}</td>
                                                 <td>${data.participantRegDate}</td>
                                                 <td>${data.participantEmploymentService eq '' or data.participantEmploymentService eq null?0:data.participantEmploymentService} 회</td>
-                                                <td class="text-center isClose_td">
-                                                    <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'} isClose_span">
-                                                            ${data.participantClose ? '마감' : '진행중'}
-                                                    </span>
-                                                </td>
-                                                <td class="text-center">
-                                                    <div class="btn-group" role="group">
-                                                        <button type="button" class="btn btn-primary btn-sm shadow-sm btn-basic" data-bs-toggle="tooltip" data-popper-placement="top" title="기본정보 수정">
-                                                            <i class="bi bi-pencil"></i> 기본
-                                                        </button>
-                                                        <button type="button" class="btn btn-info btn-sm shadow-sm mx-1 btn-counsel" data-bs-toggle="tooltip" data-bs-placement="top" title="상담정보 수정">
-                                                            <i class="bi bi-chat"></i> 상담
-                                                        </button>
-                                                        <button type="button" class="btn btn-success btn-sm shadow-sm btn-employment" data-bs-toggle="tooltip" data-bs-placement="top" title="취업정보 수정">
-                                                            <i class="bi bi-briefcase"></i> 취업
-                                                        </button>
-                                                    </div>
-                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </c:when>
@@ -542,16 +525,16 @@
                 // attribute.find('.order').val('asc');
                 // console.log(searchMainHref('column=' + columnValue + '&order=asc'));
 
-                location.replace('/participant.login?'+sortHref('column=' + columnValue + '&order=asc'));
-                // location.href = '/participant.login?' + searchMainHref('column=' + columnValue + '&order=asc');
+                location.replace('/branchParitic.login?'+sortHref('column=' + columnValue + '&order=asc'));
+                // location.href = '/branchParitic.login?' + searchMainHref('column=' + columnValue + '&order=asc');
             }
             else{
                 // attribute.append('<span class="order desc"><i class="bi bi-sort-up-alt"></i></span>');
                 // attribute.find('.order').val('desc');
                 // console.log(searchMainHref('column=' + columnValue + '&order=desc'));
 
-                location.replace('/participant.login?'+sortHref('column=' + columnValue + '&order=desc'));
-                // location.href = '/participant.login?' + searchMainHref('column=' + columnValue + '&order=desc');
+                location.replace('/branchParitic.login?'+sortHref('column=' + columnValue + '&order=desc'));
+                // location.href = '/branchParitic.login?' + searchMainHref('column=' + columnValue + '&order=desc');
             }
         }
 
@@ -793,7 +776,7 @@
 
         let excelDownloadButton = $('#excelDownload');
         excelDownloadButton.on('click', function () {
-            location.href = '/participantExcel.login?condition=participantExcel';
+            location.href = '/participantExcel.login?condition=participantBranchExcel';
         });
     });
 </script>
