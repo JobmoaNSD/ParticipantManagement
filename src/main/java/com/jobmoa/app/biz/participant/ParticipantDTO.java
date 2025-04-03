@@ -2,6 +2,8 @@ package com.jobmoa.app.biz.participant;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ParticipantDTO {
     
@@ -81,6 +83,12 @@ public class ParticipantDTO {
     private String column;
     private String order;
 
+    //참여자 개수
     private int participantCount;
+
+    //참여자이관을 위한 변수
+    private String sourceCounselorID;
+    private String targetCounselorID;
+    private List<Integer> participantIDs;
 
 }

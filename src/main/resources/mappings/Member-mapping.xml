@@ -18,6 +18,18 @@
         WHERE 아이디=#{memberUserID} AND 비밀번호=#{memberUserPW}
     </select>
 
+    <!-- 지점 담담자 아이디 확인용 -->
+    <select id="branchUserID" resultType="member">
+        SELECT
+            전담자번호 memberLoginPK,
+            지점 memberBranch,
+            이름 memberUserName,
+            권한 memberRole,
+            아이디 memberUserID
+        FROM J_참여자관리_로그인정보
+        WHERE 지점=#{memberBranch}
+    </select>
+
     <select id="loginSelectAll" resultType="member">
         SELECT
             A.이름 memberUserName,

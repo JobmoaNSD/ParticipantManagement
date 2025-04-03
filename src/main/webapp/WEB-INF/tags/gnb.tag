@@ -167,7 +167,7 @@
                     <!--end::알선기업관리-->
                     <!--begin::지점관리-->
                     <!--TODO FIXME 권한 확인하고 어디까지 열어둘지 확인해야함-->
-                    <c:if test="${JOBMOA_LOGIN_DATA.memberRole eq '상담'}">
+                    <c:if test="${BRANCH_MENGER_ROLE}">
                     <li class="nav-item ${gnb_main_header eq '지점관리' ? 'menu-open' : ''}">
                         <a href="#" class="nav-link">
                             <i class="bi bi-building-fill-gear"></i>
@@ -179,17 +179,17 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="branchParitic.login" class="nav-link">
-                                    <small><p>지점전체참여자</p></small>
+                                    <small><p>지점 전체 참여자</p></small>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="transfer.login" class="nav-link">
+                                    <small><p>데이터 이전</p></small>
                                 </a>
                             </li>
                             <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
                                 <a href="#" class="nav-link">
-                                    <small><p>데이터이관</p></small>
-                                </a>
-                            </li>
-                            <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
-                                <a href="#" class="nav-link">
-                                    <small><p>아이디관리</p></small>
+                                    <small><p>아이디 관리</p></small>
                                 </a>
                             </li>
                         </ul>

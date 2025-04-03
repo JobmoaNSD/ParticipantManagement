@@ -795,5 +795,40 @@
     </select>
     <!-- 참여자 전체 데이터 엑셀 다운 쿼리 끝 -->
 
+    <!-- 데이터 이전 쿼리 시작 -->
+    <select id="transferSelect" resultType="participant">
+        SELECT
+            ISNULL(구직번호, '') AS participantJobNo,
+            ISNULL(A.등록일, '') AS participantRegDate,
+            ISNULL(이름, '') AS participantUserName,
+            ISNULL(참여자, '') AS participantPartic,
+            CASE WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일 END AS participantDob,
+            ISNULL(성별, '') AS participantGender,
+            ISNULL(참여유형, '') AS participantPartType
+        FROM J_참여자관리 A
+                 LEFT JOIN J_참여자관리_로그인정보 B
+                           ON A.전담자_계정 = B.아이디
+        WHERE B.아이디 = #{participantUserid} and B.지점 = #{participantBranch}
+        <if test="participantIDs != null and participantIDs.size() > 0 and participantIDs[0] != null">
+            AND 구직번호 IN
+            <foreach collection="participantIDs" item="data" open="(" separator="," close=")">
+                #{data}
+            </foreach>
+        </if>
+    </select>
+    <!-- 참여자 전체 데이터 엑셀 다운 쿼리 끝 -->
+
+    <update id="transferUpdate">
+        UPDATE J_참여자관리
+        SET 전담자_계정 = #{targetCounselorID},
+        메모 = CONCAT(메모, ',', CONVERT(nvarchar, GETDATE()), ' ', #{sourceCounselorID}, ' 테스트 상담사 데이터 이관')
+        WHERE 전담자_계정 = #{sourceCounselorID}
+        AND 지점 = #{participantBranch}
+        AND 구직번호 IN
+        <foreach collection="participantIDs" item="data" open="(" separator="," close=")">
+            #{data}
+        </foreach>
+    </update>
+
 
 </mapper>
