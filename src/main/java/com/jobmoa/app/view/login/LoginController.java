@@ -4,6 +4,7 @@ import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.login.MemberDTO;
 import com.jobmoa.app.biz.login.MemberService;
 import com.jobmoa.app.view.function.InfoBean;
+import com.jobmoa.app.view.function.MemberRoleCheck;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class LoginController {
     }
 
     @PostMapping("/login.do")
-    public String loginController(Model model, HttpSession session, MemberDTO memberDTO, LoginBean loginBean){
+    public String loginController(Model model, HttpSession session, MemberDTO memberDTO, LoginBean loginBean, MemberRoleCheck memberRoleCheck){
         log.info("-----------------------------------");
         log.info("Start loginController");
         String url = "login.do";
@@ -60,15 +61,18 @@ public class LoginController {
             if(memberDTO.getMemberUserID() != null){
                 log.info("loginController login Success user ID : [{}]",memberDTO.getMemberUserID());
 
+                String role = memberDTO.getMemberRole();
                 //로그인 정보를 Bean 객체에 담고
                 loginBean.setMemberUserID(memberDTO.getMemberUserID());
                 loginBean.setMemberUserName(memberDTO.getMemberUserName());
                 loginBean.setMemberBranch(memberDTO.getMemberBranch());
-                loginBean.setMemberRole(memberDTO.getMemberRole());
+                loginBean.setMemberRole(role);
                 loginBean.setMemberUniqueNumber(memberDTO.getMemberUniqueNumber());
+                boolean branchRole = memberRoleCheck.checkBranchRole(role);
 
                 //Session에 저장해 사용
                 session.setAttribute("JOBMOA_LOGIN_DATA", loginBean);
+                session.setAttribute("BRANCH_MENGER_ROLE", branchRole);
                 url = "dashboard.login";
                 icon = "success";
                 title = "로그인 성공";

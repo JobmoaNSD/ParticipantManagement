@@ -269,9 +269,9 @@ public class DashboardMainController {
         if(datas == null || datas.size() == 0){
             log.info("successMoney datas is null or datas size is 0");
             String url="dashboard.login";
-            String icon="warning";
-            String title="조회된 성공금이 없습니다.";
-            String message="확인이 필요합니다.";
+            String icon="back";
+            String title="발생한 성공금이 없습니다.";
+            String message="성공금 추가 후 진행해주세요.";
             InfoBean.info(model, url, icon, title, message);
             return "views/info";
         }

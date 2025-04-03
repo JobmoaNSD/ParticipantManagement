@@ -39,15 +39,16 @@ public class ParticipantDAO {
     }
 
     public boolean update(ParticipantDTO participantDTO) {
-
-        return false;
+        boolean flag = 0 < sqlSession.update(ns+participantDTO.getParticipantCondition(), participantDTO);
+        log.info("ParticipantDTO ParticipantDAO update result : [{}]",flag);
+        return flag;
     }
 
     public boolean delete(ParticipantDTO participantDTO) {
         //log.info("ParticipantDTO ParticipantDAO delete : [{}]",participantDTO);
         //쿼리가 실행되고 0이거나 작으면 false 0보다 크면 true 를 반환
         boolean flag = 0 < sqlSession.delete(ns+participantDTO.getParticipantCondition(), participantDTO);
-        log.info("ParticipantDTO ParticipantDAO result : [{}]",flag);
+        log.info("ParticipantDTO ParticipantDAO delete result : [{}]",flag);
         return flag;
     }
 
