@@ -67,6 +67,7 @@
                     <option value="미해당[서비스 미제공]">미해당[서비스 미제공]</option>
                     <option value="미해당[1개월 미만 퇴사]">미해당[1개월 미만 퇴사]</option>
                     <option value="미해당[파견업체]">미해당[파견업체]</option>
+                    <option value="미해당[최저임금 미만]">미해당[최저임금 미만]</option>
                 </select>
             </div>
             <div class="w-auto">

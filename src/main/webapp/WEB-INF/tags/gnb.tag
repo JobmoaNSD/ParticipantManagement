@@ -192,6 +192,11 @@
                                     <small><p>아이디 관리</p></small>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="branchDashboard.login" class="nav-link">
+                                    <small><p>지점 대시보드</p></small>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     </c:if>
