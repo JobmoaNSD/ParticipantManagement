@@ -79,12 +79,9 @@
 
   <!-- 대시보드 JavaScript -->
   <script src="js/dashboard_data_visualization.js"></script>
+  <script src="js/dashboard_data_visualization2.js"></script>
+  <script src="js/dashboard_data_visualization3.js"></script>
 
-  <script >
-    $(document).ready(function () {
-
-    })
-  </script>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -110,14 +107,14 @@
                   <span>~</span>
                   <input type="date" class="form-control w-50" id="endDate">
                 </div>
-<%--                <!-- 데이터 기준 선택 -->--%>
-<%--                <div class="col-md-3">--%>
-<%--                  <select class="form-select" id="dataCriteria">--%>
-<%--                    <option value="year">년도</option>--%>
+                <%--                <!-- 데이터 기준 선택 -->--%>
+                <%--                <div class="col-md-3">--%>
+                <%--                  <select class="form-select" id="dataCriteria">--%>
+                <%--                    <option value="year">년도</option>--%>
 
-<%--                    <option value="month">월</option>--%>
-<%--                  </select>--%>
-<%--                </div>--%>
+                <%--                    <option value="month">월</option>--%>
+                <%--                  </select>--%>
+                <%--                </div>--%>
                 <div class="col-md-3">
                   <button type="submit" class="btn btn-primary">조회</button>
                 </div>
@@ -135,9 +132,9 @@
         </div>
 
         <!-- 상담사 정보 모달 -->
-        <div class="modal fade" id="counselorModal" tabindex="-1" aria-labelledby="counselorModalLabel" aria-hidden="true">
+        <div class="modal fade" id="counselorModal" tabindex="-1" aria-labelledby="counselorModalLabel" aria-hidden="true" >
           <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-content" style="width: 1000px;">
               <div class="modal-header">
                 <h5 class="modal-title" id="counselorModalLabel">지점 상담사 성공금 현황</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -170,18 +167,19 @@
           </div>
         </div>
 
-        <!-- TODO FIXME 인센 모달 확인 JS 및 HTML DOC 완성 해야한다. -->
         <!-- 지점별 인센(미해당 비율) 현황 chart -->
         <div class="modal fade" id="inventiveSituationModal" tabindex="-1" aria-labelledby="inventiveSituationModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="inventiveSituationModalLabel">지점 상담사 성공금 현황</h5>
+                <h5 class="modal-title" id="inventiveSituationModalLabel">지점별 미해당 사유 현황</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <!-- 차트 영역 -->
-                <div id="inventiveSituationChart"></div>
+                <div id="inventiveSituationAChart"></div>
+                <!-- 차트 영역 -->
+                <div id="inventiveSituationBChart"></div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -273,6 +271,67 @@
         crossorigin="anonymous"
 ></script>
 
+<script>
+
+  const initData = {
+    branch:['전체 지점','남부','서부','인서','인남','동대문'],
+    thisSuccess:{
+      branch:['전체 지점','남부','서부','인서','인남','동대문'],
+      data:[20,10,40,30,50,40]
+    },
+    previousSuccess:{
+      branch:['전체 지점','남부','서부','인서','인남','동대문'],
+      data:[30,20,50,40,70,60]
+    },
+    correInventive:{
+      branch:['전체 지점','남부','서부','인서','인남','동대문'],
+      data:[10,20,30,40,50,20]
+    },
+    notCorreInventive:{
+      branch:['전체 지점','남부','서부','인서','인남','동대문'],
+      data:[20,10,40,30,50,40]
+    },
+    inventiveSituation:
+            [
+              {
+                name: '서비스 미제공',
+                data: [90, 55, 57]
+              },
+              {
+                name: '1개월 미만 퇴사',
+                data: [12, 85, 101]
+              },
+              {
+                name: '파견업체',
+                data: [23, 41, 36]
+              },
+              {
+                name: '최저임금 미만',
+                data: [23, 41, 36]
+              },
+            ]
+  };
+
+  // TODO FIXME 여기서 부터 수정 진행 데이터 넘겨받기는 완료 데이터 정제 및 수정만 진행하면됨
+  let test = ${jsonResult1};
+  let thisSuccess = {
+    branch:[],
+    data:[]
+  };
+  test.forEach(function(item){
+    console.log(item.previousSuccess.branch + "::::" + item.previousSuccess.data);
+    console.log(item.thisSuccess.branch + "::::" + item.thisSuccess.data);
+    thisSuccess.branch.push(item.thisSuccess.branch);
+    thisSuccess.data.push(item.thisSuccess.data);
+  })
+  initData.thisSuccess = thisSuccess;
+  console.log(initData.thisSuccess);
+
+  console.log("jsonResult1 Data : [ " + ${jsonResult1} + " ]");
+  console.log("jsonResult2 Data : [ " + ${jsonResult2} + " ]");
+  console.log("jsonResult3 Data : [ " + ${jsonResult3} + " ]");
+
+</script>
 
 
 </html>
