@@ -83,4 +83,20 @@ public class DashboardDTO {
     private int dashBoardIncentive; // 성공금 상세 현황 인센티브
     private String dashBoardUserBranch; // dashBoardBranch 오류발생으로 새로운 지점 변수 생성
 
+    //지점관리 대시보드 변수
+    private String dashBoardStartDate; // 대시보드 상세 현황 시작 날짜
+    private String dashBoardEndDate; // 대시보드 상세 현황 끝 날짜
+    private int lastYearMoney; // 작년 성공금
+    private int currentYearMoney; // 이번년도 성공금
+    private int falseCaseNum; // 미해당 건수
+    private int trueCaseNum; // 해당 건수
+    private int noServiceCount;          // 서비스미제공 건수
+    private int lessThanOneMonthCount;   // 1개월미만퇴사 건수
+    private int dispatchCompanyCount;    // 파견업체 건수
+    private int iapSevenDaysCount;       // IAP7일이내취업 건수
+    private int underThirtyHoursCount;   // 주30시간미만 건수
+    private int underMinWageCount;       // 최저임금미만 건수
+    private int etcCount;                // 기타(해외취업포함) 건수
+
+
 }
