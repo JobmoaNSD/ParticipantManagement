@@ -1,10 +1,24 @@
 $(document).ready(function(){
-    //임시데이터
+    //데이터 초기화
     const Datas = initData;
 
-    //네번째 프레임
-    let donutOptions = {
-        series: Datas.inventiveSituation.map(situation => situation),
+    function preprocessData(data) {
+        return data.map(item => {
+            // data 속성이 있는 경우
+            if (item.data) {
+                return {
+                    ...item,
+                    data: item.data.map(value => value === 0 ? 0.1 : value)
+                };
+            }
+            // 단순 배열인 경우
+            return item === 0 ? 0.1 : item;
+        });
+    }
+
+    // 네번째 프레임
+    let options = {
+        series: preprocessData(Datas.inventiveSituation),
         chart: {
             type: 'bar',
             height: 350,
@@ -15,11 +29,12 @@ $(document).ready(function(){
             events: {
                 dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
                     const branchIndex = config.dataPointIndex;
-                    const branchName = Datas.thisSuccess.branch[branchIndex];
+                    // const branchName = Datas.thisSuccess.branch[branchIndex];
 
                     // 전체 지점 클릭시 모달 표시
                     if (branchIndex === 0) {
-                        showInventiveModal(branchName);
+                        showInventiveModal("A");
+                        showInventiveModal("B");
                     }
                 }
             }
@@ -29,7 +44,12 @@ $(document).ready(function(){
                 horizontal: false,
                 columnWidth: '55%',
                 borderRadius: 2,
-            },
+                // 0값도 그래프 표시를 위한 설정
+                minHeight: 2,
+                dataLabels: {
+                    position: 'center'
+                }
+            }
         },
         stroke: {
             show: true,
@@ -37,15 +57,19 @@ $(document).ready(function(){
             colors: ['transparent']
         },
         xaxis: {
-            categories: ['A 사업부','B 사업부'],
+            min:0,
+            categories: ['전체 지점','A 사업부','B 사업부'],
         },
+        // Y축 설정 수정
         yaxis: {
+            min: 0,  // y축 최소값 설정
+            tickAmount: 5,  // y축 눈금 개수
             title: {
-                text: ''
+                text: '미해당 (건)'
             },
             labels: {
                 formatter: function(val) {
-                    return val.toLocaleString();
+                    return val.toLocaleString() + " 건";
                 }
             }
         },
@@ -53,11 +77,11 @@ $(document).ready(function(){
             opacity: 1
         },
         // 기본 색상 설정
-        colors: ['#ff0000', '#fca895', '#ffb0b0','#934e4e'],
+        colors: ['#ff0000', '#fca895', '#ffb0b0','#934e4e','#d34859', '#a45050','#772525'],
         tooltip: {
             y: {
                 formatter: function(val) {
-                    return val.toLocaleString() + " 건";
+                    return val + "건"
                 }
             }
         },
@@ -74,16 +98,25 @@ $(document).ready(function(){
                 }
             }
         },
+        // 데이터 라벨 수정
         dataLabels: {
             enabled: true,
             formatter: function(val) {
-                return val.toLocaleString() + '건';
-            }
+                // 0 포함하여 모든 값 표시
+                return (val.toLocaleString()==0.1?0:val.toLocaleString()) + " 건";
+            },
+            textAnchor: 'middle',
+            style: {
+                colors: ['#000000'],
+                fontWeight: 500
+            },
+            offsetY: 0
         },
         title: {
             text: '인센 미해당 현황',
             align: 'left'
-        }
+        },
+
     };
 
 
@@ -104,7 +137,7 @@ $(document).ready(function(){
 
                 // 상담사 차트 옵션
                 const consultantChartOptions = {
-                    series: data.inventiveSituation.map(situation => situation),
+                    series: preprocessData(data.inventiveSituation),
                     chart: {
                         type: 'bar',
                         height: 350,
@@ -130,8 +163,12 @@ $(document).ready(function(){
                     dataLabels: {
                         enabled: true,
                         formatter: function(val) {
-                            return val.toLocaleString() + '건';
-                        }
+                            return Math.floor(val) + '건';
+                        },
+                        style: {
+                            colors: ['#000000'],
+                            fontWeight: 500
+                        },
                     },
                     xaxis: {
                         categories: data.branch,
@@ -146,19 +183,25 @@ $(document).ready(function(){
                             }
                         }
                     },
-                    colors: ['#2E93fA'],
+                    // 기본 색상 설정
+                    colors: ['#ff0000', '#fca895', '#ffb0b0','#934e4e','#d34859', '#a45050','#772525'],
                     tooltip: {
                         y: {
                             formatter: function(val) {
-                                return val.toLocaleString() + ' 건';
+                                return Math.floor(val) + ' 건';
                             }
                         }
-                    }
+                    },
+                    title: {
+                        text: branchName+'사업부 인센 미해당 현황',
+                        align: 'left'
+                    },
                 };
+
 
                 // 차트 생성 및 렌더링
                 const inventiveSituationAChart = new ApexCharts(
-                    document.querySelector("#inventiveSituationAChart"),
+                    document.querySelector("#inventiveSituation"+branchName+"Chart"),
                     consultantChartOptions
                 );
                 inventiveSituationAChart.render();
@@ -169,8 +212,8 @@ $(document).ready(function(){
                 $('#inventiveSituationModal').modal('show');
             })
             .catch(error => {
-                console.error('상담사 데이터 조회 실패:', error);
-                sweetAlert('error', '데이터 조회 실패', '상담사 정보를 불러오는데 실패했습니다.');
+                console.error('데이터 조회 실패:', error);
+                alert('데이터 조회 실패'+ '정보를 불러오는데 실패했습니다.');
             });
     }
 
@@ -180,30 +223,106 @@ $(document).ready(function(){
      * @returns {Promise} - 상담사 데이터
      */
     function ajaxInventiveData(branchName) {
+        let startDate = $("#dashBoardStartDate").val();
+        let endDate = $("#dashBoardEndDate").val();
+        const inventiveFalseStatusData =
+            {branch:[],
+                inventiveSituation:
+                [
+                    {
+                        name: '서비스 미제공',
+                        data: []
+                    },
+                    {
+                        name: '1개월 미만 퇴사',
+                        data: []
+                    },
+                    {
+                        name: '파견업체',
+                        data: []
+                    },
+                    {
+                        name: 'IAP수립7일이내취업',
+                        data: []
+                    },
+                    {
+                        name: '주 30시간 미만',
+                        data: []
+                    },
+                    {
+                        name: '최저임금 미만',
+                        data: []
+                    },
+                    {
+                        name: '기타(해외취업포함)',
+                        data: []
+                    },
+                ]};
+
+        fetch('dashBoardInventive.login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                businessUnit: branchName,
+                dashBoardStartDate: startDate,
+                dashBoardEndDate: endDate
+            })
+        }).then(async r => {
+            let result = await r.json();
+            JSON.parse(result).forEach((item) => {
+                    inventiveFalseStatusData.branch.push(item.branch);
+                    inventiveFalseStatusData.inventiveSituation.at(0).data.push(item.noService);
+                    inventiveFalseStatusData.inventiveSituation.at(1).data.push(item.lessThanOneMonth);
+                    inventiveFalseStatusData.inventiveSituation.at(2).data.push(item.dispatchCompany);
+                    inventiveFalseStatusData.inventiveSituation.at(3).data.push(item.iapSevenDays);
+                    inventiveFalseStatusData.inventiveSituation.at(4).data.push(item.underThirtyHours);
+                    inventiveFalseStatusData.inventiveSituation.at(5).data.push(item.underMinWage);
+                    inventiveFalseStatusData.inventiveSituation.at(6).data.push(item.etc);
+                });
+        })
+        console.log(inventiveFalseStatusData);
+
         return new Promise((resolve) => {
             // 테스트용 더미 데이터 (실제 구현시 API 호출로 대체)
             setTimeout(() => {
-                resolve({
-                        branch:['남부','서부','인서','인남','동대문'],
-                        inventiveSituation:[
-                            {
-                                name: '서비스 미제공',
-                                data: [90, 55, 57, 82, 68]
-                            },
-                            {
-                                name: '1개월 미만 퇴사',
-                                data: [12, 85, 101, 98, 82]
-                            },
-                            {
-                                name: '파견업체',
-                                data: [23, 41, 36, 32, 34]
-                            },
-                            {
-                                name: '최저임금 미만',
-                                data: [23, 41, 36, 32, 34]
-                            },
-                        ]
-                });
+                resolve(inventiveFalseStatusData
+                //{
+                    // branch:['남부','서부','인서','인남','동대문'],
+                    // inventiveSituation:
+                    //     [
+                    //         {
+                    //             name: '서비스 미제공',
+                    //             data: []
+                    //         },
+                    //         {
+                    //             name: '1개월 미만 퇴사',
+                    //             data: []
+                    //         },
+                    //         {
+                    //             name: '파견업체',
+                    //             data: []
+                    //         },
+                    //         {
+                    //             name: 'IAP수립7일이내취업',
+                    //             data: []
+                    //         },
+                    //         {
+                    //             name: '주 30시간 미만',
+                    //             data: []
+                    //         },
+                    //         {
+                    //             name: '최저임금 미만',
+                    //             data: []
+                    //         },
+                    //         {
+                    //             name: '기타(해외취업포함)',
+                    //             data: []
+                    //         },
+                    //     ]
+                //}
+                );
             }, 500);
         });
     }
@@ -215,5 +334,5 @@ $(document).ready(function(){
     });
 
     // 차트 렌더링
-    new ApexCharts(document.querySelector("#dashboard_inventive_situation_chart"), donutOptions).render();
+    new ApexCharts(document.querySelector("#dashboard_inventive_situation_chart"), options /*donutOptions*/).render();
 })

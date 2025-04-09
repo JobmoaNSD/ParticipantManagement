@@ -29,12 +29,16 @@ public class DashboardBranchController {
 
     @GetMapping("/branchDashboard.login")
     public String dashboardBranchSuccessMoney(Model model, HttpSession session, DashboardDTO dashboardDTO){
+        String startDate = dashboardDTO.getDashBoardStartDate();
+        String endDate = dashboardDTO.getDashBoardEndDate();
 
-        if (dashboardDTO.getDashBoardStartDate() == null || dashboardDTO.getDashBoardEndDate() == null) {
+        if (startDate == null || endDate == null) {
+            startDate = DATE.withDayOfYear(1).toString();
+            endDate = DATE.withDayOfYear(DATE.lengthOfYear()).toString();
             // 시작일이 없다면 무조건 올해 1월로 설정
-            dashboardDTO.setDashBoardStartDate(DATE.withDayOfYear(1).toString());
+            dashboardDTO.setDashBoardStartDate(startDate);
             // 마지막일이 없다면 올해 12월 말로 설정
-            dashboardDTO.setDashBoardEndDate(DATE.withDayOfYear(DATE.lengthOfYear()).toString());
+            dashboardDTO.setDashBoardEndDate(endDate);
         }
 
         // 지점별 성공금 현황 json 변환 시작
@@ -49,8 +53,8 @@ public class DashboardBranchController {
                     escapeJsonString(dto.getDashboardBranch()) : "";
 
             return String.format(
-                    "{\"thisSuccess\":{\"branch\":\"%s\",\"data\":[%s]}," +
-                            "\"previousSuccess\":{\"branch\":\"%s\",\"data\":[%s]}}",
+                    "{\"thisSuccess\":{\"branch\":\"%s\",\"data\":%s}," +
+                            "\"previousSuccess\":{\"branch\":\"%s\",\"data\":%s}}",
                     branch,
                     dto.getCurrentYearMoney() != 0 ? dto.getCurrentYearMoney() : 0,
                     branch,
@@ -74,9 +78,11 @@ public class DashboardBranchController {
             return String.format(
                     "{\"branch\":\"%s\"," +
                             "\"trueCase\":%d," +
+                            "\"falseCase\":%d," +
                             "\"noService\":%d}",
                     branch,
                     dto.getTrueCaseNum(),
+                    dto.getFalseCaseNum(),
                     dto.getNoServiceCount()
             );
         });
@@ -119,6 +125,8 @@ public class DashboardBranchController {
         model.addAttribute("jsonResult1", jsonResult1);
         model.addAttribute("jsonResult2", jsonResult2);
         model.addAttribute("jsonResult3", jsonResult3);
+        model.addAttribute("dashBoardStartDate", startDate);
+        model.addAttribute("dashBoardEndDate", endDate);
 
         return "views/DashBoardTotalManagement";
     }

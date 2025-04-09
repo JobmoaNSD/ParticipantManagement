@@ -52,7 +52,8 @@ $(document).ready(function(){
             enabled: true,
             formatter: function(val) {
                 return val.toLocaleString() + '만원';
-            }
+            },
+            minAngle: 0
         },
         title: {
             text: '지점별 성공금 현황',
@@ -158,13 +159,41 @@ $(document).ready(function(){
      * @returns {Promise} - 상담사 데이터
      */
     function fetchConsultantData(branchName) {
+        let startDate = $("#dashBoardStartDate").val();
+        let endDate = $("#dashBoardEndDate").val();
+        let jsonData = {
+            consultants: [],
+            amounts: []
+        };
+        fetch('dashBoardSuccess.login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dashboardBranch: branchName,
+                dashBoardStartDate: startDate,
+                dashBoardEndDate: endDate
+            })
+        }).then(async r => {
+            let result = await r.json();
+            JSON.parse(result).forEach(element => {
+                jsonData.consultants.push(element.consultants);
+                jsonData.amounts.push(element.amounts/10000);
+            })
+            // console.log(jsonData);
+        })
+
+
         return new Promise((resolve) => {
             // 테스트용 더미 데이터 (실제 구현시 API 호출로 대체)
             setTimeout(() => {
-                resolve({
-                    consultants: ['김상담', '이상담', '박상담', '최상담', '정상담'],
-                    amounts: [2500, 2100, 1800, 2300, 1900]
-                });
+                resolve(jsonData
+                    //     {
+                    //     consultants: ['김상담', '이상담', '박상담', '최상담', '정상담'],
+                    //     amounts: [2500, 2100, 1800, 2300, 1900]
+                    // }
+                );
             }, 500);
         });
     }

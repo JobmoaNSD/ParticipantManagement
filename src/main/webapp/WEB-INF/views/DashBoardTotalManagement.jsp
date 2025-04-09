@@ -103,9 +103,9 @@
               <!-- 날짜 선택 -->
               <div class="row mb-12 d-flex align-items-center justify-content-start">
                 <div class="col-md-5 d-flex align-items-center">
-                  <input type="date" class="form-control w-50" id="startDate">
+                  <input type="date" class="form-control w-50" id="dashBoardStartDate" name="dashBoardStartDate" value="${dashBoardStartDate == null ? "":dashBoardStartDate}">
                   <span>~</span>
-                  <input type="date" class="form-control w-50" id="endDate">
+                  <input type="date" class="form-control w-50" id="dashBoardEndDate" name="dashBoardEndDate" value="${dashBoardEndDate == null ? "":dashBoardEndDate}">
                 </div>
                 <%--                <!-- 데이터 기준 선택 -->--%>
                 <%--                <div class="col-md-3">--%>
@@ -169,7 +169,7 @@
 
         <!-- 지점별 인센(미해당 비율) 현황 chart -->
         <div class="modal fade" id="inventiveSituationModal" tabindex="-1" aria-labelledby="inventiveSituationModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
+          <div class="modal-dialog modal-xl" style="max-width: 90%;">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="inventiveSituationModalLabel">지점별 미해당 사유 현황</h5>
@@ -272,64 +272,150 @@
 ></script>
 
 <script>
-
+  // 임시 데이터
+  // const initData = {
+  //   branch:['전체 지점','남부','서부','인서','인남','동대문'],
+  //   thisSuccess:{
+  //     branch:['전체 지점','남부','서부','인서','인남','동대문'],
+  //     data:[20,10,40,30,50,40]
+  //   },
+  //   previousSuccess:{
+  //     branch:['전체 지점','남부','서부','인서','인남','동대문'],
+  //     data:[30,20,50,40,70,60]
+  //   },
+  //   correInventive:{
+  //     branch:['전체 지점','남부','서부','인서','인남','동대문'],
+  //     data:[10,20,30,40,50,20]
+  //   },
+  //   notCorreInventive:{
+  //     branch:['전체 지점','남부','서부','인서','인남','동대문'],
+  //     data:[20,10,40,30,50,40]
+  //   },
+  //   inventiveSituation:
+  //           [
+  //             {
+  //               name: '서비스 미제공',
+  //               data: [90, 55, 57]
+  //             },
+  //             {
+  //               name: '1개월 미만 퇴사',
+  //               data: [12, 85, 101]
+  //             },
+  //             {
+  //               name: '파견업체',
+  //               data: [23, 41, 36]
+  //             },
+  //             {
+  //               name: '최저임금 미만',
+  //               data: [23, 41, 36]
+  //             },
+  //           ]
+  // };
+  //데이터 전달용 json 변수
   const initData = {
-    branch:['전체 지점','남부','서부','인서','인남','동대문'],
     thisSuccess:{
-      branch:['전체 지점','남부','서부','인서','인남','동대문'],
-      data:[20,10,40,30,50,40]
+      branch:[],
+      data:[]
     },
     previousSuccess:{
-      branch:['전체 지점','남부','서부','인서','인남','동대문'],
-      data:[30,20,50,40,70,60]
+      branch:[],
+      data:[]
     },
     correInventive:{
-      branch:['전체 지점','남부','서부','인서','인남','동대문'],
-      data:[10,20,30,40,50,20]
+      branch:[],
+      data:[]
     },
     notCorreInventive:{
-      branch:['전체 지점','남부','서부','인서','인남','동대문'],
-      data:[20,10,40,30,50,40]
+      branch:[],
+      data:[]
+    },
+    noServiceInventive:{
+      branch:[],
+      data:[]
     },
     inventiveSituation:
             [
               {
                 name: '서비스 미제공',
-                data: [90, 55, 57]
+                data: []
               },
               {
                 name: '1개월 미만 퇴사',
-                data: [12, 85, 101]
+                data: []
               },
               {
                 name: '파견업체',
-                data: [23, 41, 36]
+                data: []
+              },
+              {
+                name: 'IAP수립7일이내취업',
+                data: []
+              },
+              {
+                name: '주 30시간 미만',
+                data: []
               },
               {
                 name: '최저임금 미만',
-                data: [23, 41, 36]
+                data: []
+              },
+              {
+                name: '기타(해외취업포함)',
+                data: []
               },
             ]
   };
 
-  // TODO FIXME 여기서 부터 수정 진행 데이터 넘겨받기는 완료 데이터 정제 및 수정만 진행하면됨
-  let test = ${jsonResult1};
-  let thisSuccess = {
-    branch:[],
-    data:[]
-  };
-  test.forEach(function(item){
-    console.log(item.previousSuccess.branch + "::::" + item.previousSuccess.data);
-    console.log(item.thisSuccess.branch + "::::" + item.thisSuccess.data);
-    thisSuccess.branch.push(item.thisSuccess.branch);
-    thisSuccess.data.push(item.thisSuccess.data);
-  })
-  initData.thisSuccess = thisSuccess;
-  console.log(initData.thisSuccess);
+  //지점별 성공금 현황 데이터 정제 시작
+  const successMoneyData = ${jsonResult1 eq null?'[]':jsonResult1};
+  //지점별 성공금 현황 초기 데이터
+  if(successMoneyData.length > 0){
+    successMoneyData.forEach(function(item){
+      initData.thisSuccess.branch.push(item.thisSuccess.branch);
+      initData.thisSuccess.data.push(Math.floor(item.thisSuccess.data/10000));
+      initData.previousSuccess.branch.push(item.previousSuccess.branch);
+      initData.previousSuccess.data.push(Math.floor(item.previousSuccess.data/10000));
+    })
+    initData.thisSuccess.data[0] = Math.floor(initData.thisSuccess.data[0]/(successMoneyData.length - 1));
+    initData.previousSuccess.data[0] = Math.floor(initData.previousSuccess.data[0]/(successMoneyData.length - 1));
+    // console.log("initData.thisSuccess.data : [ " + initData.thisSuccess.data + " ]");
+  }
+  //지점별 성공금 현황 데이터 정제 끝
 
-  console.log("jsonResult1 Data : [ " + ${jsonResult1} + " ]");
-  console.log("jsonResult2 Data : [ " + ${jsonResult2} + " ]");
-  console.log("jsonResult3 Data : [ " + ${jsonResult3} + " ]");
+  // 인센 해당 미해당 현황 데이터 정제 시작
+  const inventiveStatusData = ${jsonResult2 eq null?'[]':jsonResult2};
+  //인센 현황 초기 데이터
+  if(inventiveStatusData.length > 0){
+    inventiveStatusData.forEach(function(item){
+      initData.correInventive.branch.push(item.branch);
+      initData.correInventive.data.push(item.trueCase);
+      initData.notCorreInventive.branch.push(item.branch);
+      initData.notCorreInventive.data.push(item.falseCase);
+      initData.noServiceInventive.branch.push(item.branch);
+      initData.noServiceInventive.data.push(item.noService);
+    })
+    initData.correInventive.data[0] = Math.floor(initData.correInventive.data[0]/(inventiveStatusData.length - 1));
+    initData.notCorreInventive.data[0] = Math.floor(initData.notCorreInventive.data[0]/(inventiveStatusData.length - 1));
+    initData.noServiceInventive.data[0] = Math.floor(initData.noServiceInventive.data[0]/(inventiveStatusData.length - 1));
+    // console.log("initData.correInventive.data : [ " + initData.correInventive.data + " ]");
+  }
+  // 인센 해당 미해당 현황 데이터 정제 끝
+
+  // 인센 미해당 현황 데이터 정제 시작
+  const inventiveFalseStatusData = ${jsonResult3 eq null?'[]':jsonResult3};
+  if (inventiveFalseStatusData.length > 0) {
+    inventiveFalseStatusData.forEach(function (item) {
+      initData.inventiveSituation.at(0).data.push(item.noService);
+      initData.inventiveSituation.at(1).data.push(item.lessThanOneMonth);
+      initData.inventiveSituation.at(2).data.push(item.dispatchCompany);
+      initData.inventiveSituation.at(3).data.push(item.iapSevenDays);
+      initData.inventiveSituation.at(4).data.push(item.underThirtyHours);
+      initData.inventiveSituation.at(5).data.push(item.underMinWage);
+      initData.inventiveSituation.at(6).data.push(item.etc);
+    });
+    console.log("initData.inventiveSituation.at(0).data : [ " + initData.inventiveSituation.at(3).data + " ]");
+  }
+  // 인센 미해당 현황 데이터 정제 끝
 
 </script>
 
