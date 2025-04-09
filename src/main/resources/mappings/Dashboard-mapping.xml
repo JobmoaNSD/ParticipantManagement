@@ -217,7 +217,8 @@
         SELECT
             ISNULL(A.지점, '전체 지점') AS dashboardBranch,
             ISNULL(SUM(IIF(취업인센티브_구분 LIKE '%해당%',1,0)),0) AS trueCaseNum,
-            ISNULL(SUM(IIF(취업인센티브_구분 LIKE '%미해당%',1,0)),0) AS noServiceCount
+            ISNULL(SUM(IIF(취업인센티브_구분 LIKE '%미해당%' AND 취업인센티브_구분 NOT LIKE '%서비스 미제공%',1,0)),0) AS falseCaseNum,
+            ISNULL(SUM(IIF(취업인센티브_구분 LIKE '%서비스 미제공%',1,0)),0) AS noServiceCount
         FROM
             SUCCESSMONEY A
                 RIGHT JOIN J_참여자관리_지점 B
@@ -241,15 +242,60 @@
             SUM(CASE WHEN A.취업인센티브_구분 LIKE '%최저임금 미만%' THEN 1 ELSE 0 END) as underMinWageCount,
             SUM(CASE WHEN A.취업인센티브_구분 LIKE '%기타(해외취업포함)%' THEN 1 ELSE 0 END) as etcCount
         FROM SUCCESSMONEY A
-                 RIGHT JOIN J_참여자관리_지점 B ON A.지점 = B.지점
+                 RIGHT JOIN J_참여자관리_지점 B
+                            ON A.지점 = B.지점
         WHERE
-            취창업일 <![CDATA[>=]]> #{dashBoardStartDate}
-          AND 취창업일 <![CDATA[<=]]> #{dashBoardEndDate}
+            A.지점 <![CDATA[<>]]> '테스트' AND
+            A.취창업일 <![CDATA[>=]]> #{dashBoardStartDate}
+          AND A.취창업일 <![CDATA[<=]]> #{dashBoardEndDate}
           AND B.사업부 <![CDATA[<>]]> ''
           AND A.취업인센티브_구분 LIKE '%미해당%'
         GROUP BY B.사업부 WITH ROLLUP
-        ORDER BY B.사업부;
+        ORDER BY B.사업부
     </select>
     <!-- 지점 관리자 대시보드 지점별 인센 현황 끝 -->
+
+
+    <!-- 비동기 지점 상담사별 성공금 금액 확인용 쿼리 -->
+    <select id="selectCounselSuccessMoney" resultType="dashboard">
+        SELECT
+            A.지점 AS dashBoardUserBranch,
+            B.이름 AS dashBoardUserName,
+            ISNULL(SUM(A.성공금),0) AS dashBoardSuccessMoney
+        FROM
+            SUCCESSMONEY A
+                RIGHT JOIN
+            J_참여자관리_로그인정보 B
+            ON A.전담자_계정 = B.아이디
+        WHERE
+            A.취창업일 <![CDATA[>=]]> #{dashBoardStartDate} AND A.취창업일 <![CDATA[<=]]> #{dashBoardEndDate}
+          AND A.지점 = #{dashboardBranch}
+        GROUP BY A.지점,B.이름
+    </select>
+    <!-- 비동기 지점 상담사별 성공금 금액 확인용 쿼리 -->
+
+    <!-- 비동기 지점 관리자 대시보드 지점별 인센 미해당 현황 시작 -->
+    <select id="selectAjaxBranchInventiveFalseStatus" resultType="dashboard">
+        SELECT
+            A.지점 as dashboardBranch,
+            SUM(CASE WHEN A.취업인센티브_구분 LIKE '%서비스 미제공%' THEN 1 ELSE 0 END) as noServiceCount,
+            SUM(CASE WHEN A.취업인센티브_구분 LIKE '%1개월 미만 퇴사%' THEN 1 ELSE 0 END) as lessThanOneMonthCount,
+            SUM(CASE WHEN A.취업인센티브_구분 LIKE '%파견업체%' THEN 1 ELSE 0 END) as dispatchCompanyCount,
+            SUM(CASE WHEN A.취업인센티브_구분 LIKE '%IAP수립 후 7일이내 취업%' THEN 1 ELSE 0 END) as iapSevenDaysCount,
+            SUM(CASE WHEN A.취업인센티브_구분 LIKE '%주 30시간 미만%' THEN 1 ELSE 0 END) as underThirtyHoursCount,
+            SUM(CASE WHEN A.취업인센티브_구분 LIKE '%최저임금 미만%' THEN 1 ELSE 0 END) as underMinWageCount,
+            SUM(CASE WHEN A.취업인센티브_구분 LIKE '%기타(해외취업포함)%' THEN 1 ELSE 0 END) as etcCount
+        FROM SUCCESSMONEY A
+                 RIGHT JOIN J_참여자관리_지점 B
+                            ON A.지점 = B.지점
+        WHERE
+            A.취창업일 <![CDATA[>=]]> #{dashBoardStartDate} AND A.취창업일 <![CDATA[<=]]> #{dashBoardEndDate}
+          AND A.지점 <![CDATA[<>]]> '테스트'
+          AND B.사업부 <![CDATA[<>]]> '' AND B.사업부 <![CDATA[=]]> #{businessUnit}
+          AND A.취업인센티브_구분 LIKE '%미해당%'
+        GROUP BY A.지점
+        ORDER BY A.지점 DESC
+    </select>
+    <!-- 비동기 지점 관리자 대시보드 지점별 인센 미해당 현황 끝 -->
 
 </mapper>

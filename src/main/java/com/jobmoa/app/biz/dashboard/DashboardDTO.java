@@ -97,6 +97,7 @@ public class DashboardDTO {
     private int underThirtyHoursCount;   // 주30시간미만 건수
     private int underMinWageCount;       // 최저임금미만 건수
     private int etcCount;                // 기타(해외취업포함) 건수
+    private String businessUnit; // 사업부서
 
 
 }
