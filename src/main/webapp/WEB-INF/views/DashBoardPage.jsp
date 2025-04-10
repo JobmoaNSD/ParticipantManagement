@@ -196,14 +196,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-8 border-start border-dark border-2">
+                        <div class="col-md-4 border-start border-dark border-2">
                             <div class="row h2 ps-1">
                                 참여자 통계
                             </div>
                             <div class="row">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start" id="thisYearParticipant">
+                                        <div class="ms-2 me-auto text-start w-100" id="thisYearParticipant">
                                             <%--                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>--%>
                                             <%--                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>--%>
                                             <%--                                            <div class="progress rounded rounded-2">--%>
@@ -213,7 +213,7 @@
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start" id="currentParticipant">
+                                        <div class="ms-2 me-auto text-start w-100" id="currentParticipant">
                                             <%--                                            <div class="fw-bold">현재 진행자 수 00명</div>--%>
                                             <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
                                             <%--                                            <div class="progress rounded rounded-2">--%>
@@ -224,7 +224,7 @@
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start" id="totalParticipant">
+                                        <div class="ms-2 me-auto text-start w-100" id="totalParticipant">
                                             <%--                                            <div class="fw-bold">총 참여자 수 00명</div>--%>
                                             <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
                                             <%--                                            <div class="progress rounded rounded-2">--%>
@@ -237,6 +237,26 @@
                                 </ul>
                             </div>
                         </div>
+                    <div class="col-md-5 border-start border-dark border-2">
+                        <div class="row h2 ps-1">
+                            등수 현황
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <!-- 그래프 영역 -->
+                                    <div id="scoreChart" class="flex-grow-1"></div>
+                                    <!-- 등수 표시 영역 -->
+                                    <div class="ms-3 d-flex flex-column justify-content-center">
+                                        <div class="rank-box text-center">
+                                            <h3 class="mb-0">등급 : <span id="myRanking"></span></h3>
+                                            <div id="myTotalRanking" class="rank-number display-4 fw-bold text-primary fs-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- end::main 업무 참여자 통계 끝 -->
                 <!-- begin::main chart 본문 시작 -->
@@ -738,5 +758,71 @@
     })
 </script>
 <%-- FIXME 년도 조회 End --%>
+
+<%-- 템플릿용으로 만들어둔 등수 현황 데이터 --%>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let data = ${scoreJson};
+        console.log(data[0].data);
+        console.log(data[0].myRanking);
+        console.log(data[0].myTotalRanking);
+        $('#myRanking').text(data[0].myRanking);
+        $('#myTotalRanking').text(data[0].myTotalRanking);
+        // 차트 옵션 설정
+        const options = {
+            series: [{
+                name: '점수',
+                data: data[0].data // [전체 평균, 지점 평균, 내 점수]
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                    show: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    borderRadius: 5,
+                    distributed: true
+                },
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return val + '점';
+                }
+            },
+            colors: ['#2E93fA', '#66DA26', '#FF9800'],
+            xaxis: {
+                categories: ['전체 지점 평균', '내 지점 평균', '내 점수'],
+                labels: {
+                    style: {
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                title: {
+                    text: '점수'
+                },
+            },
+            title: {
+                text: '점수 현황',
+                align: 'center',
+                margin: 10,
+                style: {
+                    fontSize: '16px'
+                }
+            }
+        };
+
+        // 차트 생성
+        const chart = new ApexCharts(document.querySelector("#scoreChart"), options);
+        chart.render();
+    });
+</script>
 
 </html>

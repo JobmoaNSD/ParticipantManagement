@@ -231,6 +231,20 @@ public class DashboardMainController {
         model.addAttribute("dashBoardYear", dashBoardYear);
         this.resultModel(model, objectMapper, resultCount, myDashBoardName);
 
+        dashboardDTO.setDashboardCondition("selectRankAndScore");
+        List<DashboardDTO> testDatas = dashboardService.selectAll(dashboardDTO);
+
+        String scoreJson = changeJson.convertListToJsonArray(testDatas,item -> {
+            DashboardDTO dto = (DashboardDTO)item;
+            return "{\"myRanking\":\"" + dto.getMyRanking() + "\"," +
+                    "\"myTotalRanking\":\"" + dto.getMyTotalRanking() + "\"," +
+                    "\"data\":[\"" + dto.getTotalBranchScoreAVG() + "\",\"" + dto.getMyBranchScoreAVG() + "\",\"" + dto.getMyScore() + "\"]}";
+//                    "\"myBranchScoreAVG\":\"" + dto.getMyBranchScoreAVG() + "\"," +
+//                    "\"myScore\":\"" + dto.getMyScore() + "\"}";
+        });
+
+        model.addAttribute("scoreJson",scoreJson);
+
         log.info("-----------------------------------");
         return "views/DashBoardPage";
     }
