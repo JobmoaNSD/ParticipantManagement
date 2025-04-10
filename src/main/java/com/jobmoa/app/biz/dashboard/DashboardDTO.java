@@ -99,5 +99,36 @@ public class DashboardDTO {
     private int etcCount;                // 기타(해외취업포함) 건수
     private String businessUnit; // 사업부서
 
+    //점수현황 데이터 변수
+    // 기본 통계
+    private Long totalCompleted;      // 종료자 수
+    private Long totalEmployed;       // 취업자 수
+    // 취업 관련 지표
+    private Double employmentRate;    // 취업률
+    private Double employmentScore;   // 취업자 점수
+    // 알선취업 관련 지표
+    private Double placementRate;     // 알선취업률
+    private Double placementScore;    // 알선취업자 점수
+    // 조기취업 관련 지표
+    private Double earlyEmploymentRate;  // 조기취업률
+    private Double earlyEmploymentScore; // 조기취업자 점수
+    // 고용유지 관련 지표
+    private Double retentionRate;     // 고용유지율
+    private Double retentionScore;    // 고용유지자 점수
+    // 나은일자리 관련 지표
+    private Double betterJobRate;     // 나은일자리 취업률
+    private Double betterJobScore;    // 나은일자리 취업자 점수
+    // 최종 점수
+    private Double totalScore;        // 총점
+    //내 점수, 전체지점합계, 전체지점평균, 내지점합계, 내지점평균
+    private double myScore; //내 점수
+    private double totalBranchScore; //전체지점합계
+    private double totalBranchScoreAVG; //전체지점평균
+    private double myBranchScore; //내지점합계
+    private double myBranchScoreAVG; //내지점평균
+    private String myRanking; //내등급
+    private String myBranchRanking; //지점내순위
+    private String myTotalRanking; //전체내순위
+
 
 }
