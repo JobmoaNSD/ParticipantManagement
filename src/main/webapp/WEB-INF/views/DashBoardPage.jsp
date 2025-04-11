@@ -107,48 +107,48 @@
                 <!-- begin::main content header 시작-->
                 <div class="header row d-flex justify-content-between align-items-center bg-white border border-black rounded-2 m-1">
                     <!-- begin::main 지점 / 다우톡 주요 공지사항 시작 -->
-<%--                    <div class="col-md-12 pt-0">--%>
-<%--                        <div class="row">--%>
-                            <div class="col-md-2">
-                                <div class="h5 mt-1">
-                                    ${JOBMOA_LOGIN_DATA.memberBranch}지점
-                                </div>
-                                <div class="h3 m-0">
-                                    ${JOBMOA_LOGIN_DATA.memberUserName} 상담사
-                                </div>
-                            </div>
-                            <div class="col-md-1 d-flex flex-column align-items-center justify-content-center p-0 ms-auto border-end border-dark border-2">
-                                <div class="h6">
-                                    년도 조회
-                                </div>
-                                <div class="">
-                                    <select class="form-select form-select-sm" id="yearSelect">
-                                        <%--                                        <option value="2025">2025</option>--%>
-                                        <%--                                        <option value="2024">2024</option>--%>
-                                        <%--                                        <option value="2023">2023</option>--%>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-9 d-flex align-items-center justify-content-center p-0 ms-auto">
-                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
-                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board"  target="_blank">다우톡 공지사항</a>
-                                </div>
-                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
-                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 직무분석</a>
-                                </div>
-                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
-                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 이력서 자소서 클리닉</a>
-                                </div>
-                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
-                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 컨설팅 알선</a>
-                                </div>
-                                <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
-                                    <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">업무 메뉴얼</a>
-                                </div>
-                            </div>
+                    <%--                    <div class="col-md-12 pt-0">--%>
+                    <%--                        <div class="row">--%>
+                    <div class="col-md-2">
+                        <div class="h5 mt-1">
+                            ${JOBMOA_LOGIN_DATA.memberBranch}지점
+                        </div>
+                        <div class="h3 m-0">
+                            ${JOBMOA_LOGIN_DATA.memberUserName} 상담사
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex flex-column align-items-center justify-content-center p-0 ms-auto border-end border-dark border-2">
+                        <div class="h6">
+                            년도 조회
+                        </div>
+                        <div class="">
+                            <select class="form-select form-select-sm" id="yearSelect">
+                                <%--                                        <option value="2025">2025</option>--%>
+                                <%--                                        <option value="2024">2024</option>--%>
+                                <%--                                        <option value="2023">2023</option>--%>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-9 d-flex align-items-center justify-content-center p-0 ms-auto">
+                        <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
+                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board"  target="_blank">다우톡 공지사항</a>
+                        </div>
+                        <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
+                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 직무분석</a>
+                        </div>
+                        <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
+                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 이력서 자소서 클리닉</a>
+                        </div>
+                        <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
+                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 컨설팅 알선</a>
+                        </div>
+                        <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
+                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">업무 메뉴얼</a>
+                        </div>
+                    </div>
 
-<%--                        </div>--%>
-<%--                    </div>--%>
+                    <%--                        </div>--%>
+                    <%--                    </div>--%>
                     <!-- end::main 지점 / 다우톡 주요 공지사항 끝 -->
 
                 </div>
@@ -156,101 +156,117 @@
 
                 <!-- begin::main 업무 참여자 통계 시작 -->
                 <div class="row d-flex text-start bg-white border border-black rounded-2 pt-1 pb-1 m-1">
-                        <div class="col-md-3 p-0">
+                    <div class="col-md-3 p-0">
+                        <div class="col-md-12">
+                            <div class="col-md-12 h2 ps-1">
+                                금일 업무
+                            </div>
                             <div class="col-md-12">
-                                <div class="col-md-12 h2 ps-1">
-                                    금일 업무
-                                </div>
-                                <div class="col-md-12">
-                                    <ul class="list-group list-group-flush">
-                                        <c:if test="${not empty dailyDashboard}">
-                                            <li class="list-group-item d-flex border-bottom-0">
-                                                <div class="">
-                                                    <div>초기상담 미실시자 ${dailyDashboard.dashBoardInItCons}명</div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex border-bottom-0">
-                                                <div class="">
-                                                    <div>최근상담일 21일 경과자 ${dailyDashboard.dashBoardLastCons}명</div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex border-bottom-0">
-                                                <div class="">
-                                                    <div>구직 만료 도래자 ${dailyDashboard.dashBoardJobEX}명</div>
-                                                </div>
-                                            </li>
-                                            <li class="list-group-item d-flex border-bottom-0">
-                                                <div class="">
-                                                    <div>기간 만료 예정자 ${dailyDashboard.dashBoardEXPDate}명</div>
-                                                </div>
-                                            </li>
-                                        </c:if>
-                                        <c:if test="${empty dailyDashboard}">
-                                            <li class="list-group-item d-flex border-bottom-0">
-                                                <div class="">
-                                                    <div>확인할 내역이 없습니다.</div>
-                                                </div>
-                                            </li>
-                                        </c:if>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 border-start border-dark border-2">
-                            <div class="row h2 ps-1">
-                                참여자 통계
-                            </div>
-                            <div class="row">
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start w-100" id="thisYearParticipant">
-                                            <%--                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>--%>
-                                            <%--                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>--%>
-                                            <%--                                            <div class="progress rounded rounded-2">--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                            </div>--%>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start w-100" id="currentParticipant">
-                                            <%--                                            <div class="fw-bold">현재 진행자 수 00명</div>--%>
-                                            <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
-                                            <%--                                            <div class="progress rounded rounded-2">--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                            </div>--%>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between">
-                                        <div class="ms-2 me-auto text-start w-100" id="totalParticipant">
-                                            <%--                                            <div class="fw-bold">총 참여자 수 00명</div>--%>
-                                            <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
-                                            <%--                                            <div class="progress rounded rounded-2">--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
-                                            <%--                                            </div>--%>
-                                        </div>
-                                    </li>
+                                    <c:if test="${not empty dailyDashboard}">
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>초기상담 미실시자 ${dailyDashboard.dashBoardInItCons}명</div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>최근상담일 21일 경과자 ${dailyDashboard.dashBoardLastCons}명</div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>구직 만료 도래자 ${dailyDashboard.dashBoardJobEX}명</div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>기간 만료 예정자 ${dailyDashboard.dashBoardEXPDate}명</div>
+                                            </div>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${empty dailyDashboard}">
+                                        <li class="list-group-item d-flex border-bottom-0">
+                                            <div class="">
+                                                <div>확인할 내역이 없습니다.</div>
+                                            </div>
+                                        </li>
+                                    </c:if>
                                 </ul>
                             </div>
                         </div>
-                    <div class="col-md-5 border-start border-dark border-2">
+                    </div>
+                    <div class="col-md-4 border-start border-dark border-2">
                         <div class="row h2 ps-1">
-                            등수 현황
+                            참여자 통계
+                        </div>
+                        <div class="row">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <div class="ms-2 me-auto text-start w-100" id="thisYearParticipant">
+                                        <%--                                            <div class="fw-bold">2025년 총 참여자 수 00명 (이관자 00명)</div>--%>
+                                        <%--                                            <div>Ⅰ유형 00명 / Ⅱ유형 00명</div>--%>
+                                        <%--                                            <div class="progress rounded rounded-2">--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                            </div>--%>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <div class="ms-2 me-auto text-start w-100" id="currentParticipant">
+                                        <%--                                            <div class="fw-bold">현재 진행자 수 00명</div>--%>
+                                        <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
+                                        <%--                                            <div class="progress rounded rounded-2">--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                            </div>--%>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <div class="ms-2 me-auto text-start w-100" id="totalParticipant">
+                                        <%--                                            <div class="fw-bold">총 참여자 수 00명</div>--%>
+                                        <%--                                            <div>2025년 00명 / 2024년 00명 / 2023년 00명 (이관자 00명 포함)</div>--%>
+                                        <%--                                            <div class="progress rounded rounded-2">--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--%>
+                                        <%--                                            </div>--%>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5 border-start border-dark border-2">
+                        <div class="row ps-1">
+                            <div class="col-md-12">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1 h2">성과 점수 현황</div>
+                                            <div class="flex-grow-1 d-flex align-items-start justify-content-end">
+                                                <a
+                                                        class="btn btn-outline-secondary btn-sm text-center"
+                                                        href="scoreDashboard.login">
+                                                    상세정보
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="d-flex">
                                     <!-- 그래프 영역 -->
-                                    <div id="scoreChart" class="flex-grow-1"></div>
+                                    <div id="scoreChart" class="flex-grow-1 w-100 mw-100"></div>
                                     <!-- 등수 표시 영역 -->
-                                    <div class="ms-3 d-flex flex-column justify-content-center">
-                                        <div class="rank-box text-center">
+                                    <div class="ms-1 d-flex flex-column justify-content-center">
+                                        <div class="rank-box text-center" style="width: 150px; max-width: 150px">
                                             <h3 class="mb-0">등급 : <span id="myRanking"></span></h3>
                                             <div id="myTotalRanking" class="rank-number display-4 fw-bold text-primary fs-1"></div>
+                                            <div id="nextRanking" class="fs-8"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -270,11 +286,11 @@
                                         나의 KPI 달성률
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="row h2 ps-3">
+                                        <%--<div class="row h2 ps-3">
                                             <button type="button" class="btn btn-outline-secondary btn-sm" id="kpi-btn">
                                                 상세보기<i class="bi bi-arrow-bar-right"></i>
                                             </button>
-                                        </div>
+                                        </div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -286,7 +302,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="row h2 ps-3">
-                                                <a type="button" class="btn btn-outline-secondary btn-sm" id="success-btn" href="successMoney.login">
+                                                <a type="button" class="btn btn-outline-secondary btn-sm" id="success-btn" href="scoreDashboard.login">
                                                     상세보기<i class="bi bi-arrow-bar-right"></i>
                                                 </a>
                                             </div>
@@ -366,7 +382,8 @@
                 </div>
                 <!-- end::main chart 본문 끝 -->
                 <!-- begin::sub chart 본문 시작 -->
-                <div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1">
+                <%-- 나의 성과 현황 사용을 안하다고 하셔서 주석 처리 --%>
+                <%--<div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1">
                     <div class="col-md-12">
                         <!-- begin::sub chart header 시작 -->
                         <div class="row">
@@ -392,42 +409,42 @@
                             <div class="row">
                                 <div class="col-md-2 chart-div">
                                     <div class="text-center d-flex justify-content-center h-100">
-                                        <%--FIXME ex-chart-bar2 --%>
+                                        &lt;%&ndash;FIXME ex-chart-bar2 &ndash;%&gt;
                                         <canvas id="ex-chart-bar2"></canvas>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2 chart-div">
                                     <div class="text-center d-flex justify-content-center h-100">
-                                        <%--FIXME ex-chart-bar3 --%>
+                                        &lt;%&ndash;FIXME ex-chart-bar3 &ndash;%&gt;
                                         <canvas id="ex-chart-bar3"></canvas>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2 chart-div">
                                     <div class="text-center d-flex justify-content-center h-100">
-                                        <%--FIXME ex-chart-bar4 --%>
+                                        &lt;%&ndash;FIXME ex-chart-bar4 &ndash;%&gt;
                                         <canvas id="ex-chart-bar4"></canvas>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2 chart-div">
                                     <div class="text-center d-flex justify-content-center h-100">
-                                        <%--FIXME ex-chart-bar5 --%>
+                                        &lt;%&ndash;FIXME ex-chart-bar5 &ndash;%&gt;
                                         <canvas id="ex-chart-bar5"></canvas>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2 chart-div">
                                     <div class="text-center d-flex justify-content-center h-100">
-                                        <%--FIXME ex-chart-bar6 --%>
+                                        &lt;%&ndash;FIXME ex-chart-bar6 &ndash;%&gt;
                                         <canvas id="ex-chart-bar6"></canvas>
                                     </div>
                                 </div>
 
                                 <div class="col-md-2 chart-div">
                                     <div class="text-center d-flex justify-content-center h-100">
-                                        <%--FIXME ex-chart-bar7 --%>
+                                        &lt;%&ndash;FIXME ex-chart-bar7 &ndash;%&gt;
                                         <canvas id="ex-chart-bar7"></canvas>
                                     </div>
                                 </div>
@@ -436,7 +453,7 @@
                         </div>
                         <!-- begin::sub chart body 끝 -->
                     </div>
-                </div>
+                </div>--%>
                 <!-- begin::sub chart 본문 끝 -->
             </div>
             <!--end::Main content-->
@@ -573,6 +590,7 @@
 </script>
 <%-- FIXME Chart.js Doughnut Chart javascript  End --%>
 <%-- FIXME Chart.js Bar Chart javascript Start --%>
+<%-- FIXME 현재 사용하지 않고 있으므로 주석 처리 --%>
 <script>
     $('document').ready(function () {
         let data_title = JSON.parse('${dashBoardDataTitle}');
@@ -588,44 +606,46 @@
         lable=['인센티브'];
         data={title:data_title,text:JSON.parse('${dashBoardSuccessMoneyIncentive}')};
         chart_bar_data_my(id,lable,data);
+        <%--
+                       //chart 나의 성과 현황
+                       //취업자 수
+                       id=$('#ex-chart-bar2');
+                       lable=['취업자 수'];
+                       data={title:data_title,text:JSON.parse('${dashBoardEmployedCount}')};
+                       chart_bar_data_my(id,lable,data);
 
-        //chart 나의 성과 현황
-        //취업자 수
-        id=$('#ex-chart-bar2');
-        lable=['취업자 수'];
-        data={title:data_title,text:JSON.parse('${dashBoardEmployedCount}')};
-        chart_bar_data_my(id,lable,data);
+                       //알선 취업자 수
+                       id=$('#ex-chart-bar3');
+                       lable=['알선 취업자 수'];
+                       data={title:data_title,text:JSON.parse('${dashBoardReferredEmployedCount}')};
+                       chart_bar_data_my(id,lable,data);
 
-        //알선 취업자 수
-        id=$('#ex-chart-bar3');
-        lable=['알선 취업자 수'];
-        data={title:data_title,text:JSON.parse('${dashBoardReferredEmployedCount}')};
-        chart_bar_data_my(id,lable,data);
+                       //조기 취업자 수
+                       id=$('#ex-chart-bar4');
+                       lable=['조기 취업자 수'];
+                       data={title:data_title,text:JSON.parse('${dashBoardEarlyEmployedCount}')};
+                       chart_bar_data_my(id,lable,data);
 
-        //조기 취업자 수
-        id=$('#ex-chart-bar4');
-        lable=['조기 취업자 수'];
-        data={title:data_title,text:JSON.parse('${dashBoardEarlyEmployedCount}')};
-        chart_bar_data_my(id,lable,data);
+                       //나은 일자리
+                       id=$('#ex-chart-bar5');
+                       lable=['나은 일자리'];
+                       data={title:data_title,text:JSON.parse('${dashBoardBetterJobCount}')};
+                       chart_bar_data_my(id,lable,data);
 
-        //나은 일자리
-        id=$('#ex-chart-bar5');
-        lable=['나은 일자리'];
-        data={title:data_title,text:JSON.parse('${dashBoardBetterJobCount}')};
-        chart_bar_data_my(id,lable,data);
+                       //고용 유지 6개월
+                       id=$('#ex-chart-bar6');
+                       lable=['고용 유지 6개월'];
+                       data={title:data_title,text:JSON.parse('${dashBoardSixMonthRetentionCount}')};
+                       chart_bar_data_my(id,lable,data);
 
-        //고용 유지 6개월
-        id=$('#ex-chart-bar6');
-        lable=['고용 유지 6개월'];
-        data={title:data_title,text:JSON.parse('${dashBoardSixMonthRetentionCount}')};
-        chart_bar_data_my(id,lable,data);
-
-        //고용 유지
-        id=$('#ex-chart-bar7');
-        lable=['고용 유지 12개월'];
-        data={title:data_title,text:JSON.parse('${dashBoardTwelveMonthRetentionCount}')};
-        chart_bar_data_my(id,lable,data);
+                       //고용 유지
+                       id=$('#ex-chart-bar7');
+                       lable=['고용 유지 12개월'];
+                       data={title:data_title,text:JSON.parse('${dashBoardTwelveMonthRetentionCount}')};
+                       chart_bar_data_my(id,lable,data);
+        --%>
     })
+
 </script>
 <%-- FIXME Chart.js Bar Chart javascript End --%>
 
@@ -658,7 +678,7 @@
                 arr[_] = ((parseInt(value.data) / total) * 100).toFixed(2);
                 isNaN(arr[_]) ? arr[_] = 0 : arr[_];
             })
-            console.log("arr:"+arr);
+            //console.log("arr:"+arr);
             return arr;
         }
 
@@ -763,9 +783,43 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let data = ${scoreJson};
-        console.log(data[0].data);
-        console.log(data[0].myRanking);
-        console.log(data[0].myTotalRanking);
+        //console.log(data[0].data);
+        //console.log(data[0].myRanking);
+        //console.log(data[0].myTotalRanking);
+
+        /**
+         * 특정 랭크에 도달하기 위해 필요한 남은 점수를 계산합니다.
+         * @param {string} targetRank - 목표 랭크 (A-E)
+         * @param {number} currentScore - 현재 점수
+         * @returns {number} 목표 랭크까지 필요한 남은 점수
+         */
+        function calculateRemainingScoreForRank(targetRank, currentScore) {
+            const MAX_TOTAL_SCORE = 90;
+
+            const RANK_THRESHOLDS = {
+                'B': { percent: 0.8, required: 0 },
+                'C': { percent: 0.6, required: 0 },
+                'D': { percent: 0.35, required: 0 },
+                'E': { percent: 0.2, required: 0 }
+            };
+
+            // 각 랭크별 필요 점수 계산
+            Object.keys(RANK_THRESHOLDS).forEach(rank => {
+                RANK_THRESHOLDS[rank].required = Math.floor(MAX_TOTAL_SCORE * RANK_THRESHOLDS[rank].percent);
+            });
+
+            if (!RANK_THRESHOLDS[targetRank]) {
+                throw new Error('유효하지 않은 랭크입니다.');
+            }
+            console.log(RANK_THRESHOLDS);
+
+            return RANK_THRESHOLDS[targetRank].required - currentScore;
+        }
+
+        const nextRanginScore = calculateRemainingScoreForRank(data[0].myRanking,data[0].myScore);
+        console.log(nextRanginScore);
+        $('#nextRanking').text("다음등급까지: "+nextRanginScore + "점");
+
         $('#myRanking').text(data[0].myRanking);
         $('#myTotalRanking').text(data[0].myTotalRanking);
         // 차트 옵션 설정
@@ -777,6 +831,7 @@
             chart: {
                 type: 'bar',
                 height: 350,
+                width: '100%',
                 toolbar: {
                     show: false
                 }
