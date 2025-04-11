@@ -103,6 +103,12 @@ public class DashboardDTO {
     // 기본 통계
     private Long totalCompleted;      // 종료자 수
     private Long totalEmployed;       // 취업자 수
+    private Long referredEmploymentCount;  // 알선취업자 수
+    private Long earlyEmploymentCount;     // 조기취업자 수
+    private Long retentionCount;           // 고용유지자 수
+    private Long betterJobCount;           // 나은일자리 취업자 수
+    private Long specialGroupCount;        // 특정계층 취업자 수
+
     // 취업 관련 지표
     private Double employmentRate;    // 취업률
     private Double employmentScore;   // 취업자 점수

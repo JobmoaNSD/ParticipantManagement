@@ -29,6 +29,11 @@ public class DashboardMainController {
     @Autowired
     private ChangeJson changeJson;
 
+
+    //FIXME 평가 실적 시작 종료일
+    String FAILSTARTDATE = "2024-11-01";
+    String FAILENDDATE = "2025-10-31";
+
     @GetMapping("/dashboard.login")
     public String dashboardMain(Model model, HttpSession session, DashboardDTO dashboardDTO, ObjectMapper objectMapper) throws JsonProcessingException {
         log.info("-----------------------------------");
@@ -232,16 +237,21 @@ public class DashboardMainController {
         this.resultModel(model, objectMapper, resultCount, myDashBoardName);
 
         dashboardDTO.setDashboardCondition("selectRankAndScore");
+        dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
+        dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);
         List<DashboardDTO> testDatas = dashboardService.selectAll(dashboardDTO);
 
         String scoreJson = changeJson.convertListToJsonArray(testDatas,item -> {
             DashboardDTO dto = (DashboardDTO)item;
             return "{\"myRanking\":\"" + dto.getMyRanking() + "\"," +
                     "\"myTotalRanking\":\"" + dto.getMyTotalRanking() + "\"," +
+                    "\"myScore\":\"" + dto.getMyScore() + "\"," +
                     "\"data\":[\"" + dto.getTotalBranchScoreAVG() + "\",\"" + dto.getMyBranchScoreAVG() + "\",\"" + dto.getMyScore() + "\"]}";
 //                    "\"myBranchScoreAVG\":\"" + dto.getMyBranchScoreAVG() + "\"," +
 //                    "\"myScore\":\"" + dto.getMyScore() + "\"}";
         });
+
+        log.info("scoreJson : [{}]",scoreJson);
 
         model.addAttribute("scoreJson",scoreJson);
 
@@ -275,7 +285,8 @@ public class DashboardMainController {
         //생성된 ID, 지점 변수를 DashboardDTO에 저장
         dashboardDTO.setDashboardUserID(userID);
         dashboardDTO.setDashBoardUserBranch(branch);
-
+        dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
+        dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);
         //dashboard selectAll을 진행
         //selectSuccessMoneyDetails condition을 추가
         dashboardDTO.setDashboardCondition("selectSuccessMoneyDetails");
@@ -310,5 +321,47 @@ public class DashboardMainController {
         model.addAttribute("incentiveJson", incentiveJson);
 
         return "views/DashBoardSuccessMoneyPage";
+    }
+
+    @GetMapping("scoreDashboard.login")
+    public String scoreDashboard(Model model, HttpSession session, DashboardDTO dashboardDTO){
+        LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        String userID = loginBean.getMemberUserID();
+        String branch = loginBean.getMemberBranch();
+        //상세보기를 클릭하면 DB에 사용자의 각 평가 현황별 % 점수를 반환해준다.
+        dashboardDTO.setDashboardUserID(userID);
+        dashboardDTO.setDashBoardUserBranch(branch);
+        dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
+        dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);
+        dashboardDTO.setDashboardCondition("selectScoreAndAvg");
+        List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
+        // 반환된 data를 가지고 json 형식으로 그래프를 그릴 수 있도록 반환한다.
+        String responseJson = changeJson.convertListToJsonArray(datas,item ->{
+            DashboardDTO dto = (DashboardDTO)item;
+            return String.format("{\"completedCount\":{" +
+                            "\"name\":\"종료자수\"," +
+                            "\"data\":\"%d\"" +
+                            "}," +
+                            "\"myScore\": {" +
+                            "    \"name\": \"개인 점수\"," +
+                            "    \"data\": [%.2f,%.2f,%.2f,%.2f,%.2f,%.2f]" +  // %d를 %.2f로 변경
+                            "  }," +
+                            "  \"myCount\": {" +
+                            "    \"name\": \"점수 분포\"," +
+                            "    \"data\": [%d,%d,%d,%d,%d]," +
+                            "    \"avgData\": [%.2f,%.2f,%.2f,%.2f,%.2f]" +
+                            "  }}",
+                    dto.getTotalCompleted(),
+                    dto.getTotalScore(),dto.getEmploymentScore(),dto.getPlacementScore(),dto.getEarlyEmploymentScore(),dto.getRetentionScore(),dto.getBetterJobScore(),
+                    dto.getTotalEmployed(),dto.getDashBoardReferredEmployedCountUser(),dto.getDashBoardEarlyEmployedCountUser(),dto.getDashBoardSixMonthRetentionCountTotal(),dto.getDashBoardBetterJobCountTotal(),
+                    dto.getEmploymentRate(),dto.getPlacementRate(),dto.getEarlyEmploymentRate(),dto.getRetentionRate(),dto.getBetterJobRate()
+            );
+        });
+
+        log.info("scoreDashboard responseJson : [{}]",responseJson);
+
+        model.addAttribute("scoreAndAvg",responseJson);
+
+        return "views/DashBoardScoreAndSituation";
     }
 }
