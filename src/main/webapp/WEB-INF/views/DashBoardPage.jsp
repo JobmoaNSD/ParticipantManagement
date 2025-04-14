@@ -302,7 +302,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="row h2 ps-3">
-                                                <a type="button" class="btn btn-outline-secondary btn-sm" id="success-btn" href="scoreDashboard.login">
+                                                <a type="button" class="btn btn-outline-secondary btn-sm" id="success-btn" href="successMoney.login">
                                                     상세보기<i class="bi bi-arrow-bar-right"></i>
                                                 </a>
                                             </div>
@@ -599,6 +599,7 @@
         let id=$('#ex-chart-bar1');
         let lable=['성공금 발생'];
         let data={title:data_title,text:JSON.parse('${dashBoardSuccessMoney}')};
+        console.log(data);
         chart_bar_data_my(id,lable,data);
 
         //인센티브 발생
@@ -809,7 +810,7 @@
             });
 
             if (!RANK_THRESHOLDS[targetRank]) {
-                throw new Error('유효하지 않은 랭크입니다.');
+                throw new Error('유효하지 않은 등급입니다.');
             }
             console.log(RANK_THRESHOLDS);
 
@@ -817,8 +818,8 @@
         }
 
         const nextRanginScore = calculateRemainingScoreForRank(data[0].myRanking,data[0].myScore);
-        console.log(nextRanginScore);
-        $('#nextRanking').text("다음등급까지: "+nextRanginScore + "점");
+        console.log(Math.floor(nextRanginScore*100)/100);
+        $('#nextRanking').text("다음등급까지: "+Math.floor(nextRanginScore*100)/100 + "점");
 
         $('#myRanking').text(data[0].myRanking);
         $('#myTotalRanking').text(data[0].myTotalRanking);

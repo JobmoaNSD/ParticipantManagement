@@ -88,7 +88,8 @@
             <div class="container-fluid">
             <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <div id="scoreChart"></div>
-                <div id="distributionChart"></div>
+
+                <div id="distributionChart" class="pt-3"></div>
 
             </div>
             <!--end::Main content-->
