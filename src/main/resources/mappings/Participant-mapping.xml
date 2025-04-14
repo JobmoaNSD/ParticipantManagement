@@ -109,6 +109,11 @@
             전담자_계정 = #{participantUserid} AND
             지점 = #{participantBranch}
         <choose>
+            <when test="participantRegDate != 'All' and participantRegDate != null">
+                AND YEAR(등록일) = #{participantRegDate}
+            </when>
+        </choose>
+        <choose>
             <when test="endDateOption == 'false'">
                 AND (마감 = 'false' OR 마감 = '')
             </when>
@@ -201,9 +206,14 @@
                      마감
                  FROM J_참여자관리
                  WHERE
-                     전담자_계정 = #{participantUserid} AND
-                     지점 = #{participantBranch} AND
-                     ${searchOption} like '%'+#{search}+'%'
+                    전담자_계정 = #{participantUserid} AND
+                    지점 = #{participantBranch} AND
+                    ${searchOption} like '%'+#{search}+'%'
+                    <choose>
+                        <when test="participantRegDate != 'All' and participantRegDate != null">
+                            AND YEAR(등록일) = #{participantRegDate}
+                        </when>
+                    </choose>
                     <choose>
                         <when test="endDateOption == 'false'">
                             AND (마감 = 'false' OR 마감 = '')
@@ -245,6 +255,11 @@
             전담자_계정 = #{participantUserid} AND
             지점 = #{participantBranch} AND
             ${searchOption} like '%'+#{search}+'%'
+        <choose>
+            <when test="participantRegDate != 'All' and participantRegDate != null">
+                AND YEAR(등록일) = #{participantRegDate}
+            </when>
+        </choose>
         <choose>
             <when test="endDateOption == 'false'">
                 AND (마감 = 'false' OR 마감 = '')

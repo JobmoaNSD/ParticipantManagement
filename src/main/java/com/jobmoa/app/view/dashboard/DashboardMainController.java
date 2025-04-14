@@ -353,7 +353,7 @@ public class DashboardMainController {
                             "  }}",
                     dto.getTotalCompleted(),
                     dto.getTotalScore(),dto.getEmploymentScore(),dto.getPlacementScore(),dto.getEarlyEmploymentScore(),dto.getRetentionScore(),dto.getBetterJobScore(),
-                    dto.getTotalEmployed(),dto.getDashBoardReferredEmployedCountUser(),dto.getDashBoardEarlyEmployedCountUser(),dto.getDashBoardSixMonthRetentionCountTotal(),dto.getDashBoardBetterJobCountTotal(),
+                    dto.getTotalEmployed(),dto.getDashBoardReferredEmployedCountUser(),dto.getDashBoardEarlyEmployedCountUser(),dto.getDashBoardSixMonthRetentionCountTotal(),dto.getDashBoardBetterJobCountUser(),
                     dto.getEmploymentRate(),dto.getPlacementRate(),dto.getEarlyEmploymentRate(),dto.getRetentionRate(),dto.getBetterJobRate()
             );
         });
