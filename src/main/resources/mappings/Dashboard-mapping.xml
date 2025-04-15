@@ -299,6 +299,7 @@
     <!-- 비동기 지점 관리자 대시보드 지점별 인센 미해당 현황 끝 -->
 
     <!-- 전체, 지점, 내 점수 및 등수 시작 -->
+    <!-- 내 점수 및 지점 평균, 총점 평균 출력 -->
     <select id="selectRankAndScore" resultType="dashboard">
         -- 전체지점, 내 지점, 내 점수 구하는 쿼리
         WITH 개인점수데이터 AS (
@@ -306,63 +307,69 @@
                 A.지점,
                 A.이름,
                 A.전담자_계정,
-                SUM(종료자수) AS 종료자수,
-                SUM(취업자수) AS 취업자수,
-                ROUND(((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100,2) AS 취업률,
-                ROUND((((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100/100)*30,2) 취업자점수,
-                ROUND((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 알선취업률,
-                ROUND(((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*25,2) 알선취업자점수,
-                ROUND((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 조기취업률,
-                ROUND(((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2) 조기취업자점수,
-                ROUND((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 고용유지취업률,
-                ROUND(((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100/100)*15,2) 고용유지취업자점수,
-                ROUND((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 나은일자리취업률,
-                ROUND(((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2) 나은일자리취업자점수,
-                (ROUND((((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100/100)*30,2) +
-                 ROUND(((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*25,2) +
-                 ROUND(((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2) +
-                 ROUND(((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100/100)*15,2) +
-                 ROUND(((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2)) AS 총점
+                A.종료자수,
+                A.취업자수,
+                A.특정계층취업자수,
+                A.취업률,
+                A.인당취업자점수,
+                A.알선취업자수,
+                A.알선취업률,
+                A.인당알선취업자수,
+                A.조기취업자수,
+                A.조기취업률,
+                A.인당조기취업자수,
+                A.고용유지자수,
+                A.고용유지취업률,
+                A.인당고용유지점수,
+                A.나은일자리수,
+                A.나은일자리취업률,
+                A.인당나은일자리점수,
+                A.가중취업자점수,
+                A.가중알선취업자점수,
+                A.가중조기취업자점수,
+                A.가중고용취업자점수,
+                A.가중나은취업자점수,
+                A.총점
             FROM 평가실적및점수 A
                      JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
-            WHERE A.중단종료일 >= #{dashBoardStartDate}
-              AND A.중단종료일 <![CDATA[<=]]> #{dashBoardEndDate}
-              AND A.전담자_계정 = #{dashboardUserID}
-            GROUP BY A.이름, A.지점, A.전담자_계정
+            WHERE A.전담자_계정 = #{dashboardUserID}
         ),
              전체점수데이터 AS (
                  SELECT
                      A.지점,
                      A.이름,
                      A.전담자_계정,
-                     SUM(종료자수) AS 종료자수,
-                     SUM(취업자수) AS 취업자수,
-                     ROUND(((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100,2) AS 취업률,
-                     ROUND((((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100/100)*30,2) 취업자점수,
-                     ROUND((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 알선취업률,
-                     ROUND(((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*25,2) 알선취업자점수,
-                     ROUND((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 조기취업률,
-                     ROUND(((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2) 조기취업자점수,
-                     ROUND((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 고용유지취업률,
-                     ROUND(((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100/100)*15,2) 고용유지취업자점수,
-                     ROUND((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100,2) AS 나은일자리취업률,
-                     ROUND(((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2) 나은일자리취업자점수,
-                     (ROUND((((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100/100)*30,2) +
-                      ROUND(((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*25,2) +
-                      ROUND(((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2) +
-                      ROUND(((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100/100)*15,2) +
-                      ROUND(((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2)) AS 총점
+                     A.종료자수,
+                     A.취업자수,
+                     A.특정계층취업자수,
+                     A.취업률,
+                     A.인당취업자점수,
+                     A.알선취업자수,
+                     A.알선취업률,
+                     A.인당알선취업자수,
+                     A.조기취업자수,
+                     A.조기취업률,
+                     A.인당조기취업자수,
+                     A.고용유지자수,
+                     A.고용유지취업률,
+                     A.인당고용유지점수,
+                     A.나은일자리수,
+                     A.나은일자리취업률,
+                     A.인당나은일자리점수,
+                     A.가중취업자점수,
+                     A.가중알선취업자점수,
+                     A.가중조기취업자점수,
+                     A.가중고용취업자점수,
+                     A.가중나은취업자점수,
+                     A.총점
                  FROM 평가실적및점수 A
                           JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
-                 WHERE A.중단종료일 >= #{dashBoardStartDate}
-                   AND A.중단종료일 <![CDATA[<=]]> #{dashBoardEndDate}
-                   AND ((L.입사일 IS NOT NULL
+                 WHERE ((L.입사일 IS NOT NULL
                      AND (L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01')
                      AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
                      OR (L.최종발령일 IS NOT NULL
                          AND L.최종발령일 > '1900-01-01'
                          AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365))
-                 GROUP BY A.이름, A.지점, A.전담자_계정
              ),
              순위_데이터 AS (
                  SELECT
@@ -413,44 +420,110 @@
                  CROSS JOIN 내_지점_통계 j
     </select>
 
+    <!-- 내 점수 및 인원수, 인원비율 출력 -->
     <select id="selectScoreAndAvg" resultType="dashboard">
         SELECT
             A.지점 AS dashboardBranch,
             A.이름 AS dashboardUserName,
             A.전담자_계정 AS dashboardUserID,
-            ISNULL(SUM(종료자수),0) AS totalCompleted,
-            -- 취업자 관련
-            ISNULL(SUM(취업자수),0) AS totalEmployed,
-            ISNULL(ROUND(((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100,2),0.0) AS employmentRate,
-            ISNULL(ROUND((((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100/100)*30,2),0) AS employmentScore,
-            -- 알선취업 관련
-            ISNULL(SUM(알선취업자수),0) AS dashBoardReferredEmployedCountUser,
-            ISNULL(ROUND((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100,2),0.0) AS placementRate,
-            ISNULL(ROUND(((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*25,2),0) AS placementScore,
-            -- 조기취업 관련
-            ISNULL(SUM(조기취업자수),0) AS dashBoardEarlyEmployedCountUser,
-            ISNULL(ROUND((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100,2),0.0) AS earlyEmploymentRate,
-            ISNULL(ROUND(((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2),0) AS earlyEmploymentScore,
-            -- 고용유지 관련
-            ISNULL(SUM(고용유지자수),0) AS dashBoardSixMonthRetentionCountUser,
-            ISNULL(ROUND((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100,2),0.0) AS retentionRate,
-            ISNULL(ROUND(((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100/100)*15,2),0) AS retentionScore,
-            -- 나은일자리 관련
-            ISNULL(SUM(나은일자리수),0) AS dashBoardBetterJobCountUser,
-            ISNULL(ROUND((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100,2),0.0) AS betterJobRate,
-            ISNULL(ROUND(((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2),0) AS betterJobScore,
-            -- 총점
-            ISNULL((ROUND((((SUM(취업자수)-SUM(특정계층취업자수)+(SUM(특정계층취업자수)*1.5))*1.0 / SUM(종료자수)*1.0)*100/100)*30,2) +
-                    ROUND(((SUM(알선취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*25,2) +
-                    ROUND(((SUM(조기취업자수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2) +
-                    ROUND(((SUM(고용유지자수)*1.0 / SUM(종료자수)*1.0)*100/100)*15,2) +
-                    ROUND(((SUM(나은일자리수)*1.0 / SUM(종료자수)*1.0)*100/100)*10,2)),0) AS totalScore
+            A.종료자수 AS totalCompleted,
+            A.취업자수 AS totalEmployed,
+            A.특정계층취업자수 AS specialGroupCount,
+            A.취업률 AS employmentRate,
+            A.인당취업자점수 AS employmentOneScore,
+            A.알선취업자수 AS referredEmploymentCount,
+            A.알선취업률 AS placementRate,
+            A.인당알선취업자수 AS placementOneScore,
+            A.조기취업자수 AS earlyEmploymentCount,
+            A.조기취업률 AS earlyEmploymentRate,
+            A.인당조기취업자수 AS earlyEmploymentOneScore,
+            A.고용유지자수 AS retentionCount,
+            A.고용유지취업률 AS retentionRate,
+            A.인당고용유지점수 AS retentionOneScore,
+            A.나은일자리수 AS betterJobCount,
+            A.나은일자리취업률 AS betterJobRate,
+            A.인당나은일자리점수 AS betterJobOneScore,
+            A.가중취업자점수 AS employmentLastScore,
+            A.가중알선취업자점수 AS placementLastScore,
+            A.가중조기취업자점수 AS earlyEmploymentLastScore,
+            A.가중고용취업자점수 AS retentionLastScore,
+            A.가중나은취업자점수 AS betterJobLastScore,
+            A.총점 AS totalScore
         FROM 평가실적및점수 A
-                 JOIN J_참여자관리_로그인정보 L
-                      ON A.전담자_계정 = L.아이디
         WHERE
-            A.중단종료일 >= #{dashBoardStartDate} AND A.중단종료일 <![CDATA[<=]]> #{dashBoardEndDate} AND
-            A.전담자_계정 = #{dashboardUserID}
-        GROUP BY A.이름,A.지점, A.전담자_계정
+            A.전담자_계정 =  #{dashboardUserID}
     </select>
+
+    <!-- 지점 평균 및 총점 평균 출력 -->
+    <select id="selectBranchAvg" resultType="dashboard">
+        WITH 지점순서 AS (
+            SELECT 지점, 순서 FROM J_참여자관리_지점
+            UNION ALL
+            SELECT '총점' AS 지점, 0 AS 순서
+        ),
+            전체점수데이터 AS (
+            SELECT
+                A.지점,
+                A.이름,
+                A.전담자_계정,
+                A.종료자수,
+                A.취업자수,
+                A.특정계층취업자수,
+                A.취업률,
+                A.인당취업자점수,
+                A.알선취업자수,
+                A.알선취업률,
+                A.인당알선취업자수,
+                A.조기취업자수,
+                A.조기취업률,
+                A.인당조기취업자수,
+                A.고용유지자수,
+                A.고용유지취업률,
+                A.인당고용유지점수,
+                A.나은일자리수,
+                A.나은일자리취업률,
+                A.인당나은일자리점수,
+                A.가중취업자점수,
+                A.가중알선취업자점수,
+                A.가중조기취업자점수,
+                A.가중고용취업자점수,
+                A.가중나은취업자점수,
+                A.총점
+            FROM 평가실적및점수 A
+            JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
+            WHERE ((L.입사일 IS NOT NULL
+                AND (L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01')
+                AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
+                OR (L.최종발령일 IS NOT NULL AND L.최종발령일 > '1900-01-01'
+                    AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365))
+        ),
+             총점및인원데이터 AS (
+                 SELECT
+                     지점,
+                     SUM(총점) AS 지점_총점,
+                     COUNT(이름) AS 지점_전담자수
+                 FROM 전체점수데이터
+                 GROUP BY 지점
+             ),
+             전체통계 AS (
+                 SELECT
+                     지점,
+                     ROUND(지점_총점/NULLIF(지점_전담자수, 0), 2) AS 지점평균
+                 FROM 총점및인원데이터
+                 UNION ALL
+                 SELECT
+                     '총점' AS 지점,
+                     ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수), 0), 2) AS 지점평균
+                 FROM 총점및인원데이터
+             )
+        SELECT
+            T.지점 dashboardBranch,
+            T.지점평균 AS totalBranchScoreAVG
+        FROM 전체통계 T
+                 JOIN 지점순서 S ON T.지점 = S.지점
+        ORDER BY S.순서
+    </select>
+    <!-- 전체, 지점, 내 점수 및 등수 끝 -->
+
+
 </mapper>

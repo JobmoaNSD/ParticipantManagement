@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: no1fc
-  Date: 24. 12. 30.
-  Time: 오후 5:16
+  Date: 25. 4. 15.
+  Time: 오전 9:36
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
@@ -177,37 +177,39 @@
 
 
     // 초기 데이터 정의
-    const initData = [{
-        "completedCount": {"name": "종료자수", "data": "0"},
-        "myScore": {
-            "name": "개인 점수",
-            "data": [0,0,0,0,0,0],
-            "oneData": [0,0,0,0,0]
-        },
-        "myCount": {
-            "name": "점수 분포",
-            "data": [0,0,0,0,0],
-            "avgData": [0,0,0,0,0]
-        }
-    }];
+    const initData = [
+        {name:"총점", data:0.01},
+        {name:"남부", data:0.1},
+        {name:"서부", data:0.2}
+    ];
+
+    const changJson = {
+        name:[], data:[]
+    }
 
     // 데이터 확인 및 차트 렌더링
-    let scoreAndAvg = ${scoreAndAvg}; // JSP에서 전달된 데이터
-
-
-    // 가로열 제목 데이터
-    const xCategories = ['총점', '취업자점수', '알선취업자점수', '조기취업자점수', '고용유지자점수', '나은일자리점수'];
+    let responseData = ${branchAvg}; // JSP에서 전달된 데이터
 
     // 첫 번째 차트 - 점수 현황
     function renderScoreChart(data) {
         const options = {
             series: [{
-                name: '획득 점수',
-                data: data[0].myScore.data
+                name: "평균",
+                data: data.data
             }],
             chart: {
                 type: 'bar',
-                height: 350
+                height: 350,
+                events: {
+                    dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
+                        const clickIndex = config.dataPointIndex;
+                        const branchName = data.name[clickIndex];
+                        if(clickIndex !== 0){
+                            console.log(clickIndex);
+                            console.log(branchName);
+                        }
+                    }
+                }
             },
             plotOptions: {
                 bar: {
@@ -225,24 +227,12 @@
                 }
             },
             xaxis: {
-                categories: xCategories,
-                position: 'bottom',
-
-                labels: {
-                    useHTML: true,  // HTML 활성화
-                    formatter: function(value) {
-                        // HTML 태그를 사용하여 줄바꿈과 색상 변경
-                        const parts = value.split('\n');
-                        return parts;
-                    },
-                    rotate: 0,
-                    maxHeight: 50,
-                    style: {
-                        fontSize: '14px'
-                    }
-                }
+                categories: data.name,
+                position: 'bottom'
             },
-            yaxis: {
+            yaxis:{
+                max: 90,
+                min: 0,            // 최소값 설정
                 tickAmount: 5,     // 눈금 간격 설정
                 labels: {
                     formatter: function(val) {
@@ -257,91 +247,104 @@
         chart.render();
     }
 
-    // 두 번째 차트 - 점수별 인원수 및 비율
-    function renderDistributionChart(data) {
-        const options = {
-            series: [{
-                name: '인원수',
-                type: 'column',
-                data: data[0].myCount.data
-            }, {
-                name: '비율',
-                type: 'line',
-                data: data[0].myCount.avgData
-            }],
-            chart: {
-                height: 350,
-                type: 'line',
-                toolbar: {
-                    show: true
-                }
-            },
-            stroke: {
-                width: [0, 4],
-                curve: 'smooth'
-            },
-            dataLabels: {
-                enabled: true,
-                enabledOnSeries: [0, 1],
-                formatter: function(val, opt) {
-                    if (opt.seriesIndex === 0) {
-                        return val+'명';
-                    }
-                    // 비율 데이터의 경우
-                    return val+'%';
-                }
-            },
-            xaxis: {
-                categories: ['취업자수', '알선취업자수', '조기취업자수', '고용유지자수', '나은일자리수'],
-            },
-            yaxis: [{
-                title: {
-                    text: '인원수'
-                }
-            }, {
-                opposite: true,
-                title: {
-                    text: '비율 (%)'
-                },
-                max: 100  // 퍼센트 최대값
-            }],
-            colors: ['#00E396', '#008FFB'],
-            title: {
-                text: '점수별 인원 분포 및 비율',
-                align: 'center'
-            },
-            tooltip: {
-                y: [{
-                    formatter: function(val) {
-                        return val+'명';
-                    }
-                }, {
-                    formatter: function(val) {
-                        return val+'%';
-                    }
-                }]
-            }
-        };
-
-        const chart = new ApexCharts(document.querySelector("#distributionChart"), options);
-        chart.render();
-    }
+    // // 두 번째 차트 - 점수별 인원수 및 비율
+    // function renderDistributionChart(data) {
+    //     const options = {
+    //         series: [{
+    //             name: '인원수',
+    //             type: 'column',
+    //             data: data[0].myCount.data
+    //         }, {
+    //             name: '비율',
+    //             type: 'line',
+    //             data: data[0].myCount.avgData
+    //         }],
+    //         chart: {
+    //             height: 350,
+    //             type: 'line',
+    //             toolbar: {
+    //                 show: true
+    //             }
+    //         },
+    //         stroke: {
+    //             width: [0, 4],
+    //             curve: 'smooth'
+    //         },
+    //         dataLabels: {
+    //             enabled: true,
+    //             enabledOnSeries: [0, 1],
+    //             formatter: function(val, opt) {
+    //                 if (opt.seriesIndex === 0) {
+    //                     return val+'명';
+    //                 }
+    //                 // 비율 데이터의 경우
+    //                 return val+'%';
+    //             }
+    //         },
+    //         xaxis: {
+    //             categories: ['취업자수', '알선취업자수', '조기취업자수', '고용유지자수', '나은일자리수'],
+    //         },
+    //         yaxis: [{
+    //             title: {
+    //                 text: '인원수'
+    //             }
+    //         }, {
+    //             opposite: true,
+    //             title: {
+    //                 text: '비율 (%)'
+    //             },
+    //             max: 100  // 퍼센트 최대값
+    //         }],
+    //         colors: ['#00E396', '#008FFB'],
+    //         title: {
+    //             text: '점수별 인원 분포 및 비율',
+    //             align: 'center'
+    //         },
+    //         tooltip: {
+    //             y: [{
+    //                 formatter: function(val) {
+    //                     return val+'명';
+    //                 }
+    //             }, {
+    //                 formatter: function(val) {
+    //                     return val+'%';
+    //                 }
+    //             }]
+    //         }
+    //     };
+    //
+    //     const chart = new ApexCharts(document.querySelector("#distributionChart"), options);
+    //     chart.render();
+    // }
     $(document).ready(function () {
-
-        //가로열 데이터에 1인당 점수 표기 추가
-        scoreAndAvg[0].myScore.oneData.forEach((data, i) => {
-            xCategories[i+1] = xCategories[i+1]+"\n1인당 점수 : "+data
-        })
+        changeData(responseData);
 
         // 데이터 존재 여부 확인 (JavaScript 방식으로 수정)
-        if (!scoreAndAvg || Object.keys(scoreAndAvg).length === 0) {
-            renderScoreChart(initData);
-            renderDistributionChart(initData);
-            return;
+        if (!responseData || Object.keys(responseData).length === 0) {
+            changeData(initData)
         }
-        renderScoreChart(scoreAndAvg);
-        renderDistributionChart(scoreAndAvg);
-        console.log(xCategories);
+        renderScoreChart(changJson);
+        //renderDistributionChart(responseData);
+        function changeData(data){
+            data.map(function(item){
+                changJson.name.push(item.name);
+                changJson.data.push(item.data);
+            });
+            //console.log(changJson);
+        }
+
+        function fetchData(data){
+            fetch('dashBoardAjaxBranchScore.login',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(async response =>
+                response.json()
+            )
+        }
+
     });
 </script>
 </html>

@@ -25,7 +25,7 @@ $(document).ready(function(){
             toolbar: {
                 show: true
             },
-            //TODO FIXME 모달 생성 이벤트 제작 후 수정 예정
+            //FIXME 모달 생성 이벤트 제작 후 수정 예정
             events: {
                 dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
                     const branchIndex = config.dataPointIndex;

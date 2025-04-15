@@ -267,6 +267,9 @@
                                             <h3 class="mb-0">등급 : <span id="myRanking"></span></h3>
                                             <div id="myTotalRanking" class="rank-number display-4 fw-bold text-primary fs-1"></div>
                                             <div id="nextRanking" class="fs-8"></div>
+                                            <div class="text-center fs-8 mt-3 font-color text-muted">
+                                                입사(발령) 1년 미만자는<br> 실적 데이터 신뢰도 낮음,<br> 참고용으로만 활용 바랍니다.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -835,6 +838,17 @@
                 width: '100%',
                 toolbar: {
                     show: false
+                },
+                events: {
+                    dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
+                        const clickIndex = config.dataPointIndex;
+                        // const branchName = Datas.thisSuccess.branch[branchIndex];
+
+                        // 전체 지점 클릭시 모달 표시
+                        if (clickIndex === 1) {
+                            location.href = "scoreBranchDashboard.login";
+                        }
+                    }
                 }
             },
             plotOptions: {
@@ -860,11 +874,19 @@
                     }
                 }
             },
-            yaxis: {
+            yaxis: [{
                 title: {
-                    text: '점수'
+                    text: '점수',
                 },
-            },
+                max: 90,
+                min: 0,            // 최소값 설정
+                tickAmount: 5,     // 눈금 간격 설정
+                labels: {
+                    formatter: function(val) {
+                        return val.toFixed(0);
+                    }
+                }
+            }],
             title: {
                 text: '점수 현황',
                 align: 'center',
