@@ -344,7 +344,8 @@ public class DashboardMainController {
                             "}," +
                             "\"myScore\": {" +
                             "    \"name\": \"개인 점수\"," +
-                            "    \"data\": [%.2f,%.2f,%.2f,%.2f,%.2f,%.2f]" +  // %d를 %.2f로 변경
+                            "    \"data\": [%.2f,%.2f,%.2f,%.2f,%.2f,%.2f]," +  // %d를 %.2f로 변경
+                            "    \"oneData\": [%.2f,%.2f,%.2f,%.2f,%.2f]" +
                             "  }," +
                             "  \"myCount\": {" +
                             "    \"name\": \"점수 분포\"," +
@@ -352,8 +353,9 @@ public class DashboardMainController {
                             "    \"avgData\": [%.2f,%.2f,%.2f,%.2f,%.2f]" +
                             "  }}",
                     dto.getTotalCompleted(),
-                    dto.getTotalScore(),dto.getEmploymentScore(),dto.getPlacementScore(),dto.getEarlyEmploymentScore(),dto.getRetentionScore(),dto.getBetterJobScore(),
-                    dto.getTotalEmployed(),dto.getDashBoardReferredEmployedCountUser(),dto.getDashBoardEarlyEmployedCountUser(),dto.getDashBoardSixMonthRetentionCountTotal(),dto.getDashBoardBetterJobCountUser(),
+                    dto.getTotalScore(),dto.getEmploymentLastScore(),dto.getPlacementLastScore(),dto.getEarlyEmploymentLastScore(),dto.getRetentionLastScore(),dto.getBetterJobLastScore(),
+                    dto.getEmploymentOneScore(),dto.getPlacementOneScore(),dto.getEarlyEmploymentOneScore(),dto.getRetentionOneScore(),dto.getBetterJobOneScore(),
+                    dto.getTotalEmployed(),dto.getReferredEmploymentCount(),dto.getEarlyEmploymentCount(),dto.getRetentionCount(),dto.getBetterJobCount(),
                     dto.getEmploymentRate(),dto.getPlacementRate(),dto.getEarlyEmploymentRate(),dto.getRetentionRate(),dto.getBetterJobRate()
             );
         });
@@ -363,5 +365,27 @@ public class DashboardMainController {
         model.addAttribute("scoreAndAvg",responseJson);
 
         return "views/DashBoardScoreAndSituation";
+    }
+
+    @GetMapping("scoreBranchDashboard.login")
+    public String scoreBranchDashboard(Model model, HttpSession session, DashboardDTO dashboardDTO){
+        //내 지점 평균 그래프 클릭하면 DB에 사용자의 각 평가 현황별 % 점수를 반환해준다.
+        dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
+        dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);
+        dashboardDTO.setDashboardCondition("selectBranchAvg");
+        List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
+        // 반환된 data를 가지고 json 형식으로 그래프를 그릴 수 있도록 반환한다.
+        String responseJson = changeJson.convertListToJsonArray(datas,item ->{
+            DashboardDTO dto = (DashboardDTO)item;
+            return String.format("{\"name\":\"%s\", \"data\":\"%.2f\"}",
+                    dto.getDashboardBranch(),dto.getTotalBranchScoreAVG()
+            );
+        });
+
+        log.info("scoreBranchDashboard responseJson : [{}]",responseJson);
+
+        model.addAttribute("branchAvg",responseJson);
+
+        return "views/DashBoardBranchScoreAndSituation";
     }
 }
