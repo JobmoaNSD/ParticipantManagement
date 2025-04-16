@@ -207,6 +207,7 @@
                         if(clickIndex !== 0){
                             console.log(clickIndex);
                             console.log(branchName);
+                            fetchData(branchName);
                         }
                     }
                 }
@@ -316,6 +317,20 @@
     //     const chart = new ApexCharts(document.querySelector("#distributionChart"), options);
     //     chart.render();
     // }
+
+
+    function fetchData(data){
+        fetch('dashBoardAjaxBranchScore.login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({dashboardBranch:data})
+        }).then(async response =>
+            console.log(await response.json())
+        )
+    }
+
     $(document).ready(function () {
         changeData(responseData);
 
@@ -333,17 +348,7 @@
             //console.log(changJson);
         }
 
-        function fetchData(data){
-            fetch('dashBoardAjaxBranchScore.login',{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then(async response =>
-                response.json()
-            )
-        }
+
 
     });
 </script>

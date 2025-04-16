@@ -1,11 +1,12 @@
 package com.jobmoa.app.view.ajaxPackage;
 
+import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.dashboard.DashboardDTO;
 import com.jobmoa.app.biz.dashboard.DashboardServiceImpl;
 import com.jobmoa.app.view.function.ChangeJson;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -100,6 +101,63 @@ public class DashboardAjaxController {
         log.info("dashBoardAjaxInventive branchDataChangeJson : [{}]",branchDataChangeJson);
 
         return branchDataChangeJson;
+    }
+
+    @PostMapping("dashBoardAjaxBranchScore.login")
+    public String consolScore(@RequestBody DashboardDTO dashboardDTO, HttpSession session){
+        log.info("consolScore Start Ajax");
+        log.info("consolScore Session select Start");
+        LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        String sessionBranch = loginBean.getMemberBranch();
+        log.info("consolScore Session select End");
+        String branch = dashboardDTO.getDashboardBranch();
+
+        boolean branchFlag = branch.equals(sessionBranch);
+        if(!branchFlag){
+            log.info("consolScore Fail:");
+            log.info("consolScore branch != sessionBranch : [{}]", branchFlag);
+            return "Fail";
+        }
+
+        log.info("consolScore branchUserScore ChangeJson Start");
+        dashboardDTO.setDashboardCondition("selectBranchConsolScore");
+        List<DashboardDTO> dashboardDatas = dashboardService.selectAll(dashboardDTO);
+        String branchUserScore = changeJson.convertListToJsonArray(dashboardDatas , item ->{
+            DashboardDTO dto = (DashboardDTO) item;
+            return String.format(
+                    " {\"username\":\"%s\"," +
+                            "\"score\":[%.2f,%.2f,%.2f," +
+                            "%.2f,%.2f,%.2f]," +
+                            "\"totalScore\":%.2f," +
+                            "\"branchScore\":\"%.2f\"} ",
+                    dto.getDashBoardUserName(),
+                    dto.getTotalScore(),dto.getEmploymentLastScore(),dto.getPlacementLastScore(),
+                    dto.getEarlyEmploymentLastScore(),dto.getRetentionLastScore(),dto.getBetterJobLastScore(),
+                    dto.getTotalBranchScoreAVG(),
+                    dto.getMyBranchScoreAVG()
+            );
+        });
+        log.info("consolScore branchUserScore ChangeJson end");
+
+        log.info("consolScore branchUserScore ChangeJson Start");
+        dashboardDTO.setDashboardCondition("selectBranchConsolScore");
+        dashboardDatas = dashboardService.selectAll(dashboardDTO);
+        String branchScore = changeJson.convertListToJsonArray(dashboardDatas , item ->{
+            DashboardDTO dto = (DashboardDTO) item;
+            return String.format(
+                    " {\"topScore\":[%.2f,%.2f," +
+                            "%.2f,%.2f,%.2f]}} ",
+                    dto.getEmploymentTopScore(), dto.getPlacementTopScore(), dto.getEarlyEmploymentTopScore(),
+                    dto.getRetentionTopScore(), dto.getBetterJobTopScore()
+            );
+        });
+
+        String response = String.format(
+                "{branchUserScore:%s,branchScore:%s}",
+                branchUserScore,branchScore
+        );
+
+        return response;
     }
 
 
