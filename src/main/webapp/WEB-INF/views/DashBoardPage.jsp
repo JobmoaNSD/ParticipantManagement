@@ -247,7 +247,7 @@
                                             <div class="flex-grow-1 d-flex align-items-start justify-content-end">
                                                 <a
                                                         class="btn btn-outline-secondary btn-sm text-center"
-                                                        href="scoreDashboard.login">
+                                                        href="${IS_MANAGER? "scoreBranchDashboard.login":"scoreDashboard.login"}">
                                                     상세정보
                                                 </a>
                                             </div>

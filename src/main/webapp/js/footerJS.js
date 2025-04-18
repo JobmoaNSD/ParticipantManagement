@@ -1,23 +1,24 @@
 $(document).ready(function () {
-    let APP_URL = window.location.href; // 현재 페이지 URL
-    let email = "namsd@jobmoa.com"; // 수신 이메일
-    let subject = APP_URL + " 해당 페이지에 대해 문의 드립니다."; // 이메일 제목
-    let body = "로그인 정보";
-
-    // 줄바꿈 추가
-    body += "\n"; // 줄바꿈
-    body += "ID : ${JOBMOA_LOGIN_DATA.memberUserID}"; // 사용자 ID
-    body += "\n\n"; // 줄바꿈
-    body += "지점 : ${JOBMOA_LOGIN_DATA.memberBranch}"; // 사용자 지점
-    body += "\n\n"; // 줄바꿈
-    body += "문의 사항"; // 추가 설명
-    body += "\n"; // 줄바꿈
+    // let APP_URL = window.location.href; // 현재 페이지 URL
+    // let email = "namsd@jobmoa.com"; // 수신 이메일
+    // let subject = APP_URL + " 해당 페이지에 대해 문의 드립니다."; // 이메일 제목
+    // let body = "로그인 정보";
+    //
+    // // 줄바꿈 추가
+    // body += "\n"; // 줄바꿈
+    // body += "ID : ${JOBMOA_LOGIN_DATA.memberUserID}"; // 사용자 ID
+    // body += "\n\n"; // 줄바꿈
+    // body += "지점 : ${JOBMOA_LOGIN_DATA.memberBranch}"; // 사용자 지점
+    // body += "\n\n"; // 줄바꿈
+    // body += "문의 사항"; // 추가 설명
+    // body += "\n"; // 줄바꿈
 
     // 이메일 태그에 동적으로 href 속성 설정
     let emailTag = $("#email-a-tag");
 
     // mailto 링크 생성
-    emailTag.attr("href", "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body));
+    // emailTag.attr("href", "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body));
+    emailTag.attr("href", "https://jobmoa.daouoffice.com/app/mail?work=write&toAddr=%EB%82%A8%EC%83%81%EB%8F%84%3Cnamsd%40jobmoa.com%3E");
 
 
     // 요소 가져오기
