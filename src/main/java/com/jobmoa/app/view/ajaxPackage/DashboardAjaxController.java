@@ -109,7 +109,8 @@ public class DashboardAjaxController {
         log.info("consolScore Start Ajax");
         log.info("consolScore Session select Start");
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
-        boolean isManager = (Boolean)session.getAttribute("IS_MANAGER");
+        log.error("consolScore session.getAttribute(\"IS_MANAGER\") : [{}]",session.getAttribute("IS_MANAGER"));
+        boolean isManager = (boolean)session.getAttribute("IS_MANAGER");
         String sessionBranch = loginBean.getMemberBranch();
         log.info("consolScore Session select End");
         String branch = dashboardDTO.getDashboardBranch();

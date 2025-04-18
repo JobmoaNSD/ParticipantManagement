@@ -3,7 +3,7 @@ $(document).ready(function(){
     const Datas = initData;
 
     function preprocessData(data) {
-        return data.map(item => {
+        return data.map((item) => {
             // data 속성이 있는 경우
             if (item.data) {
                 return {
@@ -33,6 +33,7 @@ $(document).ready(function(){
 
                     // 전체 지점 클릭시 모달 표시
                     if (branchIndex === 0) {
+
                         showInventiveModal("A");
                         showInventiveModal("B");
                     }
@@ -126,138 +127,47 @@ $(document).ready(function(){
      * @param {string} branchName - 선택된 지점명
      */
     function showInventiveModal(branchName) {
-        // 로딩 표시
-        $('#inventiveSituationAChart').html('<div class="text-center"><div class="spinner-border" role="status"></div></div>');
 
-        // API 호출을 시뮬레이션 (실제 구현시 AJAX로 대체)
-        ajaxInventiveData(branchName)
-            .then(data => {
-                // 모달 제목 업데이트
-                $('#inventiveSituationModal .modal-title').text('지점별 미해당 현황');
-
-                // 상담사 차트 옵션
-                const consultantChartOptions = {
-                    series: preprocessData(data.inventiveSituation),
-                    chart: {
-                        type: 'bar',
-                        height: 350,
-                        toolbar: {
-                            show: true,
-                            tools: {
-                                download: true,
-                                selection: false,
-                                zoom: false,
-                                zoomin: false,
-                                pan: false,
-                                reset: false
-                            }
-                        }
-                    },
-                    plotOptions: {
-                        bar: {
-                            borderRadius: 4,
-                            horizontal: false,
-                            columnWidth: '70%'
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        formatter: function(val) {
-                            return Math.floor(val) + '건';
-                        },
-                        style: {
-                            colors: ['#000000'],
-                            fontWeight: 500
-                        },
-                    },
-                    xaxis: {
-                        categories: data.branch,
-                    },
-                    yaxis: {
-                        title: {
-                            text: '미해당 건 수'
-                        },
-                        labels: {
-                            formatter: function(val) {
-                                return val.toLocaleString();
-                            }
-                        }
-                    },
-                    // 기본 색상 설정
-                    colors: ['#ff0000', '#fca895', '#ffb0b0','#934e4e','#d34859', '#a45050','#772525'],
-                    tooltip: {
-                        y: {
-                            formatter: function(val) {
-                                return Math.floor(val) + ' 건';
-                            }
-                        }
-                    },
-                    title: {
-                        text: branchName+'사업부 인센 미해당 현황',
-                        align: 'left'
-                    },
-                };
-
-
-                // 차트 생성 및 렌더링
-                const inventiveSituationAChart = new ApexCharts(
-                    document.querySelector("#inventiveSituation"+branchName+"Chart"),
-                    consultantChartOptions
-                );
-                inventiveSituationAChart.render();
-
-
-
-                // 모달 표시
-                $('#inventiveSituationModal').modal('show');
-            })
-            .catch(error => {
-                console.error('데이터 조회 실패:', error);
-                alert('데이터 조회 실패'+ '정보를 불러오는데 실패했습니다.');
-            });
-    }
-
-    /**
-     * 상담사 데이터를 가져오는 함수 (실제 구현 시 API 호출로 대체)
-     * @param {string} branchName - 지점명
-     * @returns {Promise} - 상담사 데이터
-     */
-    function ajaxInventiveData(branchName) {
+        // 모달 표시
+        $('#inventiveSituationModal').modal('show');
+        
         let startDate = $("#dashBoardStartDate").val();
         let endDate = $("#dashBoardEndDate").val();
-        const inventiveFalseStatusData =
-            {branch:[],
+
+        let inventiveFalseStatusData =
+            {
+                branch:[],
                 inventiveSituation:
-                [
-                    {
-                        name: '서비스 미제공',
-                        data: []
-                    },
-                    {
-                        name: '1개월 미만 퇴사',
-                        data: []
-                    },
-                    {
-                        name: '파견업체',
-                        data: []
-                    },
-                    {
-                        name: 'IAP수립7일이내취업',
-                        data: []
-                    },
-                    {
-                        name: '주 30시간 미만',
-                        data: []
-                    },
-                    {
-                        name: '최저임금 미만',
-                        data: []
-                    },
-                    {
-                        name: '기타(해외취업포함)',
-                        data: []
-                    },
-                ]};
+                    [
+                        {
+                            name: '서비스 미제공',
+                            data: []
+                        },
+                        {
+                            name: '1개월 미만 퇴사',
+                            data: []
+                        },
+                        {
+                            name: '파견업체',
+                            data: []
+                        },
+                        {
+                            name: 'IAP수립7일이내취업',
+                            data: []
+                        },
+                        {
+                            name: '주 30시간 미만',
+                            data: []
+                        },
+                        {
+                            name: '최저임금 미만',
+                            data: []
+                        },
+                        {
+                            name: '기타(해외취업포함)',
+                            data: []
+                        },
+                    ]};
 
         fetch('dashBoardInventive.login', {
             method: 'POST',
@@ -272,60 +182,205 @@ $(document).ready(function(){
         }).then(async r => {
             let result = await r.json();
             JSON.parse(result).forEach((item) => {
-                    inventiveFalseStatusData.branch.push(item.branch);
-                    inventiveFalseStatusData.inventiveSituation.at(0).data.push(item.noService);
-                    inventiveFalseStatusData.inventiveSituation.at(1).data.push(item.lessThanOneMonth);
-                    inventiveFalseStatusData.inventiveSituation.at(2).data.push(item.dispatchCompany);
-                    inventiveFalseStatusData.inventiveSituation.at(3).data.push(item.iapSevenDays);
-                    inventiveFalseStatusData.inventiveSituation.at(4).data.push(item.underThirtyHours);
-                    inventiveFalseStatusData.inventiveSituation.at(5).data.push(item.underMinWage);
-                    inventiveFalseStatusData.inventiveSituation.at(6).data.push(item.etc);
-                });
-        })
-        console.log(inventiveFalseStatusData);
+                inventiveFalseStatusData.branch.push(item.branch);
+                inventiveFalseStatusData.inventiveSituation.at(0).data.push(item.noService);
+                inventiveFalseStatusData.inventiveSituation.at(1).data.push(item.lessThanOneMonth);
+                inventiveFalseStatusData.inventiveSituation.at(2).data.push(item.dispatchCompany);
+                inventiveFalseStatusData.inventiveSituation.at(3).data.push(item.iapSevenDays);
+                inventiveFalseStatusData.inventiveSituation.at(4).data.push(item.underThirtyHours);
+                inventiveFalseStatusData.inventiveSituation.at(5).data.push(item.underMinWage);
+                inventiveFalseStatusData.inventiveSituation.at(6).data.push(item.etc);
+            });
 
-        return new Promise((resolve) => {
-            // 테스트용 더미 데이터 (실제 구현시 API 호출로 대체)
-            setTimeout(() => {
-                resolve(inventiveFalseStatusData
-                //{
-                    // branch:['남부','서부','인서','인남','동대문'],
-                    // inventiveSituation:
-                    //     [
-                    //         {
-                    //             name: '서비스 미제공',
-                    //             data: []
-                    //         },
-                    //         {
-                    //             name: '1개월 미만 퇴사',
-                    //             data: []
-                    //         },
-                    //         {
-                    //             name: '파견업체',
-                    //             data: []
-                    //         },
-                    //         {
-                    //             name: 'IAP수립7일이내취업',
-                    //             data: []
-                    //         },
-                    //         {
-                    //             name: '주 30시간 미만',
-                    //             data: []
-                    //         },
-                    //         {
-                    //             name: '최저임금 미만',
-                    //             data: []
-                    //         },
-                    //         {
-                    //             name: '기타(해외취업포함)',
-                    //             data: []
-                    //         },
-                    //     ]
-                //}
-                );
-            }, 5000);
-        });
+            // 모달 제목 업데이트
+            $('#inventiveSituationModal .modal-title').text('지점별 미해당 현황');
+            // 상담사 차트 옵션
+            const consultantChartOptions = {
+                series: preprocessData(inventiveFalseStatusData.inventiveSituation),
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    toolbar: {
+                        show: true,
+                        tools: {
+                            download: true,
+                            selection: false,
+                            zoom: false,
+                            zoomin: false,
+                            pan: false,
+                            reset: false
+                        }
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        horizontal: false,
+                        columnWidth: '70%'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function(val) {
+                        return Math.floor(val) + '건';
+                    },
+                    style: {
+                        colors: ['#000000'],
+                        fontWeight: 500
+                    },
+                },
+                xaxis: {
+                    categories: inventiveFalseStatusData.branch,
+                },
+                yaxis: {
+                    title: {
+                        text: '미해당 건 수'
+                    },
+                    labels: {
+                        formatter: function(val) {
+                            return val.toLocaleString();
+                        }
+                    }
+                },
+                // 기본 색상 설정
+                colors: ['#ff0000', '#fca895', '#ffb0b0','#934e4e','#d34859', '#a45050','#772525'],
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return Math.floor(val) + ' 건';
+                        }
+                    }
+                },
+                title: {
+                    text: branchName+'사업부 인센 미해당 현황',
+                    align: 'left'
+                },
+            };
+
+            // 차트 생성 및 렌더링
+            const inventiveSituationAChart = new ApexCharts(
+                document.querySelector("#inventiveSituation"+branchName+"Chart"),
+                consultantChartOptions
+            );
+            //차트 표시
+            inventiveSituationAChart.render();
+        }).catch(err => {
+            console.log(err);
+        })
+
     }
+
+    /*  테스트용
+    /!**
+        * 상담사 데이터를 가져오는 함수 (실제 구현 시 API 호출로 대체)
+        * @param {string} branchName - 지점명
+        * @returns {Promise} - 상담사 데이터
+        *!/
+       function ajaxInventiveData(branchName) {
+           let startDate = $("#dashBoardStartDate").val();
+           let endDate = $("#dashBoardEndDate").val();
+
+           const inventiveFalseStatusData =
+               {branch:[],
+                   inventiveSituation:
+                   [
+                       {
+                           name: '서비스 미제공',
+                           data: []
+                       },
+                       {
+                           name: '1개월 미만 퇴사',
+                           data: []
+                       },
+                       {
+                           name: '파견업체',
+                           data: []
+                       },
+                       {
+                           name: 'IAP수립7일이내취업',
+                           data: []
+                       },
+                       {
+                           name: '주 30시간 미만',
+                           data: []
+                       },
+                       {
+                           name: '최저임금 미만',
+                           data: []
+                       },
+                       {
+                           name: '기타(해외취업포함)',
+                           data: []
+                       },
+                   ]};
+
+           fetch('dashBoardInventive.login', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify({
+                   businessUnit: branchName,
+                   dashBoardStartDate: startDate,
+                   dashBoardEndDate: endDate
+               })
+           }).then(async r => {
+               let result = await r.json();
+               JSON.parse(result).forEach((item) => {
+                       inventiveFalseStatusData.branch.push(item.branch);
+                       inventiveFalseStatusData.inventiveSituation.at(0).data.push(item.noService);
+                       inventiveFalseStatusData.inventiveSituation.at(1).data.push(item.lessThanOneMonth);
+                       inventiveFalseStatusData.inventiveSituation.at(2).data.push(item.dispatchCompany);
+                       inventiveFalseStatusData.inventiveSituation.at(3).data.push(item.iapSevenDays);
+                       inventiveFalseStatusData.inventiveSituation.at(4).data.push(item.underThirtyHours);
+                       inventiveFalseStatusData.inventiveSituation.at(5).data.push(item.underMinWage);
+                       inventiveFalseStatusData.inventiveSituation.at(6).data.push(item.etc);
+                   });
+           })
+           console.log("비동기 완료 : " + inventiveFalseStatusData);
+
+           return new Promise((resolve) => {
+               // 테스트용 더미 데이터 (실제 구현시 API 호출로 대체)
+               let timeoutNumber= setTimeout(() => {
+                   resolve(inventiveFalseStatusData
+                   //{
+                       // branch:['남부','서부','인서','인남','동대문'],
+                       // inventiveSituation:
+                       //     [
+                       //         {
+                       //             name: '서비스 미제공',
+                       //             data: []
+                       //         },
+                       //         {
+                       //             name: '1개월 미만 퇴사',
+                       //             data: []
+                       //         },
+                       //         {
+                       //             name: '파견업체',
+                       //             data: []
+                       //         },
+                       //         {
+                       //             name: 'IAP수립7일이내취업',
+                       //             data: []
+                       //         },
+                       //         {
+                       //             name: '주 30시간 미만',
+                       //             data: []
+                       //         },
+                       //         {
+                       //             name: '최저임금 미만',
+                       //             data: []
+                       //         },
+                       //         {
+                       //             name: '기타(해외취업포함)',
+                       //             data: []
+                       //         },
+                       //     ]
+                   //}
+                   );
+               }, 5000);
+           });
+       }*/
 
     // 모달 닫힐 때 차트 정리
     $('#inventiveSituationModal').on('hidden.bs.modal', function () {

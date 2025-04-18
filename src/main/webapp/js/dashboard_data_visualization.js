@@ -2,6 +2,10 @@ $(document).ready(function(){
     //임시데이터
     const Datas = initData;
 
+    let counselChart = $('#counselorChart');
+    let counselModel = $('#counselorModal');
+    let view = $("#viewText");
+
 
     //첫번째 프레임 필터
 
@@ -67,104 +71,13 @@ $(document).ready(function(){
      * @param {string} branchName - 선택된 지점명
      */
     function showConsultantModal(branchName) {
-        // 로딩 표시
-        $('#counselorChart').html('<div class="text-center"><div class="spinner-border" role="status"></div></div>');
-
-        // API 호출을 시뮬레이션 (실제 구현시 AJAX로 대체)
-        fetchConsultantData(branchName)
-            .then(data => {
-                // 모달 제목 업데이트
-                $('#counselorModal .modal-title').text(`${branchName} 상담사 성공금 현황`);
-
-                // 상담사 차트 옵션
-                const consultantChartOptions = {
-                    series: [{
-                        name: '성공금',
-                        data: data.amounts
-                    }],
-                    chart: {
-                        type: 'bar',
-                        height: 350,
-                        toolbar: {
-                            show: true,
-                            tools: {
-                                download: true,
-                                selection: false,
-                                zoom: false,
-                                zoomin: false,
-                                zoomout: false,
-                                pan: false,
-                                reset: false
-                            }
-                        }
-                    },
-                    plotOptions: {
-                        bar: {
-                            borderRadius: 4,
-                            horizontal: false,
-                            columnWidth: '55%'
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        formatter: function(val) {
-                            return val.toLocaleString() + '만원';
-                        }
-                    },
-                    xaxis: {
-                        categories: data.consultants,
-                        title: {
-                            text: '상담사명'
-                        }
-                    },
-                    yaxis: {
-                        title: {
-                            text: '성공금액 (만원)'
-                        },
-                        labels: {
-                            formatter: function(val) {
-                                return val.toLocaleString();
-                            }
-                        }
-                    },
-                    colors: ['#2E93fA'],
-                    tooltip: {
-                        y: {
-                            formatter: function(val) {
-                                return val.toLocaleString() + ' 만원';
-                            }
-                        }
-                    }
-                };
-
-                // 차트 생성 및 렌더링
-                const consultantChart = new ApexCharts(
-                    document.querySelector("#counselorChart"),
-                    consultantChartOptions
-                );
-                consultantChart.render();
-
-                // 모달 표시
-                $('#counselorModal').modal('show');
-            })
-            .catch(error => {
-                console.error('상담사 데이터 조회 실패:', error);
-                sweetAlert('error', '데이터 조회 실패', '상담사 정보를 불러오는데 실패했습니다.');
-            });
-    }
-
-    /**
-     * 상담사 데이터를 가져오는 함수 (실제 구현 시 API 호출로 대체)
-     * @param {string} branchName - 지점명
-     * @returns {Promise} - 상담사 데이터
-     */
-    function fetchConsultantData(branchName) {
         let startDate = $("#dashBoardStartDate").val();
         let endDate = $("#dashBoardEndDate").val();
         let jsonData = {
             consultants: [],
             amounts: []
         };
+
         fetch('dashBoardSuccess.login', {
             method: 'POST',
             headers: {
@@ -184,23 +97,88 @@ $(document).ready(function(){
             // console.log(jsonData);
         })
 
+        view.html('<div id="spinner-border" class="text-center">데이터를 불러오는 중입니다.<div class="spinner-border" role="status"></div></div>')
+        console.log(jsonData);
+        // 모달 제목 업데이트
+        $('#counselorModal .modal-title').text(`${branchName} 상담사 성공금 현황`);
 
-        return new Promise((resolve) => {
-            // 테스트용 더미 데이터 (실제 구현시 API 호출로 대체)
-            setTimeout(() => {
-                resolve(jsonData
-                    //     {
-                    //     consultants: ['김상담', '이상담', '박상담', '최상담', '정상담'],
-                    //     amounts: [2500, 2100, 1800, 2300, 1900]
-                    // }
-                );
-            }, 5000);
-        });
+        // 상담사 차트 옵션
+        const consultantChartOptions = {
+            series: [{
+                name: '성공금',
+                data: jsonData.amounts
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                    show: true,
+                    tools: {
+                        download: true,
+                        selection: false,
+                        zoom: false,
+                        zoomin: false,
+                        zoomout: false,
+                        pan: false,
+                        reset: false
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: false,
+                    columnWidth: '55%'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function(val) {
+                    return val.toLocaleString() + '만원';
+                }
+            },
+            xaxis: {
+                categories: jsonData.consultants,
+                title: {
+                    text: '상담사명'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: '성공금액 (만원)'
+                },
+                labels: {
+                    formatter: function(val) {
+                        return val.toLocaleString();
+                    }
+                }
+            },
+            colors: ['#2E93fA'],
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return val.toLocaleString() + ' 만원';
+                    }
+                }
+            }
+        };
+
+        // 모달 표시
+        counselModel.modal('show');
+        // 차트 생성 및 렌더링
+        const consultantChart = new ApexCharts(
+            document.querySelector("#counselorChart"),
+            consultantChartOptions
+        );
+
+        view.empty();
+        consultantChart.render();
+
     }
 
     // 모달 닫힐 때 차트 정리
-    $('#counselorModal').on('hidden.bs.modal', function () {
-        $('#counselorChart').empty();
+    counselModel.on('hidden.bs.modal', function () {
+        counselChart.empty();
     });
 
 
