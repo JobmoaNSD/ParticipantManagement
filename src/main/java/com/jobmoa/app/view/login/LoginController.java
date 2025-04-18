@@ -62,6 +62,7 @@ public class LoginController {
                 log.info("loginController login Success user ID : [{}]",memberDTO.getMemberUserID());
 
                 String role = memberDTO.getMemberRole();
+                boolean isManager = memberDTO.isMemberISManager();
                 //로그인 정보를 Bean 객체에 담고
                 loginBean.setMemberUserID(memberDTO.getMemberUserID());
                 loginBean.setMemberUserName(memberDTO.getMemberUserName());
@@ -73,6 +74,8 @@ public class LoginController {
                 //Session에 저장해 사용
                 session.setAttribute("JOBMOA_LOGIN_DATA", loginBean);
                 session.setAttribute("BRANCH_MENGER_ROLE", branchRole);
+                session.setAttribute("IS_MANAGER", isManager);
+
                 url = "dashboard.login";
                 icon = "success";
                 title = "로그인 성공";

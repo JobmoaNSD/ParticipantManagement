@@ -326,11 +326,21 @@ public class DashboardMainController {
     @GetMapping("scoreDashboard.login")
     public String scoreDashboard(Model model, HttpSession session, DashboardDTO dashboardDTO){
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        boolean isBranchManager = (Boolean)session.getAttribute("BRANCH_MENGER_ROLE");
+        boolean isManager = (Boolean)session.getAttribute("IS_MANAGER");
         String userID = loginBean.getMemberUserID();
         String branch = loginBean.getMemberBranch();
+
+        //지점 관리자 ,일반 관리자가 아니라면 지점, 사용자아이디를 추가하고 진행한다.
+        if(!isManager && !isBranchManager){
+            dashboardDTO.setDashboardUserID(userID);
+            dashboardDTO.setDashBoardUserBranch(branch);
+        }
+        //지점 관리자라면 아이디는 추가하지 않고 진행한다.
+        else if(isBranchManager){
+            dashboardDTO.setDashBoardUserBranch(branch);
+        }
         //상세보기를 클릭하면 DB에 사용자의 각 평가 현황별 % 점수를 반환해준다.
-        dashboardDTO.setDashboardUserID(userID);
-        dashboardDTO.setDashBoardUserBranch(branch);
         dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
         dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);
         dashboardDTO.setDashboardCondition("selectScoreAndAvg");

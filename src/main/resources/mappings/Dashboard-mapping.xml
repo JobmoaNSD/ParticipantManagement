@@ -673,19 +673,21 @@
         ),
         통계_정보 AS (
             SELECT
-            ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중취업자점수 END),2) AS 상위20퍼센트_취업자평균,
-            ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중취업자점수 END),2) AS 전체_취업자평균,
-            ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중알선취업자점수 END),2) AS 상위20퍼센트_알선평균,
-            ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중알선취업자점수 END),2) AS 전체_알선평균,
-            ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중조기취업자점수 END),2) AS 상위20퍼센트_조기평균,
-            ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중조기취업자점수 END),2) AS 전체_조기평균,
-            ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중고용취업자점수 END),2) AS 상위20퍼센트_고용평균,
-            ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중고용취업자점수 END),2) AS 전체_고용평균,
-            ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중나은취업자점수 END),2) AS 상위20퍼센트_나은평균,
-            ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중나은취업자점수 END),2) AS 전체_나은평균
+                ROUND(AVG(총평균),2) AS 총평균,
+                ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중취업자점수 END),2) AS 상위20퍼센트_취업자평균,
+                ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중취업자점수 END),2) AS 전체_취업자평균,
+                ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중알선취업자점수 END),2) AS 상위20퍼센트_알선평균,
+                ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중알선취업자점수 END),2) AS 전체_알선평균,
+                ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중조기취업자점수 END),2) AS 상위20퍼센트_조기평균,
+                ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중조기취업자점수 END),2) AS 전체_조기평균,
+                ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중고용취업자점수 END),2) AS 상위20퍼센트_고용평균,
+                ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중고용취업자점수 END),2) AS 전체_고용평균,
+                ROUND(AVG(CASE WHEN 순위_퍼센트 <![CDATA[<=]]> 20 AND 근속기간구분 = '1년이상' THEN 가중나은취업자점수 END),2) AS 상위20퍼센트_나은평균,
+                ROUND(AVG(CASE WHEN 근속기간구분 = '1년이상' THEN 가중나은취업자점수 END),2) AS 전체_나은평균
             FROM 순위_데이터
         )
         SELECT
+            총평균 AS totalStandardScore,
             상위20퍼센트_취업자평균 AS employmentTopScore,
             전체_취업자평균 AS employmentLastScore,
             상위20퍼센트_알선평균 AS placementTopScore,
