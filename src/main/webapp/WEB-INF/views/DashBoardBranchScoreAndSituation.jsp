@@ -71,6 +71,25 @@
     />
     <!-- mouse pointer 모양 bootstrap 5 -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        /*로딩바용 style*/
+        .loader{
+            width: 24px;
+            height: 24px;
+            border: 4px solid #4A90E2;
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -89,7 +108,21 @@
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <div id="scoreChart"></div>
 
-                <div id="distributionChart" class="pt-3"></div>
+                <div id="loadingDiv" class="d-flex justify-content-center align-items-center">
+
+                </div>
+
+                <div class="row">
+                    <div id="totalScore" class=" col-md-4"></div>
+                    <div id="employmentScore" class=" col-md-4"></div>
+                    <div id="placementScore" class=" col-md-4"></div>
+                </div>
+                <div class="row">
+                    <div id="retentionScore" class=" col-md-4"></div>
+                    <div id="earlyEmploymentScore" class=" col-md-4"></div>
+                    <div id="betterJobScore" class=" col-md-4"></div>
+                </div>
+
 
             </div>
             <!--end::Main content-->
@@ -168,11 +201,6 @@
     });
 </script>
 
-<script
-        src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
-        integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
-        crossorigin="anonymous"
-></script>
 <script>
 
 
@@ -205,8 +233,8 @@
                         const clickIndex = config.dataPointIndex;
                         const branchName = data.name[clickIndex];
                         if(clickIndex !== 0){
-                            console.log(clickIndex);
-                            console.log(branchName);
+                            // console.log(clickIndex);
+                            // console.log(branchName);
                             fetchData(branchName);
                         }
                     }
@@ -240,95 +268,334 @@
                         return val.toFixed(0);
                     }
                 }
-            },
-            colors: ['#008FFB']
+            }
         };
 
         const chart = new ApexCharts(document.querySelector("#scoreChart"), options);
         chart.render();
     }
 
-    // // 두 번째 차트 - 점수별 인원수 및 비율
-    // function renderDistributionChart(data) {
-    //     const options = {
-    //         series: [{
-    //             name: '인원수',
-    //             type: 'column',
-    //             data: data[0].myCount.data
-    //         }, {
-    //             name: '비율',
-    //             type: 'line',
-    //             data: data[0].myCount.avgData
-    //         }],
-    //         chart: {
-    //             height: 350,
-    //             type: 'line',
-    //             toolbar: {
-    //                 show: true
-    //             }
-    //         },
-    //         stroke: {
-    //             width: [0, 4],
-    //             curve: 'smooth'
-    //         },
-    //         dataLabels: {
-    //             enabled: true,
-    //             enabledOnSeries: [0, 1],
-    //             formatter: function(val, opt) {
-    //                 if (opt.seriesIndex === 0) {
-    //                     return val+'명';
-    //                 }
-    //                 // 비율 데이터의 경우
-    //                 return val+'%';
-    //             }
-    //         },
-    //         xaxis: {
-    //             categories: ['취업자수', '알선취업자수', '조기취업자수', '고용유지자수', '나은일자리수'],
-    //         },
-    //         yaxis: [{
-    //             title: {
-    //                 text: '인원수'
-    //             }
-    //         }, {
-    //             opposite: true,
-    //             title: {
-    //                 text: '비율 (%)'
-    //             },
-    //             max: 100  // 퍼센트 최대값
-    //         }],
-    //         colors: ['#00E396', '#008FFB'],
-    //         title: {
-    //             text: '점수별 인원 분포 및 비율',
-    //             align: 'center'
-    //         },
-    //         tooltip: {
-    //             y: [{
-    //                 formatter: function(val) {
-    //                     return val+'명';
-    //                 }
-    //             }, {
-    //                 formatter: function(val) {
-    //                     return val+'%';
-    //                 }
-    //             }]
-    //         }
-    //     };
-    //
-    //     const chart = new ApexCharts(document.querySelector("#distributionChart"), options);
-    //     chart.render();
-    // }
+    //두 번째 차트 사용자별 점수
+    // 각 차트에 표시할 데이터를 정의하는 함수
+    function getChartOptions(chartIndex, title, maxScore, jsonValue, jsonScore, jsonTopScore) {
+        // 각 차트의 제목과 데이터 설정
+        let chartTitle = title[chartIndex];
+        let seriesData = [{
+            name: title[chartIndex]+' 점수',
+            data: selectData[jsonValue[chartIndex]][jsonScore[chartIndex]]
+        }];
+        let yaxisAnnotation = [{
+            y: selectData[jsonValue[chartIndex]][jsonTopScore[chartIndex]],
+            borderColor: '#FF4560',
+            label: {
+                borderColor: '#FF4560',
+                style: {
+                    color: '#fff',
+                    background: '#FF4560'
+                },
+                text: title[chartIndex]+' 평균: ' + selectData[jsonValue[chartIndex]][jsonTopScore[chartIndex]] + '점'
+            }
+        }];
+        const chartColors = [
+            ['#2196F3'],    // 총점 - 파란색
+            ['#00BCD4'],    // 취업자 - 틸색
+            ['#009688'],    // 알선취업자 - 청록색
+            ['#4CAF50'],    // 고용유지 - 녹색
+            ['#8BC34A'],    // 조기취업자 - 라임색
+            ['#3F51B5']     // 나은일자리 - 인디고
+        ];
 
+        // 차트 옵션 구성
+        const options = {
+            series: seriesData,
+            colors: chartColors[chartIndex],
+            chart: {
+                height: 450,
+                type: 'bar',
+                toolbar: {
+                    show: true,
+                    tools: {
+                        download: true,
+                        selection: true,
+                    }
+                },
+                dropShadow: {
+                    enabled: true,
+                    opacity: 0.3,
+                    blur: 3
+                },
+                events: {
+                    dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
+                        const clickIndex = config.dataPointIndex;
+                        const userID = selectData.userID[clickIndex];
+                        if(clickIndex !== 0){
+                            location.href = "scoreDashboard.login?dashboardUserID=" + userID + "&dashboardBranch=" + selectData.branch;
+                        }
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '90%',
+                    endingShape: 'rounded',
+                    borderRadius: 4,
+                    dataLabels: {
+                        position: 'top'
+                    }
+                },
+            },
+            stroke: {
+                show: true,
+                width: 10,
+                colors: ['transparent']
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function(val) {
+                    return val.toFixed(1) + '점';
+                },
+                style: {
+                    fontSize: '10px',
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                    fontWeight: 'bold',
+                    colors: ['#ffffff']
+                }
+            },
+            xaxis: {
+                categories: selectData.username,
+                tickPlacement: 'between',
+                labels: {
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 600,
+                    },
+                    rotate: -45,
+                    hideOverlappingLabels: false
+                }
+            },
+            yaxis: {
+                title: {
+                    text: '점수',
+                    style: {
+                        fontSize: '10px',
+                        fontWeight: 600
+                    }
+                },
+                min: 0,
+                max: maxScore[chartIndex],
+                forceNiceScale: true,
+                tickAmount: 5,
+                labels: {
+                    formatter: function(val) {
+                        return val.toFixed(0) + '점';
+                    }
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                fontSize: '13px',
+                markers: {
+                    size: 8
+                }
+            },
+            title: {
+                text: chartTitle,
+                align: 'center',
+                style: {
+                    fontSize: '16px',
+                    fontWeight: 'bold'
+                },
+                margin: 20
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function(val) {
+                        return val.toFixed(1) + '점';
+                    }
+                },
+                theme: 'dark'
+            },
+            grid: {
+                borderColor: '#e0e0e0'
+            },
+            markers: {
+                size: 6,
+                hover: {
+                    size: 9
+                }
+            },
+            annotations: {
+                yaxis: yaxisAnnotation
+            }
+        };
 
-    function fetchData(data){
+        return options;
+    }
+
+    // 차트 렌더링 함수 수정
+    function renderDistributionChart(title, maxScore, jsonValue, jsonScore, jsonTopScore) {
+        // 각 차트 요소를 선택하고 렌더링
+        for (let i = 0; i < jsonValue.length; i++) {
+            const chartElement = document.querySelector("#"+jsonScore[i]);
+            if (chartElement) {
+                const options = getChartOptions(i, title, maxScore, jsonValue, jsonScore, jsonTopScore);
+                const chart = new ApexCharts(chartElement, options);
+                chart.render();
+            }
+        }
+    }
+
+    //상담사별 데이터 불러오는 fetch(비동기 함수)
+    function fetchData(data) {
+        //초기화 함수
+        emptyFunction();
+        const $loadingDiv = $('#loadingDiv');
+        $loadingDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
+
         fetch('dashBoardAjaxBranchScore.login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({dashboardBranch:data})
-        }).then(async response =>
-            console.log(await response.json())
-        )
+        }).then(async response => {
+            let data = JSON.parse(await response.json());
+
+            //console.log(data);
+            //console.log(data);
+            changeDataAVG(data);
+            changeDataUser(data);
+
+            //"total" 총점,"employment"취업자,"placement"알선취업자,"retention"고용유지,"earlyEmployment"조기취업자,"betterJob"나은일자리
+            const title = ["총점","취업자","알선취업자","고용유지","조기취업자","나은일자리"]
+            const maxScore = [90,30,25,15,10,10]
+            const jsonValue = ["total","employment","placement","retention","earlyEmployment","betterJob"]
+            const jsonScore = ["totalScore","employmentScore","placementScore","retentionScore","earlyEmploymentScore","betterJobScore"]
+            const jsonTopScore = ["totalStandardScore","employmentTopScore","placementTopScore","retentionTopScore","earlyEmploymentTopScore","betterJobTopScore"]
+            // console.log(jsonScore.length);
+            renderDistributionChart(title, maxScore, jsonValue, jsonScore, jsonTopScore);
+            $loadingDiv.empty()
+        }).catch(r => {
+            $loadingDiv.html('<div> 오류가 발생했습니다.(다른 지점은 선택할 수 없습니다. </div>');
+        })
+    }
+
+    let selectData = {
+        username:[],
+        userID:[],
+        branch:{},
+        retention: {
+            retentionTopScore: {},
+            retentionScore:[]
+        },
+        placement:{
+            placementTopScore:{},
+            placementScore:[]
+        },
+        employment: {
+            employmentTopScore:{},
+            employmentScore:[]
+        },
+        earlyEmployment:{
+            earlyEmploymentTopScore:{},
+            earlyEmploymentScore:[]
+        },
+        betterJob:{
+            betterJobTopScore:{},
+            betterJobScore:[]
+        },
+        total:{
+            totalStandardScore: {},
+            myBranchScore: {},
+            totalScore:[]
+        },
+    }
+
+    function changeDataAVG(data){
+        data.branchScore.forEach(function(value, key){
+            //console.log(value.retentionTopScore);
+            selectData.retention.retentionTopScore = value.retentionTopScore;
+            //console.log(value.placementTopScore);
+            selectData.placement.placementTopScore = value.placementTopScore;
+            //console.log(value.employmentTopScore);
+            selectData.employment.employmentTopScore = value.employmentTopScore;
+            //console.log(value.earlyEmploymentTopScore);
+            selectData.earlyEmployment.earlyEmploymentTopScore = value.earlyEmploymentTopScore;
+            //console.log(value.betterJobTopScore);
+            selectData.betterJob.betterJobTopScore = value.betterJobTopScore;
+            //console.log(value.totalStandardScore); // 전체 총점
+            selectData.total.totalStandardScore = value.totalStandardScore;
+        })
+    }
+
+    function changeDataUser(data){
+        data.branchUserScore.forEach(function(value, key){
+            //console.log(value.username);
+            selectData.username.push(value.username);
+            //console.log(value.userID);
+            selectData.userID.push(value.userID);
+            //console.log(value.branch)
+            selectData.branch = value.branch;
+            //console.log(value.retentionScore);
+            selectData.retention.retentionScore.push(value.retentionScore);
+            //console.log(value.placementScore);
+            selectData.placement.placementScore.push(value.placementScore);
+            //console.log(value.employmentScore);
+            selectData.employment.employmentScore.push(value.employmentScore);
+            //console.log(value.earlyEmploymentScore);
+            selectData.earlyEmployment.earlyEmploymentScore.push(value.earlyEmploymentScore);
+            console.log(value.betterJobScore);
+            selectData.betterJob.betterJobScore.push(value.betterJobScore);
+            //console.log(value.totalScore);//개인 총점
+            selectData.total.totalScore.push(value.totalScore);
+            //console.log(value.myBranchScore); //지점 총점
+            selectData.total.myBranchScore = value.myBranchScore;
+        })
+    }
+
+    function emptyFunction(){
+        selectData = {
+            username:[],
+            userID:[],
+            branch:{},
+            retention: {
+                retentionTopScore: {},
+                retentionScore:[]
+            },
+            placement:{
+                placementTopScore:{},
+                placementScore:[]
+            },
+            employment: {
+                employmentTopScore:{},
+                employmentScore:[]
+            },
+            earlyEmployment:{
+                earlyEmploymentTopScore:{},
+                earlyEmploymentScore:[]
+            },
+            betterJob:{
+                betterJobTopScore:{},
+                betterJobScore:[]
+            },
+            total:{
+                totalStandardScore: {},
+                myBranchScore: {},
+                totalScore:[]
+            },
+        };
+        $("#totalScore").empty();
+        $("#employmentScore").empty();
+        $("#placementScore").empty();
+        $("#retentionScore").empty();
+        $("#earlyEmploymentScore").empty();
+        $("#betterJobScore").empty();
+        $('#loadingDiv').empty();
     }
 
     $(document).ready(function () {
@@ -339,7 +606,6 @@
             changeData(initData)
         }
         renderScoreChart(changJson);
-        //renderDistributionChart(responseData);
         function changeData(data){
             data.map(function(item){
                 changJson.name.push(item.name);
@@ -352,4 +618,9 @@
 
     });
 </script>
+<script
+        src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
+        integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
+        crossorigin="anonymous"
+></script>
 </html>
