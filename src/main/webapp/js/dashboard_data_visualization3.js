@@ -25,7 +25,7 @@ $(document).ready(function(){
             toolbar: {
                 show: true
             },
-            //FIXME 모달 생성 이벤트 제작 후 수정 예정
+            //모달 생성 이벤트 제작 후 수정 완료
             events: {
                 dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
                     const branchIndex = config.dataPointIndex;
@@ -210,6 +210,14 @@ $(document).ready(function(){
                             pan: false,
                             reset: false
                         }
+                    },
+                    events: {
+                        dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
+                            const index = config.dataPointIndex;
+                            const branchName = config.w.config.xaxis.categories[index];
+                            console.log("선택 지점 :" + branchName);
+                            searchNoService(branchName);
+                        }
                     }
                 },
                 plotOptions: {
@@ -382,10 +390,60 @@ $(document).ready(function(){
            });
        }*/
 
+    function searchNoService(branchName) {
+        // 모달 표시
+        $('#noServiceModal').modal('show');
+        fetch('noServiceAjax.login',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                participantBranch: branchName,
+                searchStartDate: $("#dashBoardStartDate").val(),
+                searchEndDate: $("#dashBoardEndDate").val()
+            })
+        }).then(async r => {
+            const noServiceTableBody = $('#noServiceTableBody');
+            const noServiceModalLabel = $('#noServiceModalLabel');
+            console.log(r);
+            let result = await r.json();
+            console.log(result);
+            let searchHtml;
+            noServiceModalLabel.text(branchName + " 서비스 미제공 리스트")
+
+            result.forEach((item) => {
+                searchHtml += "<tr><td>";
+                searchHtml += item.participantRegDate;
+                searchHtml += "</td><td>";
+                searchHtml += item.participantJobNo;
+                searchHtml += "</td><td>";
+                searchHtml += item.participantUserName;
+                searchHtml += "</td><td>";
+                searchHtml += item.participantPartic;
+                searchHtml += "</td><td>";
+                searchHtml += item.participantInItCons;
+                searchHtml += "</td><td>";
+                searchHtml += item.participantStartDate;
+                searchHtml += "</td><td>";
+                searchHtml += item.participantIncentive;
+                searchHtml += "</td></tr>";
+            })
+            console.log(searchHtml);
+
+            noServiceTableBody.html(searchHtml);
+        })
+    }
+
     // 모달 닫힐 때 차트 정리
     $('#inventiveSituationModal').on('hidden.bs.modal', function () {
         $('#inventiveSituationAChart').empty();
         $('#inventiveSituationBChart').empty();
+    });
+
+    $('#noServiceModal').on('hidden.bs.modal', function () {
+        $('#noServiceTableBody').empty();
+        $('#noServiceModalLabel').empty();
     });
 
     // 차트 렌더링

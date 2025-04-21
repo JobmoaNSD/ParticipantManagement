@@ -25,7 +25,7 @@ public class TransferController {
     public String transfer(Model model, HttpSession session, MemberDTO memberDTO){
         log.info("-------------> Start Transfer.login");
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
-        boolean branchRole = (boolean)session.getAttribute("BRANCH_MENGER_ROLE");
+        boolean branchRole = (boolean)session.getAttribute("IS_BRANCH_MANAGER");
         String url = "index.jsp";
         String icon = "error";
         String title = "접근 권한이 없습니다.";

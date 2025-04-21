@@ -845,5 +845,35 @@
         </foreach>
     </update>
 
+    <!-- 서비스 미제공 상담사 검색 시작 -->
+    <select id="selectNoService" resultType="participant">
+        SELECT
+            A.구직번호 AS participantJobNo,
+            B.이름 AS participantUserName,
+            A.참여자 AS participantPartic,
+            A.취업인센티브_구분 AS participantIncentive,
+            CASE
+                WHEN A.등록일 > '1900-01-01'
+                THEN A.등록일
+            END AS participantRegDate,
+            CASE
+                WHEN A.취창업일 > '1900-01-01'
+                THEN A.취창업일
+            END AS participantStartDate,
+            CASE
+                WHEN A.초기상담일 > '1900-01-01'
+                THEN A.초기상담일
+            END AS participantInItCons
+        FROM SUCCESSMONEY A
+        RIGHT JOIN J_참여자관리_로그인정보 B
+        ON A.전담자_계정 = B.아이디
+        WHERE
+            A.지점 <![CDATA[<>]]> '테스트' AND A.지점 = #{participantBranch}
+            AND A.취창업일 <![CDATA[>=]]> #{searchStartDate} AND A.취창업일 <![CDATA[<=]]> #{searchEndDate}
+            AND A.취업인센티브_구분 LIKE '%서비스 미제공%'
+        ORDER BY A.지점 DESC
+    </select>
+    <!-- 서비스 미제공 상담사 검색 끝 -->
+
 
 </mapper>
