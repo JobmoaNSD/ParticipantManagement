@@ -170,13 +170,13 @@
                             </select>
                             <select
                                     class="form-select shadow-sm w-75 me-2"
-                                    name="participantRegDate"
+                                    name="participantInItCons"
                                     id="year">
-                                <option ${param.participantRegDate.equals("All") ? 'selected' : ''} value="All">년도</option>
-                                <option ${param.participantRegDate.equals("2025") ? 'selected' : ''} value="2025">2025</option>
-                                <option ${param.participantRegDate.equals("2024") ? 'selected' : ''} value="2024">2024</option>
-                                <option ${param.participantRegDate.equals("2023") ? 'selected' : ''} value="2023">2023</option>
-                                <option ${param.participantRegDate.equals("2022") ? 'selected' : ''} value="2022">2022</option>
+                                <option ${param.participantInItCons.equals("All") ? 'selected' : ''} value="All">년도</option>
+                                <option ${param.participantInItCons.equals("2025") ? 'selected' : ''} value="2025">2025</option>
+                                <option ${param.participantInItCons.equals("2024") ? 'selected' : ''} value="2024">2024</option>
+                                <option ${param.participantInItCons.equals("2023") ? 'selected' : ''} value="2023">2023</option>
+                                <option ${param.participantInItCons.equals("2022") ? 'selected' : ''} value="2022">2022</option>
                             </select>
                             <select
                                     class="form-select shadow-sm"
@@ -292,7 +292,7 @@
                                         <span class="column">생년월일</span>
                                     </th>
                                     <th class="table-Column">
-                                        <span class="column">등록일</span>
+                                        <span class="column">초기상담일</span>
                                     </th>
                                     <th class="table-Column">
                                         <span class="column">간접고용서비스</span>
@@ -326,7 +326,7 @@
                                                 <td class="adventCons-td">${data.participantAdventCons}</td>
                                                 <td>${data.participantProgress}</td>
                                                 <td>${data.participantDob}</td>
-                                                <td>${data.participantRegDate}</td>
+                                                <td>${data.participantInItCons}</td>
                                                 <td>${data.participantEmploymentService eq '' or data.participantEmploymentService eq null?0:data.participantEmploymentService} 회</td>
                                                 <td class="text-center isClose_td">
                                                     <span class="badge ${data.participantClose ? 'bg-danger' : 'bg-success'} isClose_span">

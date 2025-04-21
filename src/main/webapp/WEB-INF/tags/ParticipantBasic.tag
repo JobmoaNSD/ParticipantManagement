@@ -42,6 +42,7 @@
                     <option value="고교">고교</option>
                     <option value="훈련기관">훈련기관</option>
                     <option value="자체모집">자체모집</option>
+                    <option value="이관">이관</option>
                 </select>
             </div>
             <div class="col-md-1 w-auto">
@@ -49,7 +50,6 @@
                 <select class="form-select" aria-label="Default select example" id="basicPartType" name="basicPartType">
                     <option selected value="1">1</option>
                     <option value="2">2</option>
-                    <option value="이관">이관</option>
                 </select>
             </div>
             <div class="col-md-1 w-auto">
