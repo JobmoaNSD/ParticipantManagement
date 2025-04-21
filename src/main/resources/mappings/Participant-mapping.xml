@@ -12,7 +12,7 @@
             상담경과일 AS participantAdventCons,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
-            등록일 AS participantRegDate,
+            초기상담일 AS participantInItCons,
             간접고용서비스 AS participantEmploymentService,
             마감 AS participantClose
         FROM (
@@ -22,7 +22,7 @@
                             <!--구직번호가 아니라면-->
                             <when test="column == '구직번호' or column == '참여자' or column == '성별' or
                                         column == '최근상담일' or column == '진행단계' or
-                                        column == '생년월일' or column == '등록일' or column == '간접고용서비스'">
+                                        column == '생년월일' or column == '초기상담일' or column == '간접고용서비스'">
                                 ${column}
                             </when>
                             <when test="column == '상담경과일'">
@@ -52,8 +52,8 @@
                         WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
                         END AS 생년월일,
                     CASE
-                        WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
-                        END AS 등록일,
+                        WHEN 초기상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 초기상담일
+                        END AS 초기상담일,
                     CASE
                         WHEN 최근상담일 <![CDATA[<>]]> '' AND 마감='false' THEN DATEDIFF(DAY, 최근상담일, GETDATE())
                         END AS 상담경과일,
@@ -64,8 +64,8 @@
                      전담자_계정 = #{participantUserid} AND
                      지점 = #{participantBranch}
                  <choose>
-                    <when test="participantRegDate != 'All' and participantRegDate != null">
-                        AND YEAR(등록일) = #{participantRegDate}
+                    <when test="participantInItCons != 'All' and participantInItCons != null">
+                        AND YEAR(초기상담일) = #{participantInItCons}
                     </when>
                  </choose>
                  <choose>
@@ -109,8 +109,8 @@
             전담자_계정 = #{participantUserid} AND
             지점 = #{participantBranch}
         <choose>
-            <when test="participantRegDate != 'All' and participantRegDate != null">
-                AND YEAR(등록일) = #{participantRegDate}
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -156,7 +156,7 @@
             상담경과일 AS participantAdventCons,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
-            등록일 AS participantRegDate,
+            초기상담일 AS participantInItCons,
             간접고용서비스 AS participantEmploymentService,
             마감 AS participantClose
         FROM (
@@ -166,7 +166,7 @@
                             <!--구직번호가 아니라면-->
                             <when test="column == '구직번호' or column == '참여자' or column == '성별' or
                                                         column == '최근상담일' or column == '진행단계' or
-                                                        column == '생년월일' or column == '등록일' or column == '간접고용서비스'">
+                                                        column == '생년월일' or column == '초기상담일' or column == '간접고용서비스'">
                                 ${column}
                             </when>
                             <when test="column == '상담경과일'">
@@ -196,8 +196,8 @@
                          WHEN 생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN 생년월일
                          END AS 생년월일,
                      CASE
-                         WHEN 등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN 등록일
-                         END AS 등록일,
+                         WHEN 초기상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 초기상담일
+                         END AS 초기상담일,
                      CASE
                         WHEN 최근상담일 <![CDATA[<>]]> ''  AND 마감='false'
                         THEN DATEDIFF(DAY, 최근상담일, GETDATE())
@@ -210,8 +210,8 @@
                     지점 = #{participantBranch} AND
                     ${searchOption} like '%'+#{search}+'%'
                     <choose>
-                        <when test="participantRegDate != 'All' and participantRegDate != null">
-                            AND YEAR(등록일) = #{participantRegDate}
+                        <when test="participantInItCons != 'All' and participantInItCons != null">
+                            AND YEAR(초기상담일) = #{participantInItCons}
                         </when>
                     </choose>
                     <choose>
@@ -256,8 +256,8 @@
             지점 = #{participantBranch} AND
             ${searchOption} like '%'+#{search}+'%'
         <choose>
-            <when test="participantRegDate != 'All' and participantRegDate != null">
-                AND YEAR(등록일) = #{participantRegDate}
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -458,7 +458,7 @@
         상담경과일 AS participantAdventCons,
         진행단계 AS participantProgress,
         생년월일 AS participantDob,
-        등록일 AS participantRegDate,
+        초기상담일 AS participantInItCons,
         간접고용서비스 AS participantEmploymentService,
         마감 AS participantClose
         FROM (
@@ -468,7 +468,7 @@
             <!--구직번호가 아니라면-->
             <when test="column == '구직번호' or column == '참여자' or column == '성별' or
                                         column == '최근상담일' or column == '진행단계' or
-                                        column == '생년월일' or column == '등록일' or column == '간접고용서비스'">
+                                        column == '생년월일' or column == '초기상담일' or column == '간접고용서비스'">
                 A.${column}
             </when>
             <when test="column == '전담자'">
@@ -502,8 +502,8 @@
         WHEN A.생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.생년월일
         END AS 생년월일,
         CASE
-        WHEN A.등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.등록일
-        END AS 등록일,
+        WHEN A.초기상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.초기상담일
+        END AS 초기상담일,
         CASE
         WHEN A.최근상담일 <![CDATA[<>]]> ''  AND A.마감='false'
         THEN DATEDIFF(DAY, A.최근상담일, GETDATE())
@@ -516,8 +516,8 @@
         WHERE
         A.지점 = #{participantBranch}
         <choose>
-            <when test="participantRegDate != 'All' and participantRegDate != null">
-                AND YEAR(A.등록일) = #{participantRegDate}
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -559,6 +559,11 @@
         FROM J_참여자관리
         WHERE
         지점 = #{participantBranch}
+        <choose>
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
+            </when>
+        </choose>
         <choose>
             <when test="endDateOption == 'false'">
                 AND (마감 = 'false' OR 마감 = '')
@@ -603,7 +608,7 @@
         상담경과일 AS participantAdventCons,
         진행단계 AS participantProgress,
         생년월일 AS participantDob,
-        등록일 AS participantRegDate,
+        초기상담일 AS participantInItCons,
         간접고용서비스 AS participantEmploymentService,
         마감 AS participantClose
         FROM (
@@ -613,7 +618,7 @@
             <!--구직번호가 아니라면-->
             <when test="column == '구직번호' or column == '참여자' or column == '성별' or
                                         column == '최근상담일' or column == '진행단계' or
-                                        column == '생년월일' or column == '등록일' or column == '간접고용서비스'">
+                                        column == '생년월일' or column == '초기상담일' or column == '간접고용서비스'">
                 A.${column}
             </when>
             <when test="column == '전담자'">
@@ -647,8 +652,8 @@
         WHEN A.생년월일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.생년월일
         END AS 생년월일,
         CASE
-        WHEN A.등록일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.등록일
-        END AS 등록일,
+        WHEN A.초기상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.초기상담일
+        END AS 초기상담일,
         CASE
         WHEN A.최근상담일 <![CDATA[<>]]> ''  AND A.마감='false'
         THEN DATEDIFF(DAY, A.최근상담일, GETDATE())
@@ -660,6 +665,11 @@
         ON A.전담자_계정 = B.아이디
         WHERE
         A.지점 = #{participantBranch} AND
+        <choose>
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
+            </when>
+        </choose>
         <choose>
             <when test="searchOption='전담자'">
                 B.이름 like '%'+#{search}+'%'
@@ -716,6 +726,11 @@
             <otherwise>
                 A.${searchOption} like '%'+#{search}+'%'
             </otherwise>
+        </choose>
+        <choose>
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
+            </when>
         </choose>
         <choose>
             <when test="endDateOption == 'false'">
