@@ -167,7 +167,7 @@
                     <!--end::알선기업관리-->
                     <!--begin::지점관리-->
                     <!--TODO FIXME 권한 확인하고 어디까지 열어둘지 확인해야함-->
-                    <c:if test="${BRANCH_MENGER_ROLE}">
+                    <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
                     <li class="nav-item ${gnb_main_header eq '지점관리' ? 'menu-open' : ''}">
                         <a href="#" class="nav-link">
                             <i class="bi bi-building-fill-gear"></i>

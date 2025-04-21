@@ -326,7 +326,7 @@ public class DashboardMainController {
     @GetMapping("scoreDashboard.login")
     public String scoreDashboard(Model model, HttpSession session, DashboardDTO dashboardDTO){
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
-        boolean isBranchManager = (Boolean)session.getAttribute("BRANCH_MENGER_ROLE");
+        boolean isBranchManager = (Boolean)session.getAttribute("IS_BRANCH_MANAGER");
         boolean isManager = (Boolean)session.getAttribute("IS_MANAGER");
         String userID = loginBean.getMemberUserID();
         String branch = loginBean.getMemberBranch();

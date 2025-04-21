@@ -91,4 +91,7 @@ public class ParticipantDTO {
     private String targetCounselorID;
     private List<Integer> participantIDs;
 
+    // 검색 시작 종료일
+    private String searchStartDate;
+    private String searchEndDate;
 }

@@ -73,7 +73,7 @@ public class LoginController {
 
                 //Session에 저장해 사용
                 session.setAttribute("JOBMOA_LOGIN_DATA", loginBean);
-                session.setAttribute("BRANCH_MENGER_ROLE", branchRole);
+                session.setAttribute("IS_BRANCH_MANAGER", branchRole);
                 session.setAttribute("IS_MANAGER", isManager);
 
                 url = "dashboard.login";

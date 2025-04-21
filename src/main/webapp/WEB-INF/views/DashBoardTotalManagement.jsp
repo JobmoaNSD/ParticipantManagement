@@ -199,7 +199,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <div id="noServiceDiv"></div>
+                <div id="noServiceDiv" class="table-responsive" style="max-height: 70vh;">
+                  <table class="table table-bordered table-hover" id="noServiceTable">
+                    <thead class="sticky-top bg-white"> <!-- 헤더 고정 -->
+                    <tr>
+                      <th>등록일</th>
+                      <th>구직번호</th>
+                      <th>상담사</th>
+                      <th>참여자</th>
+                      <th>초기상담일</th>
+                      <th>취창업일</th>
+                      <th>구분</th>
+                    </tr>
+                    </thead>
+                    <tbody id="noServiceTableBody">
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>

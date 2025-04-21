@@ -3,6 +3,8 @@ package com.jobmoa.app.view.ajaxPackage;
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.dashboard.DashboardDTO;
 import com.jobmoa.app.biz.dashboard.DashboardServiceImpl;
+import com.jobmoa.app.biz.participant.ParticipantDTO;
+import com.jobmoa.app.biz.participant.ParticipantServiceImpl;
 import com.jobmoa.app.view.function.ChangeJson;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Reader;
 import java.util.List;
 
 @Slf4j
@@ -20,6 +21,9 @@ public class DashboardAjaxController {
 
     @Autowired
     private DashboardServiceImpl dashboardService;
+
+    @Autowired
+    private ParticipantServiceImpl participantService;
 
     @Autowired
     private ChangeJson changeJson;
@@ -177,5 +181,31 @@ public class DashboardAjaxController {
         );
     }
 
+    @PostMapping("noServiceAjax.login")
+    public List<ParticipantDTO> noServiceSearchAjax(@RequestBody ParticipantDTO participantDTO, HttpSession session){
+        log.info("noServiceSearchAjax Start noService.login");
+        // 세션에 저장되어 있는 로그인 정보를 확인한다.
+        LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        // 세션에 저장된 관리자 여부를 가져온다.
+        boolean isManager = (boolean)session.getAttribute("IS_MANAGER");
+        // 세션에 저장된 지점관리자 여부를 가져온다.
+        boolean isBranchManager = (boolean)session.getAttribute("IS_BRANCH_MANAGER");
+        String branch = participantDTO.getParticipantBranch();
+        // 세션 로그인 정보에 있는 지점을 가져온다.
+        String sessionBranch = loginBean.getMemberBranch();
+        // 관리자 여부를 확인하고 관리자가 아니라면 null을 반환하고
+        if(!isManager){
+            log.info("noServiceSearchAjax Fail: isManager == false");
+            return null;
+        }
+        //지점이 틀리고 지점 관리자가 아니라면 null을 반환한다.
+        else if(!branch.equals(sessionBranch) && !isBranchManager){
+            log.info("noServiceSearchAjax Fail: isBranchManager == false");
+            return null;
+        }
+        participantDTO.setParticipantCondition("selectNoService");
+        List<ParticipantDTO> datas = participantService.selectAll(participantDTO);
+        return datas;
+    }
 
 }
