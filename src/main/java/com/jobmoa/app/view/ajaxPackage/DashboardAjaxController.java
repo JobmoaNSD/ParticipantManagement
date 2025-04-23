@@ -9,6 +9,8 @@ import com.jobmoa.app.view.function.ChangeJson;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -206,6 +208,39 @@ public class DashboardAjaxController {
         participantDTO.setParticipantCondition("selectNoService");
         List<ParticipantDTO> datas = participantService.selectAll(participantDTO);
         return datas;
+    }
+
+    @PostMapping("scoreBranchPerformanceAjax.login")
+    public String scoreBranchPerformanceAjax(@RequestBody DashboardDTO dashboardDTO){
+        boolean conditionFlag = Boolean.parseBoolean(dashboardDTO.getDashboardCondition());
+
+        if(!conditionFlag){
+            // 1년 미만 상담사 미포함
+            dashboardDTO.setDashboardCondition("selectBranchAvg");
+            log.info("selectBranchAvg (1년 미만 상담사 미포함) : [{}]", false);
+        }
+        else{
+            //1년 미만 상담사 포함
+            dashboardDTO.setDashboardCondition("scoreBranchPerformanceAjax");
+            log.info("scoreBranchPerformanceAjax (1년 미만 상담사 포함) : [{}]", true);
+        }
+
+        List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
+        if(datas.isEmpty() || datas.size() == 0){
+            return null;
+        }
+        // 반환된 data를 가지고 json 형식으로 그래프를 그릴 수 있도록 반환한다.
+        String responseJson = changeJson.convertListToJsonArray(datas,item ->{
+            DashboardDTO dto = (DashboardDTO)item;
+            return String.format("{\"name\":\"%s\", \"data\":\"%.2f\"}",
+                    dto.getDashboardBranch(),dto.getTotalBranchScoreAVG()
+            );
+        });
+
+        log.info("scoreBranchDashboard responseJson : [{}]",responseJson);
+
+
+        return responseJson;
     }
 
 }

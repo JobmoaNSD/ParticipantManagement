@@ -116,13 +116,6 @@
                                 <small><p>대시보드</p></small>
                             </a>
                         </li>
-                        <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
-                            <li class="nav-item">
-                                <a href="./dashboard.login" class="nav-link">
-                                    <small><p>실적 점수 (1년 미만 포함)</p></small>
-                                </a>
-                            </li>
-                        </c:if>
                         <li class="nav-item">
                             <a href="./report.login" class="nav-link"><%--onclick="alert('미구현된 서비스입니다.'); return ;"--%>
                                 <small><p>일일업무보고</p></small>
