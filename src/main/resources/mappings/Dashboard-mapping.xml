@@ -453,7 +453,7 @@
         WHERE
             A.전담자_계정 =  #{dashboardUserID}
     </select>
-    <!-- 지점 평균 및 총점 평균 출력 -->
+    <!-- 지점 평균 및 총점 평균 출력 (1년 미만 상담사 미포함) -->
     <select id="selectBranchAvg" resultType="dashboard">
         WITH 지점순서 AS (
             SELECT 지점, 순서 FROM J_참여자관리_지점
@@ -474,6 +474,49 @@
                 OR (L.최종발령일 IS NOT NULL AND L.최종발령일 > '1900-01-01'
                     AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365))
         ),
+             총점및인원데이터 AS (
+                 SELECT
+                     지점,
+                     SUM(총점) AS 지점_총점,
+                     COUNT(이름) AS 지점_전담자수
+                 FROM 전체점수데이터
+                 GROUP BY 지점
+             ),
+             전체통계 AS (
+                 SELECT
+                     지점,
+                     ROUND(지점_총점/NULLIF(지점_전담자수, 0), 2) AS 지점평균
+                 FROM 총점및인원데이터
+                 UNION ALL
+                 SELECT
+                     '총점' AS 지점,
+                     ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수), 0), 2) AS 지점평균
+                 FROM 총점및인원데이터
+             )
+        SELECT
+            T.지점 dashboardBranch,
+            T.지점평균 AS totalBranchScoreAVG
+        FROM 전체통계 T
+                 JOIN 지점순서 S ON T.지점 = S.지점
+        ORDER BY S.순서
+    </select>
+
+    <!-- 지점 평균 및 총점 평균 출력 (1년 미만 상담사 포함)-->
+    <select id="scoreBranchPerformanceAjax" resultType="dashboard">
+        WITH 지점순서 AS (
+            SELECT 지점, 순서 FROM J_참여자관리_지점
+            UNION ALL
+            SELECT '총점' AS 지점, 0 AS 순서
+        ),
+             전체점수데이터 AS (
+                 SELECT
+                     A.지점,
+                     A.이름,
+                     A.전담자_계정,
+                     A.총점
+                 FROM 평가실적및점수 A
+                          JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
+             ),
              총점및인원데이터 AS (
                  SELECT
                      지점,

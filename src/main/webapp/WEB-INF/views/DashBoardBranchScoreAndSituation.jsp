@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>잡모아</title>
@@ -104,9 +105,26 @@
         <!--begin::App Content-->
         <div class="app-content">
             <!--begin::Main content-->
-            <div class="container-fluid">
+            <div class="container-fluid pt-1 pb-1 vstack">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
-                <div id="scoreChart"></div>
+                <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
+                    <label  for="excludeRadio" style="font-size: 14px;">1년 미만 상담사</label>
+                    <div class="btn-group" style="max-width: 150px; max-height: 2em;" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="excludeRadio" autocomplete="off" value="false" checked>
+                        <label class="btn btn-outline-primary" for="excludeRadio">미포함</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="includeRadio" autocomplete="off" value="true">
+                        <label class="btn btn-outline-primary" for="includeRadio">포함</label>
+                    </div>
+                </c:if>
+
+                <div id="loadingScoreChartDiv" class="d-flex justify-content-center align-items-center"></div>
+                <div id="scoreChartDiv">
+
+                    <div id="scoreChart">
+
+                    </div>
+                </div>
 
                 <div id="loadingDiv" class="d-flex justify-content-center align-items-center">
 
@@ -122,8 +140,6 @@
                     <div id="earlyEmploymentScore" class=" col-md-4"></div>
                     <div id="betterJobScore" class=" col-md-4"></div>
                 </div>
-
-
             </div>
             <!--end::Main content-->
         </div>
@@ -211,7 +227,7 @@
         {name:"서부", data:0.2}
     ];
 
-    const changJson = {
+    let changJson = {
         name:[], data:[]
     }
 
@@ -473,7 +489,7 @@
 
             //"total" 총점,"employment"취업자,"placement"알선취업자,"retention"고용유지,"earlyEmployment"조기취업자,"betterJob"나은일자리
             const title = ["총점","취업자","알선취업자","고용유지","조기취업자","나은일자리"]
-            const maxScore = [90,30,25,15,10,10]
+            const maxScore = [90,30,25,15,10,10] //점수 확인용
             const jsonValue = ["total","employment","placement","retention","earlyEmployment","betterJob"]
             const jsonScore = ["totalScore","employmentScore","placementScore","retentionScore","earlyEmploymentScore","betterJobScore"]
             const jsonTopScore = ["totalStandardScore","employmentTopScore","placementTopScore","retentionTopScore","earlyEmploymentTopScore","betterJobTopScore"]
@@ -605,7 +621,9 @@
         if (!responseData || Object.keys(responseData).length === 0) {
             changeData(initData)
         }
+        //지점 평균 데이터 출력
         renderScoreChart(changJson);
+
         function changeData(data){
             data.map(function(item){
                 changJson.name.push(item.name);
@@ -614,7 +632,60 @@
             //console.log(changJson);
         }
 
+        const excludeRadio = $('#excludeRadio'); //미포함
+        const includeRadio = $('#includeRadio'); //포함
 
+        //1년 미만 상담사 미포함
+        excludeRadio.click(function(){
+            let excludeVal = excludeRadio.val();
+            fetchPerformanceContract(excludeVal);
+        });
+        //1년 미만 상담사 포함
+        includeRadio.click(function(){
+            let includeVal = includeRadio.val();
+            fetchPerformanceContract(includeVal);
+        });
+
+        function fetchPerformanceContract(condition){
+
+            console.log(condition, "condition 삭제 진행중")
+            $("#scoreChartDiv").empty();
+            const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
+            $loadingScoreChartDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
+
+
+            changJson = {
+                name:[], data:[]
+            }
+
+            fetch('scoreBranchPerformanceAjax.login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    dashBoardStartDate:'2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
+                    dashBoardEndDate:'2025-10-31',
+                    dashboardCondition:condition})
+            }).then(async response => {
+                console.log(condition, "condition 삭제 진행끝")
+                $("#scoreChartDiv").append('<div id="scoreChart"></div>');
+
+                let data = JSON.parse(await response.json());
+                if(data.length === 0){
+                    alert("실적 데이터를 불러오는 동안 오류가 발생했습니다.")
+                    return;
+                }
+                //실적 차트에 맞도록 데이터 변환
+                changeData(data);
+                //실적 차트 생성
+                renderScoreChart(changJson);
+                $loadingScoreChartDiv.empty();
+            }).catch(r => {
+                console.log(r);
+                $loadingScoreChartDiv.html("Error 발생 : "+r);
+            })
+        }
 
     });
 </script>
