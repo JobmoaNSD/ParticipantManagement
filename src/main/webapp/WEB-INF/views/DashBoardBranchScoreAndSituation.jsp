@@ -108,13 +108,13 @@
             <div class="container-fluid pt-1 pb-1 vstack">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
-                    <label  for="excludeRadio" style="font-size: 14px;">1년 미만 상담사</label>
-                    <div class="btn-group" style="max-width: 150px; max-height: 2em;" role="group" aria-label="Basic radio toggle button group">
+                    <label  for="excludeRadio" style="max-width: 250px; font-size: 15px;">1년 미만 근로자</label>
+                    <div class="btn-group" style="max-width: 250px;" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="btnradio" id="excludeRadio" autocomplete="off" value="false" checked>
-                        <label class="btn btn-outline-primary" for="excludeRadio">미포함</label>
+                        <label class="btn btn-outline-primary" for="excludeRadio" style="font-size: 10px;">미포함<br>(컨설턴트 평균 비교)</label>
 
                         <input type="radio" class="btn-check" name="btnradio" id="includeRadio" autocomplete="off" value="true">
-                        <label class="btn btn-outline-primary" for="includeRadio">포함</label>
+                        <label class="btn btn-outline-primary" for="includeRadio" style="font-size: 10px;">포함<br>(고용부 평가 기준)</label>
                     </div>
                 </c:if>
 

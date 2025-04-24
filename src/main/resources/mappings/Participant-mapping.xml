@@ -848,10 +848,13 @@
     </select>
     <!-- 참여자 전체 데이터 엑셀 다운 쿼리 끝 -->
 
+    <!-- 전담자 변경 쿼리 시작 -->
+    <!-- TODO FIXME 추후 추가해야할 내용 전담자_변경일 = GETDATE() 추가 -->
     <update id="transferUpdate">
         UPDATE J_참여자관리
         SET 전담자_계정 = #{targetCounselorID},
-        메모 = CONCAT(메모, ',', CONVERT(nvarchar, GETDATE()), ' ', #{sourceCounselorID}, ' 테스트 상담사 데이터 이관')
+        메모 = CONCAT(메모, ',', CONVERT(nvarchar, GETDATE()), ' ', #{sourceCounselorID}, ' 상담사 데이터 이관'),
+        전담자_변경일 = GETDATE()
         WHERE 전담자_계정 = #{sourceCounselorID}
         AND 지점 = #{participantBranch}
         AND 구직번호 IN
@@ -859,6 +862,7 @@
             #{data}
         </foreach>
     </update>
+    <!-- 전담자 변경 쿼리 끝 -->
 
     <!-- 서비스 미제공 상담사 검색 시작 -->
     <select id="selectNoService" resultType="participant">

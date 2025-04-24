@@ -71,7 +71,7 @@
 </nav>
 <!--end::Header-->
 <!--begin::Sidebar-->
-<aside class="app-sidebar shadow" data-bs-theme="dark" style="background-color:rgb(0 0 0 / 44%);">
+<aside class="app-sidebar shadow" data-bs-theme="dark" style="background-color:rgb(0 0 0 / 65%);">
     <!--begin::Sidebar Brand-->
     <div class="sidebar-brand" style="height: 150px;">
         <!--begin::Brand Link-->
