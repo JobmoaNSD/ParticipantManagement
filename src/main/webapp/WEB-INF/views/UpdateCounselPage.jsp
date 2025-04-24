@@ -232,8 +232,8 @@
             let progressVal = $("#counselProgress").val();
             let counselStopDate = $("#counselEndDate").val();
             if ((progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
-                progressVal == "미취업사후종료" || progressVal == "유예" || progressVal == "이관" || progressVal == "중단") && counselStopDate == ""){
-                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 진행종료일이 필수로 입력되어야 합니다.");
+                progressVal == "미취업사후종료" || progressVal == "이관" || progressVal == "중단") && counselStopDate == ""){
+                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 중단종료일이 필수로 입력되어야 합니다.");
                 return;
             }
 
