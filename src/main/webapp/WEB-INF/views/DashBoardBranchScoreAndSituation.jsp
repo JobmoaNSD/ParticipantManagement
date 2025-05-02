@@ -108,7 +108,9 @@
             <div class="container-fluid pt-1 pb-1 vstack">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
-                    <label  for="excludeRadio" style="max-width: 250px; font-size: 15px;">1년 미만 근로자</label>
+                    <div>
+                        <label  for="excludeRadio" style="max-width: 250px; font-size: 15px;">1년 미만 근로자</label>
+                    </div>
                     <div class="btn-group" style="max-width: 250px;" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" class="btn-check" name="btnradio" id="excludeRadio" autocomplete="off" value="false" checked>
                         <label class="btn btn-outline-primary" for="excludeRadio" style="font-size: 10px;">미포함<br>(컨설턴트 평균 비교)</label>
@@ -116,6 +118,11 @@
                         <input type="radio" class="btn-check" name="btnradio" id="includeRadio" autocomplete="off" value="true">
                         <label class="btn btn-outline-primary" for="includeRadio" style="font-size: 10px;">포함<br>(고용부 평가 기준)</label>
                     </div>
+                    <div>
+                        <label for="excludeRetention">고용유지 포함</label>
+                        <input type="checkbox" id="excludeRetention" name="excludeCheck">
+                    </div>
+
                 </c:if>
 
                 <div id="loadingScoreChartDiv" class="d-flex justify-content-center align-items-center"></div>
@@ -236,10 +243,25 @@
 
     // 첫 번째 차트 - 점수 현황
     function renderScoreChart(data) {
+
+        console.log(data);
+        let yaxisAnnotation = [{
+            y: data.data[0],
+            borderColor: '#FF4560',
+            label: {
+                borderColor: '#FF4560',
+                style: {
+                    color: '#fff',
+                    background: '#FF4560'
+                },
+                text:'지점 평균: ' + data.data[0] + '점'
+            }
+        }];
+
         const options = {
             series: [{
                 name: "평균",
-                data: data.data
+                data: data.data?.slice(1,data.data.length)
             }],
             chart: {
                 type: 'bar',
@@ -247,12 +269,10 @@
                 events: {
                     dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
                         const clickIndex = config.dataPointIndex;
-                        const branchName = data.name[clickIndex];
-                        if(clickIndex !== 0){
+                        const branchName = data.name[clickIndex+1];
                             // console.log(clickIndex);
                             // console.log(branchName);
                             fetchData(branchName);
-                        }
                     }
                 }
             },
@@ -268,11 +288,11 @@
             dataLabels: {
                 enabled: true,
                 formatter: function(val) {
-                    return val.toFixed(2);
+                    return val.toFixed(1);
                 }
             },
             xaxis: {
-                categories: data.name,
+                categories: data.name?.slice(1,data.name.length),
                 position: 'bottom'
             },
             yaxis:{
@@ -281,9 +301,12 @@
                 tickAmount: 5,     // 눈금 간격 설정
                 labels: {
                     formatter: function(val) {
-                        return val.toFixed(0);
+                        return val.toFixed(1);
                     }
                 }
+            },
+            annotations: {
+                yaxis: yaxisAnnotation
             }
         };
 
@@ -344,9 +367,7 @@
                     dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
                         const clickIndex = config.dataPointIndex;
                         const userID = selectData.userID[clickIndex];
-                        if(clickIndex !== 0){
-                            location.href = "scoreDashboard.login?dashboardUserID=" + userID + "&dashboardBranch=" + selectData.branch;
-                        }
+                        location.href = "scoreDashboard.login?dashboardUserID=" + userID + "&dashboardBranch=" + selectData.branch;
                     }
                 }
             },
@@ -466,24 +487,31 @@
         }
     }
 
+    let chartFlag = false;
     //상담사별 데이터 불러오는 fetch(비동기 함수)
     function fetchData(data) {
         //초기화 함수
         emptyFunction();
         const $loadingDiv = $('#loadingDiv');
         $loadingDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
-
+        const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
+        let isExcludeRetention = excludeRetention.is(':checked');
+        console.log(isExcludeRetention)
         fetch('dashBoardAjaxBranchScore.login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({dashboardBranch:data})
+            body: JSON.stringify({
+                dashboardBranch:data,
+                dashboardCondition: chartFlag,
+                dashboardExcludeRetention: isExcludeRetention //고용유지 포함 여부확인
+            })
         }).then(async response => {
             let data = JSON.parse(await response.json());
 
-            //console.log(data);
-            //console.log(data);
+            console.log(data);
+            console.log(data);
             changeDataAVG(data);
             changeDataUser(data);
 
@@ -551,25 +579,38 @@
 
     function changeDataUser(data){
         data.branchUserScore.forEach(function(value, key){
-            //console.log(value.username);
+            console.log("changeDataUser 실행 사용자 이름 : [%s]",value.username);
             selectData.username.push(value.username);
-            //console.log(value.userID);
+
+            console.log("changeDataUser 실행 사용자 계정 : [%s]",value.userID);
             selectData.userID.push(value.userID);
-            //console.log(value.branch)
+
+            console.log("changeDataUser 실행 사용자 지점 : [%s]",value.branch)
             selectData.branch = value.branch;
-            //console.log(value.retentionScore);
+
+            console.log("changeDataUser 실행 고용유지 : [%s]",value.retentionScore);
             selectData.retention.retentionScore.push(value.retentionScore);
-            //console.log(value.placementScore);
+
+            console.log("changeDataUser 실행 알선취업 : [%s]",value.placementScore);
             selectData.placement.placementScore.push(value.placementScore);
-            //console.log(value.employmentScore);
-            selectData.employment.employmentScore.push(value.employmentScore);
-            //console.log(value.earlyEmploymentScore);
+
+            console.log("changeDataUser 실행 취업자 : [%s]",value.employmentScore);
+            if(value.employmentScore === null){
+                selectData.employment.employmentScore.push(0);
+            }
+            else{
+                selectData.employment.employmentScore.push(value.employmentScore);
+            }
+            console.log("changeDataUser 실행 조기취업 : [%s]",value.earlyEmploymentScore);
             selectData.earlyEmployment.earlyEmploymentScore.push(value.earlyEmploymentScore);
-            console.log(value.betterJobScore);
+
+            console.log("changeDataUser 실행 나은일자리 : [%s]",value.betterJobScore);
             selectData.betterJob.betterJobScore.push(value.betterJobScore);
-            //console.log(value.totalScore);//개인 총점
+
+            console.log("changeDataUser 실행 개인 총점 : [%s]",value.totalScore);//개인 총점
             selectData.total.totalScore.push(value.totalScore);
-            //console.log(value.myBranchScore); //지점 총점
+
+            console.log("changeDataUser 실행 지점 총정 : [%s]",value.myBranchScore); //지점 총점
             selectData.total.myBranchScore = value.myBranchScore;
         })
     }
@@ -638,14 +679,17 @@
         //1년 미만 상담사 미포함
         excludeRadio.click(function(){
             let excludeVal = excludeRadio.val();
+            chartFlag = excludeVal;
             fetchPerformanceContract(excludeVal);
         });
         //1년 미만 상담사 포함
         includeRadio.click(function(){
             let includeVal = includeRadio.val();
+            chartFlag = includeVal;
             fetchPerformanceContract(includeVal);
         });
 
+        //지점별 평균 데이터 비동기 조회 함수
         function fetchPerformanceContract(condition){
 
             console.log(condition, "condition 삭제 진행중")
@@ -658,15 +702,20 @@
                 name:[], data:[]
             }
 
+            const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
+            let isExcludeRetention = excludeRetention.is(':checked');
+            console.log(isExcludeRetention)
             fetch('scoreBranchPerformanceAjax.login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    dashBoardStartDate:'2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
-                    dashBoardEndDate:'2025-10-31',
-                    dashboardCondition:condition})
+                    dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
+                    dashBoardEndDate: '2025-10-31',
+                    dashboardCondition: condition,
+                    dashboardExcludeRetention: isExcludeRetention //고용유지 포함 여부확인
+                })
             }).then(async response => {
                 console.log(condition, "condition 삭제 진행끝")
                 $("#scoreChartDiv").append('<div id="scoreChart"></div>');

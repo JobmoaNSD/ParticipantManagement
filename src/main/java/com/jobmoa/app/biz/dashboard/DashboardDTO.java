@@ -101,52 +101,52 @@ public class DashboardDTO {
 
     //점수현황 데이터 변수
     // 기본 통계
-    private Long totalCompleted;      // 종료자 수
-    private Long totalEmployed;       // 취업자 수
-    private Long referredEmploymentCount;  // 알선취업자 수
-    private Long earlyEmploymentCount;     // 조기취업자 수
-    private Long retentionCount;           // 고용유지자 수
-    private Long betterJobCount;           // 나은일자리 취업자 수
-    private Long specialGroupCount;        // 특정계층 취업자 수
+    private long totalCompleted;      // 종료자 수
+    private long totalEmployed;       // 취업자 수
+    private long referredEmploymentCount;  // 알선취업자 수
+    private long earlyEmploymentCount;     // 조기취업자 수
+    private long retentionCount;           // 고용유지자 수
+    private long betterJobCount;           // 나은일자리 취업자 수
+    private long specialGroupCount;        // 특정계층 취업자 수
 
     // 취업 관련 지표
-    private Double employmentRate;    // 취업률
-    private Double employmentScore;   // 취업자 점수
-    private Double employmentOneScore;   //취업자 1인당 점수
-    private Double employmentStandardScore;   //표준 취업자 점수
-    private Double employmentLastScore;   //가중취업자점수
-    private Double employmentTopScore; // 취업자 점수 상위 20%
+    private double employmentRate;    // 취업률
+    private double employmentScore;   // 취업자 점수
+    private double employmentOneScore;   //취업자 1인당 점수
+    private double employmentStandardScore;   //표준 취업자 점수
+    private double employmentLastScore;   //가중취업자점수
+    private double employmentTopScore; // 취업자 점수 상위 20%
     // 알선취업 관련 지표
-    private Double placementRate;     // 알선취업률
-    private Double placementScore;    // 알선취업자 점수
-    private Double placementOneScore; // 알선취업자 1인당 점수
-    private Double placementStandardScore; // 표준 알선취업자 점수
-    private Double placementLastScore; // 가중알선취업자점수
-    private Double placementTopScore; // 알선취업자점수 상위 20%
+    private double placementRate;     // 알선취업률
+    private double placementScore;    // 알선취업자 점수
+    private double placementOneScore; // 알선취업자 1인당 점수
+    private double placementStandardScore; // 표준 알선취업자 점수
+    private double placementLastScore; // 가중알선취업자점수
+    private double placementTopScore; // 알선취업자점수 상위 20%
     // 조기취업 관련 지표
-    private Double earlyEmploymentRate;  // 조기취업률
-    private Double earlyEmploymentScore; // 조기취업자 점수
-    private Double earlyEmploymentOneScore; // 조기취업자 1인당 점수
-    private Double earlyEmploymentStandardScore; // 표준 조기취업자 점수
-    private Double earlyEmploymentLastScore; // 가중조기취업자점수
-    private Double earlyEmploymentTopScore; // 조기취업자점수 상위 20%
+    private double earlyEmploymentRate;  // 조기취업률
+    private double earlyEmploymentScore; // 조기취업자 점수
+    private double earlyEmploymentOneScore; // 조기취업자 1인당 점수
+    private double earlyEmploymentStandardScore; // 표준 조기취업자 점수
+    private double earlyEmploymentLastScore; // 가중조기취업자점수
+    private double earlyEmploymentTopScore; // 조기취업자점수 상위 20%
     // 고용유지 관련 지표
-    private Double retentionRate;     // 고용유지율
-    private Double retentionScore;    // 고용유지자 점수
-    private Double retentionOneScore;    // 고용유지자 1인당 점수
-    private Double retentionStandardScore;    // 표준 고용유지자 점수
-    private Double retentionLastScore;    // 가중고용취업자점수
-    private Double retentionTopScore;    // 고용취업자점수 상위 20%
+    private double retentionRate;     // 고용유지율
+    private double retentionScore;    // 고용유지자 점수
+    private double retentionOneScore;    // 고용유지자 1인당 점수
+    private double retentionStandardScore;    // 표준 고용유지자 점수
+    private double retentionLastScore;    // 가중고용취업자점수
+    private double retentionTopScore;    // 고용취업자점수 상위 20%
     // 나은일자리 관련 지표
-    private Double betterJobRate;     // 나은일자리 취업률
-    private Double betterJobScore;    // 나은일자리 취업자 점수
-    private Double betterJobOneScore;    // 나은일자리 취업자 1인당 점수
-    private Double betterJobStandardScore;    // 표준 나은일자리 점수
-    private Double betterJobLastScore;    // 가중나은취업자점수
-    private Double betterJobTopScore;    // 나은취업자점수 상위 20%
+    private double betterJobRate;     // 나은일자리 취업률
+    private double betterJobScore;    // 나은일자리 취업자 점수
+    private double betterJobOneScore;    // 나은일자리 취업자 1인당 점수
+    private double betterJobStandardScore;    // 표준 나은일자리 점수
+    private double betterJobLastScore;    // 가중나은취업자점수
+    private double betterJobTopScore;    // 나은취업자점수 상위 20%
     // 최종 점수
-    private Double totalScore;        // 총점
-    private Double totalStandardScore;        // 표준 총점
+    private double totalScore;        // 총점
+    private double totalStandardScore;        // 표준 총점
     //내 점수, 전체지점합계, 전체지점평균, 내지점합계, 내지점평균
     private double myScore; //내 점수
     private double totalBranchScore; //전체지점합계
@@ -156,6 +156,8 @@ public class DashboardDTO {
     private String myRanking; //내등급
     private String myBranchRanking; //지점내순위
     private String myTotalRanking; //전체내순위
+
+    private boolean dashboardExcludeRetention; // 고용유지 포함 여부
 
 
 }

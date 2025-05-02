@@ -56,7 +56,7 @@
         </foreach>
         SELECT
             C.이름 AS counselorName,
-            A.등록년도 AS registYear,
+            A.초기상담년도 AS registYear,
             A.지점 AS branch,
             A.종료참여자 AS completedCount,
             A.전체취업자 AS totalEmployment,
@@ -80,7 +80,7 @@
             LEFT OUTER JOIN J_참여자관리_로그인정보 C
             ON C.아이디 = B.아이디
         WHERE
-            A.등록년도 = #{year} AND
+            A.초기상담년도 = #{year} AND
             A.지점 = #{branch} AND
             A.아이디 IN
             <foreach collection="userIds" item="userId" open="(" separator="," close=")">
