@@ -122,6 +122,7 @@ public class DashboardAjaxController {
         String branch = dashboardDTO.getDashboardBranch();
 
         boolean branchFlag = branch.equals(sessionBranch);
+//        log.info("consolScore branchFlag : [{}]",branch);
         if(!branchFlag && !isManager){
                 log.info("consolScore Fail:");
                 log.info("consolScore branch != sessionBranch : [{}]", branchFlag);
@@ -129,7 +130,19 @@ public class DashboardAjaxController {
         }
 
         log.info("consolScore branchUserScore ChangeJson Start");
-        dashboardDTO.setDashboardCondition("selectBranchConsolScore");
+        boolean conditionFlag = Boolean.parseBoolean(dashboardDTO.getDashboardCondition());
+        log.info("consolScore 고용유지 포함 여부 [{}]",dashboardDTO.isDashboardExcludeRetention());
+        if(!conditionFlag){
+            //잡모아 실적
+            dashboardDTO.setDashboardCondition("selectBranchConsolScore");
+            log.info("consolScore selectBranchConsolScore (잡모아 실적) : [{}]", false);
+        }
+        else{
+            //고용부 실적
+            dashboardDTO.setDashboardCondition("selectBranchConsolScorePerformance");
+            log.info("consolScore selectBranchConsolScorePerformance (고용부 실적) : [{}]", true);
+        }
+
         List<DashboardDTO> dashboardDatas = dashboardService.selectAll(dashboardDTO);
         String branchUserScore = changeJson.convertListToJsonArray(dashboardDatas , item ->{
             DashboardDTO dto = (DashboardDTO) item;
@@ -145,22 +158,31 @@ public class DashboardAjaxController {
                             "\"retentionScore\":%.2f," +
                             "\"betterJobScore\":%.2f," +
                             "\"myBranchScore\":%.2f}",
-                    dto.getDashBoardUserName(),
-                    dto.getDashboardBranch(),
-                    dto.getDashboardUserID(),
-                    dto.getTotalScore(),
-                    dto.getEmploymentLastScore(),
-                    dto.getPlacementLastScore(),
-                    dto.getEarlyEmploymentLastScore(),
-                    dto.getRetentionLastScore(),
-                    dto.getBetterJobLastScore(),
-                    dto.getMyBranchScoreAVG()
+                    dto.getDashBoardUserName() == null ? "" : dto.getDashBoardUserName(),
+                    dto.getDashboardBranch() == null ? "" : dto.getDashboardBranch(),
+                    dto.getDashboardUserID() == null ? "" : dto.getDashboardUserID(),
+                    dto.getTotalScore() == 0 ? 0 : dto.getTotalScore(),
+                    dto.getEmploymentLastScore() == 0 ? 0 : dto.getEmploymentLastScore(),
+                    dto.getPlacementLastScore() == 0 ? 0 : dto.getPlacementLastScore(),
+                    dto.getEarlyEmploymentLastScore() == 0 ? 0 : dto.getEarlyEmploymentLastScore(),
+                    dto.getRetentionLastScore() == 0 ? 0 : dto.getRetentionLastScore(),
+                    dto.getBetterJobLastScore() == 0 ? 0 : dto.getBetterJobLastScore(),
+                    dto.getMyBranchScoreAVG() == 0 ? 0 : dto.getMyBranchScoreAVG()
             );
         });
         log.info("consolScore branchUserScore ChangeJson End");
 
         log.info("consolScore branchScore ChangeJson Start");
-        dashboardDTO.setDashboardCondition("selectTopConsolScore");
+        if(!conditionFlag){
+            //잡모아 실적
+            dashboardDTO.setDashboardCondition("selectTopConsolScore");
+            log.info("consolScore selectTopConsolScore (잡모아 실적) : [{}]", false);
+        }
+        else{
+            //고용부 실적
+            dashboardDTO.setDashboardCondition("selectTopConsolScorePerformance");
+            log.info("consolScore selectTopConsolScorePerformance (고용부 실적) : [{}]", true);
+        }
         dashboardDatas = dashboardService.selectAll(dashboardDTO);
         String branchScore = changeJson.convertListToJsonArray(dashboardDatas , item ->{
             DashboardDTO dto = (DashboardDTO) item;
@@ -171,11 +193,18 @@ public class DashboardAjaxController {
                             "\"earlyEmploymentTopScore\":%.2f," +
                             "\"retentionTopScore\":%.2f," +
                             "\"betterJobTopScore\":%.2f}",
-                    dto.getTotalStandardScore(),dto.getEmploymentTopScore(), dto.getPlacementTopScore(), dto.getEarlyEmploymentTopScore(),
-                    dto.getRetentionTopScore(), dto.getBetterJobTopScore()
+                    dto.getTotalStandardScore() == 0 ? 0 : dto.getTotalStandardScore(),
+                    dto.getEmploymentTopScore() == 0 ? 0 : dto.getEmploymentTopScore(),
+                    dto.getPlacementTopScore() == 0 ? 0 : dto.getPlacementTopScore(),
+                    dto.getEarlyEmploymentTopScore() == 0 ? 0 : dto.getEarlyEmploymentTopScore(),
+                    dto.getRetentionTopScore() == 0 ? 0 : dto.getRetentionTopScore(),
+                    dto.getBetterJobTopScore() == 0 ? 0 : dto.getBetterJobTopScore()
             );
         });
         log.info("consolScore branchScore ChangeJson End");
+
+//        log.info("consolScore [{}]",branchUserScore);
+//        log.info("consolScore [{}]",branchScore);
 
         return String.format(
                 "{\"branchUserScore\":%s,\"branchScore\":%s}",
@@ -213,11 +242,12 @@ public class DashboardAjaxController {
     @PostMapping("scoreBranchPerformanceAjax.login")
     public String scoreBranchPerformanceAjax(@RequestBody DashboardDTO dashboardDTO){
         boolean conditionFlag = Boolean.parseBoolean(dashboardDTO.getDashboardCondition());
+        log.info("고용유지 포함 여부 [{}]",dashboardDTO.isDashboardExcludeRetention());
 
         if(!conditionFlag){
             // 1년 미만 상담사 미포함
             dashboardDTO.setDashboardCondition("selectBranchAvg");
-            log.info("selectBranchAvg (1년 미만 상담사 미포함) : [{}]", false);
+            log.info("scoreBranchPerformanceAjax (1년 미만 상담사 미포함) : [{}]", false);
         }
         else{
             //1년 미만 상담사 포함
