@@ -436,7 +436,6 @@
             ISNULL(마감, '') AS participantClose,
             ISNULL(퇴사일, '') AS participantQuit,
             ISNULL(A.지점, '') AS participantBranch,
-            ISNULL(중단종료일, '') AS participantEndDate,
             ISNULL(간접고용서비스, '') AS participantEmploymentService
         FROM J_참여자관리 A
                  LEFT JOIN J_참여자관리_로그인정보 B
@@ -816,7 +815,6 @@
             ISNULL(마감, '') AS participantClose,
             ISNULL(퇴사일, '') AS participantQuit,
             ISNULL(A.지점, '') AS participantBranch,
-            ISNULL(중단종료일, '') AS participantEndDate,
             ISNULL(간접고용서비스, '') AS participantEmploymentService
         FROM J_참여자관리 A
                  LEFT JOIN J_참여자관리_로그인정보 B

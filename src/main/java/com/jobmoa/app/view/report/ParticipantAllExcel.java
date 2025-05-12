@@ -128,7 +128,6 @@ public class ParticipantAllExcel {
                 setProgress(row,colIndex,data);
                 startRow++;
             }
-
     }
 
     private Row setRowValue(Sheet sheet, int startRow) {
@@ -207,7 +206,7 @@ public class ParticipantAllExcel {
         setCellValue(row, colIndex++, data.isParticipantClose());      // 마감
         setCellValue(row, colIndex++, data.getParticipantQuit());       // 퇴사일
         setCellValue(row, colIndex++, data.getParticipantBranch());     // 지점
-        setCellValue(row, colIndex++, data.getParticipantEndDate());    // 중단종료일
+        colIndex++;
         setCellValue(row, colIndex, data.getParticipantEmploymentService()); // 간접고용서비스
 
     }

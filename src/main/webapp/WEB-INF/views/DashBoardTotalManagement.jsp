@@ -189,7 +189,6 @@
           </div>
         </div>
 
-        <!-- FIXME TODO 월요일(2025-04-21)부터 수정, 백단 작업 예정 -->
         <!-- 미해당(서비스 미제공) 담당자, 참여자 체크를 위한 리스트 출력 모달  -->
         <div class="modal fade" id="noServiceModal" tabindex="-1" aria-labelledby="noServiceModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-xl" style="max-width: 90%;">

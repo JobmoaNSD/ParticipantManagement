@@ -79,6 +79,9 @@
     <script src="js/drawChartCenterTextPlugin.js"></script>
     <script src="js/dashBoardJS.js"></script>
 
+    <!-- ApexChart로 변경 -->
+    <script src="js/ApexChartMainDashBoardJS.js"></script>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
@@ -283,7 +286,7 @@
                     <div class="col-md-12">
                         <!-- begin::main chart header 시작 -->
                         <div class="row">
-                            <div class="col-md-8 pt-2 pb-2 h2 me-auto">
+                            <div class="col-md-10 pt-2 pb-2 h2 me-auto">
                                 <div class="row">
                                     <div class="col-md-10">
                                         나의 KPI 달성률
@@ -297,16 +300,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 pt-2 pb-2 h2 me-auto">
+                            <div class="col-md-2 pt-2 pb-2 h2 me-auto">
                                 <div class="row">
                                     <div class="row">
-                                        <div class="col-md-9">
+                                        <div class="col-md-10">
                                             성공금 현황
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="row h2 ps-3">
-                                                <a type="button" class="btn btn-outline-secondary btn-sm" id="success-btn" href="successMoney.login">
-                                                    상세보기<i class="bi bi-arrow-bar-right"></i>
+                                        <div class="col-md-2">
+                                            <div class="row h2">
+                                                <a type="button" class="btn btn-outline-secondary btn-sm" style="font-size: 10px" id="success-btn" href="successMoney.login">
+                                                    상세보기<!--<i class="bi bi-arrow-bar-right"></i>-->
                                                 </a>
                                             </div>
                                         </div>
@@ -317,66 +320,86 @@
                         <!-- begin::main chart header 끝 -->
                         <div class="row text-center d-flex justify-content-center" id="chart-div">
                             <!-- KPI & 성공금 Start -->
-                            <div class="col-md-8 pt-2 h2 me-auto">
+                            <div class="col-md-10 pt-2 h2 me-auto">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2 ms-auto me-auto">
                                         <div class="flex-fill chart_startdate">
-                                            <div class="text-center d-flex justify-content-center doughnut-chart" style="weight: 200px;">
-                                                <%--FIXME chart_startdate --%>
-                                                <canvas id="chart_startdate"></canvas>
+                                            <div class="text-center d-flex justify-content-center doughnut-chart">
+                                                <%--FIXME chart_startdate terminatedEmploymentChart --%>
+                                                <%--                                                <canvas id="chart_startdate"></canvas>--%>
+                                                <!-- 종료 취업자 차트  -->
+                                                <div id="exemple"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2 ms-auto me-auto">
+                                        <div class="flex-fill chart_startdate">
+                                            <div class="text-center d-flex justify-content-center doughnut-chart">
+                                                <%--FIXME chart_startdate terminatedEmploymentChart --%>
+<%--                                                <canvas id="chart_startdate"></canvas>--%>
+                                                    <!-- 종료 취업자 차트  -->
+                                                <div id="terminatedEmploymentChart"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 ms-auto me-auto">
                                         <div class="flex-fill chart_gender">
-                                            <div class="text-center d-flex justify-content-center doughnut-chart" style="weight: 200px;">
-                                                <%--FIXME chart_gender --%>
-                                                <canvas id="chart_gender"></canvas>
+                                            <div class="text-center d-flex justify-content-center doughnut-chart">
+                                                <%--FIXME chart_gender referralEmploymentChart --%>
+<%--                                                <canvas id="chart_gender"></canvas>--%>
+                                                    <!-- 알선 취업자 차트  -->
+                                                <div id="referralEmploymentChart"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 ms-auto me-auto">
                                         <div class="flex-fill ex-chart1">
-                                            <div class="text-center d-flex justify-content-center" style="weight: 200px;">
-                                                <%--FIXME ex-chart1 --%>
-                                                <canvas id="ex-chart1"></canvas>
+                                            <div class="text-center d-flex justify-content-center">
+                                                <%--FIXME ex-chart1 earlyEmploymentChart --%>
+<%--                                                <canvas id="ex-chart1"></canvas>--%>
+                                                    <!-- 조기 취업자 차트  -->
+                                                <div id="earlyEmploymentChart"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 ms-auto me-auto">
                                         <div class="flex-fill ex-chart2">
-                                            <div class="text-center d-flex justify-content-center" style="weight: 200px;">
-                                                <%--FIXME ex-chart2 --%>
-                                                <canvas id="ex-chart2"></canvas>
+                                            <div class="text-center d-flex justify-content-center">
+                                                <%--FIXME ex-chart2 betterJobChart --%>
+<%--                                                <canvas id="ex-chart2"></canvas>--%>
+                                                    <!-- 나은 일자리 취업자 차트  -->
+                                                <div id="betterJobChart"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 ms-auto me-auto">
                                         <div class="flex-fill ex-chart3">
-                                            <div class="text-center d-flex justify-content-center" style="weight: 200px;">
-                                                <%--FIXME ex-chart3 --%>
-                                                <canvas id="ex-chart3" ></canvas>
+                                            <div class="text-center d-flex justify-content-center">
+                                                <%--FIXME ex-chart3 incentiveQualificationChart --%>
+<%--                                                <canvas id="ex-chart3" ></canvas>--%>
+                                                    <!-- 인센 요건 충족 차트  -->
+                                                <div id="incentiveQualificationChart"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="row h-100">
-                                    <div class="flex-fill ex-chart-bar1 col-md-6 chart-div">
+                                    <div class="flex-fill ex-chart-bar1 col-md-12 chart-div">
                                         <div class="text-center d-flex justify-content-center h-100">
                                             <%--FIXME ex-chart-bar1 --%>
                                             <canvas id="ex-chart-bar1"></canvas>
 
                                         </div>
                                     </div>
-                                    <div class="flex-fill ex-chart-barZZ col-md-6 chart-div">
-                                        <div class="text-center d-flex justify-content-center h-100">
-                                            <%--FIXME ex-chart-barZZ --%>
-                                            <canvas id="ex-chart-barZZ"></canvas>
-                                        </div>
-                                    </div>
+<%--                                    <div class="flex-fill ex-chart-barZZ col-md-12 chart-div">--%>
+<%--                                        <div class="text-center d-flex justify-content-center h-100">--%>
+<%--                                            &lt;%&ndash;FIXME ex-chart-barZZ &ndash;%&gt;--%>
+<%--                                            <canvas id="ex-chart-barZZ"></canvas>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
                                 </div>
                             </div>
                         </div>
@@ -554,40 +577,94 @@
 <script>
     $(document).ready(function () {
 
-        //전체 chart 플러그인 추가
-        Chart.register(drawCenterTextPlugin);
-        Chart.register(ChartDataLabels);
+        let employmentRate = ${empty myKPI.employmentRate ? 0 : myKPI.employmentRate}; // 취업률
+        console.log("employmentRate : " + employmentRate);
+        let placementRate = ${empty myKPI.placementRate ? 0 : myKPI.placementRate}; // 알선취업률
+        console.log("employmentRate : "+placementRate);
+        let earlyEmploymentRate = ${empty myKPI.earlyEmploymentRate ? 0 : myKPI.earlyEmploymentRate}; // 조기취업률
+        console.log("earlyEmploymentRate : "+ earlyEmploymentRate);
+        let betterJobRate = ${empty myKPI.betterJobRate ? 0 : myKPI.betterJobRate}; // 나은일자리
+        console.log("betterJobRate : "+ betterJobRate);
+        let assignedParticipants = ${empty myKPI.assignedParticipants ? 0 : myKPI.assignedParticipants}; // 배정인원수
+        console.log("assignedParticipants : "+ assignedParticipants);
+        let noServiceCount = ${empty myKPI.noServiceCount ? 0 : myKPI.noServiceCount}; // 인센 미해당 서비스미제공
+        console.log("noServiceCount : "+ noServiceCount);
+        let falseCaseNum = ${empty myKPI.falseCaseNum ? 0 : myKPI.falseCaseNum}; // 인센 미해당
+        console.log("falseCaseNum : "+ falseCaseNum);
+        let trueCaseNum = ${empty myKPI.trueCaseNum ? 0 : myKPI.trueCaseNum}; // 인센 해당
+        console.log("trueCaseNum : "+ trueCaseNum);
+
+        let colors = ['#0064A600','#0064a6']
+
+        //배정 인원 차트
+        let series = [95-assignedParticipants, assignedParticipants]
+        let labels = ['남은 목표', '배정 인원']
+        let donut = new ApexCharts(document.querySelector("#exemple"), apexChartDoughnut('배정인원(목표:95)',series, labels,colors));
+        donut.render();
+
+        //종료 취업자 차트
+        series = [65-employmentRate, employmentRate]
+        labels = ['남은 목표', '종료 취업자']
+        donut = new ApexCharts(document.querySelector("#terminatedEmploymentChart"), apexChartDoughnut('종료 취업자',series, labels,colors));
+        donut.render();
+
+        //알선 취업자 차트
+        series = [65-placementRate, placementRate]
+        labels = ['남은 목표', '알선 취업자']
+        donut = new ApexCharts(document.querySelector("#referralEmploymentChart"), apexChartDoughnut('알선 취업자',series, labels,colors));
+        donut.render();
+
+        //조기 취업자 차트
+        series = [65-earlyEmploymentRate, earlyEmploymentRate]
+        labels = ['남은 목표', '조기 취업자']
+        donut = new ApexCharts(document.querySelector("#earlyEmploymentChart"), apexChartDoughnut('조기 취업자',series, labels,colors));
+        donut.render();
+
+        //나은일자리 차트
+        series = [65-betterJobRate, betterJobRate]
+        labels = ['남은 목표', '나은일자리']
+        donut = new ApexCharts(document.querySelector("#betterJobChart"), apexChartDoughnut('나은일자리',series, labels,colors));
+        donut.render();
+
+        //인센 요건 충족 차트
+        series = [noServiceCount, falseCaseNum, trueCaseNum]
+        labels = ['서비스 미제공', '미해당', '해당']
+        donut = new ApexCharts(document.querySelector("#incentiveQualificationChart"), apexChartDoughnut('인센 요건 충족',series, labels,['#ff0707', '#ff9100ff', '#0064a6']));
+        donut.render();
+
+        <%--/*//전체 chart 플러그인 추가--%>
+        <%--Chart.register(drawCenterTextPlugin);--%>
+        <%--Chart.register(ChartDataLabels);--%>
 
 
-        let id ='';
-        let drawCenterText_text='';
-        let denominator = 700;
+        <%--// let id;--%>
+        <%--let drawCenterText_text='';--%>
+        <%--let denominator = 700;--%>
 
-        id = $('#chart_startdate');
-        const chart_startdate = {title:['미취업자','취업자'],text:JSON.parse('${dashBoardEmployedKPI}')};
-        drawCenterText_text = '취업자';
-        chart_doughnut_data(id,chart_startdate,drawCenterText_text,denominator);
+        <%--id = $('#chart_startdate');--%>
+        <%--const chart_startdate = {title:['미취업자','취업자'],text:JSON.parse('${dashBoardEmployedKPI}')};--%>
+        <%--drawCenterText_text = '종료 취업자';--%>
+        <%--chart_doughnut_data(id,chart_startdate,drawCenterText_text,denominator);--%>
 
-        id = $('#chart_gender');
-        const chart_gender = {title:['알선 취업자', '취업자'],text:JSON.parse('${dashBoardReferredEmployedKPI}')};
-        drawCenterText_text = '알선 취업자';
-        chart_doughnut_data(id,chart_gender,drawCenterText_text,denominator);
+        <%--id = $('#chart_gender');--%>
+        <%--const chart_gender = {title:['알선 취업자', '취업자'],text:JSON.parse('${dashBoardReferredEmployedKPI}')};--%>
+        <%--drawCenterText_text = '알선 취업자';--%>
+        <%--chart_doughnut_data(id,chart_gender,drawCenterText_text,denominator);--%>
 
-        id = $('#ex-chart1');
-        const testdata1 = {title:['조기 취업자','취업자'],text:JSON.parse('${dashBoardEarlyEmployedKPI}')};
-        drawCenterText_text = '조기 취업자';
-        chart_doughnut_data(id,testdata1,drawCenterText_text,denominator);
+        <%--id = $('#ex-chart1');--%>
+        <%--const testdata1 = {title:['조기 취업자','취업자'],text:JSON.parse('${dashBoardEarlyEmployedKPI}')};--%>
+        <%--drawCenterText_text = '조기 취업자';--%>
+        <%--chart_doughnut_data(id,testdata1,drawCenterText_text,denominator);--%>
 
-        id = $('#ex-chart2');
-        const testdata2 = {title:['나은 일자리','취업자'],text:JSON.parse('${dashBoardBetterJobKPI}')};
-        drawCenterText_text = '나은 일자리';
-        chart_doughnut_data(id,testdata2,drawCenterText_text,denominator);
+        <%--id = $('#ex-chart2');--%>
+        <%--const testdata2 = {title:['나은 일자리','취업자'],text:JSON.parse('${dashBoardBetterJobKPI}')};--%>
+        <%--drawCenterText_text = '나은 일자리';--%>
+        <%--chart_doughnut_data(id,testdata2,drawCenterText_text,denominator);--%>
 
-        id = $('#ex-chart3');
-        const testdata3 = {title:['마감X','마감'],text:JSON.parse('${dashBoardCloseKPI}')};
-        drawCenterText_text = '마감 참여자';
-        chart_doughnut_data(id,testdata3,drawCenterText_text,denominator);
-
+        <%--id = $('#ex-chart3');--%>
+        <%--const testdata3 = {title:['마감X','마감'],text:JSON.parse('${dashBoardCloseKPI}')};--%>
+        <%--drawCenterText_text = '인센 요건 충족';--%>
+        <%--chart_doughnut_data(id,testdata3,drawCenterText_text,denominator);*/--%>
 
     })
 </script>

@@ -79,18 +79,10 @@
                 </div>
             </div>
             <div class="datepicker-div">
-                <label for="counselEXPDate" class="form-label">기간만료(예정)일</label>
+                <label for="counselEXPDate" class="form-label">기간만료(예정)일<span class="text-danger">*</span></label>
                 <div class="input-group">
                     <i class="bi bi-calendar-date input-group-text"></i>
                     <input type="text" class="form-control datepicker_on" id="counselEXPDate" name="counselEXPDate" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일" value="${not empty counsel ? counsel.counselEXPDate:""}" autocomplete="off">
-                </div>
-            </div>
-            <div class="datepicker-div">
-                <label for="counselEndDate" class="form-label">진행종료일<span class="text-danger">*</span></label>
-                <div class="input-group">
-                    <i class="bi bi-calendar-date input-group-text"></i>
-                    <input type="text" class="form-control datepicker_on" id="counselEndDate" name="counselEndDate" placeholder="yyyy-mm-dd" aria-label="중단종료일" value="${not empty counsel ? counsel.counselEndDate:""}" autocomplete="off">
-                    <input type="hidden" class="form-control datepicker_on" id="counselClinic" name="counselClinic" placeholder="yyyy-mm-dd" aria-label="클리닉실시일" value="${not empty counsel ? counsel.counselEndDate:""}" autocomplete="off">
                 </div>
             </div>
             <div class="w-auto">

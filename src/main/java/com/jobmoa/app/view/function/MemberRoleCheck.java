@@ -8,7 +8,8 @@ import java.util.Arrays;
 public class MemberRoleCheck {
 
     public enum ROLES {
-        GENERAL_MANAGER("총괄"),
+        GENERAL_MANAGER("본부장"),
+        GENERAL("총괄"),
         TEAM_LEADER("팀장"),
         PART_LEADER("파트장");
 
