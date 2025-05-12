@@ -90,6 +90,7 @@ public class DashboardDTO {
     private int currentYearMoney; // 이번년도 성공금
     private int falseCaseNum; // 미해당 건수
     private int trueCaseNum; // 해당 건수
+    private int assignedParticipants; // 배정인원
     private int noServiceCount;          // 서비스미제공 건수
     private int lessThanOneMonthCount;   // 1개월미만퇴사 건수
     private int dispatchCompanyCount;    // 파견업체 건수

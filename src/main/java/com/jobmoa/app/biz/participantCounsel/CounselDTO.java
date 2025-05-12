@@ -19,7 +19,6 @@ public class CounselDTO {
     private String counselIAPDate; // IAP수료일
     private String counselStepPro; // 3단계진입일
     private String counselEXPDate; // 기간만료(예정)일
-    private String counselEndDate; // 중단종료일
     private String counselClinic; // 클리닉실시일
     private String counselJobWant; // 희망직무
     private String counselSalWant; // 희망급여

@@ -255,7 +255,7 @@
         btn_check.on("click", function () {
             const basicPartic = $("#basicPartic").val();
             let progressVal = $("#counselProgress").val();
-            let counselStopDate = $("#counselEndDate").val();
+            let counselEXPDate = $("#counselEXPDate").val();
 
             //취창업일
             const employmentStartDate = $("#employmentStartDate").val();
@@ -282,8 +282,8 @@
                 return;
             }
             else if ((progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
-                progressVal == "미취업사후종료" || progressVal == "이관" || progressVal == "중단") && counselStopDate == ""){
-                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 중단종료일이 필수로 입력되어야 합니다.");
+                progressVal == "미취업사후종료" || progressVal == "이관" || progressVal == "중단") && counselEXPDate == ""){
+                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 기간만료일은 필수로 입력되어야 합니다.");
                 return;
             }
 

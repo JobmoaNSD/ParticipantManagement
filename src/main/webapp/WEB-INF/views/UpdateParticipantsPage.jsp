@@ -235,8 +235,6 @@
             const basicPartic = $("#basicPartic").val();
             //진행단계
             let progressVal = $("#counselProgress").val();
-            //진행종료일
-            let counselStopDate = $("#counselEndDate").val();
             //취창업일
             const employmentStartDate = $("#employmentStartDate").val();
             //취창업처리일
@@ -252,6 +250,9 @@
             //취업인센티브_구분
             const employmentIncentive = $("#employmentIncentive").val();
 
+            //기간만료일
+            let counselEXPDate = $("#counselEXPDate").val();
+
             //flag 변수 생성
             //각 변수들이 비어 있다면 값이 없는 것으로 간주하여 form 태그 실행 함수에서 내보낸다.
             let flag = basicPartic.length > 0;
@@ -260,8 +261,8 @@
                 return;
             }
             else if ((progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
-                progressVal == "미취업사후종료" || progressVal == "이관" || progressVal == "중단") && counselStopDate == ""){
-                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 중단종료일이 필수로 입력되어야 합니다.");
+                progressVal == "미취업사후종료" || progressVal == "이관" || progressVal == "중단") && counselEXPDate == ''){
+                alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 기간만료(예정)일은 필수로 입력되어야 합니다.");
                 return;
             }
 

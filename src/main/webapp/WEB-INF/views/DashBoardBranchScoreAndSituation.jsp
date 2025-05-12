@@ -675,65 +675,97 @@
 
         const excludeRadio = $('#excludeRadio'); //미포함
         const includeRadio = $('#includeRadio'); //포함
+        let isProcessing = false;
 
         //1년 미만 상담사 미포함
         excludeRadio.click(function(){
+            if (isProcessing) return; // 처리 중이면 중복 클릭 방지
+            isProcessing = true;
+
             let excludeVal = excludeRadio.val();
             chartFlag = excludeVal;
-            fetchPerformanceContract(excludeVal);
+            disableRadioButtons();
+
+            fetchPerformanceContract(excludeVal).finally(() => {
+                enableRadioButtons();
+                isProcessing = false;
+            });
         });
         //1년 미만 상담사 포함
         includeRadio.click(function(){
+            if (isProcessing) return; // 처리 중이면 중복 클릭 방지
+            isProcessing = true;
+
             let includeVal = includeRadio.val();
             chartFlag = includeVal;
-            fetchPerformanceContract(includeVal);
+            disableRadioButtons();
+
+            fetchPerformanceContract(includeVal).finally(() => {
+                enableRadioButtons();
+                isProcessing = false;
+            });
         });
 
-        //지점별 평균 데이터 비동기 조회 함수
-        function fetchPerformanceContract(condition){
+        // 라디오 버튼 제어 함수
+        function disableRadioButtons() {
+            excludeRadio.prop('disabled', true);
+            includeRadio.prop('disabled', true);
+        }
 
-            console.log(condition, "condition 삭제 진행중")
-            $("#scoreChartDiv").empty();
-            const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
-            $loadingScoreChartDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
+        function enableRadioButtons() {
+            excludeRadio.prop('disabled', false);
+            includeRadio.prop('disabled', false);
+        }
+        function fetchPerformanceContract(condition) {
+            return new Promise((resolve, reject) => {
+                console.log(condition, "condition 삭제 진행중");
+                $("#scoreChartDiv").empty();
+                const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
+                $loadingScoreChartDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
 
-
-            changJson = {
-                name:[], data:[]
-            }
-
-            const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
-            let isExcludeRetention = excludeRetention.is(':checked');
-            console.log(isExcludeRetention)
-            fetch('scoreBranchPerformanceAjax.login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
-                    dashBoardEndDate: '2025-10-31',
-                    dashboardCondition: condition,
-                    dashboardExcludeRetention: isExcludeRetention //고용유지 포함 여부확인
-                })
-            }).then(async response => {
-                console.log(condition, "condition 삭제 진행끝")
-                $("#scoreChartDiv").append('<div id="scoreChart"></div>');
-
-                let data = JSON.parse(await response.json());
-                if(data.length === 0){
-                    alert("실적 데이터를 불러오는 동안 오류가 발생했습니다.")
-                    return;
+                changJson = {
+                    name: [],
+                    data: []
                 }
-                //실적 차트에 맞도록 데이터 변환
-                changeData(data);
-                //실적 차트 생성
-                renderScoreChart(changJson);
-                $loadingScoreChartDiv.empty();
-            }).catch(r => {
-                console.log(r);
-                $loadingScoreChartDiv.html("Error 발생 : "+r);
-            })
+
+                const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
+                let isExcludeRetention = excludeRetention.is(':checked');
+
+                fetch('scoreBranchPerformanceAjax.login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
+                        dashBoardEndDate: '2025-10-31',
+                        dashboardCondition: condition,
+                        dashboardExcludeRetention: isExcludeRetention
+                    })
+                })
+                    .then(async response => {
+                        console.log(condition, "condition 삭제 진행끝");
+                        $("#scoreChartDiv").append('<div id="scoreChart"></div>');
+
+                        let data = JSON.parse(await response.json());
+                        if (data.length === 0) {
+                            throw new Error("실적 데이터를 불러오는 동안 오류가 발생했습니다.");
+                        }
+
+                        // 실적 차트에 맞도록 데이터 변환
+                        changeData(data);
+                        // 실적 차트 생성
+                        renderScoreChart(changJson);
+                        $loadingScoreChartDiv.empty();
+
+                        resolve(data); // 성공 시 데이터 반환
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        $loadingScoreChartDiv.html("Error 발생 : " + error);
+                        reject(error); // 에러 발생 시 reject
+                    });
+            });
         }
 
     });

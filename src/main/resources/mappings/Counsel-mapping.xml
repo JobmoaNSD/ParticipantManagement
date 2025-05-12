@@ -8,18 +8,17 @@
             J_참여자관리
         SET
             취업역량 = #{counselJobSkill},
-            최근상담일 = #{counselLastCons},
+            최근상담일 = CONVERT(date, #{counselLastCons}, 120),
             진행단계 = #{counselProgress},
-            초기상담일 = #{counselInItCons},
-            구직만료일 = #{counselJobEX},
-            IAP수료일 = #{counselIAPDate},
-            [3단계진입일] = #{counselStepPro},
-            기간만료일 = #{counselEXPDate},
-            클리닉실시일 = #{counselClinic},
+            초기상담일 = CONVERT(date, #{counselInItCons}, 120),
+            구직만료일 = CONVERT(date, #{counselJobEX}, 120),
+            IAP수료일 = CONVERT(date, #{counselIAPDate}, 120),
+            [3단계진입일] = CONVERT(date, #{counselStepPro}, 120),
+            기간만료일 = CONVERT(date, #{counselEXPDate}, 120),
+            클리닉실시일 = CONVERT(date, #{counselClinic}, 120),
             희망직무 = #{counselJobWant},
             희망급여 = #{counselSalWant},
             알선요청 = #{counselPlacement},
-            중단종료일 = #{counselEndDate},
             간접고용서비스 = #{counselEmploymentService}
         WHERE
             구직번호 = #{counselJobNo}
@@ -60,9 +59,6 @@
             CASE
                 WHEN 기간만료일 >= DATEADD(YEAR, -100, GETDATE()) THEN 기간만료일
                 END AS counselEXPDate,
-            CASE
-                WHEN 중단종료일 >= DATEADD(YEAR, -100, GETDATE()) THEN 중단종료일
-                END AS counselEndDate,
             CASE
                 WHEN 클리닉실시일 >= DATEADD(YEAR, -100, GETDATE()) THEN 클리닉실시일
                 END AS counselClinic,

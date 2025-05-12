@@ -187,11 +187,11 @@
                                     <small><p>데이터 이전</p></small>
                                 </a>
                             </li>
-                            <li class="nav-item" <%--onclick="alert('미구현 페이지 입니다.')"--%>>
-                                <a href="UserManagement.login" class="nav-link">
-                                    <small><p>아이디 관리</p></small>
-                                </a>
-                            </li>
+<%--                            <li class="nav-item" &lt;%&ndash;onclick="alert('미구현 페이지 입니다.')"&ndash;%&gt;>--%>
+<%--                                <a href="UserManagement.login" class="nav-link">--%>
+<%--                                    <small><p>아이디 관리</p></small>--%>
+<%--                                </a>--%>
+<%--                            </li>--%>
                             <li class="nav-item">
                                 <a href="branchDashboard.login" class="nav-link">
                                     <small><p>지점 대시보드</p></small>
