@@ -30,4 +30,8 @@ public class BasicDTO {
     //DB 외 변수
     private String basicCondition; //개발자 구분
 
+    //권한 관리
+    private boolean basicBranchManagement;
+    private boolean basicManagement;
+
 }

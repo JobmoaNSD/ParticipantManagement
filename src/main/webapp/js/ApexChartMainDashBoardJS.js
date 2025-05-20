@@ -59,8 +59,8 @@ function apexChartDoughnut(title,series,labels, colors) {
             },
             formatter: function(val, opts) {
 
-                // 두 번째 시리즈의 dataLabel을 숨김
-                if (series.length == 2 && opts.seriesIndex === 0) {
+                // 첫 번째 시리즈의 dataLabel을 숨김
+                if (series.length == 2 && opts.seriesIndex === 1) {
                     return '';
                 }
 

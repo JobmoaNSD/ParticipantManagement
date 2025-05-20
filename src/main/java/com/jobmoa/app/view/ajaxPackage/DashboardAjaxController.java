@@ -115,8 +115,10 @@ public class DashboardAjaxController {
         log.info("consolScore Start Ajax");
         log.info("consolScore Session select Start");
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
-        log.error("consolScore session.getAttribute(\"IS_MANAGER\") : [{}]",session.getAttribute("IS_MANAGER"));
         boolean isManager = (boolean)session.getAttribute("IS_MANAGER");
+        boolean isBranchManager = (boolean)session.getAttribute("IS_BRANCH_MANAGER");
+        log.error("consolScore session.getAttribute(\"IS_MANAGER\") : [{}]",isManager);
+        log.error("consolScore session.getAttribute(\"IS_BRANCH_MANAGER\") : [{}]",isBranchManager);
         String sessionBranch = loginBean.getMemberBranch();
         log.info("consolScore Session select End");
         String branch = dashboardDTO.getDashboardBranch();
@@ -132,16 +134,18 @@ public class DashboardAjaxController {
         log.info("consolScore branchUserScore ChangeJson Start");
         boolean conditionFlag = Boolean.parseBoolean(dashboardDTO.getDashboardCondition());
         log.info("consolScore 고용유지 포함 여부 [{}]",dashboardDTO.isDashboardExcludeRetention());
-        if(!conditionFlag){
+        String selectCondition = (!conditionFlag) ? "selectBranchConsolScore" : "selectBranchConsolScorePerformance";
+
+        if(isManager || isBranchManager){
+            selectCondition+="Manager";
             //잡모아 실적
-            dashboardDTO.setDashboardCondition("selectBranchConsolScore");
-            log.info("consolScore selectBranchConsolScore (잡모아 실적) : [{}]", false);
+            log.info("consolScore selectBranchConsolScore (잡모아 실적 지점 관리자, 관리자 포함) 고용 점수 미포함 여부: [{}]", !conditionFlag);
         }
-        else{
-            //고용부 실적
-            dashboardDTO.setDashboardCondition("selectBranchConsolScorePerformance");
-            log.info("consolScore selectBranchConsolScorePerformance (고용부 실적) : [{}]", true);
-        }
+//        else{
+//            //고용부 실적
+//            log.info("consolScore selectBranchConsolScorePerformance (고용부 실적) : [{}]", true);
+//        }
+        dashboardDTO.setDashboardCondition(selectCondition);
 
         List<DashboardDTO> dashboardDatas = dashboardService.selectAll(dashboardDTO);
         String branchUserScore = changeJson.convertListToJsonArray(dashboardDatas , item ->{

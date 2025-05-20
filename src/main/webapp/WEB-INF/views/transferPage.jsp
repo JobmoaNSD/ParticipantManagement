@@ -73,6 +73,10 @@
     <!-- mouse pointer 모양 bootstrap 5 -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+    <script src="js/sweetAlert.js"></script>
 
     <style>
         .transfer-buttons {
@@ -480,18 +484,30 @@
 
         // 선택 이전 버튼 클릭
         $('#transferSelected').click(function() {
-            transferParticipants(Array.from(selectedParticipants));
+            alertConfirmWarning('선택한 참여자를 이전합니다.', '이전 후 복구는 불가능합니다.', '이전', '취소').then(function(result) {
+                if (result) {
+                    transferParticipants(Array.from(selectedParticipants));
+                }
+                else {
+                    $selectAllSource.prop('checked', false);
+                }
+            });
         });
 
         // 전체 이전 버튼 클릭
         $('#transferAll').click(function() {
-            $selectAllSource.prop('checked', true);
-            changeAllParticipants();
-            // const allParticipants = $('.participant-check').map(function() {
-            //     return $(this).val();
-            // }).get();
-            console.log(Array.from(selectedParticipants));
-            transferParticipants(Array.from(transferredParticipants));
+
+            alertConfirmWarning('참여자 전체를 이전합니다.', '이전 후 복구는 불가능합니다.', '이전', '취소').then(function(result) {
+               if (result) {
+                   $selectAllSource.prop('checked', true);
+                   changeAllParticipants();
+                   console.log(Array.from(selectedParticipants));
+                   transferParticipants(Array.from(transferredParticipants));
+               }
+               else {
+                   $selectAllSource.prop('checked', false);
+               }
+            });
         });
 
         function updateSelectedParticipants() {

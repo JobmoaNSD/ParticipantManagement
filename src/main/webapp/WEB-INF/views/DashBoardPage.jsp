@@ -250,6 +250,7 @@
                                             <div class="flex-grow-1 d-flex align-items-start justify-content-end">
                                                 <a
                                                         class="btn btn-outline-secondary btn-sm text-center"
+<%--                                                        onclick="alert('제작중인 페이지입니다.')"--%>
                                                         href="${IS_MANAGER? "scoreBranchDashboard.login":"scoreDashboard.login"}">
                                                     상세정보
                                                 </a>
@@ -289,7 +290,7 @@
                             <div class="col-md-10 pt-2 pb-2 h2 me-auto">
                                 <div class="row">
                                     <div class="col-md-10">
-                                        나의 KPI 달성률
+                                        개인 실적 달성률
                                     </div>
                                     <div class="col-md-2">
                                         <%--<div class="row h2 ps-3">
@@ -594,34 +595,34 @@
         let trueCaseNum = ${empty myKPI.trueCaseNum ? 0 : myKPI.trueCaseNum}; // 인센 해당
         console.log("trueCaseNum : "+ trueCaseNum);
 
-        let colors = ['#0064A600','#0064a6']
+        let colors = ['#0064a6','#0064A600']
 
         //배정 인원 차트
-        let series = [95-assignedParticipants, assignedParticipants]
+        let series = [assignedParticipants, 95-assignedParticipants]
         let labels = ['남은 목표', '배정 인원']
         let donut = new ApexCharts(document.querySelector("#exemple"), apexChartDoughnut('배정인원(목표:95)',series, labels,colors));
         donut.render();
 
         //종료 취업자 차트
-        series = [65-employmentRate, employmentRate]
+        series = [employmentRate, 65-employmentRate]
         labels = ['남은 목표', '종료 취업자']
         donut = new ApexCharts(document.querySelector("#terminatedEmploymentChart"), apexChartDoughnut('종료 취업자',series, labels,colors));
         donut.render();
 
         //알선 취업자 차트
-        series = [65-placementRate, placementRate]
+        series = [placementRate, 65-placementRate]
         labels = ['남은 목표', '알선 취업자']
         donut = new ApexCharts(document.querySelector("#referralEmploymentChart"), apexChartDoughnut('알선 취업자',series, labels,colors));
         donut.render();
 
         //조기 취업자 차트
-        series = [65-earlyEmploymentRate, earlyEmploymentRate]
+        series = [earlyEmploymentRate, 65-earlyEmploymentRate]
         labels = ['남은 목표', '조기 취업자']
         donut = new ApexCharts(document.querySelector("#earlyEmploymentChart"), apexChartDoughnut('조기 취업자',series, labels,colors));
         donut.render();
 
         //나은일자리 차트
-        series = [65-betterJobRate, betterJobRate]
+        series = [betterJobRate, 65-betterJobRate]
         labels = ['남은 목표', '나은일자리']
         donut = new ApexCharts(document.querySelector("#betterJobChart"), apexChartDoughnut('나은일자리',series, labels,colors));
         donut.render();
@@ -921,8 +922,9 @@
                         const clickIndex = config.dataPointIndex;
                         // const branchName = Datas.thisSuccess.branch[branchIndex];
 
-                        // 전체 지점 클릭시 모달 표시
+                        // 전체 지점 클릭시 모달 표시 or 페이지이동
                         if (clickIndex === 1) {
+                            // alert('제작중입니다.')
                             location.href = "scoreBranchDashboard.login";
                         }
                     }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ParticipantDAO">
-    <!-- 기본 쿼리 시작 -->
+    <!-- 상담관리 기본 쿼리 시작 -->
     <select id="selectAllParticipantBasic" resultType="participant">
         SELECT TOP (#{pageRows})
             구직번호 AS participantJobNo,
@@ -10,6 +10,9 @@
             성별 AS participantGender,
             최근상담일 AS participantLastCons,
             상담경과일 AS participantAdventCons,
+            IAP수료일 AS participantIAPDate,
+            IAP3개월여부 AS participantIAP3Month,
+            IAP5개월여부 AS participantIAP5Month,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
             초기상담일 AS participantInItCons,
@@ -58,6 +61,9 @@
                         WHEN 최근상담일 <![CDATA[<>]]> '' AND 마감='false' THEN DATEDIFF(DAY, 최근상담일, GETDATE())
                         END AS 상담경과일,
                     간접고용서비스,
+                    IAP수료일,
+                    IAP3개월여부,
+                    IAP5개월여부,
                     마감
                  FROM J_참여자관리
                  WHERE
@@ -144,9 +150,9 @@
         </choose>
 
     </select>
-    <!-- 기본 쿼리 끝 -->
+    <!-- 상담관리 기본 쿼리 끝 -->
 
-    <!-- 검색 쿼리 시작 -->
+    <!-- 상담관리 검색 쿼리 시작 -->
     <select id="selectAllParticipantSearch" resultType="participant">
         SELECT TOP (#{pageRows})
             구직번호 AS participantJobNo,
@@ -154,6 +160,9 @@
             성별 AS participantGender,
             최근상담일 AS participantLastCons,
             상담경과일 AS participantAdventCons,
+            IAP수료일 AS participantIAPDate,
+            IAP3개월여부 AS participantIAP3Month,
+            IAP5개월여부 AS participantIAP5Month,
             진행단계 AS participantProgress,
             생년월일 AS participantDob,
             초기상담일 AS participantInItCons,
@@ -203,6 +212,9 @@
                         THEN DATEDIFF(DAY, 최근상담일, GETDATE())
                         END AS 상담경과일,
                      간접고용서비스,
+                     IAP수료일,
+                     IAP3개월여부,
+                     IAP5개월여부,
                      마감
                  FROM J_참여자관리
                  WHERE
@@ -290,7 +302,7 @@
             </when>
         </choose>
     </select>
-    <!-- 검색 쿼리 끝 -->
+    <!-- 상담관리 검색 쿼리 끝 -->
 
     <!-- 참여자 전체 자격증 확인용 쿼리 시작 -->
     <select id="selectOneParticcertif" resultType="participant">
@@ -456,6 +468,9 @@
         최근상담일 AS participantLastCons,
         상담경과일 AS participantAdventCons,
         진행단계 AS participantProgress,
+        IAP수료일 AS participantIAPDate,
+        IAP3개월여부 AS participantIAP3Month,
+        IAP5개월여부 AS participantIAP5Month,
         생년월일 AS participantDob,
         초기상담일 AS participantInItCons,
         간접고용서비스 AS participantEmploymentService,
@@ -508,6 +523,9 @@
         THEN DATEDIFF(DAY, A.최근상담일, GETDATE())
         END AS 상담경과일,
         A.간접고용서비스,
+        A.IAP수료일,
+        A.IAP3개월여부,
+        A.IAP5개월여부,
         A.마감
         FROM J_참여자관리 A
         JOIN J_참여자관리_로그인정보 B
@@ -605,6 +623,9 @@
         성별 AS participantGender,
         최근상담일 AS participantLastCons,
         상담경과일 AS participantAdventCons,
+        IAP수료일 AS participantIAPDate,
+        IAP3개월여부 AS participantIAP3Month,
+        IAP5개월여부 AS participantIAP5Month,
         진행단계 AS participantProgress,
         생년월일 AS participantDob,
         초기상담일 AS participantInItCons,
@@ -658,6 +679,9 @@
         THEN DATEDIFF(DAY, A.최근상담일, GETDATE())
         END AS 상담경과일,
         A.간접고용서비스,
+        A.IAP수료일,
+        A.IAP3개월여부,
+        A.IAP5개월여부,
         A.마감
         FROM J_참여자관리 A
         JOIN J_참여자관리_로그인정보 B
@@ -892,5 +916,22 @@
     </select>
     <!-- 서비스 미제공 상담사 검색 끝 -->
 
+    <!-- IAP 수립일 3,5개월 여부 update 쿼리 시작 -->
+    <update id="iapStatusUpdate">
+        UPDATE
+            J_참여자관리
+        set
+            IAP3개월여부 = #{participantIAP3Month},
+            IAP5개월여부 = #{participantIAP5Month}
+        WHERE
+            구직번호 = #{participantJobNo}
+            <choose>
+                <when test="!participantBranchManagement and !participantManagement">
+                    AND
+                    전담자_계정 = #{participantUserid}
+                </when>
+            </choose>
+    </update>
+    <!-- IAP 수립일 3,5개월 여부 update 쿼리 끝 -->
 
 </mapper>

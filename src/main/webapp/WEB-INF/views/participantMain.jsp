@@ -260,10 +260,10 @@
                     <%-- 참여자 테이블 시작 --%>
                     <div class="row col-md-12 pt-3 pb-3 ms-auto me-auto mt-auto">
                         <div class="col-md-12 text-end">
-                                현재 화면 참여자 <span class="text-center countSpan">X</span>명
+                            현재 화면 참여자 <span class="text-center countSpan">X</span>명
                         </div>
                         <div class="col-md-12 text-end">
-                                검색된 참여자 <span class="text-center totalCountSpan">${totalCount}</span>명
+                            검색된 참여자 <span class="text-center totalCountSpan">${totalCount}</span>명
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover shadow-sm">
@@ -324,7 +324,22 @@
                                                 <td>${data.participantGender}</td>
                                                 <td>${data.participantLastCons}</td>
                                                 <td class="adventCons-td">${data.participantAdventCons}</td>
-                                                <td>${data.participantProgress}</td>
+                                                <td>
+                                                        ${data.participantProgress}
+<%--                                                    <c:choose>--%>
+<%--                                                        <c:when test="${data.participantProgress eq 'IAP 후'}">--%>
+<%--                                                            <span value="${data.participantIAPDate}" class="btn badge bg-info w-75 iapBefore" data-bs-toggle="modal" data-bs-target="#iapBeforeButtonModal">--%>
+<%--                                                                IAP 후--%>
+<%--                                                                <input type="hidden" class="iapDate" value="${data.participantIAPDate}" readonly>--%>
+<%--                                                                <input type="hidden" class="iap3Month" value="${data.participantIAP3Month}" readonly>--%>
+<%--                                                                <input type="hidden" class="iap5Month" value="${data.participantIAP5Month}" readonly>--%>
+<%--                                                            </span>--%>
+<%--                                                        </c:when>--%>
+<%--                                                        <c:otherwise>--%>
+<%--                                                            ${data.participantProgress}--%>
+<%--                                                        </c:otherwise>--%>
+<%--                                                    </c:choose>--%>
+                                                </td>
                                                 <td>${data.participantDob}</td>
                                                 <td>${data.participantInItCons}</td>
                                                 <td>${data.participantEmploymentService eq '' or data.participantEmploymentService eq null?0:data.participantEmploymentService} 회</td>
@@ -378,6 +393,47 @@
 
 </div>
 
+<!-- iapBeforeButton Modal Start -->
+<div class="modal fade" id="iapBeforeButtonModal" tabindex="-1" aria-labelledby="iapBeforeButtonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="iapBeforeButtonModalLabel">IAP 수립 후 상담 여부</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <%-- IAP 수립 후 3,5개월 지난 시점에서 상담을 완료했다면 --%>
+                        <%-- 체크가 가능하도록 한다. --%>
+                        <div class="row">
+                            <input type="hidden" id="iapBeforeJobNo" name="participantJobNo">
+                            <div class="col-md-6">
+                                <label for="iap3MonthModalCheckBox">IAP 3개월</label>
+                                <input type="checkbox" id="iap3MonthModalCheckBox" name="participantIAP3Month">
+                                <div>
+                                    <input type="text" id="iap3MonthText" name="iap3MonthText" placeholder="1900-01-01" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="iap5MonthModalCheckBox">IAP 5개월</label>
+                                <input type="checkbox" id="iap5MonthModalCheckBox" name="participantIAP5Month">
+                                <div>
+                                    <input type="text" id="iap5MonthText" name="iap5MonthText" placeholder="1900-01-01" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" id="iapBeforeSave" class="btn btn-primary">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- iapBeforeButton Modal End -->
 </body>
 <!--begin::Script-->
 <!--begin::OverlayScrollbars Configure-->
@@ -535,7 +591,7 @@
         function sort(attribute){
             let orderValue = attribute.find('.order').val();
             let columnValue = removeOrder(attribute);
-            console.log('sort column : [' + columnValue+'] order : [' + orderValue+']');
+            // console.log('sort column : [' + columnValue+'] order : [' + orderValue+']');
 
             if (orderValue == 'desc') {
                 // attribute.append('<span class="order asc"><i class="bi bi-sort-down"></i></span>');
@@ -628,8 +684,8 @@
                     dataType: 'json',
                     data: JSON.stringify({basicJobNos: jobNo}),
                     success: function (data) {
-                        console.log(data);
-                        console.log(data.length);
+                        // console.log(data);
+                        // console.log(data.length);
                         let flag = false;
                         if (data.length > 0) {
                             alertDefaultInfo('삭제되지 않은 인원이 있습니다.' + '<br>' + data.length + ' 명 \n 구직번호 : ' + data + '<br>')
@@ -650,8 +706,109 @@
                 });
             });
         });
-
         <%-- 참여자 삭제 체크 끝 --%>
+
+        <%-- IAP 수립 후 3,5개월 확인 시작 --%>
+        let iapBefore = $('.iapBefore');
+        iapBefore.on('click', function () {
+            const number = getJobNumber($(this).closest('tr'));
+            const $inputs = $(this).find('input');
+            const iapDate = $inputs.filter('.iapDate').val() || '';
+            const iap3Month = $inputs.filter('.iap3Month').val() || '';
+            const iap5Month = $inputs.filter('.iap5Month').val() || '';
+
+            let is_iap3Month = (iap3Month==='true');
+            let is_iap5Month = (iap5Month==='true');
+
+            // console.log(typeof(is_iap5Month));
+            // console.log(is_iap5Month);
+
+            // Date 객체로 변환
+            const baseDate = new Date(iapDate);
+
+            //모달창 구직번호
+            const jobNo = $('#iapBeforeJobNo');
+
+            //모달창 IAP 3,5개월 이후 input
+            const iap3MonthText = $('#iap3MonthText');
+            const iap5MonthText = $('#iap5MonthText');
+
+            //모달창 iap 3,5개월 여부 체크
+            $('#iap3MonthModalCheckBox').prop('checked', is_iap3Month);
+            $('#iap5MonthModalCheckBox').prop('checked', is_iap5Month);
+
+            jobNo.val('');
+            iap3MonthText.val('');
+            iap5MonthText.val('');
+
+            //기본 날짜가 1900-01-01 일자 이후일때 실행
+            if(iapDate > '1900-01-01'){
+                // 3개월 이후 날짜 계산
+                const after3Months = new Date(baseDate);
+                after3Months.setMonth(baseDate.getMonth() + 3);
+
+                // 5개월 이후 날짜 계산
+                const after5Months = new Date(baseDate);
+                after5Months.setMonth(baseDate.getMonth() + 5);
+
+                // YYYY-MM-DD 형식으로 포맷팅
+                const formatDate = (date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return year+'-'+month+'-'+day;
+                };
+
+                const iapDate3Months = formatDate(after3Months);
+                const iapDate5Months = formatDate(after5Months);
+
+                console.log('기준일:', baseDate);
+                console.log('3개월 후:', iapDate3Months);
+                console.log('5개월 후:', iapDate5Months);
+
+                iap3MonthText.val(iapDate3Months);
+                iap5MonthText.val(iapDate5Months);
+                jobNo.val(number);
+            }
+        })
+        <%-- IAP 수립 후 3,5개월 확인 끝 --%>
+
+        <%-- IAP 수립 3,5 개월 여부 변경 시작 --%>
+        $('#iapBeforeSave').on('click', function () {
+            const number = $('#iapBeforeJobNo').val();
+            const iap3MonthText = $('#iap3MonthText').val();
+            const iap5MonthText = $('#iap5MonthText').val();
+            const iap3MonthModalCheckBox = $('#iap3MonthModalCheckBox').is(':checked');
+            const iap5MonthModalCheckBox = $('#iap5MonthModalCheckBox').is(':checked');
+
+            // console.log(number);
+            // console.log(iap3MonthText);
+            // console.log(iap5MonthText);
+            // console.log(iap3MonthModalCheckBox);
+            // console.log(iap5MonthModalCheckBox);
+
+            $.ajax({
+                url: 'iapBeforeSaveAjax.login',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({
+                    participantJobNo: number,
+                    participantIAP3Month: iap3MonthModalCheckBox,
+                    participantIAP5Month: iap5MonthModalCheckBox,
+                }),
+                success: function (data) {
+                    console.log("Ajax Success : [" + data + "]");
+                    location.reload();
+                },
+                error: function (data) {
+                    console.log("Ajax Error : [" + data+ "]");
+                }
+            })
+
+        })
+        <%-- IAP 수립 3,5 개월 여부 변경 끝 --%>
+
 
         <%-- 마감 여부 시작 --%>
         const isCloses = $('.isClose_td');
@@ -668,7 +825,7 @@
             }
             let cancelButtonText = "취소"
 
-            console.log(number);
+            // console.log(number);
             let isClose = false;
             if (close_span.hasClass('badge bg-success isClose_span')) {
                 isClose = true;
@@ -685,7 +842,7 @@
                     dataType: 'json',
                     data: JSON.stringify({basicJobNo: number, basicClose: isClose}),
                     success: function (data) {
-                        console.log(data == true);
+                        // console.log(data == true);
                         if (data) {
                             close_span.removeClass('badge bg-success isClose_span').addClass('badge bg-danger isClose_span')
                             close_span.text("마감")

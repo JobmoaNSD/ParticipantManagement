@@ -32,6 +32,8 @@ public class ParticipantDTO {
     private String participantInItCons; // 초기상담일
     private String participantJobEX; // 구직만료일
     private String participantIAPDate; // IAP수료일
+    private boolean participantIAP3Month; // IAP수료일 3개월 이후 여부
+    private boolean participantIAP5Month; // IAP수료일 5개월 이후 여부
     private String participantStepPro; // 3단계진입일
     private String participantEXPDate; // 기간만료(예정)일
     private String participantClinic; // 클리닉실시일
@@ -63,6 +65,10 @@ public class ParticipantDTO {
 
     //DB 외 정보
     private String participantCondition; // 개발자 구분
+
+    //권한 관리
+    private boolean participantBranchManagement;
+    private boolean participantManagement;
 
     //페이지네이션 정보
     private int page;
