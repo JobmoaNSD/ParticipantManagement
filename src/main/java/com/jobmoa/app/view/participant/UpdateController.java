@@ -50,11 +50,19 @@ public class UpdateController {
     public String updateBasicPage(Model model, HttpSession session, BasicDTO basicDTO, ParticcertifDTO particcertifDTO){
         //session내에 있는 로그인 정보를 불러온다.
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        boolean branchAdminFlag = (Boolean)session.getAttribute("IS_BRANCH_MANAGER");
+        boolean adminFlag = (Boolean)session.getAttribute("IS_MANAGER");
+        String loginId = loginBean.getMemberUserID();
+        //각 정보를 조회
+
+        //기본 정보 조회
+        // 로그인 정보에 있는 사용자 아이디를 추가
+        basicDTO.setBasicUserid(loginId);
+        basicDTO.setBasicBranchManagement(branchAdminFlag);
+        basicDTO.setBasicManagement(adminFlag);
         //condition을 추가하여 sql문을 확인할 수 있도록한다.
         basicDTO.setBasicCondition("basicSelectPKONE");
         log.info("loginBean : [{}]", loginBean); // login 정보 로그
-        // 로그인 정보에 있는 사용자 아이디를 추가
-        basicDTO.setBasicUserid(loginBean.getMemberUserID());
         // 구직번호와 맞는 기본정보 하나를 받아온다.
         basicDTO = basicService.selectOne(basicDTO);
 //        log.info("basicDTO : [{}]", basicDTO);
@@ -352,9 +360,14 @@ public class UpdateController {
         //구직번호, 전담자 정보를 변수로 저장
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
         String loginId = loginBean.getMemberUserID();
+        boolean branchAdminFlag = (Boolean)session.getAttribute("IS_BRANCH_MANAGER");
+        boolean adminFlag = (Boolean)session.getAttribute("IS_MANAGER");
         //각 정보를 조회
+
         //기본 정보 조회
         basicDTO.setBasicUserid(loginId);
+        basicDTO.setBasicBranchManagement(branchAdminFlag);
+        basicDTO.setBasicManagement(adminFlag);
         basicDTO.setBasicCondition("basicSelectPKONE");
         basicDTO = basicService.selectOne(basicDTO);
 //        log.info("조회된 기본정로 basicDTO : [{}]", basicDTO);
@@ -369,6 +382,7 @@ public class UpdateController {
             InfoBean.info(model, url, icon, title, message);
             return "views/info";
         }
+
 
         //자격증 정보
         particcertifDTO.setParticcertifJobNo(basicDTO.getBasicJobNo());
