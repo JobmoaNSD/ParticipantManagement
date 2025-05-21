@@ -580,12 +580,20 @@
 
         let employmentRate = ${empty myKPI.employmentRate ? 0 : myKPI.employmentRate}; // 취업률
         console.log("employmentRate : " + employmentRate);
+        let avgEmploymentRateMiddle = ${empty myKPI.avgEmploymentRateMiddle ? 0 : myKPI.avgEmploymentRateMiddle}; // 평균 취업률
+        console.log("avgEmploymentRateMiddle : " + avgEmploymentRateMiddle);
         let placementRate = ${empty myKPI.placementRate ? 0 : myKPI.placementRate}; // 알선취업률
         console.log("employmentRate : "+placementRate);
+        let avgPlacementRateMiddle = ${empty myKPI.avgPlacementRateMiddle ? 0 : myKPI.avgPlacementRateMiddle}; // 평균 알선취업률
+        console.log("avgPlacementRateMiddle : "+avgPlacementRateMiddle);
         let earlyEmploymentRate = ${empty myKPI.earlyEmploymentRate ? 0 : myKPI.earlyEmploymentRate}; // 조기취업률
         console.log("earlyEmploymentRate : "+ earlyEmploymentRate);
+        let avgEarlyEmploymentRateMiddle = ${empty myKPI.avgEarlyEmploymentRateMiddle ? 0 : myKPI.avgEarlyEmploymentRateMiddle}; // 평균 조기취업률
+        console.log("avgEarlyEmploymentRateMiddle : "+ avgEarlyEmploymentRateMiddle);
         let betterJobRate = ${empty myKPI.betterJobRate ? 0 : myKPI.betterJobRate}; // 나은일자리
         console.log("betterJobRate : "+ betterJobRate);
+        let avgBetterJobRateMiddle = ${empty myKPI.avgBetterJobRateMiddle ? 0 : myKPI.avgBetterJobRateMiddle}; // 평균 나은일자리
+        console.log("avgBetterJobRateMiddle : "+ avgBetterJobRateMiddle);
         let assignedParticipants = ${empty myKPI.assignedParticipants ? 0 : myKPI.assignedParticipants}; // 배정인원수
         console.log("assignedParticipants : "+ assignedParticipants);
         let noServiceCount = ${empty myKPI.noServiceCount ? 0 : myKPI.noServiceCount}; // 인센 미해당 서비스미제공
@@ -595,42 +603,56 @@
         let trueCaseNum = ${empty myKPI.trueCaseNum ? 0 : myKPI.trueCaseNum}; // 인센 해당
         console.log("trueCaseNum : "+ trueCaseNum);
 
+        // 음수 확인 후 고정 값 지정
+        function checkNegative(value1,value2) {
+            let result = (value1 - value2);
+
+            if (result < 0) {
+                result = 0;
+            }
+            return result;
+        }
+
+
         let colors = ['#0064a6','#0064A600']
 
         //배정 인원 차트
         let series = [assignedParticipants, 95-assignedParticipants]
-        let labels = ['남은 목표', '배정 인원']
-        let donut = new ApexCharts(document.querySelector("#exemple"), apexChartDoughnut('배정인원(목표:95)',series, labels,colors));
+        let labels = ['배정 인원','남은 목표']
+        let donut = new ApexCharts(document.querySelector("#exemple"), apexChartDoughnut('배정인원(목표:95)',series, labels,colors,false));
         donut.render();
 
         //종료 취업자 차트
         series = [employmentRate, 65-employmentRate]
-        labels = ['남은 목표', '종료 취업자']
-        donut = new ApexCharts(document.querySelector("#terminatedEmploymentChart"), apexChartDoughnut('종료 취업자',series, labels,colors));
+        labels = ['종료 취업자','남은 목표']
+        donut = new ApexCharts(document.querySelector("#terminatedEmploymentChart"), apexChartDoughnut('종료 취업자',series, labels,colors,true));
         donut.render();
 
+        console.log("placementRate : "+placementRate);
+        console.log("checkNegative(avgPlacementRateMiddle,placementRate) : "+checkNegative(avgPlacementRateMiddle,placementRate));
         //알선 취업자 차트
-        series = [placementRate, 65-placementRate]
-        labels = ['남은 목표', '알선 취업자']
-        donut = new ApexCharts(document.querySelector("#referralEmploymentChart"), apexChartDoughnut('알선 취업자',series, labels,colors));
+        series = [placementRate, checkNegative(avgPlacementRateMiddle,placementRate)]
+        labels = ['알선 취업자','남은 목표']
+        donut = new ApexCharts(document.querySelector("#referralEmploymentChart"), apexChartDoughnut('알선 취업자',series, labels,colors,true));
         donut.render();
 
         //조기 취업자 차트
-        series = [earlyEmploymentRate, 65-earlyEmploymentRate]
-        labels = ['남은 목표', '조기 취업자']
-        donut = new ApexCharts(document.querySelector("#earlyEmploymentChart"), apexChartDoughnut('조기 취업자',series, labels,colors));
+        series = [earlyEmploymentRate, checkNegative(avgEarlyEmploymentRateMiddle,earlyEmploymentRate)]
+        labels = ['조기 취업자','남은 목표']
+        donut = new ApexCharts(document.querySelector("#earlyEmploymentChart"), apexChartDoughnut('조기 취업자',series, labels,colors,true));
         donut.render();
 
         //나은일자리 차트
-        series = [betterJobRate, 65-betterJobRate]
-        labels = ['남은 목표', '나은일자리']
-        donut = new ApexCharts(document.querySelector("#betterJobChart"), apexChartDoughnut('나은일자리',series, labels,colors));
+        series = [betterJobRate, checkNegative(avgBetterJobRateMiddle,betterJobRate)]
+        labels = ['나은일자리','남은 목표']
+        donut = new ApexCharts(document.querySelector("#betterJobChart"), apexChartDoughnut('나은일자리',series, labels,colors,true));
         donut.render();
 
         //인센 요건 충족 차트
         series = [noServiceCount, falseCaseNum, trueCaseNum]
         labels = ['서비스 미제공', '미해당', '해당']
-        donut = new ApexCharts(document.querySelector("#incentiveQualificationChart"), apexChartDoughnut('인센 요건 충족',series, labels,['#ff0707', '#ff9100ff', '#0064a6']));
+        colors = ['#ff0707', '#ff9100ff', '#0064a6']
+        donut = new ApexCharts(document.querySelector("#incentiveQualificationChart"), apexChartDoughnut('인센 요건 충족',series, labels,colors,true));
         donut.render();
 
         <%--/*//전체 chart 플러그인 추가--%>
@@ -683,11 +705,11 @@
         console.log(data);
         chart_bar_data_my(id,lable,data);
 
-        //인센티브 발생
-        id=$('#ex-chart-barZZ');
-        lable=['인센티브'];
-        data={title:data_title,text:JSON.parse('${dashBoardSuccessMoneyIncentive}')};
-        chart_bar_data_my(id,lable,data);
+        <%--//인센티브 발생--%>
+        <%--id=$('#ex-chart-barZZ');--%>
+        <%--lable=['인센티브'];--%>
+        <%--data={title:data_title,text:JSON.parse('${dashBoardSuccessMoneyIncentive}')};--%>
+        <%--chart_bar_data_my(id,lable,data);--%>
         <%--
                        //chart 나의 성과 현황
                        //취업자 수

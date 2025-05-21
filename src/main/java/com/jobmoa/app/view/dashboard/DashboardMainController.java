@@ -188,7 +188,7 @@ public class DashboardMainController {
         //성과 점수 현황 끝
 
 
-        //내 KPI 현황 시작
+        //내 실적 현황 시작
         dashboardDTO.setDashboardCondition("myKPIDashboard");
         DashboardDTO myKPI = dashboardService.selectOne(dashboardDTO);
         model.addAttribute("myKPI",myKPI);
