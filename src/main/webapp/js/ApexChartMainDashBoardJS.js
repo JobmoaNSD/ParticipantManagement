@@ -1,11 +1,27 @@
 // Main Dashboard Apex Chart Option Config
 
 
-function apexChartDoughnut(title,series,labels, colors) {
+function apexChartDoughnut(title,series,labels, colors, isBuble) {
+
+
+    let percent = ''
+    let chartData = []
+
+    // 모든 시리즈 데이터에 대해 유효성 검사 실행
+    series.map(function(item) {
+        console.log("apexChartDoughnut : " + item);
+        // 숫자로 변환 후 유효성 검사
+        let num = Number(item);
+        chartData.push(isNaN(num) ? 0.00 : num.toFixed(2));
+    });
+
+    if(isBuble){
+        percent = '%'
+    }
 
     //donut Chart Option Start
     const options = {
-        series:series, //백단에서 값을 넘겨받아와야함
+        series:chartData.map(Number), //백단에서 값을 넘겨받아와야함
         labels:labels, //백단에서 값을 넘겨받아와야함
         legend: {
             show: true,
@@ -39,7 +55,7 @@ function apexChartDoughnut(title,series,labels, colors) {
                         },
                         value: {
                             formatter: function(val) {
-                                return Math.ceil(val);
+                                return Math.ceil(val) + percent;
                             },
                             style: {
                                 fontSize: '11px',         // 작은 폰트
@@ -63,7 +79,6 @@ function apexChartDoughnut(title,series,labels, colors) {
                 if (series.length == 2 && opts.seriesIndex === 1) {
                     return '';
                 }
-
                 return Math.ceil(val) + '%';
             }
         }

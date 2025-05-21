@@ -325,20 +325,20 @@
                                                 <td>${data.participantLastCons}</td>
                                                 <td class="adventCons-td">${data.participantAdventCons}</td>
                                                 <td>
-                                                        ${data.participantProgress}
-<%--                                                    <c:choose>--%>
-<%--                                                        <c:when test="${data.participantProgress eq 'IAP 후'}">--%>
-<%--                                                            <span value="${data.participantIAPDate}" class="btn badge bg-info w-75 iapBefore" data-bs-toggle="modal" data-bs-target="#iapBeforeButtonModal">--%>
-<%--                                                                IAP 후--%>
-<%--                                                                <input type="hidden" class="iapDate" value="${data.participantIAPDate}" readonly>--%>
-<%--                                                                <input type="hidden" class="iap3Month" value="${data.participantIAP3Month}" readonly>--%>
-<%--                                                                <input type="hidden" class="iap5Month" value="${data.participantIAP5Month}" readonly>--%>
-<%--                                                            </span>--%>
-<%--                                                        </c:when>--%>
-<%--                                                        <c:otherwise>--%>
-<%--                                                            ${data.participantProgress}--%>
-<%--                                                        </c:otherwise>--%>
-<%--                                                    </c:choose>--%>
+<%--                                                        ${data.participantProgress}--%>
+                                                    <c:choose>
+                                                        <c:when test="${data.participantProgress eq 'IAP 후'}">
+                                                            <span value="${data.participantIAPDate}" class="btn badge bg-info w-75 iapBefore" data-bs-toggle="modal" data-bs-target="#iapBeforeButtonModal">
+                                                                IAP 후
+                                                                <input type="hidden" class="iapDate" value="${data.participantIAPDate}" readonly>
+                                                                <input type="hidden" class="iap3Month" value="${data.participantIAP3Month}" readonly>
+                                                                <input type="hidden" class="iap5Month" value="${data.participantIAP5Month}" readonly>
+                                                            </span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${data.participantProgress}
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                                 <td>${data.participantDob}</td>
                                                 <td>${data.participantInItCons}</td>

@@ -19,7 +19,47 @@
             배정인원수 AS assignedParticipants,
             서비스미제공 AS noServiceCount,
             미해당 AS falseCaseNum,
-            해당 AS trueCaseNum
+            해당 AS trueCaseNum,
+            (
+                SELECT AVG(취업률)
+                FROM (
+                         SELECT 취업률,
+                                NTILE(100) OVER (ORDER BY 취업률) AS percentile
+                         FROM KPI달성률
+                         WHERE 전담자_계정 IS NOT NULL
+                     ) AS subquery
+                WHERE percentile BETWEEN 15 AND 85
+            ) AS avgEmploymentRateMiddle,
+            (
+                SELECT AVG(알선취업률)
+                FROM (
+                         SELECT 알선취업률,
+                                NTILE(100) OVER (ORDER BY 알선취업률) AS percentile
+                         FROM KPI달성률
+                         WHERE 전담자_계정 IS NOT NULL
+                     ) AS subquery
+                WHERE percentile BETWEEN 15 AND 85
+            ) AS avgPlacementRateMiddle,
+            (
+                SELECT AVG(조기취업률)
+                FROM (
+                         SELECT 조기취업률,
+                                NTILE(100) OVER (ORDER BY 조기취업률) AS percentile
+                         FROM KPI달성률
+                         WHERE 전담자_계정 IS NOT NULL
+                     ) AS subquery
+                WHERE percentile BETWEEN 15 AND 85
+            ) AS avgEarlyEmploymentRateMiddle,
+            (
+                SELECT AVG(나은일자리률)
+                FROM (
+                         SELECT 나은일자리률,
+                                NTILE(100) OVER (ORDER BY 나은일자리률) AS percentile
+                         FROM KPI달성률
+                         WHERE 전담자_계정 IS NOT NULL
+                     ) AS subquery
+                WHERE percentile BETWEEN 15 AND 85
+            ) AS avgBetterJobRateMiddle
         FROM
             KPI달성률
         WHERE

@@ -160,5 +160,9 @@ public class DashboardDTO {
 
     private boolean dashboardExcludeRetention; // 고용유지 포함 여부
 
-
+    //메인 대시보드 내 실적 현황 25% 평균 현황 (상위 15%, 하위 15% 제외)
+    private double avgEmploymentRateMiddle; // 취업률
+    private double avgPlacementRateMiddle; // 알선취업률
+    private double avgEarlyEmploymentRateMiddle; // 조기취업률
+    private double avgBetterJobRateMiddle; // 나은일자리 취업률
 }
