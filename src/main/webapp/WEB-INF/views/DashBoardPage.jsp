@@ -887,42 +887,18 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let data = ${scoreJson};
-        //console.log(data[0].data);
-        //console.log(data[0].myRanking);
-        //console.log(data[0].myTotalRanking);
+        // console.log(data[0].data);
+        // console.log(data[0].myRanking);
+        // console.log(data[0].myTotalRanking);
+        // console.log(data[0].totalTopScore);
 
-        /**
-         * 특정 랭크에 도달하기 위해 필요한 남은 점수를 계산합니다.
-         * @param {string} targetRank - 목표 랭크 (A-E)
-         * @param {number} currentScore - 현재 점수
-         * @returns {number} 목표 랭크까지 필요한 남은 점수
-         */
-        function calculateRemainingScoreForRank(targetRank, currentScore) {
-            const MAX_TOTAL_SCORE = 90;
+        const nextRanginScore = data[0].pointsToNextGrade;
+        const nextRanking = data[0].nextGrade;
 
-            const RANK_THRESHOLDS = {
-                'B': { percent: 0.8, required: 0 },
-                'C': { percent: 0.6, required: 0 },
-                'D': { percent: 0.35, required: 0 },
-                'E': { percent: 0.2, required: 0 }
-            };
-
-            // 각 랭크별 필요 점수 계산
-            Object.keys(RANK_THRESHOLDS).forEach(rank => {
-                RANK_THRESHOLDS[rank].required = Math.floor(MAX_TOTAL_SCORE * RANK_THRESHOLDS[rank].percent);
-            });
-
-            if (!RANK_THRESHOLDS[targetRank]) {
-                throw new Error('유효하지 않은 등급입니다.');
-            }
-            console.log(RANK_THRESHOLDS);
-
-            return RANK_THRESHOLDS[targetRank].required - currentScore;
-        }
-
-        const nextRanginScore = calculateRemainingScoreForRank(data[0].myRanking,data[0].myScore);
         console.log(Math.floor(nextRanginScore*100)/100);
-        $('#nextRanking').text("다음등급까지: "+Math.floor(nextRanginScore*100)/100 + "점");
+        let $nextRanking = $('#nextRanking');
+        // $nextRanking.text("다음등급까지: "+ nextRanginScore + "점");
+        $nextRanking.append("다음 등급 "+nextRanking);
 
         $('#myRanking').text(data[0].myRanking);
         $('#myTotalRanking').text(data[0].myTotalRanking);
