@@ -179,7 +179,11 @@ public class DashboardMainController {
             return "{\"myRanking\":\"" + dto.getMyRanking() + "\"," +
                     "\"myTotalRanking\":\"" + dto.getMyTotalRanking() + "\"," +
                     "\"myScore\":\"" + dto.getMyScore() + "\"," +
-                    "\"data\":[\"" + dto.getTotalBranchScoreAVG() + "\",\"" + dto.getMyBranchScoreAVG() + "\",\"" + dto.getMyScore() + "\"]}";
+                    "\"data\":[\"" + dto.getTotalBranchScoreAVG() + "\",\"" + dto.getMyBranchScoreAVG() + "\",\"" + dto.getMyScore() + "\"]," +
+                    "\"totalTopScore\":\"" + dto.getTotalTopScore() + "\"," +
+                    "\"pointsToNextGrade\":\"" + dto.getPointsToNextGrade() + "\"," +
+                    "\"nextGrade\":\"" + dto.getNextGrade() + "\"" +
+                    "}";
         });
 
         log.info("scoreJson : [{}]",scoreJson);
@@ -313,7 +317,7 @@ public class DashboardMainController {
     }
 
     @GetMapping("scoreBranchDashboard.login")
-    public String scoreBranchDashboard(Model model, HttpSession session, DashboardDTO dashboardDTO){
+    public String scoreBranchDashboard(Model model, DashboardDTO dashboardDTO){
         //내 지점 평균 그래프 클릭하면 DB에 사용자의 각 평가 현황별 % 점수를 반환해준다.
         dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
         dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);

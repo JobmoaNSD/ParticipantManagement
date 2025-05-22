@@ -579,38 +579,38 @@
 
     function changeDataUser(data){
         data.branchUserScore.forEach(function(value, key){
-            console.log("changeDataUser 실행 사용자 이름 : [%s]",value.username);
+            // console.log("changeDataUser 실행 사용자 이름 : [%s]",value.username);
             selectData.username.push(value.username);
 
-            console.log("changeDataUser 실행 사용자 계정 : [%s]",value.userID);
+            // console.log("changeDataUser 실행 사용자 계정 : [%s]",value.userID);
             selectData.userID.push(value.userID);
 
-            console.log("changeDataUser 실행 사용자 지점 : [%s]",value.branch)
+            // console.log("changeDataUser 실행 사용자 지점 : [%s]",value.branch)
             selectData.branch = value.branch;
 
-            console.log("changeDataUser 실행 고용유지 : [%s]",value.retentionScore);
+            // console.log("changeDataUser 실행 고용유지 : [%s]",value.retentionScore);
             selectData.retention.retentionScore.push(value.retentionScore);
 
-            console.log("changeDataUser 실행 알선취업 : [%s]",value.placementScore);
+            // console.log("changeDataUser 실행 알선취업 : [%s]",value.placementScore);
             selectData.placement.placementScore.push(value.placementScore);
 
-            console.log("changeDataUser 실행 취업자 : [%s]",value.employmentScore);
+            // console.log("changeDataUser 실행 취업자 : [%s]",value.employmentScore);
             if(value.employmentScore === null){
                 selectData.employment.employmentScore.push(0);
             }
             else{
                 selectData.employment.employmentScore.push(value.employmentScore);
             }
-            console.log("changeDataUser 실행 조기취업 : [%s]",value.earlyEmploymentScore);
+            // console.log("changeDataUser 실행 조기취업 : [%s]",value.earlyEmploymentScore);
             selectData.earlyEmployment.earlyEmploymentScore.push(value.earlyEmploymentScore);
 
-            console.log("changeDataUser 실행 나은일자리 : [%s]",value.betterJobScore);
+            // console.log("changeDataUser 실행 나은일자리 : [%s]",value.betterJobScore);
             selectData.betterJob.betterJobScore.push(value.betterJobScore);
 
-            console.log("changeDataUser 실행 개인 총점 : [%s]",value.totalScore);//개인 총점
+            // console.log("changeDataUser 실행 개인 총점 : [%s]",value.totalScore);//개인 총점
             selectData.total.totalScore.push(value.totalScore);
 
-            console.log("changeDataUser 실행 지점 총정 : [%s]",value.myBranchScore); //지점 총점
+            // console.log("changeDataUser 실행 지점 총정 : [%s]",value.myBranchScore); //지점 총점
             selectData.total.myBranchScore = value.myBranchScore;
         })
     }
@@ -740,7 +740,9 @@
                         dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
                         dashBoardEndDate: '2025-10-31',
                         dashboardCondition: condition,
-                        dashboardExcludeRetention: isExcludeRetention
+                        dashboardExcludeRetention: isExcludeRetention,
+                        isManagement: ${IS_MANAGER},
+                        isBranchManagement: ${IS_BRANCH_MANAGER}
                     })
                 })
                     .then(async response => {

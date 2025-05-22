@@ -110,6 +110,7 @@ public class DashboardAjaxController {
         return branchDataChangeJson;
     }
 
+    //총점, 취업자, 알선취업자, 고용유지, 조기취업자, 나은일자리 비동기 조회
     @PostMapping("dashBoardAjaxBranchScore.login")
     public String consolScore(@RequestBody DashboardDTO dashboardDTO, HttpSession session){
         log.info("consolScore Start Ajax");

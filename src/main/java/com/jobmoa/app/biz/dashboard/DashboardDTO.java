@@ -154,6 +154,9 @@ public class DashboardDTO {
     private double totalBranchScoreAVG; //전체지점평균(총 평균)
     private double myBranchScore; //내지점합계
     private double myBranchScoreAVG; //내지점평균
+    private double totalTopScore; //전체 최고 점수
+    private double pointsToNextGrade; //다음 등급 까지 남은 점수
+    private String nextGrade; //다음 등급
     private String myRanking; //내등급
     private String myBranchRanking; //지점내순위
     private String myTotalRanking; //전체내순위
@@ -165,4 +168,8 @@ public class DashboardDTO {
     private double avgPlacementRateMiddle; // 알선취업률
     private double avgEarlyEmploymentRateMiddle; // 조기취업률
     private double avgBetterJobRateMiddle; // 나은일자리 취업률
+
+    //메인 대시보드 관리자 권한, 지점 관리자 권한 확인용 변수
+    private boolean isManagement;
+    private boolean isBranchManagement;
 }
