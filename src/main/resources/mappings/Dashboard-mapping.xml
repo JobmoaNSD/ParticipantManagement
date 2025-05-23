@@ -365,7 +365,7 @@
     <!-- 내 점수 및 지점 평균, 총점 평균 출력 -->
     <select id="selectRankAndScore" resultType="dashboard">
         -- 전체지점, 내 지점, 내 점수 구하는 쿼리
-        -- 근속기간 구분 로직을 한 번만 계산
+        -- 최적화된 쿼리
         WITH 기본데이터 AS (
         SELECT
         A.지점,
@@ -373,116 +373,123 @@
         A.전담자_계정,
         A.총점,
         CASE
-        WHEN ((L.입사일 IS NOT NULL
-        AND L.입사일 > '1900-01-01'
-        AND L.최종발령일 <![CDATA[<=]]> '1900-01-01'
-        AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
-        OR (L.최종발령일 IS NOT NULL
-        AND L.최종발령일 > '1900-01-01'
-        AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365))
+        WHEN DATEDIFF(DAY,
+        CASE
+        WHEN L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01' THEN L.입사일
+        WHEN L.최종발령일 > '1900-01-01' THEN L.최종발령일
+        ELSE NULL
+        END,
+        GETDATE()) >= 365
         THEN '1년이상'
         ELSE '1년미만'
         END AS 근속기간구분,
         CASE WHEN A.전담자_계정 = #{dashboardUserID} THEN 1 ELSE 0 END AS 본인여부
         FROM 평가실적및점수 A
-        JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
+        INNER JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
         ),
-        순위_통계_경계값 AS (
+        통계_계산 AS (
         SELECT
         전담자_계정,
         총점,
         지점,
         근속기간구분,
         본인여부,
-        -- 모든 순위와 통계를 한 번에 계산
+        -- 순위 계산
         RANK() OVER (ORDER BY 총점 DESC) AS 전체순위,
         RANK() OVER (PARTITION BY 지점 ORDER BY 총점 DESC) AS 지점내순위,
         RANK() OVER (PARTITION BY 근속기간구분 ORDER BY 총점 DESC) AS 근속기간별순위,
         ROUND(PERCENT_RANK() OVER (PARTITION BY 근속기간구분 ORDER BY 총점 DESC) * 100, 2) AS 근속기간별_퍼센타일,
-        -- 전체 통계
+        -- 통계값 (중복 제거)
         COUNT(*) OVER () AS 전체인원수,
-        AVG(총점) OVER () AS 전체지점평균,
+        AVG(CAST(총점 AS FLOAT)) OVER () AS 전체지점평균,
         SUM(총점) OVER () AS 전체지점합계,
         MAX(총점) OVER () AS 전체최고점수,
-        -- 지점별 통계
         COUNT(*) OVER (PARTITION BY 지점) AS 지점인원수,
-        AVG(총점) OVER (PARTITION BY 지점) AS 내지점평균,
+        AVG(CAST(총점 AS FLOAT)) OVER (PARTITION BY 지점) AS 내지점평균,
         SUM(총점) OVER (PARTITION BY 지점) AS 내지점합계,
         MAX(총점) OVER (PARTITION BY 지점) AS 지점최고점수,
-        -- 근속기간별 통계
         COUNT(*) OVER (PARTITION BY 근속기간구분) AS 근속기간별인원수,
         MAX(총점) OVER (PARTITION BY 근속기간구분) AS 근속기간별최고점수,
-        -- 등급 경계값을 한 번에 계산 (NTILE 사용으로 최적화)
-        ROW_NUMBER() OVER (PARTITION BY 근속기간구분 ORDER BY 총점 DESC) AS 근속기간별_행번호,
-        -- 각 등급의 마지막 순위 계산
-        CEILING(COUNT(*) OVER (PARTITION BY 근속기간구분) * 0.20) AS Master_마지막순위,
-        CEILING(COUNT(*) OVER (PARTITION BY 근속기간구분) * 0.40) AS Expert_마지막순위,
-        CEILING(COUNT(*) OVER (PARTITION BY 근속기간구분) * 0.65) AS Skilled_마지막순위,
-        CEILING(COUNT(*) OVER (PARTITION BY 근속기간구분) * 0.90) AS Developing_마지막순위
+        -- NTILE을 사용한 등급 계산 (더 효율적)
+        NTILE(100) OVER (PARTITION BY 근속기간구분 ORDER BY 총점 DESC) AS 백분위수
         FROM 기본데이터
         ),
-        등급경계점수 AS (
-        SELECT DISTINCT
-        근속기간구분,
-        MAX(CASE WHEN 근속기간별_행번호 = Master_마지막순위 THEN 총점 END)
-        OVER (PARTITION BY 근속기간구분) AS Master_경계점수,
-        MAX(CASE WHEN 근속기간별_행번호 = Expert_마지막순위 THEN 총점 END)
-        OVER (PARTITION BY 근속기간구분) AS Expert_경계점수,
-        MAX(CASE WHEN 근속기간별_행번호 = Skilled_마지막순위 THEN 총점 END)
-        OVER (PARTITION BY 근속기간구분) AS Skilled_경계점수,
-        MAX(CASE WHEN 근속기간별_행번호 = Developing_마지막순위 THEN 총점 END)
-        OVER (PARTITION BY 근속기간구분) AS Developing_경계점수
-        FROM 순위_통계_경계값
+        등급정보 AS (
+        SELECT
+        *,
+        -- 등급 및 다음 등급 정보를 한번에 계산
+        CASE
+        WHEN 근속기간구분 = '1년이상' THEN
+        CASE
+        WHEN 백분위수 <![CDATA[<=]]> 20 THEN 'Master'
+        WHEN 백분위수 <![CDATA[<=]]> 40 THEN 'Expert'
+        WHEN 백분위수 <![CDATA[<=]]> 65 THEN 'Skilled'
+        WHEN 백분위수 <![CDATA[<=]]> 90 THEN 'Developing'
+        ELSE 'Foundation'
+        END
+        ELSE
+        CASE
+        WHEN 백분위수 <![CDATA[<=]]> 20 THEN 'Rising Star'
+        WHEN 백분위수 <![CDATA[<=]]> 40 THEN 'Pathfinder'
+        WHEN 백분위수 <![CDATA[<=]]> 65 THEN 'Explorer'
+        WHEN 백분위수 <![CDATA[<=]]> 90 THEN 'Learner'
+        ELSE 'Onboard'
+        END
+        END AS 현재등급,
+        CASE
+        WHEN 근속기간구분 = '1년이상' THEN
+        CASE
+        WHEN 백분위수 <![CDATA[<=]]> 20 THEN 'Already Top Grade'
+        WHEN 백분위수 <![CDATA[<=]]> 40 THEN 'Master'
+        WHEN 백분위수 <![CDATA[<=]]> 65 THEN 'Expert'
+        WHEN 백분위수 <![CDATA[<=]]> 90 THEN 'Skilled'
+        ELSE 'Developing'
+        END
+        ELSE
+        CASE
+        WHEN 백분위수 <![CDATA[<=]]> 20 THEN 'Already Top Grade'
+        WHEN 백분위수 <![CDATA[<=]]> 40 THEN 'Rising Star'
+        WHEN 백분위수 <![CDATA[<=]]> 65 THEN 'Pathfinder'
+        WHEN 백분위수 <![CDATA[<=]]> 90 THEN 'Explorer'
+        ELSE 'Learner'
+        END
+        END AS 다음등급,
+        -- 다음 등급 경계값 계산
+        CASE
+        WHEN 백분위수 <![CDATA[<=]]> 20 THEN NULL
+        WHEN 백분위수 <![CDATA[<=]]> 40 THEN 20
+        WHEN 백분위수 <![CDATA[<=]]> 65 THEN 40
+        WHEN 백분위수 <![CDATA[<=]]> 90 THEN 65
+        ELSE 90
+        END AS 다음등급_백분위수
+        FROM 통계_계산
         )
         SELECT
-        NULLIF(s.총점, 0) AS myScore,
-        NULLIF(s.전체지점합계, 0) AS totalBranchScore,
-        NULLIF(ROUND(s.전체지점평균, 2), 0) AS totalBranchScoreAVG,
-        NULLIF(s.전체최고점수, 0) AS totalTopScore,
-        NULLIF(s.내지점합계, 0) AS myBranchScore,
-        NULLIF(ROUND(s.내지점평균, 2), 0) AS myBranchScoreAVG,
-        NULLIF(s.지점최고점수, 0) AS myBranchTopScore,
-        NULLIF(s.근속기간별최고점수, 0) AS workPeriodTopScore,
-        CONCAT(NULLIF(s.전체순위, 0), '/', NULLIF(s.전체인원수, 0)), --AS myTotalRanking, -- 전체 지점 등수
-        CONCAT(NULLIF(s.지점내순위, 0), '/', NULLIF(s.지점인원수, 0)), -- AS myBranchRanking, -- 지점 내 등수
-        CONCAT(NULLIF(s.근속기간별순위, 0), '/', NULLIF(s.근속기간별인원수, 0)) AS myTotalRanking,-- AS myWorkPeriodRanking, -- 근무 기간별 등수
-        -- 등급 산정
-        CASE
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 20 THEN 'Master'
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 40 THEN 'Expert'
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 65 THEN 'Skilled'
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 90 THEN 'Developing'
-        ELSE 'Foundation'
-        END AS myRanking,
-        -- 다음 등급까지 필요한 점수 (간소화)
-        CASE
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 20 THEN 0
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 40 THEN
-        CASE WHEN (g.Master_경계점수 - s.총점) <![CDATA[<]]> 0 THEN 0
-        ELSE CEILING(g.Master_경계점수 - s.총점) END
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 65 THEN
-        CASE WHEN (g.Expert_경계점수 - s.총점) <![CDATA[<]]> 0 THEN 0
-        ELSE CEILING(g.Expert_경계점수 - s.총점) END
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 90 THEN
-        CASE WHEN (g.Skilled_경계점수 - s.총점) <![CDATA[<]]> 0 THEN 0
-        ELSE CEILING(g.Skilled_경계점수 - s.총점) END
-        ELSE
-        CASE WHEN (g.Developing_경계점수 - s.총점) <![CDATA[<]]> 0 THEN 0
-        ELSE CEILING(g.Developing_경계점수 - s.총점) END
+        e.총점 AS myScore,
+        e.전체지점합계 AS totalBranchScore,
+        ROUND(e.전체지점평균, 2) AS totalBranchScoreAVG,
+        e.전체최고점수 AS totalTopScore,
+        e.내지점합계 AS myBranchScore,
+        ROUND(e.내지점평균, 2) AS myBranchScoreAVG,
+        e.지점최고점수 AS myBranchTopScore,
+        e.근속기간별최고점수 AS workPeriodTopScore,
+        CONCAT(e.근속기간별순위, '/', e.근속기간별인원수) AS myTotalRanking,
+        e.현재등급 AS myRanking,
+        -- 다음 등급까지 필요한 점수 (간소화된 계산)
+        CASE WHEN e.다음등급_백분위수 IS NULL THEN 0
+        ELSE ISNULL((
+        SELECT MIN(총점) - e.총점 + 1
+        FROM 등급정보 s2
+        WHERE s2.근속기간구분 = e.근속기간구분
+        AND s2.백분위수 <![CDATA[<=]]> e.다음등급_백분위수
+        AND s2.총점 > e.총점
+        ), 0)
         END AS pointsToNextGrade,
-        -- 다음 등급명
-        CASE
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 20 THEN 'Already Top Grade'
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 40 THEN 'Master'
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 65 THEN 'Expert'
-        WHEN s.근속기간별_퍼센타일 <![CDATA[<=]]> 90 THEN 'Skilled'
-        ELSE 'Developing'
-        END AS nextGrade,
-        s.근속기간별_퍼센타일 AS myPercentile,
-        s.근속기간구분 AS workPeriod
-        FROM 순위_통계_경계값 s
-        JOIN 등급경계점수 g ON s.근속기간구분 = g.근속기간구분
-        WHERE s.본인여부 = 1
+        e.다음등급 AS nextGrade,
+        e.근속기간별_퍼센타일 AS myPercentile,
+        e.근속기간구분 AS workPeriod
+        FROM 등급정보 e
+        WHERE e.본인여부 = 1
     </select>
 
     <!-- 내 점수 및 인원수, 인원비율 출력 -->

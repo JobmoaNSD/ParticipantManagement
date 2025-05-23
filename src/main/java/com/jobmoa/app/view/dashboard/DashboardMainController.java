@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.Year;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -30,189 +31,173 @@ public class DashboardMainController {
     private ChangeJson changeJson;
 
 
+    //내 성과에 표기될 문자를 입력
+    private static final String[] DASHBOARD_TEXT = {"잡모아 평균","지점 평균","전담자"};
     //FIXME 평가 실적 시작 종료일
-    String FAILSTARTDATE = "2024-11-01";
-    String FAILENDDATE = "2025-10-31";
+    private static final String FAILSTARTDATE = "2024-11-01";
+    private static final String FAILENDDATE = "2025-10-31";
 
     @GetMapping("/dashboard.login")
-    public String dashboardMain(Model model, HttpSession session, DashboardDTO dashboardDTO, ObjectMapper objectMapper) throws JsonProcessingException {
-        log.info("-----------------------------------");
+    public String dashboardMain(Model model, HttpSession session, DashboardDTO dashboardDTO) {
         log.info("Start dashboardMain Controller(GetMapping)");
-        //넘어갈 변수 선언
-        //취업자 수
-        int[][] resultCount = new int[2][3];
 
-        //내 성과에 표기될 문자를 입력
-        String[] dashBoardText = {"잡모아 평균","지점 평균","전담자"};
-        //검색할 년도
-        String dashBoardYear = dashboardDTO.getDashBoardYear() == null ? Year.now().getValue()+"": dashboardDTO.getDashBoardYear();
+        try {
+            // 세션 정보 추출
+            LoginBean loginBean = (LoginBean) session.getAttribute("JOBMOA_LOGIN_DATA");
+            String userID = loginBean.getMemberUserID();
+            String branch = loginBean.getMemberBranch();
+            String dashBoardYear = dashboardDTO.getDashBoardYear() == null
+                    ? String.valueOf(Calendar.getInstance().get(Calendar.YEAR))
+                    : dashboardDTO.getDashBoardYear();
 
-        //session 로그인 아이디 및 지점을 변수로 선언
-        LoginBean loginBean = (LoginBean) session.getAttribute("JOBMOA_LOGIN_DATA");
-        String userID = loginBean.getMemberUserID();
-        String branch = loginBean.getMemberBranch();
-        log.info("DashBoard login ID : [{}] / Branch : [{}]", userID, branch);
+            log.info("DashBoard login ID : [{}] / Branch : [{}]", userID, branch);
 
-        //내 성과에 표시될 데이터를 출력
-        //전담자 아이디
-        dashboardDTO.setDashboardUserID(userID);
-        //전담자 지점
-        dashboardDTO.setDashboardBranch(branch);
-        //대시보드 년도
-        dashboardDTO.setDashBoardYear(dashBoardYear);
+            // DTO 설정
+            setupDashboardDTO(dashboardDTO, userID, branch, dashBoardYear);
 
-        //실행될 쿼리 FIXME TODO 확인해 봐야함
-//        dashboardDTO.setDashboardCondition("selectMyResultDashboard");
-//        DashboardDTO myResultData = dashboardService.selectOne(dashboardDTO);
+            // 데이터 조회 및 처리
+            processDashboardData(model, dashboardDTO, dashBoardYear);
 
-        //전체 참여자 개수 실행 쿼리 FIXME TODO 확인해 봐야함
-//        dashboardDTO.setDashboardCondition("selectCountDashboard");
-//        DashboardDTO totalCountData = dashboardService.selectOne(dashboardDTO);
+        } catch (Exception e) {
+            log.error("Dashboard 데이터 로딩 실패", e);
+            model.addAttribute("error", "데이터 로딩 중 오류가 발생했습니다.");
+        }
 
-        //메모리 주소값이 아닌 배열을 문자형식으로 반환
-        String dashBoardDataTitle = objectMapper.writeValueAsString(dashBoardText);
-        model.addAttribute("dashBoardDataTitle", dashBoardDataTitle);
+        return "views/DashBoardPage";
+    }
 
-        //전체 지점 개수와 전담자 인원
+    private void setupDashboardDTO(DashboardDTO dto, String userID, String branch, String year) {
+        dto.setDashboardUserID(userID);
+        dto.setDashboardBranch(branch);
+        dto.setDashBoardYear(year);
+        dto.setDashBoardStartDate(FAILSTARTDATE);
+        dto.setDashBoardEndDate(FAILENDDATE);
+    }
+
+    private void processDashboardData(Model model, DashboardDTO dashboardDTO, String dashBoardYear)
+            throws Exception {
+
+        // 기본 데이터
+        model.addAttribute("dashBoardYear", dashBoardYear);
+        model.addAttribute("dashBoardDataTitle", changeJson.toJson(DASHBOARD_TEXT));
+
+        // 1. 지점 및 사용자 정보
         dashboardDTO.setDashboardCondition("selectBranchAndUser");
         DashboardDTO branchAndUser = dashboardService.selectOne(dashboardDTO);
 
-        //성공금 & 인센트브 현황 시작
-        //성공금 & 인센티브 전체,지점,개인 금액 전달용 Query Condition
+        // 2. 성공금 정보
         dashboardDTO.setDashboardCondition("selectSuccessMoney");
         DashboardDTO successMoney = dashboardService.selectOne(dashboardDTO);
 
-        if(/*myResultData != null && totalCountData != null &&*/ branchAndUser != null){
-            //지점 개수
-            int branchCount = branchAndUser.getDashboardCountBranch();
-            //지점 전담자 인원
-            int userCount = branchAndUser.getDashboardCountUser();
-
-            //성공금 현황 시작
-            //성공금 데이터
-            resultCount[0] = this.changingArray(
-                    successMoney.getDashBoardSuccessMoneyTotal() / branchCount,
-                    successMoney.getDashBoardSuccessMoneyBranch() / userCount,
-                    successMoney.getDashBoardSuccessMoneyUser());
-            //성공금 데이터
-            resultCount[1] = this.changingArray(
-                    successMoney.getDashBoardSuccessMoneyTotalIncentive() / branchCount,
-                    successMoney.getDashBoardSuccessMoneyBranchIncentive() / userCount,
-                    successMoney.getDashBoardSuccessMoneyUserIncentive());
-            //성공금 현황 끝
+        if (branchAndUser != null && successMoney != null) {
+            processSuccessMoneyData(model, branchAndUser, successMoney);
         }
 
-        String[] myDashBoardName = {
-                "dashBoardSuccessMoney",//성공금 전체,지점,개인
-                "dashBoardSuccessMoneyIncentive"//성공금 인센티브 전체,지점,개인
-        };
-
-        model.addAttribute("dashBoardYear", dashBoardYear);
-        this.resultModel(model, objectMapper, resultCount, myDashBoardName);
-        //성공금 & 인센트브 현황 끝
-
-
-        //금일 업무 현황 시작
-        //참여자 금일 업무현황
+        // 3. 일일 대시보드
         dashboardDTO.setDashboardCondition("selectDailyDashboard");
         DashboardDTO dailyParticipant = dashboardService.selectOne(dashboardDTO);
-        model.addAttribute("dailyDashboard",dailyParticipant);
-        //금일 업무 현황 끝
+        model.addAttribute("dailyDashboard", dailyParticipant);
 
+        // 4. 참여자 현황 - 기존 changeJson 활용
+        processParticipantData(model, dashboardDTO);
 
-        // 참여자 현황 시작
-        //참여자 통계 전달용 데이터
-        //참여자 통계 현재 진행자 수
+        // 5. 성과 점수 현황 - 기존 changeJson 활용
+        processScoreData(model, dashboardDTO);
+
+        // 6. KPI 현황
+        dashboardDTO.setDashboardCondition("myKPIDashboard");
+        DashboardDTO myKPI = dashboardService.selectOne(dashboardDTO);
+        model.addAttribute("myKPI", myKPI);
+    }
+
+    private void processSuccessMoneyData(Model model, DashboardDTO branchAndUser,
+                                         DashboardDTO successMoney) {
+        int branchCount = branchAndUser.getDashboardCountBranch();
+        int userCount = branchAndUser.getDashboardCountUser();
+
+        // 성공금 데이터
+        int[] successMoneyArray = {
+                successMoney.getDashBoardSuccessMoneyTotal() / branchCount,
+                successMoney.getDashBoardSuccessMoneyBranch() / userCount,
+                successMoney.getDashBoardSuccessMoneyUser()
+        };
+
+        // 인센티브 데이터
+        int[] incentiveArray = {
+                successMoney.getDashBoardSuccessMoneyTotalIncentive() / branchCount,
+                successMoney.getDashBoardSuccessMoneyBranchIncentive() / userCount,
+                successMoney.getDashBoardSuccessMoneyUserIncentive()
+        };
+
+        model.addAttribute("dashBoardSuccessMoney", changeJson.arrayToJson(successMoneyArray));
+        model.addAttribute("dashBoardSuccessMoneyIncentive", changeJson.arrayToJson(incentiveArray));
+    }
+
+    private void processParticipantData(Model model, DashboardDTO dashboardDTO) {
+        // 전체 참여자
         dashboardDTO.setDashboardCondition("selectTotalParticipant");
         List<DashboardDTO> totalParticipant = dashboardService.selectAll(dashboardDTO);
 
-        //참여자 통계 현재 참여자 수
+        String totalParticipantJsonData = changeJson.convertListToJsonArray(totalParticipant,
+                item -> {
+                    DashboardDTO dto = (DashboardDTO) item;
+                    return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
+                            "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";
+                });
+
+        // 현재 참여자
         dashboardDTO.setDashboardCondition("selectCurrentParticipant");
         List<DashboardDTO> currentParticipant = dashboardService.selectAll(dashboardDTO);
 
-        //참여자 통계 현재 년도 참여자 수
+        String currentParticipantJsonData = changeJson.convertListToJsonArray(currentParticipant,
+                item -> {
+                    DashboardDTO dto = (DashboardDTO) item;
+                    return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
+                            "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";
+                });
+
+        // 현재 년도 참여자
         dashboardDTO.setDashboardCondition("selectNowParticipant");
         DashboardDTO nowParticipant = dashboardService.selectOne(dashboardDTO);
 
-        String totalParticipantJsonData = "";
-        String currentParticipantJsonData = "";
-        String nowParticipantJsonData = "";
-
-
-        totalParticipantJsonData = changeJson.convertListToJsonArray(totalParticipant,
-                item -> { DashboardDTO dto = (DashboardDTO) item;// 객체 캐스팅
-                    return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
-                            "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";});
-
-        currentParticipantJsonData = changeJson.convertListToJsonArray(currentParticipant,
-                item -> { DashboardDTO dto = (DashboardDTO) item;// 객체 캐스팅
-                    return "{\"year\":\"" + dto.getDashBoardParticipatedYear() + "\"," +
-                            "\"data\":\"" + dto.getDashBoardParticipatedCountOne() + "\"}";});
-        nowParticipantJsonData = "[]";
-        if(nowParticipant != null){
+        String nowParticipantJsonData = "[]";
+        if (nowParticipant != null) {
             nowParticipantJsonData = "[" +
-                    "{\"year\":" + "\"\"" +
-                    ",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountOne() + "\"},"+
-                    "{\"year\":" + "\"\"" +
-                    ",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountTwo() + "\"}"+
+                    "{\"year\":\"\",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountOne() + "\"}," +
+                    "{\"year\":\"\",\"data\":\"" + nowParticipant.getDashBoardParticipatedCountTwo() + "\"}" +
                     "]";
         }
 
+        model.addAttribute("totalParticipantJsonData", totalParticipantJsonData);
+        model.addAttribute("currentParticipantJsonData", currentParticipantJsonData);
+        model.addAttribute("nowParticipantJsonData", nowParticipantJsonData);
 
-        log.info("totalParticipantJsonData : [{}]",totalParticipantJsonData);
-        log.info("currentParticipantJsonData : [{}]",currentParticipantJsonData);
-        log.info("nowParticipantJsonData : [{}]",nowParticipantJsonData);
+        log.info("totalParticipantJsonData : [{}]", totalParticipantJsonData);
+        log.info("currentParticipantJsonData : [{}]", currentParticipantJsonData);
+        log.info("nowParticipantJsonData : [{}]", nowParticipantJsonData);
+    }
 
-        model.addAttribute("totalParticipantJsonData",totalParticipantJsonData);
-        model.addAttribute("currentParticipantJsonData",currentParticipantJsonData);
-        model.addAttribute("nowParticipantJsonData",nowParticipantJsonData);
-        //참여자 현황 끝
-
-        //성과 점수 현황 시작
+    private void processScoreData(Model model, DashboardDTO dashboardDTO) {
         dashboardDTO.setDashboardCondition("selectRankAndScore");
-        dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
-        dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);
         List<DashboardDTO> testDatas = dashboardService.selectAll(dashboardDTO);
 
-        String scoreJson = changeJson.convertListToJsonArray(testDatas,item -> {
-            DashboardDTO dto = (DashboardDTO)item;
+        String scoreJson = changeJson.convertListToJsonArray(testDatas, item -> {
+            DashboardDTO dto = (DashboardDTO) item;
             return "{\"myRanking\":\"" + dto.getMyRanking() + "\"," +
                     "\"myTotalRanking\":\"" + dto.getMyTotalRanking() + "\"," +
                     "\"myScore\":\"" + dto.getMyScore() + "\"," +
-                    "\"data\":[\"" + dto.getTotalBranchScoreAVG() + "\",\"" + dto.getMyBranchScoreAVG() + "\",\"" + dto.getMyScore() + "\"]," +
+                    "\"data\":[\"" + dto.getTotalBranchScoreAVG() + "\",\"" +
+                    dto.getMyBranchScoreAVG() + "\",\"" + dto.getMyScore() + "\"]," +
                     "\"totalTopScore\":\"" + dto.getTotalTopScore() + "\"," +
                     "\"pointsToNextGrade\":\"" + dto.getPointsToNextGrade() + "\"," +
                     "\"nextGrade\":\"" + dto.getNextGrade() + "\"" +
                     "}";
         });
 
-        log.info("scoreJson : [{}]",scoreJson);
-
-        model.addAttribute("scoreJson",scoreJson);
-        //성과 점수 현황 끝
-
-
-        //내 실적 현황 시작
-        dashboardDTO.setDashboardCondition("myKPIDashboard");
-        DashboardDTO myKPI = dashboardService.selectOne(dashboardDTO);
-        model.addAttribute("myKPI",myKPI);
-
-        //내 KPI 현황 끝
-
-        log.info("-----------------------------------");
-        return "views/DashBoardPage";
+        log.info("scoreJson : [{}]", scoreJson);
+        model.addAttribute("scoreJson", scoreJson);
     }
 
-    private int[] changingArray(int number1, int number2, int number3){
-        int[] result = {number1,number2,number3};
-        return result;
-    }
-
-    private void resultModel(Model model,ObjectMapper objectMapper, int[][] array, String[] myDashBoardName) throws JsonProcessingException {
-        for(int i = 0; i < array.length; i++){
-            model.addAttribute(myDashBoardName[i],objectMapper.writeValueAsString(array[i]));
-        }
-    }
 
     @GetMapping("/successMoney.login")
     public String successMoney(Model model, HttpSession session, DashboardDTO dashboardDTO) {
