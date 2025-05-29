@@ -51,6 +51,8 @@ public class ReportDTO {
     private int memberToYearEmployment;// 연간 누적 실적 일반 취업
     private int memberToYearPlacement;// 연간 누적 실적 알선 취업
     
+    private String startDate; //시작년도
+    private String endDate; //끝년도
     private String year; // 등록년도
     private String reportCondition; //개발자 구분
 

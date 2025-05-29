@@ -452,7 +452,56 @@
         FROM J_참여자관리 A
                  LEFT JOIN J_참여자관리_로그인정보 B
                            ON A.전담자_계정 = B.아이디
-        WHERE B.아이디 = #{participantUserid} and B.지점 = #{participantBranch};
+        WHERE
+            B.아이디 = #{participantUserid} AND
+            B.지점 = #{participantBranch}
+        <if test="searchOption != null">
+            AND
+            <choose>
+                <when test="searchOption=='전담자'">B.이름</when>
+                <when test="searchOption=='참여자'">A.참여자</when>
+                <when test="searchOption=='구직번호'">A.구직번호</when>
+                <when test="searchOption=='진행단계'">A.진행단계</when>
+                <when test="searchOption=='학교'">A.학교</when>
+                <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
+            </choose> like '%'+#{search}+'%'
+        </if>
+        <choose>
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
+            </when>
+        </choose>
+        <choose>
+            <when test="endDateOption == 'false'">
+                AND (마감 = 'false' OR 마감 = '')
+            </when>
+            <when test="endDateOption == 'true'">
+                AND 마감 = 'true'
+            </when>
+        </choose>
+        <if test="searchType != null">
+            <choose>
+                <when test="searchType == 'noInitial'">
+                    AND 초기상담일 = ''
+                </when>
+                <when test="searchType == 'recent21'">
+                    AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
+                    AND 최근상담일 <![CDATA[<>]]> ''
+                </when>
+                <when test="searchType == 'jobExpire'">
+                    AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
+                    AND 구직만료일 <![CDATA[<>]]> ''
+                </when>
+                <when test="searchType == 'periodExpire'">
+                    AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
+                    AND 기간만료일 <![CDATA[<>]]> ''
+                    AND 최근상담일 <![CDATA[<>]]> ''
+                </when>
+                <when test="searchType == 'employment'">
+                    AND 취창업일 <![CDATA[<>]]> ''
+                </when>
+            </choose>
+        </if>
     </select>
     <!-- 참여자 전체 데이터 엑셀 다운 쿼리 끝 -->
 
@@ -687,19 +736,22 @@
         JOIN J_참여자관리_로그인정보 B
         ON A.전담자_계정 = B.아이디
         WHERE
-        A.지점 = #{participantBranch} AND
+        A.지점 = #{participantBranch}
+        <if test="searchOption != null">
+            AND
+            <choose>
+                <when test="searchOption=='전담자'">B.이름</when>
+                <when test="searchOption=='참여자'">A.참여자</when>
+                <when test="searchOption=='구직번호'">A.구직번호</when>
+                <when test="searchOption=='진행단계'">A.진행단계</when>
+                <when test="searchOption=='학교'">A.학교</when>
+                <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
+            </choose> like '%'+#{search}+'%'
+        </if>
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
                 AND YEAR(초기상담일) = #{participantInItCons}
             </when>
-        </choose>
-        <choose>
-            <when test="searchOption='전담자'">
-                B.이름 like '%'+#{search}+'%'
-            </when>
-            <otherwise>
-                A.${searchOption} like '%'+#{search}+'%'
-            </otherwise>
         </choose>
         <choose>
             <when test="endDateOption == 'false'">
@@ -741,15 +793,18 @@
         JOIN J_참여자관리_로그인정보 B
         ON A.전담자_계정 = B.아이디
         WHERE
-        A.지점 = #{participantBranch} AND
-        <choose>
-            <when test="searchOption='전담자'">
-                B.이름 like '%'+#{search}+'%'
-            </when>
-            <otherwise>
-                A.${searchOption} like '%'+#{search}+'%'
-            </otherwise>
-        </choose>
+        A.지점 = #{participantBranch}
+        <if test="searchOption != null">
+            AND
+            <choose>
+                <when test="searchOption=='전담자'">B.이름</when>
+                <when test="searchOption=='참여자'">A.참여자</when>
+                <when test="searchOption=='구직번호'">A.구직번호</when>
+                <when test="searchOption=='진행단계'">A.진행단계</when>
+                <when test="searchOption=='학교'">A.학교</when>
+                <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
+            </choose> like '%'+#{search}+'%'
+        </if>
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
                 AND YEAR(초기상담일) = #{participantInItCons}
@@ -843,7 +898,55 @@
         FROM J_참여자관리 A
                  LEFT JOIN J_참여자관리_로그인정보 B
                            ON A.전담자_계정 = B.아이디
-        WHERE B.지점 = #{participantBranch};
+        WHERE
+            B.지점 = #{participantBranch}
+        <if test="searchOption != null">
+            AND
+            <choose>
+                <when test="searchOption=='전담자'">B.이름</when>
+                <when test="searchOption=='참여자'">A.참여자</when>
+                <when test="searchOption=='구직번호'">A.구직번호</when>
+                <when test="searchOption=='진행단계'">A.진행단계</when>
+                <when test="searchOption=='학교'">A.학교</when>
+                <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
+            </choose> like '%'+#{search}+'%'
+        </if>
+        <choose>
+            <when test="participantInItCons != 'All' and participantInItCons != null">
+                AND YEAR(초기상담일) = #{participantInItCons}
+            </when>
+        </choose>
+        <choose>
+            <when test="endDateOption == 'false'">
+                AND (마감 = 'false' OR 마감 = '')
+            </when>
+            <when test="endDateOption == 'true'">
+                AND 마감 = 'true'
+            </when>
+        </choose>
+        <if test="searchType != null">
+            <choose>
+                <when test="searchType == 'noInitial'">
+                    AND 초기상담일 = ''
+                </when>
+                <when test="searchType == 'recent21'">
+                    AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21
+                    AND 최근상담일 <![CDATA[<>]]> ''
+                </when>
+                <when test="searchType == 'jobExpire'">
+                    AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15
+                    AND 구직만료일 <![CDATA[<>]]> ''
+                </when>
+                <when test="searchType == 'periodExpire'">
+                    AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15
+                    AND 기간만료일 <![CDATA[<>]]> ''
+                    AND 최근상담일 <![CDATA[<>]]> ''
+                </when>
+                <when test="searchType == 'employment'">
+                    AND 취창업일 <![CDATA[<>]]> ''
+                </when>
+            </choose>
+        </if>
     </select>
     <!-- 참여자 전체 데이터 엑셀 다운 쿼리 끝 -->
 

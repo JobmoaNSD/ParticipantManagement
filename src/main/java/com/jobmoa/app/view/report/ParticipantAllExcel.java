@@ -1,6 +1,7 @@
 package com.jobmoa.app.view.report;
 
 import com.jobmoa.app.biz.bean.LoginBean;
+import com.jobmoa.app.biz.bean.SearchBean;
 import com.jobmoa.app.biz.participant.ParticipantDTO;
 import com.jobmoa.app.biz.participant.ParticipantServiceImpl;
 import jakarta.annotation.PostConstruct;
@@ -13,9 +14,18 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,7 +34,9 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -51,17 +63,48 @@ public class ParticipantAllExcel {
             templateBytes2 = baos.toByteArray();
             log.info("Excel template loaded into memory successfully, size: {} bytes", templateBytes2.length);
         } catch (IOException e) {
+            log.error("엑셀 템플릿 로드 중 오류 발생", e);
             throw new RuntimeException("Failed to load Excel template during initialization", e);
         }
     }
 
     @GetMapping("/participantExcel.login")
-    public void participantExcel(HttpServletResponse response, ParticipantDTO participantDTO, HttpSession session, String condition){
-        LoginBean loginBean = (LoginBean) session.getAttribute("JOBMOA_LOGIN_DATA");
-        participantDTO.setParticipantUserid(loginBean.getMemberUserID());
-        participantDTO.setParticipantBranch(loginBean.getMemberBranch());
-        participantDTO.setParticipantCondition(condition);
-        createExcel(response,participantDTO);
+    public void participantExcel(HttpServletResponse response, ParticipantDTO participantDTO, HttpSession session, boolean branchPage){
+        try{
+            //관리자 권한이 없으면 무조건 상담사 본인 참여자만 다운로드 가능
+            String condition = "participantExcel";
+
+            LoginBean loginBean = (LoginBean) session.getAttribute("JOBMOA_LOGIN_DATA");
+
+            boolean IS_BRANCH_MANAGER = (boolean) session.getAttribute("IS_BRANCH_MANAGER");
+            boolean IS_MANAGER = (boolean) session.getAttribute("IS_MANAGER");
+            if (loginBean == null) {
+                log.error("세션에 로그인 정보가 없습니다.");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 정보가 없습니다.");
+                return;
+            }
+            else if((IS_MANAGER || IS_BRANCH_MANAGER) && branchPage){
+                condition= "participantBranchExcel";
+            }
+
+            participantDTO.setParticipantCondition(condition);
+            participantDTO.setParticipantUserid(loginBean.getMemberUserID());
+            participantDTO.setParticipantBranch(loginBean.getMemberBranch());
+            log.info("participantExcel.login participantDTO : [{}]",participantDTO);
+
+            createExcel(response,participantDTO);
+        }
+        catch (Exception e){
+            log.error("엑셀 다운로드 처리 중 오류 발생", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "엑셀 파일 생성 중 오류가 발생했습니다: " + e.getMessage());
+            }
+            catch (IOException ex) {
+                log.error("오류 응답 전송 실패", ex);
+            }
+
+        }
     }
 
     private void createExcel(HttpServletResponse response,ParticipantDTO participantDTO){
@@ -75,8 +118,15 @@ public class ParticipantAllExcel {
             try{
                 datas = participantService.selectAll(participantDTO);
             } catch (Exception e){
-                log.error(e.getMessage());
+                log.error("참여자 데이터 조회 실패: {}", e.getMessage());
+                datas = List.of(); // 빈 리스트 할당
             }
+
+            if (datas == null) {
+                log.warn("조회된 참여자 데이터가 없습니다. 빈 목록으로 처리합니다.");
+                datas = List.of(); // null 대신 빈 리스트 사용
+            }
+
             //log.info("createExcel datas : [{}]",datas);
             createRow(sheet,1,datas);
 
@@ -119,15 +169,21 @@ public class ParticipantAllExcel {
         // 2. startRow 데이터 시작 위치 설정 (템플릿에 따라 조정)
         // 3. 데이터 채우기
 
-            for (ParticipantDTO data : datas) {
-                //row 값 가져오기
-                Row row = setRowValue(sheet,startRow);
+        // null 체크 추가
+        if (datas == null || datas.isEmpty()) {
+            log.warn("처리할 데이터가 없습니다.");
+            return; // 데이터가 없으면 메소드 종료
+        }
 
-                //행을 초기화 하여 값을 출력
-                int colIndex = 0;
-                setProgress(row,colIndex,data);
-                startRow++;
-            }
+        for (ParticipantDTO data : datas) {
+            //row 값 가져오기
+            Row row = setRowValue(sheet,startRow);
+
+            //행을 초기화 하여 값을 출력
+            int colIndex = 0;
+            setProgress(row,colIndex,data);
+            startRow++;
+        }
     }
 
     private Row setRowValue(Sheet sheet, int startRow) {

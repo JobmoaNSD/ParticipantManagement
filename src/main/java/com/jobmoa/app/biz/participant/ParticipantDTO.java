@@ -99,4 +99,5 @@ public class ParticipantDTO {
     // 검색 시작 종료일
     private String searchStartDate;
     private String searchEndDate;
+
 }

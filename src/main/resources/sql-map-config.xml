@@ -2,6 +2,12 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+<!--    <settings>-->
+<!--        &lt;!&ndash; 사용할 로깅 구현체 지정 &ndash;&gt;-->
+<!--        <setting name="logImpl" value="SLF4J"/>-->
+<!--        &lt;!&ndash; 또는 LOG4J, LOG4J2, JDK_LOGGING, COMMONS_LOGGING, STDOUT_LOGGING 중 선택 &ndash;&gt;-->
+<!--    </settings>-->
+
     <typeAliases>
         <typeAlias type="com.jobmoa.app.biz.login.MemberDTO" alias="member" />
         <typeAlias type="com.jobmoa.app.biz.participant.ParticipantDTO" alias="participant" />
@@ -13,7 +19,6 @@
         <typeAlias type="com.jobmoa.app.biz.dashboard.DashboardDTO" alias="dashboard" />
         <typeAlias type="com.jobmoa.app.biz.report.ReportDTO" alias="report" />
     </typeAliases>
-
 
     <mappers>
         <mapper resource="mappings/Member-mapping.xml" />
