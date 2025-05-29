@@ -3,25 +3,26 @@
 
 <mapper namespace="ReportDAO">
     <!-- 기본 쿼리 시작 -->
+    <!-- TODO 2025-05-29 변경 진행 했음 -->
     <select id="reportSelectProgressAll" resultType="report">
         <foreach collection="userIds" item="userId" index="index"
             open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">
             SELECT #{userId} AS 아이디, #{index} AS 순서
         </foreach>
         SELECT
-            C.이름 AS counselorName,
-            A.등록년도 AS registYear,
+            A.이름 AS counselorName,
+            A.초기상담년도 AS registYear,
             A.지점 AS branch,
             A.취소자 AS cancelCount,
             A.전체참여자 AS totalParticipants,
             A.현진행자 AS currentProgress,
-            A.[3단계진행자] AS thirdStageCount,
+            0 AS thirdStageCount,
             A.종료자 AS completedCount,
             A.중단자 AS discontinuedCount,
-            A.[성과 불인정 취업] AS nonApprovedEmployment,
-            A.[성과 인정 취업] AS approvedEmployment,
+            A.성과불인정취업 AS nonApprovedEmployment,
+            A.성과인정취업 AS approvedEmployment,
             A.전체취업자 AS totalEmployment,
-            A.알선취업 AS referralEmployment,
+            A.알선취업자 AS referralEmployment,
             A.나은일자리 AS betterJobCount,
             A.조기취업자 AS earlyEmployment,
             A.고용유지 AS employmentRetention,
@@ -36,64 +37,57 @@
             A.취업인센티브발생율 AS incentiveOccurrenceRate
         FROM 진행현황 A
             LEFT JOIN 상담사순서 B
-            ON B.아이디 = A.아이디
-            LEFT OUTER JOIN J_참여자관리_로그인정보 C
-            ON C.아이디 = B.아이디
+            ON B.아이디 = A.전담자_계정
         WHERE
-            A.등록년도 = #{year} AND
+            A.초기상담년도 = #{year} AND
             A.지점 = #{branch} AND
-            A.아이디 IN
+            A.전담자_계정 IN
                 <foreach collection="userIds" item="userId" open="(" separator="," close=")">
                 #{userId}
                 </foreach>
         ORDER BY B.순서 ASC
     </select>
 
+    <!-- TODO 2025-05-28 변경 진행 했음 -->
     <select id="reportSelectStatusAll" resultType="report">
-        <foreach collection="userIds" item="userId" index="index"
-                 open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">
-            SELECT #{userId} AS 아이디, #{index} AS 순서
-        </foreach>
         SELECT
+            전담자_계정 AS counselorId,
             C.이름 AS counselorName,
-            A.초기상담년도 AS registYear,
-            A.지점 AS branch,
-            A.종료참여자 AS completedCount,
-            A.전체취업자 AS totalEmployment,
-            A.알선취업 AS referralEmployment,
-            A.[성과 인정 취업] AS approvedEmployment,
-            A.[성과 불인정 취업] AS nonApprovedEmployment,
-            A.고용유지 AS employmentRetention,
-            A.나은일자리 AS betterJobCount,
-            A.IAP수립1달 AS iapEstablishMonth,
-            A.인센발생 AS incentiveOccurred,
-            A.인센미발생 AS incentiveNotOccurred,
-            A.취업률 AS employmentRate,
-            A.평가취업률 AS evaluationEmploymentRate,
-            A.알선취업률 AS referralEmploymentRate,
-            A.나은일자리비율 AS betterJobRate,
-            A.고용유지율 AS retentionRate,
-            A.취업인센티브발생율 AS incentiveOccurrenceRate
-        FROM 평가실적 A
-            LEFT JOIN 상담사순서 B
-            ON B.아이디 = A.아이디
-            LEFT OUTER JOIN J_참여자관리_로그인정보 C
-            ON C.아이디 = B.아이디
-        WHERE
-            A.초기상담년도 = #{year} AND
-            A.지점 = #{branch} AND
-            A.아이디 IN
+            C.지점 AS branch,
+            SUM(종료참여자) AS completedCount,
+            SUM(전체취업자) AS totalEmployment,
+            SUM(알선취업) AS referralEmployment,
+            SUM([성과 인정 취업]) AS approvedEmployment,
+            SUM([성과 불인정 취업]) AS nonApprovedEmployment,
+            SUM(고용유지) AS employmentRetention,
+            SUM(나은일자리) AS betterJobCount,
+            SUM(IAP수립1달) AS iapEstablishMonth,
+            SUM(인센발생) AS incentiveOccurred,
+            SUM(인센미발생) AS incentiveNotOccurred,
+            ROUND(SUM(전체취업자)*1.0/SUM(종료참여자),4) AS employmentRate,
+            ROUND((SUM([성과 인정 취업])*1.0/SUM(종료참여자)),4) AS evaluationEmploymentRate,
+            ROUND((SUM(알선취업)*1.0/SUM(종료참여자)),4) AS referralEmploymentRate,
+            ROUND((SUM(나은일자리)*1.0/SUM(종료참여자)),4) AS betterJobRate,
+            ROUND((SUM(고용유지)*1.0/SUM(종료참여자)),4) AS retentionRate,
+            ROUND((SUM(인센발생)*1.0/SUM(종료참여자)),4) AS incentiveOccurrenceRate
+        FROM 평가실적 B
+        LEFT OUTER JOIN J_참여자관리_로그인정보 C
+        ON C.아이디 = B.전담자_계정
+        WHERE 실제종료일 >= #{startDate} AND 실제종료일 <![CDATA[<=]]> GETDATE()
+        <if test="userIds != null and userIds.length > 0">
+            AND 전담자_계정 IN
             <foreach collection="userIds" item="userId" open="(" separator="," close=")">
                 #{userId}
             </foreach>
-            ORDER BY B.순서 ASC
+        </if>
+        GROUP BY 전담자_계정, C.지점, C.이름
     </select>
 
     <select id="reportSelectAssignOne" resultType="report">
-        SELECT SUM(IIF(참여유형 = '1', 1, 0)) AS type1,
-               SUM(IIF(참여유형 = '2', 1, 0)) AS type2
+        SELECT SUM(IIF(진행단계 = '1' OR 진행단계 = 'IAP 전', 1, 0)) AS type1,
+               SUM(IIF(진행단계 = '2' OR 진행단계 = 'IAP 후', 1, 0)) AS type2
         FROM J_참여자관리
-        WHERE 참여유형 <![CDATA[<>]]> ''
+        WHERE 진행단계 <![CDATA[<>]]> ''
           AND 진행단계 <![CDATA[<>]]> '취소'
           AND 지점 = #{branch}
           AND YEAR(등록일) = #{year}

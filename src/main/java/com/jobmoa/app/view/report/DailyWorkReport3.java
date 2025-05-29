@@ -105,6 +105,10 @@ public class DailyWorkReport3 {
             int year = reportDTO.getYear() == null ?0:Integer.parseInt(reportDTO.getYear());
 //            String year = reportDTO.getYear() == null ?0:reportDTO.getYear();
             String branch = reportDTO.getBranch() == null ?"":reportDTO.getBranch();
+            //데이터 조회 시작일
+            reportDTO.setStartDate("2024-11-01");
+            //데이터 조회 종료일
+//            reportDTO.setEndDate("2025-10-31");
 
             //상단 일일보고 제목을 지정
             setCellValue(setRowValue(sheet,0), 0, branch+"지점 국민취업지원제도 업무진행현황 일일보고");
@@ -261,7 +265,7 @@ public class DailyWorkReport3 {
         setCellValue(row, colIndex++, data.getCancelCount());          // 취소자
         setCellValue(row, colIndex++, data.getTotalParticipants());    // 참여자 합계
         setCellValue(row, colIndex++, data.getCurrentProgress());      // 현진행자
-        setCellValue(row, colIndex++, data.getThirdStageCount());     // 3단계 진행자
+        setCellValue(row, colIndex++, data.getTotalEmployment());     // 취업자로 변경
         setCellValue(row, colIndex++, data.getCompletedCount());      // 기간만료
         setCellValue(row, colIndex++, data.getDiscontinuedCount());   // 중단
         setCellValue(row, colIndex++, data.getNonApprovedEmployment()); // 성과 불인정 취업

@@ -1,0 +1,16 @@
+   <configuration>
+<!--     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--       <encoder>-->
+<!--         <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+<!--       </encoder>-->
+<!--     </appender>-->
+
+<!--     &lt;!&ndash; MyBatis 매퍼의 패키지 경로를 지정하여 로그 레벨 설정 &ndash;&gt;-->
+<!--     <logger name="com.jobmoa.app.biz.participant" level="DEBUG"/>-->
+<!--     &lt;!&ndash; 또는 매퍼 네임스페이스로 지정 &ndash;&gt;-->
+<!--     <logger name="ParticipantDAO" level="DEBUG"/>-->
+
+<!--     <root level="INFO">-->
+<!--       <appender-ref ref="CONSOLE" />-->
+<!--     </root>-->
+   </configuration>
