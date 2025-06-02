@@ -84,13 +84,13 @@
     </select>
 
     <select id="reportSelectAssignOne" resultType="report">
-        SELECT SUM(IIF(진행단계 = '1' OR 진행단계 = 'IAP 전', 1, 0)) AS type1,
-               SUM(IIF(진행단계 = '2' OR 진행단계 = 'IAP 후', 1, 0)) AS type2
+        SELECT SUM(IIF(참여유형 = '1' , 1, 0)) AS type1,
+               SUM(IIF(참여유형 = '2' , 1, 0)) AS type2
         FROM J_참여자관리
         WHERE 진행단계 <![CDATA[<>]]> ''
           AND 진행단계 <![CDATA[<>]]> '취소'
           AND 지점 = #{branch}
-          AND YEAR(등록일) = #{year}
+          AND YEAR(초기상담일) = #{year}
           AND (전담자_계정 IN
         <foreach collection="userIds" item="userId" open="(" separator="," close=")">
             #{userId}
