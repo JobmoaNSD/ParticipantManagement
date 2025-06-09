@@ -101,7 +101,7 @@
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
     <!--begin:::App Gnb-->
-    <mytag:gnb gnb_main_header="상담관리" gnb_sub_header="${basic.basicPartic} 참여자 관리"/>
+    <mytag:gnb gnb_main_header="${!branchManagementPageFlag ? '상담관리':'지점관리'}" gnb_sub_header="${basic.basicPartic} 참여자 관리"/>
     <!--end:::App Gnb-->
     <!--begin:::App main content-->
     <!--begin::App Main-->
@@ -115,6 +115,8 @@
                     <div class="row pt-3">
                         <div class="col-md-12">
                             <form id="newParticipantsForm" name="newParticipantsForm" method="POST" action="/participantUpdate.login" class="form-horizontal">
+                                <%-- 지점 관리 / 지점 전체 참여자 일때 추가해서 페이지 전환이 가능하도록 추가 --%>
+                                <input type="hidden" name="branchManagementPageFlag" id="branchManagementPageFlag" value="${branchManagementPageFlag}">
                                 <%-- 검색 필터 hiddenInput tag --%>
                                 <mytag:searchHiddenInput/>
 

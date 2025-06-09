@@ -99,19 +99,22 @@ public class BasicServiceImpl implements BasicService {
 
     public boolean update(BasicDTO basicDTO, CounselDTO counselDTO,
                           EmploymentDTO employmentDTO, ParticcertifDTO particcertifDTO, EducationDTO educationDTO) {
+
         //기본정보 업데이트
-        basicDTO.setBasicCondition("basicUpdate");
         boolean flag = basicDAO.update(basicDTO);
+        log.info("기본정보 업데이트 상태 : [{}]",flag);
         //상담정보 업데이트
-        counselDTO.setCounselCondition("counselUpdate");
         flag = flag && counselDAO.update(counselDTO);
+        log.info("상담정보 업데이트 상태 : [{}]",flag);
         //취업정보 업데이트
-        employmentDTO.setEmploymentCondition("employmentUpdate");
         flag = flag && employmentDAO.update(employmentDTO);
+        log.info("취업정보 업데이트 상태 : [{}]",flag);
         //자격증 업데이트
         flag = flag && particcertifService.insert(particcertifDTO);
+        log.info("자격증 업데이트 상태 : [{}]",flag);
         //직업훈련 업데이트
         flag = flag && educationService.insert(educationDTO);
+        log.info("직업훈련 업데이트 상태 : [{}]",flag);
 
         return flag;
     }

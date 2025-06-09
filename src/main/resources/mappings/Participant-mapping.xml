@@ -71,7 +71,8 @@
                      지점 = #{participantBranch}
                  <choose>
                     <when test="participantInItCons != 'All' and participantInItCons != null">
-                        AND YEAR(초기상담일) = #{participantInItCons}
+                        <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                        AND YEAR(IIF(초기상담일 = '1900-01-01', 등록일, ISNULL(초기상담일, ''))) = #{participantInItCons}
                     </when>
                  </choose>
                  <choose>
@@ -116,7 +117,8 @@
             지점 = #{participantBranch}
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(초기상담일 = '1900-01-01', 등록일, ISNULL(초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -223,7 +225,8 @@
                     ${searchOption} like '%'+#{search}+'%'
                     <choose>
                         <when test="participantInItCons != 'All' and participantInItCons != null">
-                            AND YEAR(초기상담일) = #{participantInItCons}
+                            <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                            AND YEAR(IIF(초기상담일 = '1900-01-01', 등록일, ISNULL(초기상담일, ''))) = #{participantInItCons}
                         </when>
                     </choose>
                     <choose>
@@ -269,7 +272,8 @@
             ${searchOption} like '%'+#{search}+'%'
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(초기상담일 = '1900-01-01', 등록일, ISNULL(초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -468,7 +472,8 @@
         </if>
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(초기상담일 = '1900-01-01', A.등록일, ISNULL(초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -583,7 +588,8 @@
         A.지점 = #{participantBranch}
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(A.초기상담일 = '1900-01-01', A.등록일, ISNULL(A.초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -627,7 +633,8 @@
         지점 = #{participantBranch}
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(초기상담일 = '1900-01-01', 등록일, ISNULL(초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -750,7 +757,8 @@
         </if>
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(A.초기상담일 = '1900-01-01', A.등록일, ISNULL(A.초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -807,7 +815,8 @@
         </if>
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(A.초기상담일 = '1900-01-01', A.등록일, ISNULL(A.초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>
@@ -913,7 +922,8 @@
         </if>
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
-                AND YEAR(초기상담일) = #{participantInItCons}
+                <!--AND YEAR(초기상담일) = #{participantInItCons}-->
+                AND YEAR(IIF(A.초기상담일 = '1900-01-01', A.등록일, ISNULL(A.초기상담일, ''))) = #{participantInItCons}
             </when>
         </choose>
         <choose>

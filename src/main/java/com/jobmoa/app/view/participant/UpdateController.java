@@ -354,7 +354,8 @@ public class UpdateController {
     //------------------------한 페이지 참여자 업데이트 시작----------------------------------
     @GetMapping("/participantUpdate.login")
     public String updateParticipantsPage(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO,
-                                         CounselDTO counselDTO, EducationDTO educationDTO, ParticcertifDTO particcertifDTO, SearchBean searchBean) {
+                                         CounselDTO counselDTO, EducationDTO educationDTO, ParticcertifDTO particcertifDTO, SearchBean searchBean,
+                                         boolean branchManagementPageFlag) {
         log.info("Start updateParticipantsPage log");
         //참여자 선택시 모든 정보를 확인할 페이지
         //구직번호, 전담자 정보를 변수로 저장
@@ -424,6 +425,8 @@ public class UpdateController {
         model.addAttribute("employment", employmentDTO);
         model.addAttribute("educations", educationArr);
         model.addAttribute("particcertifs", particcertifArr);
+        // 관리자 페이지 전환을 위해 전달
+        model.addAttribute("branchManagementPageFlag", branchManagementPageFlag);
 
         return "views/UpdateParticipantsPage";
     }
@@ -431,7 +434,8 @@ public class UpdateController {
 
     @PostMapping("/participantUpdate.login")
     public String update(Model model, HttpSession session, BasicDTO basicDTO, EmploymentDTO employmentDTO,
-                         CounselDTO counselDTO, EducationDTO educationDTO, ParticcertifDTO particcertifDTO, SearchBean searchBean){
+                         CounselDTO counselDTO, EducationDTO educationDTO, ParticcertifDTO particcertifDTO, SearchBean searchBean,
+                         boolean branchManagementPageFlag){
         String url = "participant.login?"+searchBean;
         String icon = "success";
         String title = "참여자 정보 업데이트 완료";
@@ -442,14 +446,29 @@ public class UpdateController {
 
         //session에 있는 로그인 정보를 가져온다.
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        //지점 관리자 여부 확인
+        boolean branchAdminFlag = (Boolean)session.getAttribute("IS_BRANCH_MANAGER");
+        //관리자 권한 여부 확인
+        boolean adminFlag = (Boolean)session.getAttribute("IS_MANAGER");
 
         //로그인 정보에서 아이디를 가져온다.
         String loginId = loginBean.getMemberUserID();
 
+        //기본정보 업데이트
+        basicDTO.setBasicCondition("basicUpdate");
+        //지점 관리 페이지에서 전달된 수정요청일때만 실행 지점 관리자 권한이 있어가 지점 관리자 권한이 있다면 condition을 basicManagerUpdate로 변경
+        if(branchManagementPageFlag && (branchAdminFlag || adminFlag)){
+            basicDTO.setBasicCondition("basicManagerUpdate");
+            url = "branchParitic.login?"+searchBean;
+        }
         //기본정보 DTO에 가져온 아이디를 추가한다.
         basicDTO.setBasicUserid(loginId);
         //상담정보, 취업정보, 자격증정보, 직업훈련정보에 구직번호를 추가한다.
+        //상담정보 업데이트
+        counselDTO.setCounselCondition("counselUpdate");
         counselDTO.setCounselJobNo(jobNo);
+        //취업정보 업데이트
+        employmentDTO.setEmploymentCondition("employmentUpdate");
         employmentDTO.setEmploymentJobNo(jobNo);
         particcertifDTO.setParticcertifJobNo(jobNo);
         educationDTO.setEducationJobNo(jobNo);
