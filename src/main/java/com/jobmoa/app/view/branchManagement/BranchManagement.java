@@ -27,6 +27,17 @@ public class BranchManagement {
 
         //session 에 있는 로그인 데이터
         LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+        //지점 관리자 권한 여부
+        boolean isBranchAdmin = (boolean)session.getAttribute("IS_BRANCH_MANAGER");
+        //관리자 권한 여부
+        boolean isManager = (boolean)session.getAttribute("IS_MANAGER");
+
+        //권한이 둘중 하나라도 false라면 index 페이지로 전환
+        if(!isBranchAdmin && !isManager){
+            return "redirect:/index.jsp";
+        }
+
+
         String loginId = loginBean.getMemberUserID();
         String loginBranch = loginBean.getMemberBranch();
 
@@ -90,6 +101,8 @@ public class BranchManagement {
         model.addAttribute("totalButton", paginationBean.getTotalButton());
         // 검색된 참여자 개수
         model.addAttribute("totalCount", totalCount);
+        // 지점 전체 참여자 페이지 확인용
+        model.addAttribute("branchManagementPageFlag", true);
 
         log.info("End participantController");
         log.info("-----------------------------------");

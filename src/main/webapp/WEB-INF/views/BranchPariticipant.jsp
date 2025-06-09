@@ -456,7 +456,8 @@
             selectATag.each(function () {
                 let aTag = $(this);
                 const jobNo = getJobNumber(aTag.closest('tr'));
-                aTag.attr('href', aTag.attr('href') + '?' + searchMainHref('basicJobNo=' + jobNo));
+                aTag.attr('href', aTag.attr('href') + '?' + searchMainHref('basicJobNo=' + jobNo) + '&branchManagementPageFlag='+${branchManagementPageFlag});
+
             })
         }
 

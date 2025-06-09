@@ -50,6 +50,10 @@
 
     <!-- TODO 2025-05-28 변경 진행 했음 -->
     <select id="reportSelectStatusAll" resultType="report">
+        <foreach collection="userIds" item="userId" index="index"
+                 open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">
+            SELECT #{userId} AS 아이디, #{index} AS 순서
+        </foreach>
         SELECT
             전담자_계정 AS counselorId,
             C.이름 AS counselorName,
@@ -70,9 +74,11 @@
             ROUND((SUM(나은일자리)*1.0/SUM(종료참여자)),4) AS betterJobRate,
             ROUND((SUM(고용유지)*1.0/SUM(종료참여자)),4) AS retentionRate,
             ROUND((SUM(인센발생)*1.0/SUM(종료참여자)),4) AS incentiveOccurrenceRate
-        FROM 평가실적 B
+        FROM 평가실적 A
+        LEFT JOIN 상담사순서 B
+        ON B.아이디 = A.전담자_계정
         LEFT OUTER JOIN J_참여자관리_로그인정보 C
-        ON C.아이디 = B.전담자_계정
+        ON A.전담자_계정 = C.아이디
         WHERE 실제종료일 >= #{startDate} AND 실제종료일 <![CDATA[<=]]> GETDATE()
         <if test="userIds != null and userIds.length > 0">
             AND 전담자_계정 IN
@@ -80,7 +86,8 @@
                 #{userId}
             </foreach>
         </if>
-        GROUP BY 전담자_계정, C.지점, C.이름
+        GROUP BY 전담자_계정, C.지점, C.이름, B.순서
+        ORDER BY B.순서 ASC
     </select>
 
     <select id="reportSelectAssignOne" resultType="report">
@@ -90,7 +97,7 @@
         WHERE 진행단계 <![CDATA[<>]]> ''
           AND 진행단계 <![CDATA[<>]]> '취소'
           AND 지점 = #{branch}
-          AND YEAR(초기상담일) = #{year}
+          AND YEAR(IIF(초기상담일 = '1900-01-01' , 등록일, ISNULL(초기상담일, ''))) = #{year}
           AND (전담자_계정 IN
         <foreach collection="userIds" item="userId" open="(" separator="," close=")">
             #{userId}

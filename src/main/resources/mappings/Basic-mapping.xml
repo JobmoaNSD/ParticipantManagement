@@ -43,6 +43,25 @@
             구직번호 = #{basicJobNo} AND 전담자_계정 = #{basicUserid}
     </update>
 
+    <!-- 관리자 기본 정보 업데이트 쿼리문 -->
+    <update id="basicManagerUpdate">
+        UPDATE
+            J_참여자관리
+        SET
+            참여자 = #{basicPartic},
+            생년월일 = #{basicDob},
+            성별 = #{basicGender},
+            모집경로 = #{basicRecruit},
+            참여유형 = #{basicPartType},
+            학교명 = #{basicSchool},
+            전공 = #{basicSpecialty},
+            주소 = #{basicAddress},
+            특정계층 = #{basicSpecific},
+            경력 = #{basicAntecedents}
+        WHERE
+            구직번호 = #{basicJobNo}
+    </update>
+
     <!-- 마감 여부 update 쿼리 -->
     <update id="basicCloseUpdate">
         UPDATE
