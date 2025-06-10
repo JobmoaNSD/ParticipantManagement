@@ -190,7 +190,7 @@
                             </select>
                         </div>
                         <!-- 검색 입력 -->
-                        <div class="col-md-7 ps-1">
+                        <div id="searchTextDiv" class="col-md-7 ps-1">
                             <input
                                     type="text"
                                     class="form-control shadow-sm"
@@ -325,7 +325,7 @@
                                                 <td>${data.participantLastCons}</td>
                                                 <td class="adventCons-td">${data.participantAdventCons}</td>
                                                 <td>
-<%--                                                        ${data.participantProgress}--%>
+                                                        <%--                                                        ${data.participantProgress}--%>
                                                     <c:choose>
                                                         <c:when test="${data.participantProgress eq 'IAP 후'}">
                                                             <span value="${data.participantIAPDate}" class="btn badge bg-info w-75 iapBefore" data-bs-toggle="modal" data-bs-target="#iapBeforeButtonModal">
@@ -474,10 +474,10 @@
         cardHeader.style.cursor = 'move';
     });
 </script>
-
 <script>
 
     $(document).ready(function () {
+
         //table tr 개수 지정
         let trCount = $('.align-middle tr').length;
         let trCountSpan = $('.countSpan');
@@ -611,8 +611,7 @@
             }
         }
 
-
-        <%-- 검색 스크립트 시작 --%>
+        //검색 스크립트 시작
         //필터 변수
         const search_option = $('#search-Option');
         //검색어 변수
@@ -621,6 +620,74 @@
         const pageRows = $('#pageRows');
         //검색 버튼 변수
         const searchBtn = $('#searchBtn');
+        //검색 입력 div
+        const $searchTextDiv = $('#searchTextDiv');
+        //진행단계 select option 변수
+        const $searchOptionParam = "${param.searchOption}"
+        //검색 param 값 변수
+        const $searchParam = "${param.search}"
+
+        //진행단계 옵션 생성 시작
+        // 진행단계 옵션 목록
+        const PROGRESS_STAGE_OPTIONS = [
+            'IAP 전', 'IAP 후', '미고보', '고보일반', '등록창업',
+            '미등록창업', '미취업사후관리', '미취업사후종료',
+            '유예', '취소', '이관', '중단'
+        ];
+        // 옵션 HTML 생성 함수
+        function createOptionHtml(value, selectedValue) {
+            const selected = selectedValue === value ? 'selected' : '';
+            return '<option '+selected+' value="'+value+'">'+value+'</option>';
+        }
+
+        // 진행단계 검색 셀렉트 박스 생성 함수
+        function createProgressStageSelect(searchParam) {
+            const optionsHtml = PROGRESS_STAGE_OPTIONS
+                .map(option => createOptionHtml(option, searchParam))
+                .join('');
+
+            return '<div class="w-auto">'+
+                '<select id="search" name="search" class="form-control shadow-sm" aria-label="Default select">'+
+                optionsHtml+
+                '</select>'+
+                '</div>';
+        }
+        //진행단계 옵션
+        let changeHtml = createProgressStageSelect($searchParam);
+
+        //검색 옵션 변경 함수
+        function searchOptionHref(optionValue) {
+            if(optionValue == '참여자'){
+                console.log("search_option_value 실행중 [참여자]")
+                $searchTextDiv.empty()
+                $searchTextDiv.append('<input type="text" class="form-control shadow-sm" id="search" name="search" placeholder="참여자 성명을 입력해주세요." value="'+$searchParam+'" />')
+            }
+            else if(optionValue == '구직번호'){
+                console.log("search_option_value 실행중 [구직번호]")
+                $searchTextDiv.empty()
+                $searchTextDiv.append('<input type="number" class="form-control shadow-sm" id="search" name="search" placeholder="구직번호를 입력해주세요." value="'+$searchParam+'" />')
+            }
+            else if(optionValue == '진행단계') {
+                console.log("search_option_value 실행중 [진행단계]")
+                $searchTextDiv.empty()
+                $searchTextDiv.append(changeHtml)
+            }
+            else if(optionValue == '학교명'){
+                console.log("search_option_value 실행중 [학교]")
+                $searchTextDiv.empty()
+                $searchTextDiv.append('<input type="text" class="form-control shadow-sm" id="search" name="search" placeholder="참여자 학교를 입력해주세요." value="'+$searchParam+'" />')
+            }
+        }
+
+        //진행단계 옵션 생성 끝
+        searchOptionHref($searchOptionParam)
+
+        //검색 옵션이 변경될 때 실행
+        search_option.on('change', function () {
+            let search_option_value = search_option.val()
+            searchOptionHref(search_option_value)
+        })
+
 
         function searchFunction() {
             $('#searchForm').submit();
@@ -637,7 +704,7 @@
         });
 
 
-        <%-- 검색 스크립트 끝 --%>
+        //검색 스크립트 끝
 
         <%-- pagination 시작 --%>
         // page 변수
