@@ -466,7 +466,7 @@
                 <when test="searchOption=='참여자'">A.참여자</when>
                 <when test="searchOption=='구직번호'">A.구직번호</when>
                 <when test="searchOption=='진행단계'">A.진행단계</when>
-                <when test="searchOption=='학교'">A.학교</when>
+                <when test="searchOption=='학교명'">A.학교명</when>
                 <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
             </choose> like '%'+#{search}+'%'
         </if>
@@ -751,7 +751,7 @@
                 <when test="searchOption=='참여자'">A.참여자</when>
                 <when test="searchOption=='구직번호'">A.구직번호</when>
                 <when test="searchOption=='진행단계'">A.진행단계</when>
-                <when test="searchOption=='학교'">A.학교</when>
+                <when test="searchOption=='학교명'">A.학교명</when>
                 <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
             </choose> like '%'+#{search}+'%'
         </if>
@@ -809,7 +809,7 @@
                 <when test="searchOption=='참여자'">A.참여자</when>
                 <when test="searchOption=='구직번호'">A.구직번호</when>
                 <when test="searchOption=='진행단계'">A.진행단계</when>
-                <when test="searchOption=='학교'">A.학교</when>
+                <when test="searchOption=='학교명'">A.학교명</when>
                 <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
             </choose> like '%'+#{search}+'%'
         </if>
@@ -916,7 +916,7 @@
                 <when test="searchOption=='참여자'">A.참여자</when>
                 <when test="searchOption=='구직번호'">A.구직번호</when>
                 <when test="searchOption=='진행단계'">A.진행단계</when>
-                <when test="searchOption=='학교'">A.학교</when>
+                <when test="searchOption=='학교명'">A.학교명</when>
                 <otherwise>A.구직번호</otherwise> <!-- 기본값 설정 -->
             </choose> like '%'+#{search}+'%'
         </if>
