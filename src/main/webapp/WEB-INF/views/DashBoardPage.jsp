@@ -137,10 +137,10 @@
                             <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board"  target="_blank">다우톡 공지사항</a>
                         </div>
                         <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
-                            <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 직무분석</a>
+                            <a class="link-dark link-underline-opacity-0" href="https://namsdn8n.monster/form/직무분석" target="_blank">AI 직무분석</a>
                         </div>
                         <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
-                            <a class="link-dark link-underline-opacity-0" href="https://namsdn8n.monster/form/a983503f-c183-4ca8-a21c-1919cec5954a" target="_blank">AI 자소서 생성</a>
+                            <a class="link-dark link-underline-opacity-0" href="https://namsdn8n.monster/form/자기소개서" target="_blank">AI 자소서 생성</a>
                         </div>
                         <div class="h6 h-100 d-flex align-items-center m-0 ms-auto me-auto">
                             <a class="link-dark link-underline-opacity-0" href="https://jobmoa.daouoffice.com/app/board" target="_blank">AI 컨설팅 알선</a>
