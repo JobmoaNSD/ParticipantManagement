@@ -64,12 +64,19 @@ public class BranchManagement {
         int limitButton = 10;
         String search = participantDTO.getSearch();
 
-        String selectCondition = "selectAllParticipantBranch";
-        String selectCountCondition = "selectCountParticipantBranch";
-        if(search != null && !search.equals("")){
-            selectCondition = "selectAllParticipantSearchBranch";
-            selectCountCondition = "selectCountParticipantSearchBranch";
+        participantDTO.setSearchPath("managerSearch");
+        if(search != null && !search.isEmpty()){
+            participantDTO.setSearchStatus(true);
         }
+        String selectCondition = "selectAllParticipantBasic";
+        String selectCountCondition = "selectCountParticipant";
+
+//        String selectCondition = "selectAllParticipantBranch";
+//        String selectCountCondition = "selectCountParticipantBranch";
+//        if(search != null && !search.equals("")){
+//            selectCondition = "selectAllParticipantSearchBranch";
+//            selectCountCondition = "selectCountParticipantSearchBranch";
+//        }
 
         //글 개수 쿼리 컨디션
         participantDTO.setParticipantCondition(selectCountCondition);

@@ -25,6 +25,11 @@ public class CounselDTO {
     private String counselEducation; // 직업훈련
     private String counselPlacement; // 알선요청
     private String counselEmploymentService; // 간접고용서비스
+    private String participantIAP3Month; // IAP수료일 3개월차
+    private String participantIAP5Month; // IAP수료일 5개월차
+    private boolean participantISIAP3Month; // IAP수료일 3개월 이후 여부
+    private boolean participantISIAP5Month; // IAP수료일 5개월 이후 여부
+    private String allowancePayment; // 수당지급
 
     // DB 외 변수
     private String counselCondition; //개발자 구분
