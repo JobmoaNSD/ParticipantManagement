@@ -8,6 +8,8 @@ import java.util.Arrays;
 public class MemberRoleCheck {
 
     public enum ROLES {
+        EXECUTIVE_DIRECTOR("이사"),
+        SENIOR_MANAGER("차장"),
         GENERAL_MANAGER("본부장"),
         GENERAL("총괄"),
         TEAM_LEADER("팀장"),

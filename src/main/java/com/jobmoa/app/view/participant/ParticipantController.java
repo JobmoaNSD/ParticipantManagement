@@ -84,12 +84,11 @@ public class ParticipantController {
         int limitButton = 10;
         String search = participantDTO.getSearch();
 
+        if(search != null && !search.isEmpty()){
+            participantDTO.setSearchStatus(true);
+        }
         String selectCondition = "selectAllParticipantBasic";
         String selectCountCondition = "selectCountParticipant";
-        if(search != null && !search.equals("")){
-            selectCondition = "selectAllParticipantSearch";
-            selectCountCondition = "selectCountParticipantSearch";
-        }
 
         //글 개수 쿼리 컨디션
         participantDTO.setParticipantCondition(selectCountCondition);

@@ -1,0 +1,477 @@
+$(document).ready(function () {
+
+    //table tr 개수 지정
+    let trCount = $('.align-middle tr').length;
+    let trCountSpan = $('.countSpan');
+    trCountSpan.text(trCount);
+
+    // DOM 로드 후 툴팁 활성화
+    $('[data-bs-toggle="tooltip"]').tooltip({
+        delay: {show: 0, hide: 0} // 표시와 사라짐에 딜레이를 없애즉시 나타나도록 설정
+    });
+
+    //선택 버튼의 구직번호 불러올 함수
+    function getJobNumber(currentRow) {
+        // '구직번호' 열의 텍스트 추출 (구직번호가 2번째 열이라고 가정)
+        return currentRow.find('td').eq(1).find('input').val();
+    }
+
+    //참여자 성명 불러올 함수
+    function getParticipantName(currentRow) {
+        // '참여자' 열의 텍스트 추출 (참여자가 3번째 열이라고 가정)
+        return currentRow.find('td').eq(3).find('a').text();
+    }
+
+    // a태그 href search 값 변경
+    aHrefChange();
+    function aHrefChange() {
+        const branchManagementPageFlag = $('#branchManagementPageFlag').val();
+        console.log('branchManagementPageFlag : ' + branchManagementPageFlag);
+        let selectATag = $('.selectParticipant');
+
+        selectATag.each(function () {
+            let aTag = $(this);
+            const jobNo = getJobNumber(aTag.closest('tr'));
+            console.log('jobNo : ' + jobNo);
+            aTag.attr('href', aTag.attr('href') + '?' + searchMainHref('basicJobNo=' + jobNo + '&branchManagementPageFlag='+ branchManagementPageFlag));
+        })
+    }
+
+    // URL 파라미터 추출 함수
+    function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name) || '';
+    }
+
+    // 내림차순 오름차순 조회 함수
+    let tableColumn = $('.table-Column');
+    let columnParam = getUrlParameter('column');
+    let orderParam = getUrlParameter('order');
+    let columns = $('.column');
+
+    if(columnParam != null && columnParam != ''){
+        columns.each(function () {
+            let columnValue = $(this).text();
+            let form = $('#searchForm');
+
+            if(columnValue == columnParam){
+                if(orderParam == 'desc'){
+                    $(this).append('<span class="order desc"><i class="bi bi-sort-down"></i></span>');
+                    $(this).find('.order').val('desc');
+                    form.append('<input type="hidden" name="column" value="'+columnValue+'">');
+                    form.append('<input type="hidden" name="order" value="desc">');
+                }
+                else if(orderParam == 'asc'){
+                    $(this).append('<span class="order asc"><i class="bi bi-sort-up-alt"></i></span>');
+                    $(this).find('.order').val('asc');
+                    form.append('<input type="hidden" name="column" value="'+columnValue+'">');
+                    form.append('<input type="hidden" name="order" value="asc">');
+                }
+            }
+        })
+    }
+
+    tableColumn.each(function () {
+        $(this).on('click', function () {
+            sort($(this));
+        });
+    });
+
+    function removeOrder(attribute){
+        attribute.find('.order').remove();
+        let returnValue;
+        tableColumn.each(function () {
+            let columnValue = $(this).find('.column').text();
+            let findValue = attribute.find('.column').text();
+
+            if(columnValue == findValue){
+                returnValue = columnValue;
+            }
+            $(this).find('.order').remove();
+        });
+        return returnValue;
+    }
+
+    function sort(attribute){
+        let orderValue = attribute.find('.order').val();
+        let columnValue = removeOrder(attribute);
+        let pageURL = '/participant.login?';
+        console.log('pageURL : ' + pageURL);
+
+        const branchManagementPageFlag = $('#branchManagementPageFlag').val();
+        if (branchManagementPageFlag == 'true') {
+            pageURL = '/branchParitic.login?';
+        }
+
+        if (orderValue == 'desc') {
+            location.replace(pageURL+sortHref('column=' + columnValue + '&order=asc'));
+        }
+        else{
+            location.replace(pageURL+sortHref('column=' + columnValue + '&order=desc'));
+        }
+    }
+
+    //검색 스크립트 시작
+    //필터 변수
+    const search_option = $('#search-Option');
+    //검색어 변수
+    const search = $('#search');
+    //페이지 개수 변수
+    const pageRows = $('#pageRows');
+    //검색 버튼 변수
+    const searchBtn = $('#searchBtn');
+    //검색 입력 div
+    const $searchTextDiv = $('#searchTextDiv');
+    //진행단계 select option 변수
+    const $searchOptionParam = getUrlParameter('searchOption');
+    //검색 param 값 변수
+    const $searchParam = getUrlParameter('search');
+
+    //진행단계 옵션 생성 시작
+    // 진행단계 옵션 목록
+    const PROGRESS_STAGE_OPTIONS = [
+        'IAP 전', 'IAP 후', '미고보', '고보일반', '등록창업',
+        '미등록창업', '미취업사후관리', '미취업사후종료',
+        '유예', '취소', '이관', '중단'
+    ];
+
+    // 옵션 HTML 생성 함수
+    function createOptionHtml(value, selectedValue) {
+        const selected = selectedValue === value ? 'selected' : '';
+        return '<option '+selected+' value="'+value+'">'+value+'</option>';
+    }
+
+    // 진행단계 검색 셀렉트 박스 생성 함수
+    function createProgressStageSelect(searchParam) {
+        const optionsHtml = PROGRESS_STAGE_OPTIONS
+            .map(option => createOptionHtml(option, searchParam))
+            .join('');
+
+        return '<div class="w-auto">'+
+            '<select id="search" name="search" class="form-control shadow-sm" aria-label="Default select">'+
+            optionsHtml+
+            '</select>'+
+            '</div>';
+    }
+
+    //진행단계 옵션
+    let changeHtml = createProgressStageSelect($searchParam);
+
+    //검색 옵션 변경 함수
+    function searchOptionHref(optionValue) {
+        if(optionValue == '참여자'){
+            console.log("search_option_value 실행중 [참여자]")
+            $searchTextDiv.empty()
+            $searchTextDiv.append('<input type="text" class="form-control shadow-sm" id="search" name="search" placeholder="참여자 성명을 입력해주세요." value="'+$searchParam+'" />')
+        }
+        else if(optionValue == '구직번호'){
+            console.log("search_option_value 실행중 [구직번호]")
+            $searchTextDiv.empty()
+            $searchTextDiv.append('<input type="number" class="form-control shadow-sm" id="search" name="search" placeholder="구직번호를 입력해주세요." value="'+$searchParam+'" />')
+        }
+        else if(optionValue == '진행단계') {
+            console.log("search_option_value 실행중 [진행단계]")
+            $searchTextDiv.empty()
+            $searchTextDiv.append(changeHtml)
+        }
+        else if(optionValue == '학교명'){
+            console.log("search_option_value 실행중 [학교]")
+            $searchTextDiv.empty()
+            $searchTextDiv.append('<input type="text" class="form-control shadow-sm" id="search" name="search" placeholder="참여자 학교를 입력해주세요." value="'+$searchParam+'" />')
+        }
+        else if(optionValue == '전담자'){
+            console.log("search_option_value 실행중 [전담자]")
+            $searchTextDiv.empty()
+            $searchTextDiv.append('<input type="text" class="form-control shadow-sm" id="search" name="search" placeholder="전담자 성명을 입력해주세요." value="'+$searchParam+'" />')
+        }
+    }
+
+    //진행단계 옵션 생성 끝
+    searchOptionHref($searchOptionParam)
+
+    //검색 옵션이 변경될 때 실행
+    search_option.on('change', function () {
+        let search_option_value = search_option.val()
+        searchOptionHref(search_option_value)
+    })
+
+    function searchFunction() {
+        $('#searchForm').submit();
+    }
+
+    searchBtn.on('click', function () {
+        searchFunction();
+    });
+
+    search.on('keypress', function (e) {
+        if (e.keyCode == 13) {
+            searchFunction();
+        }
+    });
+    //검색 스크립트 끝
+
+    // 참여자 삭제 체크 시작
+    let jobNo = [];
+    let participantNames = [];
+    const getCheckedValues = (items) => {
+        jobNo = [];
+        items.each(function () {
+            const value = $(this).val();
+            jobNo.push(value);
+        });
+    };
+
+    $('#delete_btn').on('click', () => {
+        const delete_items = $('.delete:checked');
+        getCheckedValues(delete_items)
+
+        let title = "선택된 참여자를 삭제합니다."
+        let text = "삭제가 완료되면 복구가 불가능합니다."
+        let confirmButtonText = "삭제"
+        let cancelButtonText = "취소"
+
+        alertConfirmQuestion(title, text, confirmButtonText, cancelButtonText).then((result) => {
+            if (!result) {
+                return;
+            }
+            $.ajax({
+                url: 'participantDelete.login',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({basicJobNos: jobNo}),
+                success: function (data) {
+                    let flag = false;
+                    if (data.length > 0) {
+                        alertDefaultInfo('삭제되지 않은 인원이 있습니다.' + '<br>' + data.length + ' 명 \n 구직번호 : ' + data + '<br>')
+                            .then((result) => {
+                                if (result) {
+                                    flag = true
+                                }
+                            });
+                    } else {
+                        flag = true;
+                    }
+                    if (flag) location.reload();
+                },
+                error: function (data) {
+                    alertDefaultError('오류발생', '삭제중 오류가 발생했습니다.');
+                    console.log(data);
+                }
+            });
+        });
+    });
+    // 참여자 삭제 체크 끝
+
+    // IAP 수립 후 3,5개월 확인 시작
+    let iapBefore = $('.iapBefore');
+    iapBefore.on('click', function () {
+        const number = getJobNumber($(this).closest('tr'));
+        const $inputs = $(this).find('input');
+        const iapDate = $inputs.filter('.iapDate').val() || '';
+        const iap3Month = $inputs.filter('.iap3Month').val() || '';
+        const iap5Month = $inputs.filter('.iap5Month').val() || '';
+
+        let is_iap3Month = (iap3Month==='true');
+        let is_iap5Month = (iap5Month==='true');
+
+        // Date 객체로 변환
+        const baseDate = new Date(iapDate);
+
+        //모달창 구직번호
+        const jobNo = $('#iapBeforeJobNo');
+
+        //모달창 IAP 3,5개월 이후 input
+        const iap3MonthText = $('#iap3MonthText');
+        const iap5MonthText = $('#iap5MonthText');
+
+        //모달창 iap 3,5개월 여부 체크
+        $('#iap3MonthModalCheckBox').prop('checked', is_iap3Month);
+        $('#iap5MonthModalCheckBox').prop('checked', is_iap5Month);
+
+        jobNo.val('');
+        iap3MonthText.val('');
+        iap5MonthText.val('');
+
+        //기본 날짜가 1900-01-01 일자 이후일때 실행
+        if(iapDate > '1900-01-01'){
+            // 3개월 이후 날짜 계산
+            const after3Months = new Date(baseDate);
+            after3Months.setMonth(baseDate.getMonth() + 3);
+
+            // 5개월 이후 날짜 계산
+            const after5Months = new Date(baseDate);
+            after5Months.setMonth(baseDate.getMonth() + 5);
+
+            // YYYY-MM-DD 형식으로 포맷팅
+            const formatDate = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return year+'-'+month+'-'+day;
+            };
+
+            const iapDate3Months = formatDate(after3Months);
+            const iapDate5Months = formatDate(after5Months);
+
+            console.log('기준일:', baseDate);
+            console.log('3개월 후:', iapDate3Months);
+            console.log('5개월 후:', iapDate5Months);
+
+            iap3MonthText.val(iapDate3Months);
+            iap5MonthText.val(iapDate5Months);
+            jobNo.val(number);
+        }
+    })
+    // IAP 수립 후 3,5개월 확인 끝
+
+    // IAP 수립 3,5 개월 여부 변경 시작
+    $('#iapBeforeSave').on('click', function () {
+        const number = $('#iapBeforeJobNo').val();
+        const iap3MonthText = $('#iap3MonthText').val();
+        const iap5MonthText = $('#iap5MonthText').val();
+        const iap3MonthModalCheckBox = $('#iap3MonthModalCheckBox').is(':checked');
+        const iap5MonthModalCheckBox = $('#iap5MonthModalCheckBox').is(':checked');
+
+        $.ajax({
+            url: 'iapBeforeSaveAjax.login',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                participantJobNo: number,
+                participantISIAP3Month: iap3MonthModalCheckBox,
+                participantISIAP5Month: iap5MonthModalCheckBox,
+            }),
+            success: function (data) {
+                console.log("Ajax Success : [" + data + "]");
+                location.reload();
+            },
+            error: function (data) {
+                console.log("Ajax Error : [" + data+ "]");
+            }
+        })
+    })
+    // IAP 수립 3,5 개월 여부 변경 끝
+
+    // 마감 여부 시작
+    const isCloses = $('.isClose_span');
+    isCloses.on('click', function () {
+        const $this = $(this);
+        const number = getJobNumber($this.closest('tr'));
+        console.log('number : [{}] ',number);
+        const participantName = getParticipantName($this.closest('tr'));
+        let title = participantName + " 참여자 선택"
+        let text = "마감 처리 하시겠습니까?"
+        let confirmButtonText = "마감"
+        if($this.text() == "마감"){
+            text = "진행중으로 변경 하시겠습니까?"
+            confirmButtonText = "확인"
+        }
+        let cancelButtonText = "취소"
+
+        let isClose = false;
+        if ($this.hasClass('badge bg-success isClose_span')) {
+            isClose = true;
+        }
+
+        alertConfirmQuestion(title, text, confirmButtonText, cancelButtonText).then((result) => {
+            if (!result) {
+                return;
+            }
+            $.ajax({
+                url: 'ParticipantClose.login',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({basicJobNo: number, basicClose: isClose}),
+                success: function (data) {
+                    if (data) {
+                        $this.removeClass('badge bg-success isClose_span').addClass('badge bg-danger isClose_span')
+                        $this.text("마감")
+                    } else {
+                        $this.removeClass('badge bg-danger isClose_span').addClass('badge bg-success isClose_span')
+                        $this.text("진행중")
+                    }
+                },
+                error: function (data) {
+                    // 에러 처리
+                }
+            });
+        })
+    });
+    // 마감 여부 끝
+
+    // 최근상담일 기준 색 필터 시작
+    let adventCons = $('.adventCons-td');
+    adventCons.each(function () {
+        let adventCons = $(this).text();
+        if (adventCons.length == 0 || adventCons == null || adventCons == '') {
+            // 값이 없는 경우
+        } else if (adventCons > 21) {
+            $(this).css('background-color', 'rgba(255,58,58,0.55)');
+        } else if (adventCons > 15) {
+            $(this).css('background-color', 'rgba(255,249,0,0.51)');
+        } else {
+            $(this).css('background-color', 'rgba(0,255,0,0.51)');
+        }
+    });
+    // 최근상담일 기준 색 필터 끝
+
+    // param 값 조회, &값으로 문자열 반환
+    function searchMainHref(jobno) {
+        let href=jobno;
+        //url param data delete & order change
+        let search = window.location.search.split('&');
+        search[0] = search[0].replace('?', '');
+        if (search[0] != null || search[0] != undefined) {
+            search.forEach(function (item) {
+                if (search.indexOf(item) >= 0) {
+                    href += '&' + item
+                }
+            });
+        }
+        //마지막이 &라면 지우고 href 변수에 추가
+        if (href.charAt(href.length - 1) == '&') {
+            href = href + 'page=1';
+        }
+        return href;
+    }
+
+    function sortHref(jobno) {
+        let href='';
+        //url param data delete & order change
+        let search = deleteParam(location.href,['column','order']).split('&');
+        search[0] = search[0].replace('?', '');
+        if (search[0] != null || search[0] != undefined) {
+            search.forEach(function (item) {
+                if (search.indexOf(item) >= 0) {
+                    href += item+'&'
+                }
+            });
+        }
+        href = href + jobno;
+        //마지막이 &라면 지우고 href 변수에 추가
+        if (href.charAt(href.length - 1) == '&') {
+            href = href.replace('&','');
+        }
+        return href;
+    }
+
+    function deleteParam(urlValue, deleteParams){
+        //url에 있는 컬럼중 column, order param value 를 삭제하고 페이지 이동
+        let url = new URL(urlValue);
+        const searchParam = new URLSearchParams(url.search);
+
+        //전달받은 삭제를 원하는 param data 값을 확인 후 삭제를 진행
+        deleteParams.map((value) => {
+            searchParam.delete(value);
+        })
+        return url.search = searchParam.toString();
+    }
+
+    // 전역 함수로 노출
+    window.searchMainHref = searchMainHref;
+    window.sortHref = sortHref;
+    window.deleteParam = deleteParam;
+});

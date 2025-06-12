@@ -32,14 +32,17 @@ public class ParticipantDTO {
     private String participantInItCons; // 초기상담일
     private String participantJobEX; // 구직만료일
     private String participantIAPDate; // IAP수료일
-    private boolean participantIAP3Month; // IAP수료일 3개월 이후 여부
-    private boolean participantIAP5Month; // IAP수료일 5개월 이후 여부
     private String participantStepPro; // 3단계진입일
-    private String participantEXPDate; // 기간만료(예정)일
+    private String participantEXPDate; // 기간만료일
     private String participantClinic; // 클리닉실시일
     private String participantJobWant; // 희망직무
     private int participantSalWant; // 희망급여
     private String participantEmploymentService; // 간접고용서비스
+    private String participantIAP3Month; // IAP수료일 3개월차
+    private String participantIAP5Month; // IAP수료일 5개월차
+    private boolean participantISIAP3Month; // IAP수료일 3개월 이후 여부
+    private boolean participantISIAP5Month; // IAP수료일 5개월 이후 여부
+    private String allowancePayment; // 수당지급일
     
     //Counsel DB 외 컬럼
     private String participantAdventCons; // 상담도래자
@@ -58,7 +61,7 @@ public class ParticipantDTO {
     private String participantQuit; // 기타정보
 
     private String certificationName; //자격증 명칭
-    private String participantUserName; // 상담사 이름
+    private String participantUserName; // 전담자 이름
     private String participantEmail; // 이메일
     private String participantPhoneNumber; // 전화 번호
     private String participantCode; // 고유 번호
@@ -83,6 +86,8 @@ public class ParticipantDTO {
     private String search;
     private String searchType;
     private String searchFilter;
+    private boolean searchStatus; // 검색 인지 아닌지 여부
+    private String searchPath; // 검색한 페이지
 
     //정렬 변수
     private String column;
