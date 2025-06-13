@@ -71,13 +71,6 @@ public class BranchManagement {
         String selectCondition = "selectAllParticipantBasic";
         String selectCountCondition = "selectCountParticipant";
 
-//        String selectCondition = "selectAllParticipantBranch";
-//        String selectCountCondition = "selectCountParticipantBranch";
-//        if(search != null && !search.equals("")){
-//            selectCondition = "selectAllParticipantSearchBranch";
-//            selectCountCondition = "selectCountParticipantSearchBranch";
-//        }
-
         //글 개수 쿼리 컨디션
         participantDTO.setParticipantCondition(selectCountCondition);
 

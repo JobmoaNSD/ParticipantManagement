@@ -339,7 +339,7 @@
                                         <c:forEach items="${datas}" var="data" varStatus="status" >
                                             <tr class="text-center">
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
-                                                <td>${status.count}
+                                                <td>${data.rowNum}
                                                     <input type="hidden" class="participantJobNo" value="${data.participantJobNo}" readonly>
                                                 </td>
                                                 <td>${data.participantPartType} 유형</td>
@@ -371,7 +371,7 @@
                                                 <td>${data.participantIAP3Month}</td>
                                                 <td>${data.participantIAP5Month}</td>
                                                 <td>${data.participantEmploymentService eq '' or data.participantEmploymentService eq null?0:data.participantEmploymentService} 회</td>
-                                                <td>${data.allowancePayment}</td>
+                                                <td>${data.participantAllowancePayment}</td>
                                                 <td>${data.participantJobEX}</td>
                                                 <td>${data.participantEXPDate}</td>
                                                 <td class="text-center isClose_td">

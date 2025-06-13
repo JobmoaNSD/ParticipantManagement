@@ -22,7 +22,7 @@
                         AND A.최근상담일 >= #{searchStartDate} AND A.최근상담일 <![CDATA[<=]]> #{searchEndDate}
                     </when>
                     <when test="searchOption == '전담자'">
-                        AND A.이름 like '%'+#{search}+'%'
+                        AND B.이름 like '%'+#{search}+'%'
                     </when>
                 </choose>
             </when>
@@ -145,6 +145,7 @@
     <!-- 상담관리 기본 쿼리 시작 -->
     <select id="selectAllParticipantBasic" resultType="participant">
         SELECT TOP (#{pageRows})
+            RowNum AS rowNum,
             구직번호 AS participantJobNo,
             이름 AS participantUserName,
             성별 AS participantGender,
@@ -192,10 +193,10 @@
                         WHEN A.IAP수료일 > '1900-01-01' AND A.IAP수료일 <![CDATA[<>]]> '' THEN A.IAP수료일
                     END AS IAP수료일,
                     CASE
-                        WHEN A.IAP3개월일자 > '1900-01-01' AND A.IAP3개월일자 <![CDATA[<>]]> '' THEN A.IAP3개월일자
+                        WHEN A.IAP3개월일자 > '1900-01-01' AND A.IAP3개월일자 <![CDATA[<>]]> '' AND 진행단계 <![CDATA[<>]]> 'IAP 전' THEN A.IAP3개월일자
                     END AS IAP3개월일자,
                     CASE
-                        WHEN A.IAP5개월일자 > '1900-01-01' AND A.IAP5개월일자 <![CDATA[<>]]> '' THEN A.IAP5개월일자
+                        WHEN A.IAP5개월일자 > '1900-01-01' AND A.IAP5개월일자 <![CDATA[<>]]> '' AND 진행단계 <![CDATA[<>]]> 'IAP 전' THEN A.IAP5개월일자
                     END AS IAP5개월일자,
                     A.IAP3개월여부,
                     A.IAP5개월여부,
