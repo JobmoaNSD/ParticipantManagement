@@ -342,7 +342,7 @@
                                         <c:forEach items="${datas}" var="data" varStatus="status" >
                                             <tr class="text-center">
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
-                                                <td>${status.count}
+                                                <td>${data.rowNum}
                                                     <input type="hidden" class="participantJobNo" value="${data.participantJobNo}" readonly>
                                                 </td>
                                                 <td>${data.participantPartType} 유형</td>

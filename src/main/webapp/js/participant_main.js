@@ -32,7 +32,7 @@ $(document).ready(function () {
         selectATag.each(function () {
             let aTag = $(this);
             const jobNo = getJobNumber(aTag.closest('tr'));
-            console.log('jobNo : ' + jobNo);
+            // console.log('jobNo : ' + jobNo);
             aTag.attr('href', aTag.attr('href') + '?' + searchMainHref('basicJobNo=' + jobNo + '&branchManagementPageFlag='+ branchManagementPageFlag));
         })
     }
@@ -72,6 +72,9 @@ $(document).ready(function () {
     }
 
     tableColumn.each(function () {
+        let columnValue = $(this).find('.column').text();
+        console.log('columnValue : ' + columnValue);
+        if(columnValue === '연번') return;
         $(this).on('click', function () {
             sort($(this));
         });
@@ -96,7 +99,7 @@ $(document).ready(function () {
         let orderValue = attribute.find('.order').val();
         let columnValue = removeOrder(attribute);
         let pageURL = '/participant.login?';
-        console.log('pageURL : ' + pageURL);
+        // console.log('pageURL : ' + pageURL);
 
         const branchManagementPageFlag = $('#branchManagementPageFlag').val();
         if (branchManagementPageFlag == 'true') {
@@ -314,9 +317,9 @@ $(document).ready(function () {
             const iapDate3Months = formatDate(after3Months);
             const iapDate5Months = formatDate(after5Months);
 
-            console.log('기준일:', baseDate);
-            console.log('3개월 후:', iapDate3Months);
-            console.log('5개월 후:', iapDate5Months);
+            // console.log('기준일:', baseDate);
+            // console.log('3개월 후:', iapDate3Months);
+            // console.log('5개월 후:', iapDate5Months);
 
             iap3MonthText.val(iapDate3Months);
             iap5MonthText.val(iapDate5Months);
