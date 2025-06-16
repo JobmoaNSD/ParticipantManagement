@@ -158,7 +158,6 @@
                             <i class="bi bi-file-earmark-excel-fill"></i>
                             엑셀 다운로드
                         </button>
-                        <input type="hidden" id="branchPage" value="${branchPage?true:false}">
                     </div>
                     <%-- 참여자 검색 시작 --%>
                     <form class="row col-md-12 pt-3 pb-0 ms-auto me-auto" id="searchForm" name="searchForm" method="GET" action="/participant.login">
@@ -339,8 +338,9 @@
                                         <c:forEach items="${datas}" var="data" varStatus="status" >
                                             <tr class="text-center">
                                                 <td><label class="text-center w-100 h-100"><input type="checkbox" class="delete" name="delete" value="${data.participantJobNo}"></label></td>
-                                                <td>${data.rowNum}
+                                                <td class="rowNumTd">${data.rowNum}
                                                     <input type="hidden" class="participantJobNo" value="${data.participantJobNo}" readonly>
+                                                    <input type="hidden" class="rowNum" value="${data.rowNum}" readonly>
                                                 </td>
                                                 <td>${data.participantPartType} 유형</td>
                                                 <td>
@@ -371,7 +371,7 @@
                                                 <td>${data.participantIAP3Month}</td>
                                                 <td>${data.participantIAP5Month}</td>
                                                 <td>${data.participantEmploymentService eq '' or data.participantEmploymentService eq null?0:data.participantEmploymentService} 회</td>
-                                                <td>${data.participantAllowancePayment}</td>
+                                                <td>${data.participantAllowanceDate}</td>
                                                 <td>${data.participantJobEX}</td>
                                                 <td>${data.participantEXPDate}</td>
                                                 <td class="text-center isClose_td">

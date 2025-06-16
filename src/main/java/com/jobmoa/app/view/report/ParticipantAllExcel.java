@@ -69,7 +69,8 @@ public class ParticipantAllExcel {
     }
 
     @GetMapping("/participantExcel.login")
-    public void participantExcel(HttpServletResponse response, ParticipantDTO participantDTO, HttpSession session, boolean branchPage){
+    public void participantExcel(HttpServletResponse response, ParticipantDTO participantDTO, HttpSession session, boolean branchManagementPageFlag){
+        //branchManagementPageFlag = 지점 관리자 페이지인지 확인
         try{
             //관리자 권한이 없으면 무조건 상담사 본인 참여자만 다운로드 가능
             String condition = "participantExcel";
@@ -78,13 +79,16 @@ public class ParticipantAllExcel {
 
             boolean IS_BRANCH_MANAGER = (boolean) session.getAttribute("IS_BRANCH_MANAGER");
             boolean IS_MANAGER = (boolean) session.getAttribute("IS_MANAGER");
+            // 로그인 정보가 없다면 반환
             if (loginBean == null) {
                 log.error("세션에 로그인 정보가 없습니다.");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 정보가 없습니다.");
                 return;
             }
-            else if((IS_MANAGER || IS_BRANCH_MANAGER) && branchPage){
-                condition= "participantBranchExcel";
+            //세션이 있다면 상담사인지 관리자인지 권한 확인
+            else if((IS_MANAGER || IS_BRANCH_MANAGER) && branchManagementPageFlag){
+//                condition= "participantBranchExcel"; // TODO sql 쿼리문을 통합하여 제거
+                participantDTO.setSearchPath("managerSearch");
             }
 
             participantDTO.setParticipantCondition(condition);
@@ -92,7 +96,8 @@ public class ParticipantAllExcel {
             participantDTO.setParticipantBranch(loginBean.getMemberBranch());
             log.info("participantExcel.login participantDTO : [{}]",participantDTO);
 
-            createExcel(response,participantDTO);
+            //엑셀 생성 함수 실행
+            createExcel(response,participantDTO,branchManagementPageFlag);
         }
         catch (Exception e){
             log.error("엑셀 다운로드 처리 중 오류 발생", e);
@@ -107,7 +112,7 @@ public class ParticipantAllExcel {
         }
     }
 
-    private void createExcel(HttpServletResponse response,ParticipantDTO participantDTO){
+    private void createExcel(HttpServletResponse response,ParticipantDTO participantDTO, boolean branchManagementPageFlag){
         // 1. 캐싱된 템플릿을 메모리에서 로드
         try (XSSFWorkbook workbook = new XSSFWorkbook(new ByteArrayInputStream(templateBytes2))) {
             if (templateBytes2 == null) {
@@ -150,9 +155,9 @@ public class ParticipantAllExcel {
              */
 
             //지점 전체 참여자 다운 요청이면 앞 부분을 지점으로 변경
-            String title = participantDTO.getParticipantUserid();
-            if(participantDTO.getParticipantCondition().equals("participantBranchExcel")){
-                title = participantDTO.getParticipantBranch();
+            String title = participantDTO.getParticipantBranch();
+            if(!branchManagementPageFlag){
+                title = participantDTO.getParticipantUserid();
             }
 
             // 4. 파일 다운로드 설정
@@ -227,7 +232,8 @@ public class ParticipantAllExcel {
     private void setProgress(Row row, int colIndex, ParticipantDTO data) {
         setCellValue(row, colIndex++, data.getParticipantJobNo());      // 구직번호
         setCellValue(row, colIndex++, data.getParticipantRegDate());    // 등록일
-        setCellValue(row, colIndex++, data.getParticipantUserName());     // 전담자_계정
+        setCellValue(row, colIndex++, data.getParticipantUserName());   // 전담자
+        setCellValue(row, colIndex++, data.getParticipantUserid()); // 전담자_계정
         setCellValue(row, colIndex++, data.getParticipantPartic());     // 참여자
         setCellValue(row, colIndex++, data.getParticipantDob());        // 생년월일
         setCellValue(row, colIndex++, data.getParticipantGender());     // 성별
@@ -244,9 +250,13 @@ public class ParticipantAllExcel {
         setCellValue(row, colIndex++, data.getParticipantProgress());   // 진행단계
         setCellValue(row, colIndex++, data.getParticipantInItCons());   // 초기상담일
         setCellValue(row, colIndex++, data.getParticipantJobEX());      // 구직만료일
-        setCellValue(row, colIndex++, data.getParticipantIAPDate());    // IAP수료일
-        setCellValue(row, colIndex++, data.getParticipantStepPro());    // [3단계진입일]
         setCellValue(row, colIndex++, data.getParticipantEXPDate());    // 기간만료일
+        setCellValue(row, colIndex++, data.getParticipantIAPDate());    // IAP수료일
+        setCellValue(row, colIndex++, data.isParticipantISIAP3Month()); // IAP3개월여부
+        setCellValue(row, colIndex++, data.getParticipantIAP3Month()); // IAP3개월일자
+        setCellValue(row, colIndex++, data.isParticipantISIAP5Month()); // IAP5개월여부
+        setCellValue(row, colIndex++, data.getParticipantIAP5Month()); // IAP5개월일자
+        setCellValue(row, colIndex++, data.getParticipantAllowanceDate()); // 수당지급일
         setCellValue(row, colIndex++, data.getParticipantJobWant());    // 희망직무
         setCellValue(row, colIndex++, data.getParticipantSalWant());    // 희망급여
         setCellValue(row, colIndex++, data.getParticipantStartDate());  // 취창업일
@@ -259,11 +269,12 @@ public class ParticipantAllExcel {
         setCellValue(row, colIndex++, data.getParticipantJobcat());     // 일경험분류
         setCellValue(row, colIndex++, data.getParticipantMemo());       // 메모
         setCellValue(row, colIndex++, data.getParticipantOthers());     // 기타
-        setCellValue(row, colIndex++, data.isParticipantClose());      // 마감
+        setCellValue(row, colIndex++, data.isParticipantClose());       // 마감
         setCellValue(row, colIndex++, data.getParticipantQuit());       // 퇴사일
         setCellValue(row, colIndex++, data.getParticipantBranch());     // 지점
-        colIndex++;
-        setCellValue(row, colIndex, data.getParticipantEmploymentService()); // 간접고용서비스
-
+        setCellValue(row, colIndex++, data.getParticipantEmploymentService()); // 간접고용서비스
+        setCellValue(row, colIndex++, data.getParticipantManagerChangeDate()); // 전담자_변경일
+        setCellValue(row, colIndex++, data.getParticipantInitialManagerAccount()); // 초기전담자_계정
+        setCellValue(row, colIndex, data.getParticipantModifyDate());   // 참여자_수정일
     }
 }

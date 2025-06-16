@@ -16,6 +16,9 @@
             [3단계진입일] = CONVERT(date, #{counselStepPro}, 120),
             기간만료일 = CONVERT(date, #{counselEXPDate}, 120),
             클리닉실시일 = CONVERT(date, #{counselClinic}, 120),
+            IAP3개월일자 = CONVERT(date, #{counselIAP3Month}, 120),
+            IAP5개월일자 = CONVERT(date, #{counselIAP5Month}, 120),
+            수당지급일 = CONVERT(date, #{counselAllowancePayment}, 120),
             희망직무 = #{counselJobWant},
             희망급여 = #{counselSalWant},
             알선요청 = #{counselPlacement},
@@ -62,6 +65,15 @@
             CASE
                 WHEN 클리닉실시일 >= DATEADD(YEAR, -100, GETDATE()) THEN 클리닉실시일
                 END AS counselClinic,
+            CASE
+                WHEN IAP3개월일자 >= DATEADD(YEAR, -100, GETDATE()) THEN IAP3개월일자
+                END AS counselIAP3Month,
+            CASE
+                WHEN IAP5개월일자 >= DATEADD(YEAR, -100, GETDATE()) THEN IAP5개월일자
+                END AS counselIAP5Month,
+            CASE
+                WHEN 수당지급일 >= DATEADD(YEAR, -100, GETDATE()) THEN 수당지급일
+                END AS counselAllowancePayment,
             희망직무 AS counselJobWant,
             희망급여 AS counselSalWant,
             알선요청 AS counselPlacement,
