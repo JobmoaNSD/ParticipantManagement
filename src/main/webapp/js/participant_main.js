@@ -73,9 +73,46 @@ $(document).ready(function () {
 
     tableColumn.each(function () {
         let columnValue = $(this).find('.column').text();
-        console.log('columnValue : ' + columnValue);
-        if(columnValue === '연번') return;
         $(this).on('click', function () {
+            console.log('columnValue : ' + columnValue);
+            if(columnValue === '연번') {
+                // 컬럼 제목을 '구직번호'로 변경
+                $(this).find('.column').text('구직번호');
+
+                // 해당 컬럼의 모든 데이터 셀을 구직번호로 변경
+                let columnIndex = $(this).index();
+                $('tbody tr').each(function() {
+                    let $cell = $(this).find('td').eq(columnIndex);
+                    let participantJobNo = $cell.find('.participantJobNo').val();
+                    if (participantJobNo) {
+                        $cell.contents().first().replaceWith(participantJobNo);
+                    }
+                });
+
+                // columnValue 업데이트
+                columnValue = '구직번호';
+                return;
+            }
+            else if(columnValue === '구직번호') {
+                // 컬럼 제목을 '연번'으로 변경
+                $(this).find('.column').text('연번');
+
+                // 해당 컬럼의 모든 데이터 셀을 연번으로 변경
+                let columnIndex = $(this).index();
+                $('tbody tr').each(function() {
+                    let $cell = $(this).find('td').eq(columnIndex);
+                    let rowNum = $cell.find('.rowNum').val();
+                    if (rowNum) {
+                        $cell.contents().first().replaceWith(rowNum);
+                    }
+                });
+
+                // columnValue 업데이트
+                columnValue = '연번';
+                return;
+            }
+
+
             sort($(this));
         });
     });
@@ -348,10 +385,16 @@ $(document).ready(function () {
             }),
             success: function (data) {
                 console.log("Ajax Success : [" + data + "]");
-                location.reload();
+                alertDefaultSuccess('수정 완료', '페이지를 새로고침합니다.').then((result) => {
+                    console.log("result : [" + result + "]");
+                    if (data) {
+                        location.reload();
+                    }
+                });
             },
             error: function (data) {
                 console.log("Ajax Error : [" + data+ "]");
+                alertDefaultError('수정 실패','오류 발생 : ' + data);
             }
         })
     })

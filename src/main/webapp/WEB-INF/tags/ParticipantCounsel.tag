@@ -71,6 +71,28 @@
                     <input type="text" class="form-control datepicker_on" id="counselIAPDate" name="counselIAPDate" placeholder="yyyy-mm-dd" aria-label="IAP수립일" value="${not empty counsel ? counsel.counselIAPDate:""}" autocomplete="off">
                 </div>
             </div>
+            <div class="datepicker-div">
+                <label for="counselIAP3Month" class="form-label">IAP 3개월차</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input
+                            type="text" class="form-control datepicker_on" id="counselIAP3Month" name="counselIAP3Month"
+                            placeholder="yyyy-mm-dd" aria-label="IAP3개월차" value="${not empty counsel ? counsel.counselIAP3Month:""}" autocomplete="off"
+                            disabled
+                    >
+                </div>
+            </div>
+            <div class="datepicker-div">
+                <label for="counselIAP5Month" class="form-label">IAP 5개월차</label>
+                <div class="input-group">
+                    <i class="bi bi-calendar-date input-group-text"></i>
+                    <input
+                            type="text" class="form-control datepicker_on" id="counselIAP5Month" name="counselIAP5Month"
+                            placeholder="yyyy-mm-dd" aria-label="IAP5개월차" value="${not empty counsel ? counsel.counselIAP5Month:""}" autocomplete="off"
+                            disabled
+                    >
+                </div>
+            </div>
             <%--<div class="datepicker-div">
                 <label for="counselStepPro" class="form-label">3단계진입일</label>
                 <div class="input-group">
@@ -109,28 +131,6 @@
                     <option value="3">3</option>
                     <option value="4">4</option>
                 </select>
-            </div>
-            <div class="datepicker-div">
-                <label for="counselIAP3Month" class="form-label">IAP 3개월차</label>
-                <div class="input-group">
-                    <i class="bi bi-calendar-date input-group-text"></i>
-                    <input
-                            type="text" class="form-control datepicker_on" id="counselIAP3Month" name="counselIAP3Month"
-                            placeholder="yyyy-mm-dd" aria-label="IAP3개월차" value="${not empty counsel ? counsel.counselIAP3Month:""}" autocomplete="off"
-                            disabled
-                    >
-                </div>
-            </div>
-            <div class="datepicker-div">
-                <label for="counselIAP5Month" class="form-label">IAP 5개월차</label>
-                <div class="input-group">
-                    <i class="bi bi-calendar-date input-group-text"></i>
-                    <input
-                            type="text" class="form-control datepicker_on" id="counselIAP5Month" name="counselIAP5Month"
-                            placeholder="yyyy-mm-dd" aria-label="IAP5개월차" value="${not empty counsel ? counsel.counselIAP5Month:""}" autocomplete="off"
-                            disabled
-                    >
-                </div>
             </div>
             <div class="datepicker-div">
                 <label for="counselAllowancePayment" class="form-label">수당지급일</label>

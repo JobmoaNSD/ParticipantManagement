@@ -14,10 +14,10 @@ $(document).ready(function () {
 
         // 안정적인 방식으로 다운로드 시작
         try {
-            const branchPage = $('#branchPage').val();
+            const branchManagementPageFlag = $('#branchManagementPageFlag').val();
             // participantExcel.login은 기존에 잘 작동하던 엔드포인트
-            window.location.href = '/participantExcel.login' + searchHref(1) + '&branchPage=' + branchPage;
-            console.log('/participantExcel.login' + searchHref(1) + '&branchPage=' + branchPage);
+            window.location.href = '/participantExcel.login' + searchHref(1) + '&branchManagementPageFlag=' + branchManagementPageFlag;
+            console.log('/participantExcel.login' + searchHref(1) + '&branchManagementPageFlag=' + branchManagementPageFlag);
 
             // 3초 후 로딩 숨기기
             setTimeout(hideLoading, 3000);

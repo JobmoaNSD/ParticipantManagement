@@ -42,7 +42,7 @@ public class ParticipantDTO {
     private String participantIAP5Month; // IAP수료일 5개월차
     private boolean participantISIAP3Month; // IAP수료일 3개월 이후 여부
     private boolean participantISIAP5Month; // IAP수료일 5개월 이후 여부
-    private String participantAllowancePayment; // 수당지급일
+    private String participantAllowanceDate; // 수당지급일
     
     //Counsel DB 외 컬럼
     private String participantAdventCons; // 상담도래자
@@ -60,6 +60,11 @@ public class ParticipantDTO {
     private String participantOthers; // 기타정보
     private String participantQuit; // 기타정보
 
+    //참여자 변경 정보
+    private String participantManagerChangeDate; // 전담자_변경일
+    private String participantInitialManagerAccount; // 초기전담자_계정
+    private String participantModifyDate; // 참여자 수정일
+    
     private String certificationName; //자격증 명칭
     private String participantUserName; // 전담자 이름
     private String participantEmail; // 이메일

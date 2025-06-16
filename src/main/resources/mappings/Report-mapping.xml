@@ -3,7 +3,7 @@
 
 <mapper namespace="ReportDAO">
     <!-- 기본 쿼리 시작 -->
-    <!-- TODO 2025-05-29 변경 진행 했음 -->
+    <!-- FIXME 2025-05-29 변경 진행 했음 -->
     <select id="reportSelectProgressAll" resultType="report">
         <foreach collection="userIds" item="userId" index="index"
             open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">
@@ -48,7 +48,7 @@
         ORDER BY B.순서 ASC
     </select>
 
-    <!-- TODO 2025-05-28 변경 진행 했음 -->
+    <!-- FIXME 2025-05-28 변경 진행 했음 -->
     <select id="reportSelectStatusAll" resultType="report">
         <foreach collection="userIds" item="userId" index="index"
                  open="WITH 상담사순서 AS (" separator="UNION ALL" close=")">

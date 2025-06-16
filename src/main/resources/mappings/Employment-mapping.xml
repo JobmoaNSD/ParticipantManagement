@@ -37,7 +37,8 @@
             일경험분류 = #{employmentJobcat},
             메모 = #{employmentMemo},
             기타 = #{employmentOthers},
-            퇴사일 = #{employmentQuit}
+            퇴사일 = #{employmentQuit},
+            참여자_수정일 = GETDATE()
         WHERE
             구직번호 = #{employmentJobNo}
     </update>
