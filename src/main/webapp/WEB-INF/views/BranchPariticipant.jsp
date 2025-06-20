@@ -270,11 +270,12 @@
                         </div>
                         <div class="col-md-12 text-end">
                             검색된 참여자 <span class="text-center totalCountSpan">${totalCount}</span>명
-                            <%-- 기업 파일에서 조회하는 거라는 것을 알려준다. --%>
+                            <%-- 지점 관리자 파일에서 조회하는 거라는 것을 알려준다. --%>
                             <input type="hidden" id="branchManagementPageFlag" value="${branchManagementPageFlag?true:false}">
                         </div>
+
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover shadow-sm">
+                            <table class="table table-striped table-hover shadow-sm table-fix">
                                 <thead class="table-dark text-white">
                                 <tr class="text-center">
                                     <th class="text-center"><input type="button" class="btn btn-danger" id="delete_btn" value="삭제"></th>
@@ -283,6 +284,7 @@
                                     <%--                                    </th>--%>
                                     <th class="table-Column">
                                         <span class="column">연번</span>
+                                        <i class="bi bi-exclamation-square-fill"></i>
                                     </th>
                                     <th class="table-Column">
                                         <span class="column">유형</span>
@@ -355,8 +357,7 @@
                                                 </td>
                                                 <td>${data.participantLastCons}</td>
                                                 <td class="adventCons-td">${data.participantAdventCons}</td>
-                                                <td>
-                                                        <%--                                                        ${data.participantProgress}--%>
+                                                <td class="participantProgress-td">
                                                     <c:choose>
                                                         <c:when test="${data.participantProgress eq 'IAP 후'}">
                                                             <span value="${data.participantIAPDate}" class="btn badge bg-info w-75 iapBefore" data-bs-toggle="modal" data-bs-target="#iapBeforeButtonModal">
@@ -366,9 +367,7 @@
                                                                 <input type="hidden" class="iap5Month" value="${data.participantISIAP5Month}" readonly>
                                                             </span>
                                                         </c:when>
-                                                        <c:otherwise>
-                                                            ${data.participantProgress}
-                                                        </c:otherwise>
+                                                        <c:otherwise>${data.participantProgress}</c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <td>${data.participantInItCons}</td>

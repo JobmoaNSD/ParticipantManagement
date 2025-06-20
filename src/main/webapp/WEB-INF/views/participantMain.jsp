@@ -283,6 +283,7 @@
                                     <%--                                    </th>--%>
                                     <th class="table-Column">
                                         <span class="column">연번</span>
+                                        <i class="bi bi-exclamation-square-fill"></i>
                                     </th>
                                     <th class="table-Column">
                                         <span class="column">유형</span>
@@ -351,8 +352,7 @@
                                                 </td>
                                                 <td>${data.participantLastCons}</td>
                                                 <td class="adventCons-td">${data.participantAdventCons}</td>
-                                                <td>
-                                                        <%--                                                        ${data.participantProgress}--%>
+                                                <td class="participantProgress-td">
                                                     <c:choose>
                                                         <c:when test="${data.participantProgress eq 'IAP 후'}">
                                                             <span value="${data.participantIAPDate}" class="btn badge bg-info w-75 iapBefore" data-bs-toggle="modal" data-bs-target="#iapBeforeButtonModal">
@@ -362,9 +362,7 @@
                                                                 <input type="hidden" class="iap5Month" value="${data.participantISIAP5Month}" readonly>
                                                             </span>
                                                         </c:when>
-                                                        <c:otherwise>
-                                                            ${data.participantProgress}
-                                                        </c:otherwise>
+                                                        <c:otherwise>${data.participantProgress}</c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <td>${data.participantInItCons}</td>

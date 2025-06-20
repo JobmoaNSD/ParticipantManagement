@@ -4,8 +4,18 @@ $(document).ready(function () {
     btn_check.on("click", function () {
         //참여자 성명
         const basicParticVal = $("#basicPartic").val();
+        //취업역량
+        const counselJobSkill = $("#counselJobSkill");
+        let counselJobSkillVal = counselJobSkill.val();
         //진행단계
-        let progressVal = $("#counselProgress").val();
+        const counselProgress = $("#counselProgress");
+        let counselProgressVal = counselProgress.val();
+        //초기상담일
+        const counselInItCons = $("#counselInItCons");
+        let counselInItConsVal = counselInItCons.val();
+        //최근상담일
+        const counselLastCons = $("#counselLastCons");
+        let counselLastConsVal = counselLastCons.val();
         //IAP 수립일
         const counselIAPDateVal = $("#counselIAPDate").val();
         //IAP 수립일 3개월차
@@ -40,9 +50,9 @@ $(document).ready(function () {
             return;
         }
         else if(counselIAPDateVal.length > 0){
+            //iap 전 상태에서 iap 수립일을 작성하고 등록 OR 저장하면 경고 출력
             //iap 수립일이 비어있지 않은 상태로
             // iap 3개월차, 5개월차 칸이 비어있다면 입력 요청 후 함수에서 내보낸다.
-            flag = counselIAP3MonthVal.length > 0;
             if(!counselIAP3MonthVal.length > 0){
                 alertDefaultInfo("IAP 3개월차가 비어있습니다.","IAP 3개월 이후 일자를 입력해주세요.");
                 counselIAP3Month.focus();
@@ -53,14 +63,59 @@ $(document).ready(function () {
                 counselIAP5Month.focus();
                 return;
             }
+            // iap 관련 일자가 모두 입력된 상태로 진행단계가 IAP 전으로 작성되어 있다면 IAP 후로 변경
+            if(counselProgressVal == "IAP 전"){
+                counselProgress.val("IAP 후")
+            }
+
         }
-        else if ((progressVal == "미고보" || progressVal == "고보일반" || progressVal == "등록창업" || progressVal == "미등록창업" ||
-            progressVal == "미취업사후종료" || progressVal == "이관" || progressVal == "중단") && counselEXPDateVal == ''){
-            alertDefaultInfo("현재 선택한 진행단계의 "+progressVal+"은/는 기간만료(예정)일은 필수로 입력되어야 합니다.");
+        else if ((counselProgressVal == "미고보" || counselProgressVal == "고보일반" || counselProgressVal == "등록창업" || counselProgressVal == "미등록창업" ||
+            counselProgressVal == "미취업사후종료" || counselProgressVal == "이관" || counselProgressVal == "중단") && counselEXPDateVal == ''){
+            alertDefaultInfo("현재 선택한 진행단계의 "+counselProgressVal+"은/는 기간만료(예정)일은 필수로 입력되어야 합니다.");
             return;
         }
 
-        //취창업일이 비어있고 임금 OR 취업인센티브_구분이 비어있다면 함수를 내보낸다.
+        let counselLastConsFlag = false;
+        // 최근상담일이 비어있는 상태라면 초기상담일로 최근상담일이 입력된다고 안내하고
+        if(!counselLastConsVal.length > 0){
+            alertConfirmQuestion('최근상담일이 작성되지 않았습니다.', '초기상담일을 최근상담일에 추가하시겠습니까?','확인','취소').then(function (result) {
+                if(result){
+                    counselLastCons.val(counselInItConsVal);
+                }
+                else{
+                    alertDefaultInfo('최근상담일을 입력해주세요','')
+                }
+                counselLastConsFlag = result;
+            })
+            //console.log('!counselLastConsVal.length > 0 flag : ' + counselLastConsFlag);
+        }
+        // 초기상담일이 비어있는 상태라면 최근상담일이 초기상담일이 입력된다는 안내를 출력한다.
+        else if(!counselInItConsVal.length > 0){
+            alertConfirmQuestion('초기상담일이 작성되지\n않았습니다.', '최근상담일을 초기상담일에 추가하시겠습니까?','확인','취소').then(function (result) {
+                if(result){
+                    counselInItCons.val(counselLastConsVal);
+                }
+                else{
+                    alertDefaultInfo('초기상담일을 입력해주세요','')
+                }
+                counselLastConsFlag = result;
+            })
+            //console.log('!counselInItConsVal.length > 0 flag : ' + counselLastConsFlag);
+        }
+        else if(counselLastConsVal.length > 0 && counselInItConsVal.length > 0){
+            counselLastConsFlag = true;
+            if(!counselJobSkillVal.length > 0){
+                alertDefaultInfo('취업역량을 선택해주세요.','')
+                counselLastConsFlag = false;
+            }
+        }
+
+        // flag false = 작성 취소로 직접 작성을 선택한 함수 반환
+        if(!counselLastConsFlag){
+            return;
+        }
+
+        //취창업일이 비어있고 임금 OR 취업인센티브_구분이 비어있다면 함수에서 내보낸다.
         if(!employmentStartDateVal.length > 0){
             //임금이 작성되어 있거나
             flag = employmentSalaryVal.length > 0;

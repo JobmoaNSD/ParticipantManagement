@@ -22,11 +22,13 @@ $(document).ready(function () {
         return currentRow.find('td').eq(3).find('a').text();
     }
 
+    //페이지 로드시 지점 관리자 페이지 접속인지 확인
+    const branchManagementPageFlag = $('#branchManagementPageFlag').val();
+    console.log('branchManagementPageFlag : ' + branchManagementPageFlag);
+    
     // a태그 href search 값 변경
     aHrefChange();
     function aHrefChange() {
-        const branchManagementPageFlag = $('#branchManagementPageFlag').val();
-        console.log('branchManagementPageFlag : ' + branchManagementPageFlag);
         let selectATag = $('.selectParticipant');
 
         selectATag.each(function () {
@@ -111,10 +113,28 @@ $(document).ready(function () {
                 columnValue = '연번';
                 return;
             }
-
-
             sort($(this));
         });
+
+        //tooltip 추가
+        if (columnValue === '연번'){
+            $(this).attr
+            ({
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top',
+                'data-bs-html': 'true',
+                'title': '<strong>도움말</strong><br>연번 <-> 구직번호 전환 가능'
+            }).tooltip();
+        }
+        else{
+            $(this).attr
+            ({
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top',
+                'data-bs-html': 'true',
+                'title': '<strong>도움말</strong><br>'+columnValue+' 클릭시<br>오름차순,내림차순 정렬'
+            }).tooltip();
+        }
     });
 
     function removeOrder(attribute){
@@ -138,7 +158,6 @@ $(document).ready(function () {
         let pageURL = '/participant.login?';
         // console.log('pageURL : ' + pageURL);
 
-        const branchManagementPageFlag = $('#branchManagementPageFlag').val();
         if (branchManagementPageFlag == 'true') {
             pageURL = '/branchParitic.login?';
         }
@@ -385,7 +404,17 @@ $(document).ready(function () {
             }),
             success: function (data) {
                 console.log("Ajax Success : [" + data + "]");
-                alertDefaultSuccess('수정 완료', '페이지를 새로고침합니다.').then((result) => {
+                let title = '수정 완료'
+                let message = '페이지를 새로고침합니다.'
+                if (!data) {
+                    title = '수정 실패'
+                    message = 'iap 수립일이 없습니다.'
+                    alertDefaultError(title, message).then((result) => {
+                        console.log("result : [" + result + "]");
+                    });
+                    return;
+                }
+                alertDefaultSuccess(title, message).then((result) => {
                     console.log("result : [" + result + "]");
                     if (data) {
                         location.reload();
@@ -415,10 +444,20 @@ $(document).ready(function () {
             confirmButtonText = "확인"
         }
         let cancelButtonText = "취소"
-
         let isClose = false;
         if ($this.hasClass('badge bg-success isClose_span')) {
             isClose = true;
+        }
+
+        if(branchManagementPageFlag == 'false'){
+            // 진행단계 확인을 위한
+            let participantProgressVal = $this.closest('tr').find('td').eq(6).text().trim();
+            console.log('participantProgressVal : ['+participantProgressVal+']');
+
+            if(participantProgressVal == 'IAP 전' || participantProgressVal == 'IAP 후' || participantProgressVal == '유예'){
+                alertDefaultQuestion('진행단계를 확인해주세요.','IAP 전, IAP 후, 유예는 마감 처리 하실 수 없습니다.')
+                return;
+            }
         }
 
         alertConfirmQuestion(title, text, confirmButtonText, cancelButtonText).then((result) => {
