@@ -96,6 +96,7 @@
         FROM J_참여자관리
         WHERE 진행단계 <![CDATA[<>]]> ''
           AND 진행단계 <![CDATA[<>]]> '취소'
+          AND 참여유형 <![CDATA[<>]]> '이관'
           AND 지점 = #{branch}
           AND YEAR(IIF(초기상담일 = '1900-01-01' , 등록일, ISNULL(초기상담일, ''))) = #{year}
           AND (전담자_계정 IN

@@ -24,6 +24,9 @@
                     <when test="searchOption == '전담자'">
                         AND B.이름 like '%'+#{search}+'%'
                     </when>
+                    <when test="searchOption == '학교명'">
+                        AND A.학교명 like '%'+#{search}+'%'
+                    </when>
                 </choose>
             </when>
         </choose>

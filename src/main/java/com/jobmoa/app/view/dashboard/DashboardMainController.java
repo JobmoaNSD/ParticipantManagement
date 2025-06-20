@@ -1,11 +1,8 @@
 package com.jobmoa.app.view.dashboard;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobmoa.app.biz.bean.LoginBean;
 import com.jobmoa.app.biz.dashboard.DashboardDTO;
-import com.jobmoa.app.biz.dashboard.DashboardService;
 import com.jobmoa.app.biz.dashboard.DashboardServiceImpl;
 import com.jobmoa.app.view.function.ChangeJson;
 import com.jobmoa.app.view.function.InfoBean;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.Year;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,6 +35,9 @@ public class DashboardMainController {
 
     @GetMapping("/dashboard.login")
     public String dashboardMain(Model model, HttpSession session, DashboardDTO dashboardDTO) {
+
+//        long beforeTime = System.currentTimeMillis();
+
         log.info("Start dashboardMain Controller(GetMapping)");
 
         try {
@@ -62,6 +61,11 @@ public class DashboardMainController {
             log.error("Dashboard 데이터 로딩 실패", e);
             model.addAttribute("error", "데이터 로딩 중 오류가 발생했습니다.");
         }
+
+//        long afterTime = System.currentTimeMillis();
+//
+//        log.info("End dashboardMain Controller(GetMapping) / beforeTime : [{}], afterTime : [{}]", beforeTime, afterTime);
+//        log.info("End dashboardMain Controller(GetMapping) / Check Time : [{}]", (afterTime - beforeTime) / 1000);
 
         return "views/DashBoardPage";
     }
