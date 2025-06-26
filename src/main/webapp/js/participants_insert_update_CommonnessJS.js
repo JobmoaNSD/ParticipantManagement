@@ -75,44 +75,27 @@ $(document).ready(function () {
             return;
         }
 
-        let counselLastConsFlag = false;
+        //최근 상담일 초기 상담일 둘중 하나라도 빈칸이 아니라면 if 실행
+        if(!counselLastConsVal.length > 0 && !counselInItConsVal.length > 0){
+        }
         // 최근상담일이 비어있는 상태라면 초기상담일로 최근상담일이 입력된다고 안내하고
-        if(!counselLastConsVal.length > 0){
-            alertConfirmQuestion('최근상담일이 작성되지 않았습니다.', '초기상담일을 최근상담일에 추가하시겠습니까?','확인','취소').then(function (result) {
-                if(result){
-                    counselLastCons.val(counselInItConsVal);
-                }
-                else{
-                    alertDefaultInfo('최근상담일을 입력해주세요','')
-                }
-                counselLastConsFlag = result;
-            })
-            //console.log('!counselLastConsVal.length > 0 flag : ' + counselLastConsFlag);
+        else if(!counselLastConsVal.length > 0){
+            alertDefaultQuestion('최근상담일이 작성되지 않았습니다.','초기상담일을 최근상담일로 작성합니다.')
+            counselLastCons.val(counselInItConsVal);
+            return;
         }
         // 초기상담일이 비어있는 상태라면 최근상담일이 초기상담일이 입력된다는 안내를 출력한다.
         else if(!counselInItConsVal.length > 0){
-            alertConfirmQuestion('초기상담일이 작성되지\n않았습니다.', '최근상담일을 초기상담일에 추가하시겠습니까?','확인','취소').then(function (result) {
-                if(result){
-                    counselInItCons.val(counselLastConsVal);
-                }
-                else{
-                    alertDefaultInfo('초기상담일을 입력해주세요','')
-                }
-                counselLastConsFlag = result;
-            })
-            //console.log('!counselInItConsVal.length > 0 flag : ' + counselLastConsFlag);
+
+            alertDefaultQuestion('초기상담일이 작성되지 않았습니다.','최근상담일을 초기상담일로 작성합니다.')
+            counselInItCons.val(counselLastConsVal);
+            return;
         }
         else if(counselLastConsVal.length > 0 && counselInItConsVal.length > 0){
-            counselLastConsFlag = true;
             if(!counselJobSkillVal.length > 0){
                 alertDefaultInfo('취업역량을 선택해주세요.','')
-                counselLastConsFlag = false;
+                return;
             }
-        }
-
-        // flag false = 작성 취소로 직접 작성을 선택한 함수 반환
-        if(!counselLastConsFlag){
-            return;
         }
 
         //취창업일이 비어있고 임금 OR 취업인센티브_구분이 비어있다면 함수에서 내보낸다.

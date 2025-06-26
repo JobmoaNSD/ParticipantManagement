@@ -307,9 +307,11 @@ public class DashboardMainController {
 
     @GetMapping("scoreBranchDashboard.login")
     public String scoreBranchDashboard(Model model, DashboardDTO dashboardDTO){
-        //내 지점 평균 그래프 클릭하면 DB에 사용자의 각 평가 현황별 % 점수를 반환해준다.
+        //내 지점 평균 그래프 클릭하면 DB에 사용자의 각 평가 현황별 % 점수를 반환
         dashboardDTO.setDashBoardStartDate(this.FAILSTARTDATE);
         dashboardDTO.setDashBoardEndDate(this.FAILENDDATE);
+        //처음 접속하면 1년 미만 근무자로 검색해서 가져올 예정이기 때문에 false를 지정
+        dashboardDTO.setDashboardFlagCondition(false);
         dashboardDTO.setDashboardCondition("selectBranchAvg");
         List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
         // 반환된 data를 가지고 json 형식으로 그래프를 그릴 수 있도록 반환한다.

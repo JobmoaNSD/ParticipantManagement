@@ -105,29 +105,71 @@
         <!--begin::App Content-->
         <div class="app-content">
             <!--begin::Main content-->
-            <div class="container-fluid pt-1 pb-1 vstack">
+            <div class="container-fluid pt-1 pb-1 stack">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
-                    <div>
-                        <label  for="excludeRadio" style="max-width: 250px; font-size: 15px;">1년 미만 근로자</label>
-                    </div>
-                    <div class="btn-group" style="max-width: 250px;" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="btnradio" id="excludeRadio" autocomplete="off" value="false" checked>
-                        <label class="btn btn-outline-primary" for="excludeRadio" style="font-size: 10px;">미포함<br>(컨설턴트 평균 비교)</label>
+<%--                    <div>--%>
+<%--                        <label  for="excludeRadio" style="max-width: 250px; font-size: 15px;">1년 미만 근로자</label>--%>
+<%--                    </div>--%>
+                    <label for="excludeRetention">고용유지 포함</label>
+                    <input type="checkbox" id="excludeRetention" name="excludeCheck">
+                    <div id = "buttonContainer" class="">
+                        <div class="btn-group w-100" style="max-width: 250px;" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="dashboardFlagEmployment" id="excludeRadio" autocomplete="off" value="false" checked>
+                            <label class="btn btn-outline-primary" for="excludeRadio" style="font-size: 0.6em;">1년 미만 근로자<br>미포함<br>(컨설턴트 평균 비교)</label>
 
-                        <input type="radio" class="btn-check" name="btnradio" id="includeRadio" autocomplete="off" value="true">
-                        <label class="btn btn-outline-primary" for="includeRadio" style="font-size: 10px;">포함<br>(고용부 평가 기준)</label>
-                    </div>
-                    <div>
-                        <label for="excludeRetention">고용유지 포함</label>
-                        <input type="checkbox" id="excludeRetention" name="excludeCheck">
+                            <input type="radio" class="btn-check" name="dashboardFlagEmployment" id="includeRadio" autocomplete="off" value="true">
+                            <label class="btn btn-outline-primary" for="includeRadio" style="font-size: 0.6em;">1년 미만 근로자<br>포함<br>(고용부 평가 기준)</label>
+                        </div>
                     </div>
 
+                    <div id="graphAndTableButtonContainer" class="pt-2">
+                        <div class="btn-group w-100" style="max-width: 250px;" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="GraphAndTable" id="performanceGraphButton" autocomplete="off" value="false" checked>
+                            <label class="btn btn-outline-primary" for="performanceGraphButton" style="font-size: 0.6em;">실적 그래프</label>
+
+                            <input type="radio" class="btn-check" name="GraphAndTable" id="performanceTableButton" autocomplete="off" value="true">
+                            <label class="btn btn-outline-primary" for="performanceTableButton" style="font-size: 0.6em;">실적 표</label>
+                        </div>
+                    </div>
                 </c:if>
+
+                <div id="performanceTableDiv" class="d-flex justify-content-center align-items-center mt-2">
+                    <table id="performanceTable" class="table table-bordered table-hover" style="display: none;">
+                        <thead id="performanceTableHead">
+                        <tr class="table-active text-center" style="font-size: 0.6em;">
+                            <td>연번</td>
+                            <td>지점명</td>
+                            <td>참여자(2024)</td>
+                            <td>참여자(2025)</td>
+                            <td>참여자 합계</td>
+                            <td>종료자</td>
+                            <td>취업자</td>
+                            <td>특정계층</td>
+                            <td>취업자실적</td>
+                            <td>취업자률실적</td>
+                            <td>알선</td>
+                            <td>알선실적</td>
+                            <td>나은취업</td>
+                            <td>나은실적</td>
+                            <td>조기취업</td>
+                            <td>조기실적</td>
+                            <td>취업점수</td>
+                            <td>알선점수</td>
+                            <td>나은점수</td>
+                            <td>조기취업점수</td>
+                            <td>고용유지점수</td>
+                            <td>총점</td>
+                        </tr>
+                        </thead>
+                        <tbody id="performanceTableBody" class="text-center">
+
+                        </tbody>
+                    </table>
+                </div>
 
                 <div id="loadingScoreChartDiv" class="d-flex justify-content-center align-items-center"></div>
                 <div id="scoreChartDiv">
-
                     <div id="scoreChart">
 
                     </div>
@@ -225,8 +267,6 @@
 </script>
 
 <script>
-
-
     // 초기 데이터 정의
     const initData = [
         {name:"총점", data:0.01},
@@ -270,9 +310,9 @@
                     dataPointSelection: function(event, chartContext, config) { // click 대신 dataPointSelection 사용
                         const clickIndex = config.dataPointIndex;
                         const branchName = data.name[clickIndex+1];
-                            // console.log(clickIndex);
-                            // console.log(branchName);
-                            fetchData(branchName);
+                        // console.log(clickIndex);
+                        // console.log(branchName);
+                        fetchData(branchName);
                     }
                 }
             },
@@ -316,6 +356,14 @@
 
     //두 번째 차트 사용자별 점수
     // 각 차트에 표시할 데이터를 정의하는 함수
+    const totalScore = $("#totalScore");
+    const employmentScore = $("#employmentScore");
+    const placementScore = $("#placementScore");
+    const retentionScore = $("#retentionScore");
+    const earlyEmploymentScore = $("#earlyEmploymentScore");
+    const betterJobScore = $("#betterJobScore");
+    const loadingDiv = $('#loadingDiv');
+
     function getChartOptions(chartIndex, title, maxScore, jsonValue, jsonScore, jsonTopScore) {
         // 각 차트의 제목과 데이터 설정
         let chartTitle = title[chartIndex];
@@ -332,7 +380,7 @@
                     color: '#fff',
                     background: '#FF4560'
                 },
-                text: title[chartIndex]+' 평균: ' + selectData[jsonValue[chartIndex]][jsonTopScore[chartIndex]] + '점'
+                text: '상위20% ' + title[chartIndex]+' 평균: ' + selectData[jsonValue[chartIndex]][jsonTopScore[chartIndex]] + '점'
             }
         }];
         const chartColors = [
@@ -488,6 +536,7 @@
     }
 
     let chartFlag = false;
+    let disableFlag = true;
     //상담사별 데이터 불러오는 fetch(비동기 함수)
     function fetchData(data) {
         //초기화 함수
@@ -497,6 +546,14 @@
         const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
         let isExcludeRetention = excludeRetention.is(':checked');
         console.log(isExcludeRetention)
+        //여러번 클릭하는 것을 방지하기 위해 flag 설정으로 확인 후 반환한다.
+        if(!disableFlag){
+            alertDefaultWarning('데이터를 조회하는 중입니다.','')
+            return;
+        }
+        //첫번째 실행으로 비활성화 진행
+        disableFlag = false;
+
         fetch('dashBoardAjaxBranchScore.login', {
             method: 'POST',
             headers: {
@@ -524,8 +581,12 @@
             // console.log(jsonScore.length);
             renderDistributionChart(title, maxScore, jsonValue, jsonScore, jsonTopScore);
             $loadingDiv.empty()
+            //완료 후 활성화
+            disableFlag = true;
         }).catch(r => {
             $loadingDiv.html('<div> 오류가 발생했습니다.(다른 지점은 선택할 수 없습니다. </div>');
+            //오류가 발생해도 사용해야하니 활성화
+            disableFlag = true;
         })
     }
 
@@ -646,13 +707,13 @@
                 totalScore:[]
             },
         };
-        $("#totalScore").empty();
-        $("#employmentScore").empty();
-        $("#placementScore").empty();
-        $("#retentionScore").empty();
-        $("#earlyEmploymentScore").empty();
-        $("#betterJobScore").empty();
-        $('#loadingDiv').empty();
+        totalScore.empty();
+        employmentScore.empty();
+        placementScore.empty();
+        retentionScore.empty();
+        earlyEmploymentScore.empty();
+        betterJobScore.empty();
+        loadingDiv.empty();
     }
 
     $(document).ready(function () {
@@ -675,6 +736,9 @@
 
         const excludeRadio = $('#excludeRadio'); //미포함
         const includeRadio = $('#includeRadio'); //포함
+        const performanceGraphButton = $('#performanceGraphButton'); //실적 그래프 버튼
+        const performanceTableButton = $('#performanceTableButton'); //실적 표 버튼
+        const performanceTable = $("#performanceTable"); // 실적 테이블 id
         let isProcessing = false;
 
         //1년 미만 상담사 미포함
@@ -686,10 +750,8 @@
             chartFlag = excludeVal;
             disableRadioButtons();
 
-            fetchPerformanceContract(excludeVal).finally(() => {
-                enableRadioButtons();
-                isProcessing = false;
-            });
+            graphAndTableChange(excludeVal);
+
         });
         //1년 미만 상담사 포함
         includeRadio.click(function(){
@@ -700,26 +762,63 @@
             chartFlag = includeVal;
             disableRadioButtons();
 
-            fetchPerformanceContract(includeVal).finally(() => {
-                enableRadioButtons();
-                isProcessing = false;
-            });
+            // fetchPerformanceContract(includeVal).finally(() => {
+            //     enableRadioButtons();
+            //     isProcessing = false;
+            // });
+            graphAndTableChange(includeVal);
         });
+
+        function graphAndTableChange(data) {
+            if(performanceGraphButton.is(':checked')){
+                console.log('실적 그래프 체크 상태 : [' + performanceGraphButton.is(':checked')+']');
+                fetchPerformanceContract(data).finally(() => {
+                    enableRadioButtons();
+                    isProcessing = false;
+                });
+            }
+            else if(performanceTableButton.is(':checked')){
+                console.log('실적 표 체크 상태 : [' + performanceTableButton.is(':checked') +']');
+                fetchPerformanceTableContract(data).finally(() =>{
+                    enableRadioButtons();
+                    isProcessing = false;
+                });
+            }
+            else{
+                alertDefaultWarning('오류발생 페이지를 새로고침합니다.','')
+                window.location.reload();
+            }
+        }
 
         // 라디오 버튼 제어 함수
         function disableRadioButtons() {
             excludeRadio.prop('disabled', true);
             includeRadio.prop('disabled', true);
+            performanceGraphButton.prop('disabled', true);
+            performanceTableButton.prop('disabled', true);
         }
 
         function enableRadioButtons() {
             excludeRadio.prop('disabled', false);
             includeRadio.prop('disabled', false);
+            performanceGraphButton.prop('disabled', false);
+            performanceTableButton.prop('disabled', false);
         }
-        function fetchPerformanceContract(condition) {
+
+        function fetchPerformanceContract(conditionFlag) {
             return new Promise((resolve, reject) => {
-                console.log(condition, "condition 삭제 진행중");
+                performanceTable.hide(); //실적표 숨기기
+                console.log(conditionFlag, " 실적 그래프 생성중");
                 $("#scoreChartDiv").empty();
+                // 개인 실적 그래프 삭제
+                totalScore.empty();
+                employmentScore.empty();
+                placementScore.empty();
+                retentionScore.empty();
+                earlyEmploymentScore.empty();
+                betterJobScore.empty();
+                loadingDiv.empty();
+
                 const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
                 $loadingScoreChartDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
 
@@ -731,7 +830,7 @@
                 const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
                 let isExcludeRetention = excludeRetention.is(':checked');
 
-                fetch('scoreBranchPerformanceAjax.login', {
+                fetch('scoreBranchPerformanceGraphAjax.login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -739,14 +838,14 @@
                     body: JSON.stringify({
                         dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
                         dashBoardEndDate: '2025-10-31',
-                        dashboardCondition: condition,
+                        dashboardFlagCondition: conditionFlag,
                         dashboardExcludeRetention: isExcludeRetention,
                         isManagement: ${IS_MANAGER},
                         isBranchManagement: ${IS_BRANCH_MANAGER}
                     })
                 })
                     .then(async response => {
-                        console.log(condition, "condition 삭제 진행끝");
+                        console.log(conditionFlag, " 실적 그래프삭제 진행끝");
                         $("#scoreChartDiv").append('<div id="scoreChart"></div>');
 
                         let data = JSON.parse(await response.json());
@@ -769,6 +868,105 @@
                     });
             });
         }
+
+
+        function fetchPerformanceTableContract(conditionFlag) {
+            return new Promise((resolve, reject) => {
+                console.log(conditionFlag, " 실적 표 생성중");
+                $("#scoreChartDiv").empty();
+                //테이블 삭제
+                $("#performanceTableBody").empty();
+
+                // 개인 실적 그래프 삭제
+                totalScore.empty();
+                employmentScore.empty();
+                placementScore.empty();
+                retentionScore.empty();
+                earlyEmploymentScore.empty();
+                betterJobScore.empty();
+                loadingDiv.empty();
+
+                const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
+                $loadingScoreChartDiv.html('실적 표를 불러오는 중입니다.<div class="loader"></div>');
+
+                const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
+                let isExcludeRetention = excludeRetention.is(':checked');
+
+                fetch('scoreBranchPerformanceTableAjax.login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
+                        dashBoardEndDate: '2025-10-31',
+                        dashboardFlagCondition: conditionFlag,
+                        dashboardExcludeRetention: isExcludeRetention,
+                        isManagement: ${IS_MANAGER},
+                        isBranchManagement: ${IS_BRANCH_MANAGER}
+                    })
+                })
+                    .then(async response => {
+                        console.log(conditionFlag, " 실적 표 삭제 진행끝");
+                        $("#scoreChartDiv").append('<div id="scoreChart"></div>');
+
+                        let data = JSON.parse(await response.text());
+                        console.log("formanceTable Data : [" + data + "]");
+                        if (data.length === 0) {
+                            throw new Error("실적 데이터를 불러오는 동안 오류가 발생했습니다.");
+                        }
+
+                        let numberFormat;
+                        data.forEach(function(value, key){
+                            numberFormat = Number(key)+1;
+                            let row = '<tr>';
+                            row += '<td>' + numberFormat + '</td>'; //순번
+                            row += '<td>' + value.dashboardBranch + '</td>'; //지점
+                            row += '<td>' + value.dashboardByYearCount1 + '</td>'; //전년도 참여자
+                            row += '<td>' + value.dashboardByYearCount2 + '</td>'; //이번년도 참여자
+                            row += '<td>' + value.dashboardTotalCount + '</td>'; //참여자 합계
+                            row += '<td>' + value.totalCompleted + '</td>'; //종료자
+                            row += '<td>' + value.totalEmployed + '</td>'; //취업자
+                            row += '<td>' + value.specialGroupCount + '</td>'; //특정계층
+                            row += '<td>' + value.totalEmployedSpecialGroupCount + '</td>'; //취업자실적(특정+취업자가중치)
+                            row += '<td>' + value.employmentRate + '</td>'; //취업자률
+                            row += '<td>' + value.referredEmploymentCount + '</td>'; //알선
+                            row += '<td>' + value.placementRate.toFixed(2) + '</td>'; //알선실적
+                            row += '<td>' + value.betterJobCount + '</td>'; //나은취업
+                            row += '<td>' + value.betterJobRate.toFixed(2) + '</td>'; //나은실적
+                            row += '<td>' + value.earlyEmploymentCount + '</td>'; //조기취업
+                            row += '<td>' + value.earlyEmploymentRate.toFixed(2) + '</td>'; //조기실적
+                            row += '<td>' + value.employmentScore.toFixed(2) + '</td>'; //취업점수
+                            row += '<td>' + value.placementScore.toFixed(2) + '</td>'; //알선점수
+                            row += '<td>' + value.betterJobScore.toFixed(2) + '</td>'; //나은점수
+                            row += '<td>' + value.earlyEmploymentScore.toFixed(2) + '</td>'; //조기취업점수
+                            row += '<td>' + value.retentionScore.toFixed(2) + '</td>'; //고용유지점수
+                            row += '<td>' + value.totalScore.toFixed(2) + '</td>'; //총점
+                            row += '</tr>';
+                            $("#performanceTableBody").append(row);
+                        })
+
+                        // 로딩 표시 제거
+                        $loadingScoreChartDiv.empty();
+
+                        performanceTable.show();//데이터 생성 후 실적표 표시
+
+                        resolve(data); // 성공 시 데이터 반환
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        $loadingScoreChartDiv.html("Error 발생 : " + error);
+                        reject(error); // 에러 발생 시 reject
+                    });
+            });
+        }
+
+
+    });
+</script>
+<!-- 실적 그래프, 실적 표 전환  -->
+<script>
+    $(document).ready(function () {
 
     });
 </script>

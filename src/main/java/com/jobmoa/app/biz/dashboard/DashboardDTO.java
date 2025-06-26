@@ -7,9 +7,12 @@ public class DashboardDTO {
     private String dashboardUserID; //전담자 아이디
     private String dashboardBranch; //지점
     private int dashboardTotalCount; //참여자 수
+    private int dashboardByYearCount1; //년도별 참여자 1
+    private int dashboardByYearCount2; //년도별 참여자 2
 
     //DB 외 정보
     private String dashboardCondition; // 개발자 구분
+    private boolean dashboardFlagCondition; // 개발자 구분 boolean
 
     //지점 전체 개수 및 인원
     private int dashboardCountBranch;
@@ -109,6 +112,7 @@ public class DashboardDTO {
     private long retentionCount;           // 고용유지자 수
     private long betterJobCount;           // 나은일자리 취업자 수
     private long specialGroupCount;        // 특정계층 취업자 수
+    private long totalEmployedSpecialGroupCount; // 특정계층 + 취업자 포함 취업자 수
 
     // 취업 관련 지표
     private double employmentRate;    // 취업률

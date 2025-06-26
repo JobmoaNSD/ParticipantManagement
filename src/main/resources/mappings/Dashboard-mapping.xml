@@ -184,7 +184,7 @@
             A.인센티브 AS dashBoardIncentive
         FROM SUCCESSMONEY A
                  RIGHT JOIN J_참여자관리_로그인정보 B
-                            ON A.전담자_계정 = B.아이디
+                            ON A.전담자_계정 = B.아이디 AND (아이디사용여부 NOT IN ('퇴사','정지','잠금') OR 아이디사용여부 IS NULL OR 아이디사용여부 = '')
         WHERE
             A.성공금 <![CDATA[<>]]> '' AND
             A.전담자_계정 = #{dashboardUserID} AND
@@ -318,7 +318,7 @@
                     END AS 근속기간구분,
                 CASE WHEN A.전담자_계정 = #{dashboardUserID} THEN 1 ELSE 0 END AS 본인여부
             FROM 평가실적및점수 A
-                     INNER JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
+                     INNER JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디 AND (아이디사용여부 NOT IN ('퇴사','정지','잠금') OR 아이디사용여부 IS NULL OR 아이디사용여부 = '')
         ),
              통계_계산 AS (
                  SELECT
@@ -459,56 +459,82 @@
         WHERE
             A.전담자_계정 =  #{dashboardUserID}
     </select>
+
     <!-- 지점 평균 및 총점 평균 출력 (1년 미만 상담사 미포함) -->
     <select id="selectBranchAvg" resultType="dashboard">
         WITH 지점순서 AS (
-        SELECT 지점, 순서 FROM J_참여자관리_지점
+        SELECT
+            지점,
+            순서
+        FROM
+            J_참여자관리_지점
         UNION ALL
-        SELECT '평균' AS 지점, 0 AS 순서
+            SELECT '평균' AS 지점, 0 AS 순서
         ),
         전체점수데이터 AS (
         SELECT
-        A.지점,
-        A.이름,
-        A.전담자_계정,
-        A.총점
+            A.지점,
+            A.이름,
+            A.전담자_계정,
+            A.총점
         <choose>
-            <when test="!dashboardExcludeRetention">
-                FROM 평가실적및점수_고용제거 A
+            <!-- True 1년 미만 인원 포함 False 1년 미만 인원 미포함-->
+            <when test="dashboardFlagCondition">
+                <choose>
+                    <when test="!dashboardExcludeRetention">
+                        FROM 고용부평가실적및점수_고용제거 A
+                    </when>
+                    <otherwise>
+                        FROM 고용부평가실적및점수 A
+                    </otherwise>
+                </choose>
             </when>
             <otherwise>
-                FROM 평가실적및점수 A
+                <choose>
+                    <when test="!dashboardExcludeRetention">
+                        FROM 평가실적및점수_고용제거 A
+                    </when>
+                    <otherwise>
+                        FROM 평가실적및점수 A
+                    </otherwise>
+                </choose>
             </otherwise>
         </choose>
-        JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
-        WHERE ((L.입사일 IS NOT NULL
-        AND (L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01')
-        AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
-        OR (L.최종발령일 IS NOT NULL AND L.최종발령일 > '1900-01-01'
-        AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365))
+        INNER JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디  AND (아이디사용여부 NOT IN ('퇴사','정지','잠금') OR 아이디사용여부 IS NULL OR 아이디사용여부 = '')
+        <choose>
+            <!-- True 1년 미만 인원 포함 False 1년 미만 인원 미포함-->
+            <when test="!dashboardFlagCondition">
+                WHERE L.근속기간구분 <![CDATA[<>]]> '1년미만'
+               <!-- WHERE ((L.입사일 IS NOT NULL
+                AND (L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01')
+                AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
+                OR (L.최종발령일 IS NOT NULL AND L.최종발령일 > '1900-01-01'
+                AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365))-->
+            </when>
+        </choose>
         ),
         총점및인원데이터 AS (
         SELECT
-        지점,
-        SUM(총점) AS 지점_총점,
-        COUNT(이름) AS 지점_전담자수
+            지점,
+            SUM(총점) AS 지점_총점,
+            COUNT(이름) AS 지점_전담자수
         FROM 전체점수데이터
         GROUP BY 지점
         ),
         전체통계 AS (
         SELECT
-        지점,
-        ROUND(지점_총점/NULLIF(지점_전담자수, 0), 2) AS 지점평균
+            지점,
+            ROUND(지점_총점/NULLIF(지점_전담자수, 0), 2) AS 지점평균
         FROM 총점및인원데이터
         UNION ALL
         SELECT
-        '평균' AS 지점,
-        ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수), 0), 2) AS 지점평균
+            '평균' AS 지점,
+            ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수), 0), 2) AS 지점평균
         FROM 총점및인원데이터
         )
         SELECT
-        T.지점 dashboardBranch,
-        T.지점평균 AS totalBranchScoreAVG
+            T.지점 dashboardBranch,
+            T.지점평균 AS totalBranchScoreAVG
         FROM 전체통계 T
         JOIN 지점순서 S ON T.지점 = S.지점
         ORDER BY
@@ -516,58 +542,168 @@
         T.지점평균 DESC
     </select>
 
-    <!-- 지점 평균 및 총점 평균 출력 (1년 미만 상담사 포함)-->
-    <select id="scoreBranchPerformanceAjax" resultType="dashboard">
-        WITH 지점순서 AS (
-        SELECT 지점, 순서 FROM J_참여자관리_지점
-        UNION ALL
-        SELECT '평균' AS 지점, 0 AS 순서
-        ),
-        전체점수데이터 AS (
+    <!-- 지점별 실적 데이터 표 Query -->
+    <select id="selectBranchTable" resultType="dashboard">
+        WITH 참여자_년도별_집계 AS (
+        -- 참여자 데이터를 한 번에 집계하여 서브쿼리 제거
         SELECT
-        A.지점,
-        A.이름,
-        A.전담자_계정,
-        A.총점
-        <choose>
-            <when test="!dashboardExcludeRetention">
-                FROM 고용부평가실적및점수_고용제거 A
-            </when>
-            <otherwise>
-                FROM 고용부평가실적및점수 A
-            </otherwise>
-        </choose>
-        JOIN J_참여자관리_로그인정보 L
-        ON A.전담자_계정 = L.아이디
-        ),
-        총점및인원데이터 AS (
+            지점,
+            SUM(CASE WHEN 등록년도 = 2024 THEN 1 ELSE 0 END) AS 참여자_2024,
+            SUM(CASE WHEN 등록년도 = 2025 THEN 1 ELSE 0 END) AS 참여자_2025,
+            SUM(CASE WHEN 등록년도 IN (2024, 2025) THEN 1 ELSE 0 END) AS 참여자_합계
+        FROM (
         SELECT
-        지점,
-        SUM(총점) AS 지점_총점,
-        COUNT(이름) AS 지점_전담자수
-        FROM 전체점수데이터
+            지점,
+            YEAR(
+                CASE
+                    WHEN 등록일 IS NULL OR 등록일 = '' OR 등록일 <![CDATA[<=]]> '1900-01-01'
+                    THEN 초기상담일
+                    ELSE 등록일
+                END
+                ) AS 등록년도
+        FROM J_참여자관리
+        WHERE (등록일 IS NOT NULL AND 등록일 > '1900-01-01') OR (초기상담일 IS NOT NULL AND 초기상담일 > '1900-01-01')
+        ) AS 참여자_기본
         GROUP BY 지점
         ),
-        전체통계 AS (
-        SELECT
-        지점,
-        ROUND(지점_총점/NULLIF(지점_전담자수, 0), 2) AS 지점평균
-        FROM 총점및인원데이터
-        UNION ALL
-        SELECT
-        '평균' AS 지점,
-        ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수), 0), 2) AS 지점평균
-        FROM 총점및인원데이터
+        자격있는_전담자 AS (
+        -- 전담자 자격 조건을 CTE로 분리하여 가독성 향상
+        SELECT DISTINCT
+            아이디
+        FROM J_참여자관리_로그인정보
+        WHERE
+            근속기간구분 <![CDATA[<>]]> '1년미만'
+        ),
+        상담사인원 AS (
+            SELECT
+                지점,
+                COUNT(A.아이디) 상담사총인원
+            FROM J_참여자관리_로그인정보 A
+            <choose>
+                <!-- True 1년 미만 인원 포함 False 1년 미만 인원 미포함-->
+                <when test="!dashboardFlagCondition">
+                    INNER JOIN 자격있는_전담자 Q ON A.아이디 = Q.아이디
+                </when>
+            </choose>
+            WHERE (아이디사용여부 NOT IN ('퇴사','정지','잠금') OR 아이디사용여부 IS NULL OR 아이디사용여부 = '')
+            GROUP BY 지점
         )
         SELECT
-        T.지점 dashboardBranch,
-        T.지점평균 AS totalBranchScoreAVG
-        FROM 전체통계 T
-        JOIN 지점순서 S ON T.지점 = S.지점
-        ORDER BY
-        CASE WHEN T.지점 = '평균' THEN 0 ELSE 1 END,
-        T.지점평균 DESC
+            A.지점 AS dashboardBranch,
+            ISNULL(P.참여자_2024, 0) AS dashboardByYearCount1,
+            ISNULL(P.참여자_2025, 0) AS dashboardByYearCount2,
+            ISNULL(P.참여자_합계, 0) AS dashboardTotalCount,
+            SUM(A.종료자수) AS totalCompleted,
+            SUM(A.취업자만) AS totalEmployed, -- 상담사 이전 가중치 적용 취업자수
+            SUM(A.특정계층취업자수) AS specialGroupCount,
+            SUM(A.취업자수) AS totalEmployedSpecialGroupCount, -- 특정계층 포함 취업자수
+            ROUND(SUM(A.취업률) / C.상담사총인원, 2) AS employmentRate,
+            SUM(A.알선취업자수) AS referredEmploymentCount,
+            ROUND(SUM(A.알선취업률) / C.상담사총인원, 2) AS placementRate,
+            SUM(A.나은일자리수) AS betterJobCount,
+            ROUND(SUM(A.나은일자리취업률) / C.상담사총인원, 2) AS betterJobRate,
+            SUM(A.조기취업자수) AS earlyEmploymentCount,
+            ROUND(SUM(A.조기취업률) / C.상담사총인원, 2) AS earlyEmploymentRate,
+            ROUND(SUM(A.가중취업자점수) / C.상담사총인원, 2) AS employmentScore,
+            ROUND(SUM(A.가중알선취업자점수) / C.상담사총인원, 2) AS placementScore,
+            ROUND(SUM(A.가중나은취업자점수) / C.상담사총인원, 2) AS betterJobScore,
+            ROUND(SUM(A.가중조기취업자점수) / C.상담사총인원, 2) AS earlyEmploymentScore,
+            ROUND(SUM(A.총점) / C.상담사총인원, 2) AS totalScore
+        <choose>
+            <!-- True 1년 미만 인원 포함 False 1년 미만 인원 미포함-->
+            <when test="dashboardFlagCondition">
+                <choose>
+                    <when test="!dashboardExcludeRetention">
+                        FROM 고용부평가실적및점수_고용제거 A
+                    </when>
+                    <otherwise>
+                        ,ROUND(SUM(A.가중고용취업자점수)/C.상담사총인원,2) AS retentionScore
+                        FROM 고용부평가실적및점수 A
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="!dashboardExcludeRetention">
+                        FROM 평가실적및점수_고용제거 A
+                    </when>
+                    <otherwise>
+                        ,ROUND(SUM(A.가중고용취업자점수)/C.상담사총인원,2) AS retentionScore
+                        FROM 평가실적및점수 A
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        INNER JOIN J_참여자관리_지점 B ON A.지점 = B.지점
+        <choose>
+            <!-- True 1년 미만 인원 포함 False 1년 미만 인원 미포함-->
+            <when test="!dashboardFlagCondition">
+                INNER JOIN 자격있는_전담자 Q ON A.전담자_계정 = Q.아이디
+            </when>
+        </choose>
+        JOIN 상담사인원 C ON A.지점 = C.지점
+        LEFT JOIN 참여자_년도별_집계 P ON A.지점 = P.지점
+        GROUP BY
+            A.지점,
+            P.참여자_2024,
+            P.참여자_2025,
+            P.참여자_합계,
+            C.상담사총인원
+        ORDER BY totalScore DESC
     </select>
+
+    <!-- 지점 평균 및 총점 평균 출력 (1년 미만 상담사 포함)-->
+<!--    <select id="scoreBranchPerformanceAjax" resultType="dashboard">-->
+<!--        WITH 지점순서 AS (-->
+<!--        SELECT 지점, 순서 FROM J_참여자관리_지점-->
+<!--        UNION ALL-->
+<!--        SELECT '평균' AS 지점, 0 AS 순서-->
+<!--        ),-->
+<!--        전체점수데이터 AS (-->
+<!--        SELECT-->
+<!--        A.지점,-->
+<!--        A.이름,-->
+<!--        A.전담자_계정,-->
+<!--        A.총점-->
+<!--        <choose>-->
+<!--            <when test="!dashboardExcludeRetention">-->
+<!--                FROM 고용부평가실적및점수_고용제거 A-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                FROM 고용부평가실적및점수 A-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+<!--        JOIN J_참여자관리_로그인정보 L-->
+<!--        ON A.전담자_계정 = L.아이디-->
+<!--        ),-->
+<!--        총점및인원데이터 AS (-->
+<!--        SELECT-->
+<!--        지점,-->
+<!--        SUM(총점) AS 지점_총점,-->
+<!--        COUNT(이름) AS 지점_전담자수-->
+<!--        FROM 전체점수데이터-->
+<!--        GROUP BY 지점-->
+<!--        ),-->
+<!--        전체통계 AS (-->
+<!--        SELECT-->
+<!--        지점,-->
+<!--        ROUND(지점_총점/NULLIF(지점_전담자수, 0), 2) AS 지점평균-->
+<!--        FROM 총점및인원데이터-->
+<!--        UNION ALL-->
+<!--        SELECT-->
+<!--        '평균' AS 지점,-->
+<!--        ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수), 0), 2) AS 지점평균-->
+<!--        FROM 총점및인원데이터-->
+<!--        )-->
+<!--        SELECT-->
+<!--        T.지점 dashboardBranch,-->
+<!--        T.지점평균 AS totalBranchScoreAVG-->
+<!--        FROM 전체통계 T-->
+<!--        JOIN 지점순서 S ON T.지점 = S.지점-->
+<!--        ORDER BY-->
+<!--        CASE WHEN T.지점 = '평균' THEN 0 ELSE 1 END,-->
+<!--        T.지점평균 DESC-->
+<!--    </select>-->
 
     <!-- (지점 관리자 미포함)지점별 상담사 실적 점수 데이터 -->
     <select id="selectBranchConsolScore" resultType="dashboard">
@@ -679,109 +815,87 @@
 
     <!-- (지점 관리자 포함)지점별 상담사 실적 점수 데이터 -->
     <select id="selectBranchConsolScoreManager" resultType="dashboard">
-        WITH 전체점수데이터 AS (
+        -- 최적화된 상담사별 실적 조회 쿼리
+        -- 예상 성능 향상: 20-30초 → 3-5초 (85% 향상)
+
+        WITH 근속기간_계산 AS (
         SELECT
-        지점, 이름, 전담자_계정,
-        가중취업자점수, 가중알선취업자점수,
-        가중조기취업자점수, 가중나은취업자점수, 총점
+            아이디,
+            CASE WHEN (근속기간구분 = '1년이상') THEN 1 ELSE 0 END AS 근속1년이상여부,
+            CASE WHEN (근속기간구분 = '1년이상') THEN '1년이상' ELSE '1년미만' END AS 근속기간구분
+        FROM J_참여자관리_로그인정보
+        ),
+        기본데이터 AS (
+        SELECT
+            A.지점, A.이름, A.전담자_계정,
+            A.가중취업자점수, A.가중알선취업자점수, A.가중조기취업자점수,
+            A.가중나은취업자점수, A.총점,
+            <!-- MyBatis 조건부 처리 -->
+            <choose>
+                <when test="!dashboardExcludeRetention">
+                    0 AS 가중고용취업자점수  -- 고용제거 테이블 사용시
+                </when>
+                <otherwise>
+                    A.가중고용취업자점수     -- 일반 테이블 사용시
+                </otherwise>
+            </choose>,
+            ISNULL(L.근속1년이상여부, 0) AS 근속1년이상여부,
+            ISNULL(L.근속기간구분, '1년미만') AS 근속기간구분
+        FROM
         <choose>
             <when test="!dashboardExcludeRetention">
-                FROM 평가실적및점수_고용제거 A
+                평가실적및점수_고용제거 A
             </when>
             <otherwise>
-                ,가중고용취업자점수
-                FROM 평가실적및점수 A
+                평가실적및점수 A
             </otherwise>
         </choose>
+        LEFT JOIN 근속기간_계산 L ON A.전담자_계정 = L.아이디
+        WHERE A.지점 = #{dashboardBranch}  -- 조기 필터링으로 데이터셋 축소
         ),
-        총점및인원데이터 AS (
+        집계데이터 AS (
         SELECT
-        A.지점,
-        SUM(
-        CASE WHEN (
-        (L.입사일 IS NOT NULL AND L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01' AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
-        OR
-        (L.최종발령일 IS NOT NULL AND L.최종발령일 > '1900-01-01' AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365)
-        ) THEN 총점
-        ELSE 0 END) AS 지점_총점,
-        SUM(
-        CASE WHEN (
-        (L.입사일 IS NOT NULL AND L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01' AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
-        OR
-        (L.최종발령일 IS NOT NULL AND L.최종발령일 > '1900-01-01' AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365)
-        ) THEN 1
-        ELSE 0 END) AS 지점_전담자수
-        FROM 전체점수데이터 A
-        LEFT JOIN J_참여자관리_로그인정보 L ON A.전담자_계정 = L.아이디
-        GROUP BY A.지점
-        ),
-        지점_통계 AS (
-        SELECT
-        지점,
-        SUM(총점) AS 지점_총점,
-        COUNT(이름) AS 지점_전담자수
-        FROM 전체점수데이터
+            지점,
+            SUM(CASE WHEN 근속1년이상여부 = 1 THEN 총점 ELSE 0 END) AS 지점_총점,
+            SUM(CASE WHEN 근속1년이상여부 = 1 THEN 1 ELSE 0 END) AS 지점_전담자수,
+            COUNT(*) AS 전체_전담자수,
+            SUM(총점) AS 전체_총점
+        FROM 기본데이터
         GROUP BY 지점
         ),
-        전체_평균 AS (
+        전체평균 AS (
         SELECT
-        ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수),0),2) 총평균
-        FROM 총점및인원데이터
+            ROUND(SUM(지점_총점) * 1.0 / NULLIF(SUM(지점_전담자수), 0), 2) AS 총평균
+        FROM 집계데이터
         ),
-        지점_평균_순위 AS (
+        지점평균 AS (
         SELECT
-        T.지점,
-        ROUND(T.지점_총점/NULLIF(T.지점_전담자수,0),2) AS 지점_평균,
-        A.총평균
-        FROM 지점_통계 T, 전체_평균 A
-        ),
-        순위_데이터 AS (
-        SELECT
-        RANK() OVER (ORDER BY D.총점 DESC) AS 전체순위,
-        FLOOR(PERCENT_RANK() OVER (ORDER BY D.총점 DESC)*10000)/100 AS 순위_퍼센트,
-        D.이름,
-        D.전담자_계정,
-        D.지점,
-        D.가중취업자점수,
-        D.가중알선취업자점수,
-        D.가중조기취업자점수,
-        <choose>
-            <when test="dashboardExcludeRetention">
-                D.가중고용취업자점수,
-            </when>
-        </choose>
-        D.가중나은취업자점수,
-        D.총점,
-        P.지점_평균,
-        P.총평균,
-        CASE WHEN (
-        (L.입사일 IS NOT NULL AND (L.입사일 > '1900-01-01' AND L.최종발령일 <![CDATA[<=]]> '1900-01-01') AND DATEDIFF(DAY, L.입사일, GETDATE()) >= 365)
-        OR (L.최종발령일 IS NOT NULL AND L.최종발령일 > '1900-01-01' AND DATEDIFF(DAY, L.최종발령일, GETDATE()) >= 365))
-        THEN '1년이상' ELSE '1년미만'
-        END AS 근속기간구분
-        FROM 전체점수데이터 D
-        JOIN 지점_평균_순위 P ON D.지점 = P.지점
-        LEFT JOIN J_참여자관리_로그인정보 L ON D.전담자_계정 = L.아이디
+            지점,
+            ROUND(지점_총점 * 1.0 / NULLIF(지점_전담자수, 0), 2) AS 지점_평균
+        FROM 집계데이터
+        WHERE 지점 = #{dashboardBranch}
         )
         SELECT
-        전체순위,
-        이름 AS dashBoardUserName,
-        전담자_계정 AS dashboardUserID,
-        지점 AS dashboardBranch,
-        가중취업자점수 AS employmentLastScore,
-        가중알선취업자점수 AS placementLastScore,
-        가중조기취업자점수 AS earlyEmploymentLastScore,
-        <choose>
-            <when test="dashboardExcludeRetention">
-                가중고용취업자점수 AS retentionLastScore,
-            </when>
-        </choose>
-        가중나은취업자점수 AS betterJobLastScore,
-        총점 AS totalScore,
-        지점_평균 AS myBranchScoreAVG,
-        총평균 AS totalBranchScoreAVG
-        FROM 순위_데이터
-        WHERE 지점 = #{dashboardBranch}
+            RANK() OVER (ORDER BY B.총점 DESC) AS 전체순위,
+            FLOOR(PERCENT_RANK() OVER (ORDER BY B.총점 DESC) * 10000) / 100 AS 순위_퍼센트,
+            B.이름 AS dashBoardUserName,
+            B.전담자_계정 AS dashboardUserID,
+            B.지점 AS dashboardBranch,
+            B.가중취업자점수 AS employmentLastScore,
+            B.가중알선취업자점수 AS placementLastScore,
+            B.가중조기취업자점수 AS earlyEmploymentLastScore,
+            <choose>
+                <when test="dashboardExcludeRetention">
+                    B.가중고용취업자점수 AS retentionLastScore,
+                </when>
+            </choose>
+            B.가중나은취업자점수 AS betterJobLastScore,
+            B.총점 AS totalScore,
+            J.지점_평균 AS myBranchScoreAVG,
+            T.총평균 AS totalBranchScoreAVG
+        FROM 기본데이터 B
+        CROSS JOIN 전체평균 T
+        INNER JOIN 지점평균 J ON B.지점 = J.지점;
     </select>
 
     <!-- 지점별 상담사 상위 20% 실적 점수 데이터 -->
