@@ -114,7 +114,7 @@ public class DashboardAjaxController {
     @PostMapping("dashBoardAjaxBranchScore.login")
     public String consolScore(@RequestBody DashboardDTO dashboardDTO, HttpSession session){
 //        Code 실행 시간을 확인하기 위해 작성
-//        long beforeTime = System.currentTimeMillis();
+        long beforeTime = System.currentTimeMillis();
 
         log.info("consolScore Start Ajax");
         log.info("consolScore Session select Start");
@@ -214,12 +214,11 @@ public class DashboardAjaxController {
 //        log.info("consolScore [{}]",branchUserScore);
 //        log.info("consolScore [{}]",branchScore);
 
-/*      Code 실행 시간 확인을 위해 작성
+//      Code 실행 시간 확인을 위해 작성
         long afterTime = System.currentTimeMillis();
 
         log.info("End dashboardMain Controller(GetMapping) / beforeTime : [{}], afterTime : [{}]", beforeTime, afterTime);
         log.info("End dashboardMain Controller(GetMapping) / Check Time : [{}]", (afterTime - beforeTime) / 1000);
-        */
         return String.format(
                 "{\"branchUserScore\":%s,\"branchScore\":%s}",
                 branchUserScore,branchScore
@@ -253,22 +252,14 @@ public class DashboardAjaxController {
         return datas;
     }
 
-    @PostMapping("scoreBranchPerformanceAjax.login")
-    public String scoreBranchPerformanceAjax(@RequestBody DashboardDTO dashboardDTO){
+    @PostMapping("scoreBranchPerformanceGraphAjax.login")
+    public String scoreBranchPerformanceGraphAjax(@RequestBody DashboardDTO dashboardDTO){
 
-        boolean conditionFlag = Boolean.parseBoolean(dashboardDTO.getDashboardCondition());
-        log.info("고용유지 포함 여부 [{}]",dashboardDTO.isDashboardExcludeRetention());
+        boolean conditionFlag = dashboardDTO.isDashboardFlagCondition();//Boolean.parseBoolean(dashboardDTO.getDashboardCondition());
+        log.info("scoreBranchPerformanceGraphAjax 고용유지 포함 여부 [{}]",dashboardDTO.isDashboardExcludeRetention());
 
-        if(!conditionFlag){
-            // 1년 미만 상담사 미포함
-            dashboardDTO.setDashboardCondition("selectBranchAvg");
-            log.info("scoreBranchPerformanceAjax (1년 미만 상담사 미포함) : [{}]", false);
-        }
-        else{
-            //1년 미만 상담사 포함
-            dashboardDTO.setDashboardCondition("scoreBranchPerformanceAjax");
-            log.info("scoreBranchPerformanceAjax (1년 미만 상담사 포함) : [{}]", true);
-        }
+        dashboardDTO.setDashboardCondition("selectBranchAvg");
+        log.info("scoreBranchPerformanceGraphAjax (1년 미만 상담사) : [{}]", conditionFlag);
 
         List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
         if(datas.isEmpty() || datas.size() == 0){
@@ -286,6 +277,24 @@ public class DashboardAjaxController {
 
 
         return responseJson;
+    }
+
+    //TODO 각 DB select condition 제작 후 추가.
+    @PostMapping("scoreBranchPerformanceTableAjax.login")
+    public List<DashboardDTO> scoreBranchPerformanceTableAjax(@RequestBody DashboardDTO dashboardDTO){
+
+        boolean conditionFlag = dashboardDTO.isDashboardFlagCondition();
+        log.info("scoreBranchPerformanceTableAjax 고용유지 포함 여부 [{}]",dashboardDTO.isDashboardExcludeRetention());
+
+        dashboardDTO.setDashboardCondition("selectBranchTable");
+        log.info("scoreBranchPerformanceTableAjax (1년 미만 상담사) : [{}]", conditionFlag);
+
+        List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
+        if(datas.isEmpty() || datas.size() == 0){
+            return null;
+        }
+        log.info("scoreBranchPerformanceTableAjax datas : [{}]",datas);
+        return datas;
     }
 
 }
