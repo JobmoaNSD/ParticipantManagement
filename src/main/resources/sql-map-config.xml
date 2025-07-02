@@ -9,15 +9,16 @@
 <!--    </settings>-->
 
     <typeAliases>
-        <typeAlias type="com.jobmoa.app.biz.login.MemberDTO" alias="member" />
-        <typeAlias type="com.jobmoa.app.biz.participant.ParticipantDTO" alias="participant" />
-        <typeAlias type="com.jobmoa.app.biz.participantBasic.BasicDTO" alias="basic" />
-        <typeAlias type="com.jobmoa.app.biz.participantCounsel.CounselDTO" alias="counsel" />
-        <typeAlias type="com.jobmoa.app.biz.participantEmployment.EmploymentDTO" alias="employment" />
-        <typeAlias type="com.jobmoa.app.biz.particcertif.ParticcertifDTO" alias="particcertif" />
-        <typeAlias type="com.jobmoa.app.biz.participantEducation.EducationDTO" alias="education" />
-        <typeAlias type="com.jobmoa.app.biz.dashboard.DashboardDTO" alias="dashboard" />
-        <typeAlias type="com.jobmoa.app.biz.report.ReportDTO" alias="report" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.login.MemberDTO" alias="member" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.participant.ParticipantDTO" alias="participant" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.participantBasic.BasicDTO" alias="basic" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.participantCounsel.CounselDTO" alias="counsel" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.participantEmployment.EmploymentDTO" alias="employment" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.particcertif.ParticcertifDTO" alias="particcertif" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.participantEducation.EducationDTO" alias="education" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.dashboard.DashboardDTO" alias="dashboard" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.report.ReportDTO" alias="report" />
+        <typeAlias type="com.jobmoa.app.jobPlacement.biz.jobPlacement.JobPlacementDTO" alias="jobPlacement"/>
     </typeAliases>
 
     <mappers>
@@ -30,5 +31,6 @@
         <mapper resource="mappings/Education-mapping.xml" />
         <mapper resource="mappings/Dashboard-mapping.xml" />
         <mapper resource="mappings/Report-mapping.xml" />
+        <mapper resource="mappings/jobPlacement-mapping.xml"/>
     </mappers>
 </configuration>

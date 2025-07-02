@@ -37,6 +37,7 @@
         <url-pattern>*.login</url-pattern>
         <url-pattern>/external/*</url-pattern>
         <url-pattern>/chatBot/*</url-pattern>
+        <url-pattern>/jobPlacement/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

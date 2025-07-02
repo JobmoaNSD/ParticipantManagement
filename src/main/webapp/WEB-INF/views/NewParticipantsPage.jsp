@@ -121,9 +121,6 @@
     <link rel="stylesheet" href="css/recommend.css">
     <script src="js/recommendJS.js"></script>
 
-    <!-- particcertifDiv JS -->
-    <script src="js/particcertifDiv.js"></script>
-
     <!-- educationDiv JS -->
     <script src="js/educationDiv.js"></script>
 

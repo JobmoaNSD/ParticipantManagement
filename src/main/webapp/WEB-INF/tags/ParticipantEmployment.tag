@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ attribute name="employment" type="com.jobmoa.app.biz.participantEmployment.EmploymentDTO" %>
+<%@ attribute name="employment" type="com.jobmoa.app.CounselMain.biz.participantEmployment.EmploymentDTO" %>
 
 <%-- 취업정보 입력 폼 시작 --%>
 <div class="row card mt-3">
