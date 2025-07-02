@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ attribute name="counsel" type="com.jobmoa.app.biz.participantCounsel.CounselDTO" %>
+<%@ attribute name="counsel" type="com.jobmoa.app.CounselMain.biz.participantCounsel.CounselDTO" %>
 
 <%-- 상담정보 입력 폼 시작 --%>
 <div class="row card mt-3">

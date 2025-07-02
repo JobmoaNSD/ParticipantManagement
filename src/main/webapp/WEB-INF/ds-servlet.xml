@@ -8,15 +8,17 @@
 						http://www.springframework.org/schema/context
 						http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.jobmoa.app.view.login"/>
-    <context:component-scan base-package="com.jobmoa.app.view.participant"/>
-    <context:component-scan base-package="com.jobmoa.app.view.dashboard"/>
-    <context:component-scan base-package="com.jobmoa.app.view.ajaxPackage"/>
-    <context:component-scan base-package="com.jobmoa.app.view.management"/>
-    <context:component-scan base-package="com.jobmoa.app.view.function"/>
-    <context:component-scan base-package="com.jobmoa.app.view.report"/>
-    <context:component-scan base-package="com.jobmoa.app.view.chatBot"/>
-    <context:component-scan base-package="com.jobmoa.app.view.branchManagement"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.login"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.participant"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.dashboard"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.ajaxPackage"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.management"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.function"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.report"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.chatBot"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.branchManagement"/>
+
+    <context:component-scan base-package="com.jobmoa.app.jobPlacement.view.jobPlacement"/>
 
     <!-- jackson bean -->
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
@@ -43,7 +45,7 @@
 <!--            <mvc:exclude-mapping path="/resources/**"/>-->
 
             <!-- Interceptor 클래스 등록 -->
-            <bean class="com.jobmoa.app.biz.interceptor.LoginInterceptor"/>
+            <bean class="com.jobmoa.app.CounselMain.biz.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 </beans>

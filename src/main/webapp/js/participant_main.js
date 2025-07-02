@@ -327,15 +327,17 @@ $(document).ready(function () {
     iapBefore.on('click', function () {
         const number = getJobNumber($(this).closest('tr'));
         const $inputs = $(this).find('input');
-        const iapDate = $inputs.filter('.iapDate').val() || '';
-        const iap3Month = $inputs.filter('.iap3Month').val() || '';
-        const iap5Month = $inputs.filter('.iap5Month').val() || '';
+        const participantIAP3MonthTD = $(this).closest('tr').find('.participantIAP3Month-td');
+        const participantIAP5MonthTD = $(this).closest('tr').find('.participantIAP5Month-td');
+        // const iapDate = $inputs.filter('.iapDate').val() || '';
+        const iap3Month = $inputs.filter('.isIap3Month').val() || '';
+        const iap5Month = $inputs.filter('.isIap5Month').val() || '';
 
         let is_iap3Month = (iap3Month==='true');
         let is_iap5Month = (iap5Month==='true');
 
-        // Date 객체로 변환
-        const baseDate = new Date(iapDate);
+        // // Date 객체로 변환
+        // const baseDate = new Date(iapDate);
 
         //모달창 구직번호
         const jobNo = $('#iapBeforeJobNo');
@@ -352,7 +354,11 @@ $(document).ready(function () {
         iap3MonthText.val('');
         iap5MonthText.val('');
 
-        //기본 날짜가 1900-01-01 일자 이후일때 실행
+        iap3MonthText.val(participantIAP3MonthTD.text());
+        iap5MonthText.val(participantIAP5MonthTD.text());
+        jobNo.val(number);
+
+        /*//기본 날짜가 1900-01-01 일자 이후일때 실행
         if(iapDate > '1900-01-01'){
             // 3개월 이후 날짜 계산
             const after3Months = new Date(baseDate);
@@ -380,18 +386,176 @@ $(document).ready(function () {
             iap3MonthText.val(iapDate3Months);
             iap5MonthText.val(iapDate5Months);
             jobNo.val(number);
-        }
+        }*/
     })
     // IAP 수립 후 3,5개월 확인 끝
 
-    // IAP 수립 3,5 개월 여부 변경 시작
-    $('#iapBeforeSave').on('click', function () {
-        const number = $('#iapBeforeJobNo').val();
-        const iap3MonthText = $('#iap3MonthText').val();
-        const iap5MonthText = $('#iap5MonthText').val();
-        const iap3MonthModalCheckBox = $('#iap3MonthModalCheckBox').is(':checked');
-        const iap5MonthModalCheckBox = $('#iap5MonthModalCheckBox').is(':checked');
+    // IAP 수립 후 3,5개월 td 색지정 시작
+    /**
+     * IAP 월차별 상담 여부 배경색 설정 및 클릭 이벤트 처리
+     * @param {string} selector - 대상 요소 선택자
+     * @param {string} monthType - 월차 타입 ('3' 또는 '5')
+     */
+    function setIapMonthBackground(selector, monthType) {
+        const COLORS = {
+            FALSE: 'rgba(255,58,58,0.55)',  // 빨간색 - 상담 미완료
+            TRUE: 'rgba(0,255,0,0.51)'      // 초록색 - 상담 완료
+        };
 
+        const MESSAGES = {
+            3: {
+                title: "IAP 수립 후 3개월차 상담 여부를 변경하시겠습니까?",
+                complete: "변경시 상담 완료 상태로 변환됩니다.",
+                incomplete: "변경시 상담 미완료 상태로 변환됩니다.",
+                priority: "5개월차 상담 여부를 먼저 변경해주세요."
+            },
+            5: {
+                title: "IAP 수립 후 5개월차 상담 여부를 변경하시겠습니까?",
+                complete: "변경시 상담 완료 상태로 변환됩니다.",
+                incomplete: "변경시 상담 미완료 상태로 변환됩니다.",
+                priority: "3개월차 상담 여부를 먼저 변경해주세요."
+            }
+        };
+
+        // 초기 배경색 설정
+        initializeBackgroundColors();
+
+        // 클릭 이벤트 등록
+        registerClickEvent();
+
+        /**
+         * 초기 배경색 설정
+         */
+        function initializeBackgroundColors() {
+            $(selector).each(function () {
+                const $this = $(this);
+
+                if (shouldSkipElement($this)) return;
+
+                const isIapMonth = getIapMonthValue($this, monthType);
+                $this.css('background-color', isIapMonth ? COLORS.TRUE : COLORS.FALSE);
+            });
+        }
+
+        /**
+         * 클릭 이벤트 등록
+         */
+        function registerClickEvent() {
+            $(selector).on('click', function () {
+                const $this = $(this);
+
+                if (shouldSkipElement($this)) return;
+
+                handleIapMonthClick($this);
+            });
+        }
+
+        /**
+         * 요소를 건너뛸지 판단
+         * @param {jQuery} $element - 대상 요소
+         * @returns {boolean} 건너뛸지 여부
+         */
+        function shouldSkipElement($element) {
+            const $participantProgressTD = $element.closest('tr').find('.participantProgress-td');
+            return $participantProgressTD.text().trim() === 'IAP 전' ||
+                $element.text().trim() === '';
+        }
+
+        /**
+         * IAP 월차 값 조회
+         * @param {jQuery} $element - 대상 요소
+         * @param {string} type - 월차 타입
+         * @returns {boolean} IAP 월차 값
+         */
+        function getIapMonthValue($element, type) {
+            const $isIapMonth = $element.find('input').filter(`.isIap${type}Month`);
+            return $isIapMonth.val() === 'true';
+        }
+
+        /**
+         * IAP 월차 클릭 처리
+         * @param {jQuery} $clickedElement - 클릭된 요소
+         */
+        function handleIapMonthClick($clickedElement) {
+            const $row = $clickedElement.closest('tr');
+            const $isIap3Month = $row.find('input').filter('.isIap3Month');
+            const $isIap5Month = $row.find('input').filter('.isIap5Month');
+
+            let isIap3MonthVal = $isIap3Month.val() === 'true';
+            let isIap5MonthVal = $isIap5Month.val() === 'true';
+
+            const currentValue = monthType === '3' ? isIap3MonthVal : isIap5MonthVal;
+            const message = MESSAGES[monthType];
+            const title = message.title;
+            const subTitle = currentValue ? message.incomplete : message.complete;
+
+            alertConfirmWarning(title, subTitle, "변경", "취소").then((result) => {
+                if (!result) return;
+
+                // 유효성 검사 및 값 변경
+                const validationResult = validateAndUpdateValues();
+                if (!validationResult.isValid) {
+                    alertDefaultInfo(validationResult.message, "");
+                    return;
+                }
+
+                // UI 업데이트
+                $clickedElement.css('background-color',
+                    validationResult.newValue ? COLORS.TRUE : COLORS.FALSE);
+
+                // 서버 업데이트
+                iapBeforeSaveAjax(
+                    getJobNumber($row),
+                    validationResult.iap3MonthVal,
+                    validationResult.iap5MonthVal
+                );
+
+                // 폼 값 업데이트
+                $isIap3Month.val(validationResult.iap3MonthVal);
+                $isIap5Month.val(validationResult.iap5MonthVal);
+            });
+
+            /**
+             * 유효성 검사 및 값 업데이트
+             * @returns {Object} 검사 결과 및 새로운 값들
+             */
+            function validateAndUpdateValues() {
+                if (monthType === '3') {
+                    if (isIap5MonthVal) {
+                        return { isValid: false, message: message.priority };
+                    }
+
+                    isIap3MonthVal = !isIap3MonthVal;
+                    return {
+                        isValid: true,
+                        newValue: isIap3MonthVal,
+                        iap3MonthVal: isIap3MonthVal,
+                        iap5MonthVal: isIap5MonthVal
+                    };
+                } else if (monthType === '5') {
+                    if (!isIap3MonthVal) {
+                        return { isValid: false, message: message.priority };
+                    }
+
+                    isIap5MonthVal = !isIap5MonthVal;
+                    return {
+                        isValid: true,
+                        newValue: isIap5MonthVal,
+                        iap3MonthVal: isIap3MonthVal,
+                        iap5MonthVal: isIap5MonthVal
+                    };
+                }
+            }
+        }
+    }
+
+// 함수 호출
+    setIapMonthBackground('.participantIAP3Month-td', '3');
+    setIapMonthBackground('.participantIAP5Month-td', '5');
+    // IAP 수립 후 3,5개월 td 색지정 끝
+
+    // IAP 수립 3,5 개월 여부 변경 함수 시작
+    function iapBeforeSaveAjax(number, iap3Month, iap5Month) {
         $.ajax({
             url: 'iapBeforeSaveAjax.login',
             type: 'POST',
@@ -399,8 +563,8 @@ $(document).ready(function () {
             dataType: 'json',
             data: JSON.stringify({
                 participantJobNo: number,
-                participantISIAP3Month: iap3MonthModalCheckBox,
-                participantISIAP5Month: iap5MonthModalCheckBox,
+                participantISIAP3Month: iap3Month,
+                participantISIAP5Month: iap5Month,
             }),
             success: function (data) {
                 console.log("Ajax Success : [" + data + "]");
@@ -412,21 +576,21 @@ $(document).ready(function () {
                     alertDefaultError(title, message).then((result) => {
                         console.log("result : [" + result + "]");
                     });
-                    return;
+                    //return;
                 }
-                alertDefaultSuccess(title, message).then((result) => {
-                    console.log("result : [" + result + "]");
-                    if (data) {
-                        location.reload();
-                    }
-                });
+                // alertDefaultSuccess(title, message).then((result) => {
+                //     console.log("result : [" + result + "]");
+                //     if (data) {
+                //         location.reload();
+                //     }
+                // });
             },
             error: function (data) {
                 console.log("Ajax Error : [" + data+ "]");
                 alertDefaultError('수정 실패','오류 발생 : ' + data);
             }
         })
-    })
+    }
     // IAP 수립 3,5 개월 여부 변경 끝
 
     // 마감 여부 시작

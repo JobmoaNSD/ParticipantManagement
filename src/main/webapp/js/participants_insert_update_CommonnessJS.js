@@ -91,12 +91,6 @@ $(document).ready(function () {
             counselInItCons.val(counselLastConsVal);
             return;
         }
-        else if(counselLastConsVal.length > 0 && counselInItConsVal.length > 0){
-            if(!counselJobSkillVal.length > 0){
-                alertDefaultInfo('취업역량을 선택해주세요.','')
-                return;
-            }
-        }
 
         //취창업일이 비어있고 임금 OR 취업인센티브_구분이 비어있다면 함수에서 내보낸다.
         if(!employmentStartDateVal.length > 0){
