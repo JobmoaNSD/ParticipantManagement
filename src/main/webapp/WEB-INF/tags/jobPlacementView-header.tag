@@ -4,7 +4,7 @@
 <header role="banner" class="system-header">
     <div class="container">
         <h1 class="system-title" id="systemTitle">
-            <img src="/img/JobmoaLogo.png" alt="Jobmoa Logo" class="system-logo" width="100" height="45">
+            <a href="./placementList"><img src="/img/JobmoaLogo.png" alt="Jobmoa Logo" class="system-logo" width="100" height="45"></a>
 <%--            <i class="bi bi-briefcase-fill"></i>--%>
             (주)잡모아 국민취업지원제도 알선 통합 관리 시스템
         </h1>

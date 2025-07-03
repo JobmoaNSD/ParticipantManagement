@@ -9,6 +9,7 @@ public class DashboardDTO {
     private int dashboardTotalCount; //참여자 수
     private int dashboardByYearCount1; //년도별 참여자 1
     private int dashboardByYearCount2; //년도별 참여자 2
+    private int dashboardByYearCount3; //년도별 참여자 3
 
     //DB 외 정보
     private String dashboardCondition; // 개발자 구분
@@ -166,6 +167,7 @@ public class DashboardDTO {
     private String myTotalRanking; //전체내순위
 
     private boolean dashboardExcludeRetention; // 고용유지 포함 여부
+    private boolean dashboardBranchAndPeople; // 지점, 개인별 조회 여부
 
     //메인 대시보드 내 실적 현황 25% 평균 현황 (상위 15%, 하위 15% 제외)
     private double avgEmploymentRateMiddle; // 취업률

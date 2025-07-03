@@ -277,21 +277,27 @@ public class DashboardAjaxController {
         return responseJson;
     }
 
-    //TODO 각 DB select condition 제작 후 추가.
     @PostMapping("scoreBranchPerformanceTableAjax.login")
     public List<DashboardDTO> scoreBranchPerformanceTableAjax(@RequestBody DashboardDTO dashboardDTO){
 
         boolean conditionFlag = dashboardDTO.isDashboardFlagCondition();
         log.info("scoreBranchPerformanceTableAjax 고용유지 포함 여부 [{}]",dashboardDTO.isDashboardExcludeRetention());
 
-        dashboardDTO.setDashboardCondition("selectBranchTable");
+        log.info("scoreBranchPerformanceTableAjax dashboardDTO.isDashboardBranchAndPeople() : [{}]",dashboardDTO.isDashboardBranchAndPeople());
+
+        String condition = "selectBranchTable";
+        if(!dashboardDTO.isDashboardBranchAndPeople()){
+            condition = "selectPeopleTable";
+        }
+
+        dashboardDTO.setDashboardCondition(condition);
         log.info("scoreBranchPerformanceTableAjax (1년 미만 상담사) : [{}]", conditionFlag);
 
         List<DashboardDTO> datas = dashboardService.selectAll(dashboardDTO);
         if(datas.isEmpty() || datas.size() == 0){
             return null;
         }
-        log.info("scoreBranchPerformanceTableAjax datas : [{}]",datas);
+//        log.info("scoreBranchPerformanceTableAjax datas : [{}]",datas);
         return datas;
     }
 

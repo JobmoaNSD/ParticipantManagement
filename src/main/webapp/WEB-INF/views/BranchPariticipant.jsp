@@ -357,22 +357,10 @@
                                                 </td>
                                                 <td>${data.participantLastCons}</td>
                                                 <td class="adventCons-td">${data.participantAdventCons}</td>
-                                                <td class="participantProgress-td">
-                                                    <c:choose>
-                                                        <c:when test="${data.participantProgress eq 'IAP 후'}">
-                                                            <span value="${data.participantIAPDate}" class="btn badge bg-info w-75 iapBefore" data-bs-toggle="modal" data-bs-target="#iapBeforeButtonModal">
-                                                                IAP 후
-                                                                <input type="hidden" class="iapDate" value="${data.participantIAPDate}" readonly>
-                                                                <input type="hidden" class="iap3Month" value="${data.participantISIAP3Month}" readonly>
-                                                                <input type="hidden" class="iap5Month" value="${data.participantISIAP5Month}" readonly>
-                                                            </span>
-                                                        </c:when>
-                                                        <c:otherwise>${data.participantProgress}</c:otherwise>
-                                                    </c:choose>
-                                                </td>
+                                                <td class="participantProgress-td">${data.participantProgress}</td>
                                                 <td>${data.participantInItCons}</td>
-                                                <td>${data.participantIAP3Month}</td>
-                                                <td>${data.participantIAP5Month}</td>
+                                                <td class="participantIAP3Month-td">${data.participantIAP3Month} <input type="hidden" class="isIap3Month" value="${data.participantISIAP3Month}" readonly></td>
+                                                <td class="participantIAP5Month-td">${data.participantIAP5Month} <input type="hidden" class="isIap5Month" value="${data.participantISIAP5Month}" readonly></td>
                                                 <td>${data.participantEmploymentService eq '' or data.participantEmploymentService eq null?0:data.participantEmploymentService} 회</td>
                                                 <td>${data.participantAllowanceDate}</td>
                                                 <td>${data.participantJobEX}</td>

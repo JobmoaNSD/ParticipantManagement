@@ -542,15 +542,16 @@
         T.지점평균 DESC
     </select>
 
-    <!-- 지점별 실적 데이터 표 Query -->
+    <!-- 지점별 실적 데이터 실적 표 Query -->
     <select id="selectBranchTable" resultType="dashboard">
         WITH 참여자_년도별_집계 AS (
         -- 참여자 데이터를 한 번에 집계하여 서브쿼리 제거
         SELECT
             지점,
-            SUM(CASE WHEN 등록년도 = 2024 THEN 1 ELSE 0 END) AS 참여자_2024,
-            SUM(CASE WHEN 등록년도 = 2025 THEN 1 ELSE 0 END) AS 참여자_2025,
-            SUM(CASE WHEN 등록년도 IN (2024, 2025) THEN 1 ELSE 0 END) AS 참여자_합계
+            SUM(CASE WHEN 등록년도 = YEAR(DATEADD(YEAR,-2,GETDATE())) THEN 1 ELSE 0 END) AS 참여자_2023,
+            SUM(CASE WHEN 등록년도 = YEAR(DATEADD(YEAR,-1,GETDATE())) THEN 1 ELSE 0 END) AS 참여자_2024,
+            SUM(CASE WHEN 등록년도 = YEAR(GETDATE()) THEN 1 ELSE 0 END) AS 참여자_2025,
+            SUM(CASE WHEN 등록년도 IN (YEAR(DATEADD(YEAR,-2,GETDATE())),YEAR(DATEADD(YEAR,-1,GETDATE())), YEAR(GETDATE())) THEN 1 ELSE 0 END) AS 참여자_합계
         FROM (
         SELECT
             지점,
@@ -590,8 +591,9 @@
         )
         SELECT
             A.지점 AS dashboardBranch,
-            ISNULL(P.참여자_2024, 0) AS dashboardByYearCount1,
-            ISNULL(P.참여자_2025, 0) AS dashboardByYearCount2,
+            ISNULL(P.참여자_2023, 0) AS dashboardByYearCount1,
+            ISNULL(P.참여자_2024, 0) AS dashboardByYearCount2,
+            ISNULL(P.참여자_2025, 0) AS dashboardByYearCount3,
             ISNULL(P.참여자_합계, 0) AS dashboardTotalCount,
             SUM(A.종료자수) AS totalCompleted,
             SUM(A.취업자만) AS totalEmployed, -- 상담사 이전 가중치 적용 취업자수
@@ -645,10 +647,109 @@
         LEFT JOIN 참여자_년도별_집계 P ON A.지점 = P.지점
         GROUP BY
             A.지점,
+            P.참여자_2023,
             P.참여자_2024,
             P.참여자_2025,
             P.참여자_합계,
             C.상담사총인원
+        ORDER BY totalScore DESC
+    </select>
+
+    <!-- 개인별 실적 데이터 실적 표 Query -->
+    <select id="selectPeopleTable" resultType="dashboard">
+        WITH 참여자_년도별_집계 AS (
+        -- 참여자 데이터를 한 번에 집계하여 서브쿼리 제거
+        SELECT
+            전담자_계정,
+            SUM(CASE WHEN 등록년도 = YEAR(DATEADD(YEAR,-2,GETDATE())) THEN 1 ELSE 0 END) AS 참여자_2023,
+            SUM(CASE WHEN 등록년도 = YEAR(DATEADD(YEAR,-1,GETDATE())) THEN 1 ELSE 0 END) AS 참여자_2024,
+            SUM(CASE WHEN 등록년도 = YEAR(GETDATE()) THEN 1 ELSE 0 END) AS 참여자_2025,
+            SUM(CASE WHEN 등록년도 IN (YEAR(DATEADD(YEAR,-2,GETDATE())),YEAR(DATEADD(YEAR,-1,GETDATE())), YEAR(GETDATE())) THEN 1 ELSE 0 END) AS 참여자_합계
+        FROM (
+            SELECT
+                전담자_계정,
+                YEAR(
+                    CASE
+                        WHEN 등록일 IS NULL OR 등록일 = '' OR 등록일 <![CDATA[<=]]> '1900-01-01'
+                        THEN 초기상담일
+                        ELSE 등록일
+                    END
+            ) AS 등록년도
+        FROM J_참여자관리
+        WHERE (등록일 IS NOT NULL AND 등록일 > '1900-01-01') OR (초기상담일 IS NOT NULL AND 초기상담일 > '1900-01-01')
+        ) AS 참여자_기본
+        GROUP BY 전담자_계정
+        ),
+        자격있는_전담자 AS (
+        -- 전담자 자격 조건을 CTE로 분리하여 가독성 향상
+        SELECT DISTINCT
+            아이디,
+            이름
+        FROM J_참여자관리_로그인정보
+        WHERE
+            (아이디사용여부 NOT IN ('퇴사','정지','잠금') OR 아이디사용여부 IS NULL OR 아이디사용여부 = '')
+            <!-- True 1년 미만 인원 포함 False 1년 미만 인원 미포함-->
+            <if test="!dashboardFlagCondition">
+                AND 근속기간구분 <![CDATA[<>]]> '1년미만'
+            </if>
+        )
+        SELECT
+            A.이름 AS dashBoardUserName,
+            A.지점 AS dashboardBranch,
+            ISNULL(P.참여자_2023, 0) AS dashboardByYearCount1,
+            ISNULL(P.참여자_2024, 0) AS dashboardByYearCount2,
+            ISNULL(P.참여자_2025, 0) AS dashboardByYearCount3,
+            ISNULL(P.참여자_합계, 0) AS dashboardTotalCount,
+            SUM(A.종료자수) AS totalCompleted,
+            SUM(A.취업자만) AS totalEmployed, -- 상담사 이전 가중치 적용 취업자수
+            SUM(A.특정계층취업자수) AS specialGroupCount,
+            SUM(A.취업자수) AS totalEmployedSpecialGroupCount, -- 특정계층 포함 취업자수
+            SUM(A.취업률) AS employmentRate,
+            SUM(A.알선취업자수) AS referredEmploymentCount,
+            SUM(A.알선취업률) AS placementRate,
+            SUM(A.나은일자리수) AS betterJobCount,
+            SUM(A.나은일자리취업률) AS betterJobRate,
+            SUM(A.조기취업자수) AS earlyEmploymentCount,
+            SUM(A.조기취업률) AS earlyEmploymentRate,
+            SUM(A.가중취업자점수) AS employmentScore,
+            SUM(A.가중알선취업자점수) AS placementScore,
+            SUM(A.가중나은취업자점수) AS betterJobScore,
+            SUM(A.가중조기취업자점수) AS earlyEmploymentScore,
+            SUM(A.총점) AS totalScore
+        <choose>
+            <!-- True 1년 미만 인원 포함 False 1년 미만 인원 미포함-->
+            <when test="dashboardFlagCondition">
+                <choose>
+                    <when test="!dashboardExcludeRetention">
+                        FROM 고용부평가실적및점수_고용제거 A
+                    </when>
+                    <otherwise>
+                        ,SUM(A.가중고용취업자점수) AS retentionScore
+                        FROM 고용부평가실적및점수 A
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="!dashboardExcludeRetention">
+                        FROM 평가실적및점수_고용제거 A
+                    </when>
+                    <otherwise>
+                        ,SUM(A.가중고용취업자점수) AS retentionScore
+                        FROM 평가실적및점수 A
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        INNER JOIN 자격있는_전담자 Q ON A.전담자_계정 = Q.아이디
+        LEFT JOIN 참여자_년도별_집계 P ON A.전담자_계정 = P.전담자_계정
+        GROUP BY
+            A.이름,
+            A.지점,
+            P.참여자_2023,
+            P.참여자_2024,
+            P.참여자_2025,
+            P.참여자_합계
         ORDER BY totalScore DESC
     </select>
 

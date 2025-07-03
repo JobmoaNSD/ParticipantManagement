@@ -126,6 +126,15 @@ $(document).ready(function () {
                 'title': '<strong>도움말</strong><br>연번 <-> 구직번호 전환 가능'
             }).tooltip();
         }
+        else if(columnValue === 'IAP3개월차' || columnValue === 'IAP5개월차'){
+            $(this).attr
+            ({
+                'data-bs-toggle': 'tooltip',
+                'data-bs-placement': 'top',
+                'data-bs-html': 'true',
+                'title': '<strong>도움말</strong><br>'+columnValue+' 클릭시<br>오름차순,내림차순 정렬<br>초록:상담완료<br>빨강:상담미완료'
+            }).tooltip();
+        }
         else{
             $(this).attr
             ({
@@ -457,7 +466,10 @@ $(document).ready(function () {
          */
         function shouldSkipElement($element) {
             const $participantProgressTD = $element.closest('tr').find('.participantProgress-td');
-            return $participantProgressTD.text().trim() === 'IAP 전' ||
+            const $isClose_span = $element.closest('tr').find('.isClose_span');
+            console.log('$participantProgressTD : [{}] ',$participantProgressTD.text().trim())
+            console.log('$isClose_span : [{}] ',$isClose_span.text().trim())
+            return $participantProgressTD.text().trim() === 'IAP 전' || $isClose_span.text().trim() === '마감' ||
                 $element.text().trim() === '';
         }
 

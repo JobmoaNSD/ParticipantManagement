@@ -233,7 +233,6 @@
           <ul class="pagination">
           </ul>
       </nav>
-      <%-- 페이지네이션 끝 --%>
   </div>
 </main>
 
@@ -291,8 +290,8 @@
       });
 
       // 필터
-      document.getElementById('statusFilter').addEventListener('change', () => this.filterParticipants());
-      document.getElementById('jobFilter').addEventListener('change', () => this.filterParticipants());
+/*      document.getElementById('statusFilter').addEventListener('change', () => this.filterParticipants());
+      document.getElementById('jobFilter').addEventListener('change', () => this.filterParticipants());*/
 
       // 전체 선택/해제
       document.getElementById('selectAllCheckbox').addEventListener('change', (e) => {
@@ -427,7 +426,7 @@
     }
 
     // 참여자 목록 필터링
-    filterParticipants() {
+    /*filterParticipants() {
       const searchTerm = document.getElementById('participantSearch').value.toLowerCase();
       const statusFilter = document.getElementById('statusFilter').value;
       const jobFilter = document.getElementById('jobFilter').value;
@@ -462,7 +461,7 @@
         const row = this.createTableRow(participant, index + 1);
         tbody.appendChild(row);
       });
-    }
+    }*/
 
     // 테이블 행 생성
     createTableRow(participant, rowNumber) {
