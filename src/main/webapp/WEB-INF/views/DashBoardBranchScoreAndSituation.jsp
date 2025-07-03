@@ -72,24 +72,12 @@
     />
     <!-- mouse pointer 모양 bootstrap 5 -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- 실적 정보 Dfault 디자인 -->
+    <link rel="stylesheet" href="css/DashBoardBranchScoreAndSituation.css" />
+
     <style>
-        /*로딩바용 style*/
-        .loader{
-            width: 24px;
-            height: 24px;
-            border: 4px solid #4A90E2;
-            border-top: 4px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
+
     </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -105,89 +93,205 @@
         <!--begin::App Content-->
         <div class="app-content">
             <!--begin::Main content-->
-            <div class="container-fluid pt-1 pb-1 stack">
-                <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
+            <div class="container-fluid dashboard-container">
+                <!-- 컨트롤 패널 -->
                 <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
-<%--                    <div>--%>
-<%--                        <label  for="excludeRadio" style="max-width: 250px; font-size: 15px;">1년 미만 근로자</label>--%>
-<%--                    </div>--%>
-                    <label for="excludeRetention">고용유지 포함</label>
-                    <input type="checkbox" id="excludeRetention" name="excludeCheck">
-                    <div id = "buttonContainer" class="">
-                        <div class="btn-group w-100" style="max-width: 250px;" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="dashboardFlagEmployment" id="excludeRadio" autocomplete="off" value="false" checked>
-                            <label class="btn btn-outline-primary" for="excludeRadio" style="font-size: 0.6em;">1년 미만 근로자<br>미포함<br>(컨설턴트 평균 비교)</label>
-
-                            <input type="radio" class="btn-check" name="dashboardFlagEmployment" id="includeRadio" autocomplete="off" value="true">
-                            <label class="btn btn-outline-primary" for="includeRadio" style="font-size: 0.6em;">1년 미만 근로자<br>포함<br>(고용부 평가 기준)</label>
+                    <div class="control-panel fade-in">
+                        <div class="row">
+                            <div class="col-12">
+                                <h6><i class="bi bi-sliders"></i> 실적 조회 설정</h6>
+                            </div>
                         </div>
-                    </div>
 
-                    <div id="graphAndTableButtonContainer" class="pt-2">
-                        <div class="btn-group w-100" style="max-width: 250px;" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="GraphAndTable" id="performanceGraphButton" autocomplete="off" value="false" checked>
-                            <label class="btn btn-outline-primary" for="performanceGraphButton" style="font-size: 0.6em;">실적 그래프</label>
+                        <div class="row g-3">
+                            <!-- 그래프/테이블 선택 -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="modern-btn-group">
+                                    <div id="graphAndTableButtonContainer">
+                                        <span class="placeholderText">* 그래프 표 선택</span>
+                                        <div class="btn-group w-100" role="group" aria-label="뷰 선택">
+                                            <input type="radio" class="btn-check" name="GraphAndTable" id="performanceGraphButton" autocomplete="off" value="false" checked>
+                                            <label class="btn" for="performanceGraphButton">
+                                                <i class="bi bi-bar-chart-line-fill"></i>실적 그래프
+                                            </label>
 
-                            <input type="radio" class="btn-check" name="GraphAndTable" id="performanceTableButton" autocomplete="off" value="true">
-                            <label class="btn btn-outline-primary" for="performanceTableButton" style="font-size: 0.6em;">실적 표</label>
+                                            <input type="radio" class="btn-check" name="GraphAndTable" id="performanceTableButton" autocomplete="off" value="true">
+                                            <label class="btn" for="performanceTableButton">
+                                                <i class="bi bi-table"></i>실적 표
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 고용유지 포함여부 -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="modern-btn-group">
+                                    <div id="excludeRetentionButtonContainer">
+                                        <span class="placeholderText">* 고용유지 실적 포함 여부</span>
+                                        <div class="btn-group w-100" role="group" aria-label="고용유지 설정">
+                                            <input type="radio" class="btn-check" name="excludeRetention" id="excludeRetentionRadio" autocomplete="off" value="false" checked>
+                                            <label class="btn" for="excludeRetentionRadio">
+                                                <i class="bi bi-shield-x"></i>고용유지 미포함
+                                            </label>
+
+                                            <input type="radio" class="btn-check" name="excludeRetention" id="includeRetentionRadio" autocomplete="off" value="true">
+                                            <label class="btn" for="includeRetentionRadio">
+                                                <i class="bi bi-shield-check"></i>고용유지 포함
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 지점/개인 선택 -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="modern-btn-group">
+                                    <div id="branchAndPeopleButtonContainer">
+                                        <span class="placeholderText">* 해당 기능은 실적 표에만 적용되는 사항입니다.</span>
+                                        <div class="btn-group w-100" role="group" aria-label="분석 단위">
+                                            <input type="radio" class="btn-check" name="branchAndPeople" id="branchRadio" autocomplete="off" value="false" checked>
+                                            <label class="btn" for="branchRadio">
+                                                <i class="bi bi-building-fill"></i>지점별
+                                            </label>
+
+                                            <input type="radio" class="btn-check" name="branchAndPeople" id="peopleRadio"  autocomplete="off" value="true">
+                                            <label class="btn" for="peopleRadio">
+                                                <i class="bi bi-person-circle"></i>개인별
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1년 미만 근로자 -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="modern-btn-group">
+                                    <div id="buttonContainer">
+                                        <span class="placeholderText">* 해당 버튼 클릭시 조회 시작</span>
+                                        <div class="btn-group w-100" role="group" aria-label="근로자 기준">
+                                            <input type="radio" class="btn-check" name="dashboardFlagEmployment" id="excludeRadio" autocomplete="off" value="false" checked>
+                                            <label class="btn" for="excludeRadio">
+                                                <i class="bi bi-person-dash"></i>1년 미만 근로자 미포함
+                                            </label>
+
+                                            <input type="radio" class="btn-check" name="dashboardFlagEmployment" id="includeRadio" autocomplete="off" value="true">
+                                            <label class="btn" for="includeRadio">
+                                                <i class="bi bi-person-plus"></i>1년 미만 근로자 포함
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </c:if>
 
-                <div id="performanceTableDiv" class="d-flex justify-content-center align-items-center mt-2">
-                    <table id="performanceTable" class="table table-bordered table-hover" style="display: none;">
-                        <thead id="performanceTableHead">
-                        <tr class="table-active text-center" style="font-size: 0.6em;">
-                            <td>연번</td>
-                            <td>지점명</td>
-                            <td>참여자(2024)</td>
-                            <td>참여자(2025)</td>
-                            <td>참여자 합계</td>
-                            <td>종료자</td>
-                            <td>취업자</td>
-                            <td>특정계층</td>
-                            <td>취업자실적</td>
-                            <td>취업자률실적</td>
-                            <td>알선</td>
-                            <td>알선실적</td>
-                            <td>나은취업</td>
-                            <td>나은실적</td>
-                            <td>조기취업</td>
-                            <td>조기실적</td>
-                            <td>취업점수</td>
-                            <td>알선점수</td>
-                            <td>나은점수</td>
-                            <td>조기취업점수</td>
-                            <td>고용유지점수</td>
-                            <td>총점</td>
-                        </tr>
-                        </thead>
-                        <tbody id="performanceTableBody" class="text-center">
-
-                        </tbody>
-                    </table>
+                <!-- 로딩 영역 -->
+                <div id="loadingScoreChartDiv" class="chart-container modern-loader" style="display: none;">
+                    <div class="modern-loader-text">실적 정보를 불러오는 중입니다</div>
+                    <div class="loader"></div>
                 </div>
 
-                <div id="loadingScoreChartDiv" class="d-flex justify-content-center align-items-center"></div>
-                <div id="scoreChartDiv">
-                    <div id="scoreChart">
-
+                <!-- 실적 테이블 영역 -->
+                <div id="performanceTableDiv" class="modern-table-container" style="display: none;">
+                    <div class="table-scroll-container">
+                        <table id="performanceTable" class="table table-hover">
+                            <thead id="performanceTableHead">
+                            <tr class="text-center">
+                                <th>연번</th>
+                                <th id="counsel-th" class="d-none">상담사</th>
+                                <th>지점명</th>
+                                <th>참여자(2023)</th>
+                                <th>참여자(2024)</th>
+                                <th>참여자(2025)</th>
+                                <th>참여자 합계</th>
+                                <th>종료자</th>
+                                <th>취업자</th>
+                                <th>특정계층</th>
+                                <th>취업자실적</th>
+                                <th>취업자률실적</th>
+                                <th>알선</th>
+                                <th>알선실적</th>
+                                <th>나은취업</th>
+                                <th>나은실적</th>
+                                <th>조기취업</th>
+                                <th>조기실적</th>
+                                <th>취업점수</th>
+                                <th>알선점수</th>
+                                <th>나은점수</th>
+                                <th>조기취업점수</th>
+                                <th>고용유지점수</th>
+                                <th>총점</th>
+                            </tr>
+                            </thead>
+                            <tbody id="performanceTableBody" class="text-center">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <span id="tableRowCount">총 0개 항목</span> | 스크롤하여 더 많은 데이터를 확인하세요
                     </div>
                 </div>
 
-                <div id="loadingDiv" class="d-flex justify-content-center align-items-center">
 
+                <!-- 메인 차트 영역 -->
+                <div id="scoreChartDiv" class="chart-container fade-in">
+                    <h5><i class="bi bi-graph-up"></i>지점별 실적 현황</h5>
+                    <div id="scoreChart"></div>
                 </div>
 
-                <div class="row">
-                    <div id="totalScore" class=" col-md-4"></div>
-                    <div id="employmentScore" class=" col-md-4"></div>
-                    <div id="placementScore" class=" col-md-4"></div>
+                <!-- 개별 로딩 영역 -->
+                <div id="loadingDiv" class="chart-container modern-loader" style="display: none;">
+                    <div class="modern-loader-text">상세 분석 데이터를 불러오는 중입니다</div>
+                    <div class="loader"></div>
                 </div>
-                <div class="row">
-                    <div id="retentionScore" class=" col-md-4"></div>
-                    <div id="earlyEmploymentScore" class=" col-md-4"></div>
-                    <div id="betterJobScore" class=" col-md-4"></div>
+
+                <!-- 상세 차트 그리드 -->
+                <div id="detail-chart-grid" class="chart-grid">
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <i class="bi bi-trophy-fill text-warning me-2"></i>총점 현황
+                        </div>
+                        <div id="totalScore"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <i class="bi bi-people-fill text-success me-2"></i>취업자 점수
+                        </div>
+                        <div id="employmentScore"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <i class="bi bi-briefcase-fill text-info me-2"></i>알선 점수
+                        </div>
+                        <div id="placementScore"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <i class="bi bi-shield-fill-check text-primary me-2"></i>고용유지 점수
+                        </div>
+                        <div id="retentionScore"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <i class="bi bi-speedometer2 text-danger me-2"></i>조기취업 점수
+                        </div>
+                        <div id="earlyEmploymentScore"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <i class="bi bi-star-fill text-purple me-2"></i>나은일자리 점수
+                        </div>
+                        <div id="betterJobScore"></div>
+                    </div>
                 </div>
             </div>
             <!--end::Main content-->
@@ -542,10 +646,10 @@
         //초기화 함수
         emptyFunction();
         const $loadingDiv = $('#loadingDiv');
-        $loadingDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
-        const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
-        let isExcludeRetention = excludeRetention.is(':checked');
-        console.log(isExcludeRetention)
+        $loadingDiv.show().html('<div class="modern-loader-text">실적 정보를 불러오는 중입니다</div><div class="loader"></div>');
+        const excludeRetention = $('#excludeRetentionRadio'); //고용유지 포함여부
+        let isExcludeRetention = !excludeRetention.is(':checked');
+        console.log("isExcludeRetention :[" +isExcludeRetention+"]")
         //여러번 클릭하는 것을 방지하기 위해 flag 설정으로 확인 후 반환한다.
         if(!disableFlag){
             alertDefaultWarning('데이터를 조회하는 중입니다.','')
@@ -580,11 +684,11 @@
             const jsonTopScore = ["totalStandardScore","employmentTopScore","placementTopScore","retentionTopScore","earlyEmploymentTopScore","betterJobTopScore"]
             // console.log(jsonScore.length);
             renderDistributionChart(title, maxScore, jsonValue, jsonScore, jsonTopScore);
-            $loadingDiv.empty()
+            $loadingDiv.hide()
             //완료 후 활성화
             disableFlag = true;
         }).catch(r => {
-            $loadingDiv.html('<div> 오류가 발생했습니다.(다른 지점은 선택할 수 없습니다. </div>');
+            $loadingDiv.html('<div class="status-error p-3"> 오류가 발생했습니다.(다른 지점은 선택할 수 없습니다. </div>');
             //오류가 발생해도 사용해야하니 활성화
             disableFlag = true;
         })
@@ -713,7 +817,14 @@
         retentionScore.empty();
         earlyEmploymentScore.empty();
         betterJobScore.empty();
-        loadingDiv.empty();
+        loadingDiv.hide();
+    }
+
+    // 테이블 행 수 업데이트 함수
+    function updateTableRowCount() {
+        const $tableBody = $('#performanceTableBody');
+        const rowCount = $tableBody.find('tr').length;
+        $('#tableRowCount').text(`총 ${rowCount}개 항목`);
     }
 
     $(document).ready(function () {
@@ -734,10 +845,34 @@
             //console.log(changJson);
         }
 
+        // 테이블 변경 감지 및 행 수 업데이트
+        const tableBody = document.getElementById('performanceTableBody');
+        if (tableBody) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        updateTableRowCount();
+                    }
+                });
+            });
+
+            observer.observe(tableBody, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        // 초기 행 수 업데이트
+        updateTableRowCount();
+
         const excludeRadio = $('#excludeRadio'); //미포함
         const includeRadio = $('#includeRadio'); //포함
         const performanceGraphButton = $('#performanceGraphButton'); //실적 그래프 버튼
         const performanceTableButton = $('#performanceTableButton'); //실적 표 버튼
+        const excludeRetentionRadio = $('#excludeRetentionRadio'); // 고용유지 미포함 버튼
+        const includeRetentionRadio = $('#includeRetentionRadio'); // 고용유지 포함 버튼
+        const branchRadio = $('#branchRadio'); // 지점 버튼
+        const peopleRadio = $('#peopleRadio'); // 개인 버튼
         const performanceTable = $("#performanceTable"); // 실적 테이블 id
         let isProcessing = false;
 
@@ -794,20 +929,34 @@
         function disableRadioButtons() {
             excludeRadio.prop('disabled', true);
             includeRadio.prop('disabled', true);
+
             performanceGraphButton.prop('disabled', true);
             performanceTableButton.prop('disabled', true);
+
+            excludeRetentionRadio.prop('disabled', true);
+            includeRetentionRadio.prop('disabled', true);
+
+            branchRadio.prop('disabled', true);
+            peopleRadio.prop('disabled', true);
         }
 
         function enableRadioButtons() {
             excludeRadio.prop('disabled', false);
             includeRadio.prop('disabled', false);
+
             performanceGraphButton.prop('disabled', false);
             performanceTableButton.prop('disabled', false);
+
+            excludeRetentionRadio.prop('disabled', false);
+            includeRetentionRadio.prop('disabled', false);
+
+            branchRadio.prop('disabled', false);
+            peopleRadio.prop('disabled', false);
         }
 
         function fetchPerformanceContract(conditionFlag) {
             return new Promise((resolve, reject) => {
-                performanceTable.hide(); //실적표 숨기기
+                $("#performanceTableDiv").hide(); //실적표 숨기기
                 console.log(conditionFlag, " 실적 그래프 생성중");
                 $("#scoreChartDiv").empty();
                 // 개인 실적 그래프 삭제
@@ -817,18 +966,19 @@
                 retentionScore.empty();
                 earlyEmploymentScore.empty();
                 betterJobScore.empty();
-                loadingDiv.empty();
+                loadingDiv.hide();
 
                 const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
-                $loadingScoreChartDiv.html('실적 정보를 불러오는 중입니다.<div class="loader"></div>');
+                $loadingScoreChartDiv.show().html('<div class="modern-loader-text">실적 정보를 불러오는 중입니다</div><div class="loader"></div>');
 
                 changJson = {
                     name: [],
                     data: []
                 }
 
-                const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
-                let isExcludeRetention = excludeRetention.is(':checked');
+                const excludeRetention = $('#excludeRetentionRadio'); //고용유지 포함여부
+                let isExcludeRetention = !excludeRetention.is(':checked');
+                console.log("isExcludeRetention :[" +isExcludeRetention+"]")
 
                 fetch('scoreBranchPerformanceGraphAjax.login', {
                     method: 'POST',
@@ -846,7 +996,7 @@
                 })
                     .then(async response => {
                         console.log(conditionFlag, " 실적 그래프삭제 진행끝");
-                        $("#scoreChartDiv").append('<div id="scoreChart"></div>');
+                        $("#scoreChartDiv").html('<h5><i class="bi bi-graph-up"></i>지점별 실적 현황</h5><div id="scoreChart"></div>');
 
                         let data = JSON.parse(await response.json());
                         if (data.length === 0) {
@@ -857,13 +1007,13 @@
                         changeData(data);
                         // 실적 차트 생성
                         renderScoreChart(changJson);
-                        $loadingScoreChartDiv.empty();
+                        $loadingScoreChartDiv.hide();
 
                         resolve(data); // 성공 시 데이터 반환
                     })
                     .catch(error => {
                         console.error(error);
-                        $loadingScoreChartDiv.html("Error 발생 : " + error);
+                        $loadingScoreChartDiv.html('<div class="status-error p-3">Error 발생 : ' + error + '</div>');
                         reject(error); // 에러 발생 시 reject
                     });
             });
@@ -877,6 +1027,20 @@
                 //테이블 삭제
                 $("#performanceTableBody").empty();
 
+                const branchRadio = $('#branchRadio'); // 지점 버튼
+                const peopleRadio = $('#peopleRadio'); // 개인 버튼
+                let branchAndPeople = branchRadio.is(':checked');
+                let peopleRadioIS = peopleRadio.is(':checked');
+
+                if (peopleRadioIS) {
+                    const counselTH = $('#counsel-th');
+                    counselTH.removeClass('d-none');
+                }
+                else {
+                    const counselTH = $('#counsel-th');
+                    counselTH.addClass('d-none');
+                }
+
                 // 개인 실적 그래프 삭제
                 totalScore.empty();
                 employmentScore.empty();
@@ -884,13 +1048,14 @@
                 retentionScore.empty();
                 earlyEmploymentScore.empty();
                 betterJobScore.empty();
-                loadingDiv.empty();
+                loadingDiv.hide();
 
                 const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
-                $loadingScoreChartDiv.html('실적 표를 불러오는 중입니다.<div class="loader"></div>');
+                $loadingScoreChartDiv.show().html('<div class="modern-loader-text">실적 표를 불러오는 중입니다</div><div class="loader"></div>');
 
-                const excludeRetention = $('#excludeRetention'); //고용유지 포함여부
-                let isExcludeRetention = excludeRetention.is(':checked');
+                const excludeRetention = $('#excludeRetentionRadio'); //고용유지 포함여부
+                let isExcludeRetention = !excludeRetention.is(':checked');
+                console.log("isExcludeRetention :[" +isExcludeRetention+"]")
 
                 fetch('scoreBranchPerformanceTableAjax.login', {
                     method: 'POST',
@@ -903,7 +1068,8 @@
                         dashboardFlagCondition: conditionFlag,
                         dashboardExcludeRetention: isExcludeRetention,
                         isManagement: ${IS_MANAGER},
-                        isBranchManagement: ${IS_BRANCH_MANAGER}
+                        isBranchManagement: ${IS_BRANCH_MANAGER},
+                        dashboardBranchAndPeople: branchAndPeople
                     })
                 })
                     .then(async response => {
@@ -921,9 +1087,13 @@
                             numberFormat = Number(key)+1;
                             let row = '<tr>';
                             row += '<td>' + numberFormat + '</td>'; //순번
+                            if(peopleRadioIS){
+                                row += '<td>' + value.dashBoardUserName + '</td>'; //상담사
+                            }
                             row += '<td>' + value.dashboardBranch + '</td>'; //지점
-                            row += '<td>' + value.dashboardByYearCount1 + '</td>'; //전년도 참여자
-                            row += '<td>' + value.dashboardByYearCount2 + '</td>'; //이번년도 참여자
+                            row += '<td>' + value.dashboardByYearCount1 + '</td>'; //전전년도 (ex 2023 참여자
+                            row += '<td>' + value.dashboardByYearCount2 + '</td>'; //전년도 (ex 2024) 참여자
+                            row += '<td>' + value.dashboardByYearCount3 + '</td>'; //당해년도 (ex 2025) 참여자
                             row += '<td>' + value.dashboardTotalCount + '</td>'; //참여자 합계
                             row += '<td>' + value.totalCompleted + '</td>'; //종료자
                             row += '<td>' + value.totalEmployed + '</td>'; //취업자
@@ -947,27 +1117,30 @@
                         })
 
                         // 로딩 표시 제거
-                        $loadingScoreChartDiv.empty();
+                        $loadingScoreChartDiv.hide();
 
-                        performanceTable.show();//데이터 생성 후 실적표 표시
+                        $("#performanceTableDiv").show();//데이터 생성 후 실적표 표시
 
                         resolve(data); // 성공 시 데이터 반환
                     })
                     .catch(error => {
                         console.error(error);
-                        $loadingScoreChartDiv.html("Error 발생 : " + error);
+                        $loadingScoreChartDiv.html('<div class="status-error p-3">Error 발생 : ' + error + '</div>');
                         reject(error); // 에러 발생 시 reject
                     });
             });
         }
 
-
     });
 </script>
-<!-- 실적 그래프, 실적 표 전환  -->
+<!-- 실적표 컬럼 실행함수  -->
 <script>
     $(document).ready(function () {
-
+        scoreOrder();
+        function scoreOrder(){
+            const d = $('#performanceTableHead').find('th').select().text();
+            alert(d)
+        }
     });
 </script>
 <script

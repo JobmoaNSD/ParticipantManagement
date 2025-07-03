@@ -134,6 +134,9 @@
     <script src="js/participant_main.js"></script>
     <script src="js/participant_excel_download.js"></script>
 
+    <!-- 참여자 조회 기본 디자인 설정 -->
+    <link rel="stylesheet" href="css/participantMain.css">
+
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -396,7 +399,7 @@
 </div>
 
 <!-- iapBeforeButton Modal Start -->
-<div class="modal fade" id="iapBeforeButtonModal" tabindex="-1" aria-labelledby="iapBeforeButtonModalLabel" aria-hidden="true">
+<%--<div class="modal fade" id="iapBeforeButtonModal" tabindex="-1" aria-labelledby="iapBeforeButtonModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -406,8 +409,8 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <%-- IAP 수립 후 3,5개월 지난 시점에서 상담을 완료했다면 --%>
-                        <%-- 체크가 가능하도록 한다. --%>
+                        &lt;%&ndash; IAP 수립 후 3,5개월 지난 시점에서 상담을 완료했다면 &ndash;%&gt;
+                        &lt;%&ndash; 체크가 가능하도록 한다. &ndash;%&gt;
                         <div class="row">
                             <input type="hidden" id="iapBeforeJobNo" name="participantJobNo">
                             <div class="col-md-6">
@@ -434,7 +437,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>--%>
 <!-- iapBeforeButton Modal End -->
 
 </body>
