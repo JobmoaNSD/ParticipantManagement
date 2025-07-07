@@ -472,20 +472,14 @@
         ISNULL(A.수당지급일, '') AS participantAllowanceDate,
         ISNULL(A.희망직무, '') AS participantJobWant,
         ISNULL(
-        CASE
-        WHEN ISNUMERIC(A.희망급여) = 1 THEN A.희망급여
-        ELSE '0'
-        END, '0'
+        IIF(ISNUMERIC(A.희망급여) = 1, ROUND(CONVERT(DECIMAL(10,2), A.희망급여), 0), '0'), '0'
         ) AS participantSalWant,
         ISNULL(A.취창업일, '') AS participantStartDate,
         ISNULL(A.취창업처리일, '') AS participantProcDate,
         ISNULL(A.취업유형, '') AS participantEmpType,
         ISNULL(A.취업처, '') AS participantLoyer,
         ISNULL(
-        CASE
-        WHEN ISNUMERIC(A.임금) = 1 THEN A.임금
-        ELSE '0'
-        END, '0'
+        IIF(ISNUMERIC(A.임금) = 1, ROUND(CONVERT(DECIMAL(10,2), A.임금), 0), '0'), '0'
         ) AS participantSalary,
         ISNULL(A.직무, '') AS participantJobRole,
         ISNULL(A.취업인센티브_구분, '') AS participantIncentive,
@@ -500,8 +494,8 @@
         ISNULL(A.초기전담자_계정, '') AS participantInitialManagerAccount,
         ISNULL(A.참여자_수정일, '') AS participantModifyDate
         FROM J_참여자관리 A
-                 LEFT JOIN J_참여자관리_로그인정보 B
-                           ON A.전담자_계정 = B.아이디
+        LEFT JOIN J_참여자관리_로그인정보 B
+        ON A.전담자_계정 = B.아이디
         WHERE
         <include refid="participantAuthCondition"/> <!-- sql 조회 아이디 및 권한 관리 -->
         <if test="searchOption != null">

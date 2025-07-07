@@ -916,9 +916,6 @@
 
     <!-- (지점 관리자 포함)지점별 상담사 실적 점수 데이터 -->
     <select id="selectBranchConsolScoreManager" resultType="dashboard">
-        -- 최적화된 상담사별 실적 조회 쿼리
-        -- 예상 성능 향상: 20-30초 → 3-5초 (85% 향상)
-
         WITH 근속기간_계산 AS (
         SELECT
             아이디,

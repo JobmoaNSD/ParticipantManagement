@@ -135,7 +135,7 @@
     <script src="js/participant_excel_download.js"></script>
 
     <!-- 참여자 조회 기본 디자인 설정 -->
-    <link rel="stylesheet" href="css/participantMain.css">
+<%--    <link rel="stylesheet" href="css/participantMain.css">--%>
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">

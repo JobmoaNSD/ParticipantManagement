@@ -16,6 +16,7 @@ public class SearchBean {
     private String column;
     private String order;
     private String participantRegDate;
+    private String participantInItCons;
 
     @Override
     public String toString() {
@@ -29,6 +30,7 @@ public class SearchBean {
         this.column = (this.column == null || this.column.isEmpty())?"":this.column;
         this.order = (this.order == null || this.order.isEmpty())?"":this.order;
         this.participantRegDate = (this.participantRegDate == null || this.participantRegDate.isEmpty())?"All":this.participantRegDate;
+        this.participantInItCons = (this.participantInItCons == null || this.participantInItCons.isEmpty())?"All":this.participantInItCons;
 
         String returnValue ="page=" + pageString +
                 "&endDateOption=" + endDateOption +
@@ -38,7 +40,8 @@ public class SearchBean {
                 "&searchType=" + searchType +
                 "&column=" + column +
                 "&order=" + order +
-                "&participantRegDate=" + participantRegDate;
+                "&participantRegDate=" + participantRegDate +
+                "&participantInItCons=" + participantInItCons;
 
         return returnValue;
     }

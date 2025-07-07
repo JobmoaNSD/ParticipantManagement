@@ -110,11 +110,6 @@ public class JobPlacementDTO {
     private int totalCount;
 
     /**
-     * 추후 검색 추가를 할 수 있기 때문에 검색용 변수
-     */
-    private String search;
-
-    /**
      * 검색 옵션
      */
     private String[] searchOption;
@@ -123,4 +118,40 @@ public class JobPlacementDTO {
      * 개발자 변수
      */
     private String condition;
+
+    /**
+     * 검색어
+     */
+    private String searchType;
+
+    /**
+     * 나이 필터 시작
+     */
+    private int ageStartFilter;
+
+    /**
+     * 나이 필터 끝
+     */
+    private int ageEndFilter;
+
+    /**
+     * 희망 연봉 필터 시작
+     */
+    private int desiredSalaryStartFilter;
+    
+    /**
+     * 희망 연봉 필터 끝
+     */
+    private int desiredSalaryEndFilter;
+
+    /**
+     * 성별 필터
+     */
+    private String genderFilter;
+
+    /**
+     * 필터 사용 flag
+     */
+    private boolean filterFlag;
+
 }

@@ -2,6 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="JobPlacementDAO">
+
+    <sql id="externalAllSearch">
+        <where>
+            <if test="searchType != null and searchType != ''">
+                (주소 LIKE CONCAT('%', #{searchType}, '%') OR 희망직무 LIKE CONCAT('%', #{searchType}, '%'))
+            </if>
+            <if test="ageStartFilter != null and ageStartFilter &gt;= 0">
+                AND 나이 &gt;= #{ageStartFilter}
+            </if>
+            <if test="ageEndFilter != null and ageEndFilter &gt; 0">
+                AND 나이 &lt;= #{ageEndFilter}
+            </if>
+            <if test="desiredSalaryStartFilter != null and desiredSalaryStartFilter &gt;= 0">
+                AND 희망연봉 &gt;= #{desiredSalaryStartFilter}
+            </if>
+            <if test="desiredSalaryEndFilter != null and desiredSalaryEndFilter &gt; 0">
+                AND 희망연봉 &lt;= #{desiredSalaryEndFilter}
+            </if>
+            <if test="genderFilter != null and genderFilter != ''">
+                AND 성별 = #{genderFilter}
+            </if>
+        </where>
+    </sql>
+
+
+
     <select id="selectExternalAll" resultType="jobPlacement">
         SELECT
             구직번호 AS jobNumber,
@@ -17,7 +43,7 @@
             경력 AS career,
             나이 AS age,
             자격증 AS certificate,
-            희망연봉 AS desiredSalary,
+            IIF(희망연봉 <![CDATA[<=]]> 0,'회사내규에 따름',CONVERT(VARCHAR(20),희망연봉)) AS desiredSalary,
             이메일 AS email,
             고유번호 AS uniqueNumber
         FROM (
@@ -40,15 +66,25 @@
                      이메일,
                      고유번호
                  FROM
-                     EXTERNALPARTICIPANT ) AS SUB_QUERY
+                     EXTERNALPARTICIPANT
+                <!-- 알선 관리 검색 필터 -->
+                <if test="filterFlag != null and filterFlag == true">
+                    <include refid="externalAllSearch"/>
+                </if>
+                 ) AS SUB_QUERY
         WHERE
-            SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum;
+            SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
+
     <select id="selectExternalCount" resultType="jobPlacement">
         SELECT
             COUNT(구직번호) AS totalCount
         FROM
-            EXTERNALPARTICIPANT;
+            EXTERNALPARTICIPANT
+        <!-- 알선 관리 검색 필터 -->
+        <if test="filterFlag != null and filterFlag == true">
+            <include refid="externalAllSearch"/>
+        </if>
     </select>
 
 </mapper>
