@@ -19,19 +19,22 @@ public class JobPlacementDAO {
     public boolean insert(JobPlacementDTO jobPlacementDTO) {
         String condition = jobPlacementDTO.getCondition();
         log.info("JobPlacementDTO insert : [{}]",condition);
-        return sqlSession.insert(ns+condition,jobPlacementDTO) > 0;
+        log.error("JobPlacementDTO insert 사용 금지 : [{}]",false);
+        return false; //sqlSession.insert(ns+condition,jobPlacementDTO) > 0;
     }
 
     public boolean update(JobPlacementDTO jobPlacementDTO) {
         String condition = jobPlacementDTO.getCondition();
         log.info("JobPlacementDTO update : [{}]",condition);
-        return sqlSession.update(ns+condition,jobPlacementDTO) > 0;
+        log.error("JobPlacementDTO update 사용 금지 : [{}]",false);
+        return false; //sqlSession.update(ns+condition,jobPlacementDTO) > 0;
     }
 
     public boolean delete(JobPlacementDTO jobPlacementDTO) {
         String condition = jobPlacementDTO.getCondition();
         log.info("JobPlacementDTO delete : [{}]",condition);
-        return sqlSession.delete(ns+condition,jobPlacementDTO) > 0;
+        log.error("JobPlacementDTO delete 사용 금지 : [{}]",false);
+        return false; //sqlSession.delete(ns+condition,jobPlacementDTO) > 0;
     }
 
     public JobPlacementDTO selectOne(JobPlacementDTO jobPlacementDTO) {
@@ -47,6 +50,7 @@ public class JobPlacementDAO {
     public List<JobPlacementDTO> selectAll(JobPlacementDTO jobPlacementDTO) {
         String condition = jobPlacementDTO.getCondition();
         log.info("JobPlacementDTO selectAll : [{}]",condition);
+
         List<JobPlacementDTO> datas = sqlSession.selectList(ns+condition,jobPlacementDTO);
         log.info("JobPlacementDTO selectAll jobPlacementDTO1 : [{}]",datas);
         if(datas == null) datas = null;

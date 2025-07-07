@@ -10,5 +10,6 @@
 <input type="hidden" name="searchType" value="${empty param.searchType ? '' : param.searchType}">
 <input type="hidden" name="column" value="${empty param.column ? '' : param.column}">
 <input type="hidden" name="order" value="${empty param.order ? '' : param.order}">
-<input type="hidden" name="pageRows" value="${empty param.pageRows ? '100' : param.pageRows}"
+<input type="hidden" name="pageRows" value="${empty param.pageRows ? '100' : param.pageRows}">
 <input type="hidden" name="participantRegDate" value="${empty param.participantRegDate ? 'All' : param.participantRegDate}">
+<input type="hidden" name="participantInItCons" value="${empty param.participantInItCons ? 'All' : param.participantInItCons}">

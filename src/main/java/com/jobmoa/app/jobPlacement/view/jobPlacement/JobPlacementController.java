@@ -43,7 +43,7 @@ public class JobPlacementController {
     public String jobPlacementListPage(Model model, JobPlacementDTO jobPlacementDTO, PaginationBean paginationBean) {
         log.info("jobPlacementListPage Start");
 
-        // 사용자가 선택한 페이지 수가 없다면 기본 페이지 1 고정
+        //사용자가 선택한 페이지 수가 없다면 기본 페이지 1 고정
         int page = jobPlacementDTO.getPage() <= 0 ? 1 : jobPlacementDTO.getPage();
         log.info("jobPlacementListPage page : [{}]", page);
 
@@ -53,6 +53,28 @@ public class JobPlacementController {
 
         // 사용자에게 보여질 버튼 개수
         int limitButton = 10;
+
+        boolean isFilter = false;
+        //검색 필터 사용 여부 체크
+        String searchType = jobPlacementDTO.getSearchType();
+        int ageStartFilter = jobPlacementDTO.getAgeStartFilter();
+        int ageEndFilter = jobPlacementDTO.getAgeEndFilter();
+        int desiredSalaryStartFilter = jobPlacementDTO.getDesiredSalaryStartFilter();
+        int desiredSalaryEndFilter = jobPlacementDTO.getDesiredSalaryEndFilter();
+        String genderFilter = jobPlacementDTO.getGenderFilter();
+
+        //나이 필터, 희망 연봉 필터, 성별 필터가 비어 있지 않다면 필터 사용으로 간주한다.
+        if(ageStartFilter != 0 || ageEndFilter != 0 || desiredSalaryStartFilter != 0 || desiredSalaryEndFilter != 0 || genderFilter != null || searchType != null){
+            isFilter = true;
+            log.info("jobPlacementListPage isFilter : [{}]", isFilter);
+            log.info("jobPlacementListPage ageStartFilter : [{}]", ageStartFilter);
+            log.info("jobPlacementListPage ageEndFilter : [{}]", ageEndFilter);
+            log.info("jobPlacementListPage desiredSalaryStartFilter : [{}]", desiredSalaryStartFilter);
+            log.info("jobPlacementListPage desiredSalaryEndFilter : [{}]", desiredSalaryEndFilter);
+            log.info("jobPlacementListPage genderFilter : [{}]", genderFilter);
+            log.info("jobPlacementListPage searchType : [{}]", searchType);
+        }
+        jobPlacementDTO.setFilterFlag(isFilter);
 
         //글 개수 쿼리 컨디션
         jobPlacementDTO.setCondition("selectExternalCount");

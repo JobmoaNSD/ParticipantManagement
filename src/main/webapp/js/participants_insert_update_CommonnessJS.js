@@ -2,8 +2,19 @@ $(document).ready(function () {
     // <%-- form 전달 시작 --%>
     const btn_check = $("#btn_check") // 전송 버튼을 추가
     btn_check.on("click", function () {
+        /* 기본 정보 */
         //참여자 성명
         const basicParticVal = $("#basicPartic").val();
+        //생년월일
+        const basicDobVal = $("#basicDob").val();
+        //주소
+        const basicAddressVal = $("#basicAddress").val();
+        //학교명
+        const basicSchoolVal = $("#basicSchool").val();
+        //전공
+        const basicSpecialtyVal = $("#basicSpecialty").val();
+
+        /* 상담 정보 */
         //취업역량
         const counselJobSkill = $("#counselJobSkill");
         let counselJobSkillVal = counselJobSkill.val();
@@ -24,6 +35,13 @@ $(document).ready(function () {
         //IAP 수립일 5개월차
         const counselIAP5Month = $("#counselIAP5Month");
         const counselIAP5MonthVal = counselIAP5Month.val();
+        //기간만료일
+        let counselEXPDateVal = $("#counselEXPDate").val();
+        //알선요청
+        const counselPlacement = $("#counselPlacement");
+        let counselPlacementVal = counselPlacement.val();
+
+        /* 취업정보 */
         //취창업일
         const employmentStartDateVal = $("#employmentStartDate").val();
         //취창업처리일
@@ -38,9 +56,6 @@ $(document).ready(function () {
         const employmentSalaryVal = $("#employmentSalary").val();
         //취업인센티브_구분
         const employmentIncentiveVal = $("#employmentIncentive").val();
-
-        //기간만료일
-        let counselEXPDateVal = $("#counselEXPDate").val();
 
         //flag 변수 생성
         //각 변수들이 비어 있다면 값이 없는 것으로 간주하여 form 태그 실행 함수에서 내보낸다.
@@ -73,6 +88,13 @@ $(document).ready(function () {
             counselProgressVal == "미취업사후종료" || counselProgressVal == "이관" || counselProgressVal == "중단") && counselEXPDateVal == ''){
             alertDefaultInfo("현재 선택한 진행단계의 "+counselProgressVal+"은/는 기간만료(예정)일은 필수로 입력되어야 합니다.");
             return;
+        }
+        else if (counselPlacementVal == '희망'){
+            if(basicDobVal === '' && basicAddressVal === '' && basicSchoolVal === '' && basicSpecialtyVal === ''){
+                alertDefaultInfo('알선요청 희망시 4가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공을 입력해주세요.')
+                return;
+            }
+
         }
 
 
