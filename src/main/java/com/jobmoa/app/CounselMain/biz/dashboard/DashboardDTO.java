@@ -178,4 +178,8 @@ public class DashboardDTO {
     //메인 대시보드 관리자 권한, 지점 관리자 권한 확인용 변수
     private boolean isManagement;
     private boolean isBranchManagement;
+
+    //필터 관련 설정
+    private String sortType;
+    private String sortColumn;
 }

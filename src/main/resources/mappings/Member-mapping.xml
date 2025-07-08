@@ -49,6 +49,7 @@
         JOIN J_참여자관리_지점 B
         ON A.지점 = B.지점
         WHERE A.지점=#{memberBranch}
+        ORDER BY endUpdateStatus DESC
     </select>
 
     <update id="memberStatsUpdate">
