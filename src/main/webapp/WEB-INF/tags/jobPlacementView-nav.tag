@@ -12,7 +12,7 @@
             </li>--%>
             <c:if test="${pageController eq 'list'}">
                 <li>
-                    <a href="placementList" class="nav-link active">
+                    <a href="#" class="nav-link active">
 <%--                        <i class="bi bi-building"></i> --%>
                         <i class="bi bi-people-fill"></i> 참여자 확인 - 목록
                     </a>
@@ -20,7 +20,7 @@
             </c:if>
             <c:if test="${pageController eq 'detail'}">
                 <li>
-                    <a href="placementDetail" class="nav-link active">
+                    <a href="#" class="nav-link active">
                         <i class="bi bi-file-text"></i> 상세 정보
                     </a>
                 </li>

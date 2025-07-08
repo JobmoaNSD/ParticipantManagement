@@ -3,22 +3,23 @@
 
 <mapper namespace="JobPlacementDAO">
 
+    <!-- 검색 필터를 위한 sql Query -->
     <sql id="externalAllSearch">
         <where>
             <if test="searchType != null and searchType != ''">
                 (주소 LIKE CONCAT('%', #{searchType}, '%') OR 희망직무 LIKE CONCAT('%', #{searchType}, '%'))
             </if>
-            <if test="ageStartFilter != null and ageStartFilter &gt;= 0">
-                AND 나이 &gt;= #{ageStartFilter}
+            <if test="ageStartFilter != null and ageStartFilter >=  0">
+                AND 나이 <![CDATA[>=]]> #{ageStartFilter}
             </if>
-            <if test="ageEndFilter != null and ageEndFilter &gt; 0">
-                AND 나이 &lt;= #{ageEndFilter}
+            <if test="ageEndFilter != null and ageEndFilter >= 0">
+                AND 나이 <![CDATA[<=]]> #{ageEndFilter}
             </if>
-            <if test="desiredSalaryStartFilter != null and desiredSalaryStartFilter &gt;= 0">
-                AND 희망연봉 &gt;= #{desiredSalaryStartFilter}
+            <if test="desiredSalaryStartFilter != null and desiredSalaryStartFilter >= 0">
+                AND 희망연봉 <![CDATA[>=]]> #{desiredSalaryStartFilter}
             </if>
-            <if test="desiredSalaryEndFilter != null and desiredSalaryEndFilter &gt; 0">
-                AND 희망연봉 &lt;= #{desiredSalaryEndFilter}
+            <if test="desiredSalaryEndFilter != null and desiredSalaryEndFilter >= 0">
+                AND 희망연봉 <![CDATA[<=]]> #{desiredSalaryEndFilter}
             </if>
             <if test="genderFilter != null and genderFilter != ''">
                 AND 성별 = #{genderFilter}
@@ -26,8 +27,7 @@
         </where>
     </sql>
 
-
-
+    <!-- External List SQL Query -->
     <select id="selectExternalAll" resultType="jobPlacement">
         SELECT
             구직번호 AS jobNumber,
@@ -76,6 +76,7 @@
             SUB_QUERY.RowNum>#{startPage} AND #{endPage} >= SUB_QUERY.RowNum
     </select>
 
+    <!-- External List count SQL Query -->
     <select id="selectExternalCount" resultType="jobPlacement">
         SELECT
             COUNT(구직번호) AS totalCount
@@ -85,6 +86,31 @@
         <if test="filterFlag != null and filterFlag == true">
             <include refid="externalAllSearch"/>
         </if>
+    </select>
+
+    <!-- External Detail SQL Query -->
+    <select id="selectExternalDetail" resultType="jobPlacement">
+        SELECT
+            구직번호 AS jobNumber,
+            상담사 AS counselor,
+            상담사_아이디 AS counselorId,
+            참여자 AS participant,
+            성별 AS gender,
+            생년월일 AS birthDate,
+            주소 AS address,
+            학교명 AS schoolName,
+            전공 AS major,
+            희망직무 AS desiredJob,
+            경력 AS career,
+            나이 AS age,
+            자격증 AS certificate,
+            IIF(희망연봉 <![CDATA[<=]]> 0,'회사내규에 따름',CONVERT(VARCHAR(20),희망연봉)) AS desiredSalary,
+            이메일 AS email,
+            고유번호 AS uniqueNumber
+        FROM
+            dbo.EXTERNALPARTICIPANT
+        WHERE
+            구직번호 = #{jobNumber}
     </select>
 
 </mapper>

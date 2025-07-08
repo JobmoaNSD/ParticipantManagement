@@ -110,6 +110,11 @@
                        data-bs-toggle="modal" data-bs-target=".#findPasswordModal">
                         비밀번호 찾기
                     </a>
+                    <br>
+                    <a href="/jobPlacement/placementList" class="text-decoration-none text-primary fw-bold"
+                       data-bs-toggle="modal" data-bs-target=".#findPasswordModal">
+                        기업회원 알선 확인
+                    </a>
                 </div>
             </form>
         </div>

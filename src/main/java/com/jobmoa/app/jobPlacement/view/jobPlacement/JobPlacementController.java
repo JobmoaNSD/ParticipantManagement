@@ -131,12 +131,26 @@ public class JobPlacementController {
     }
 
     @GetMapping("/placementDetail")
-    public String jobPlacementDetailPage(){
+    public String jobPlacementDetailPage(Model model, JobPlacementDTO jobPlacementDTO){
         log.info("jobPlacementDetailPage 메서드 호출됨");
+
+        jobPlacementDTO.setCondition("selectExternalDetail");
+
+        JobPlacementDTO data = jobPlacementService.selectOne(jobPlacementDTO);
+
+        String originalName = data.getParticipant();
+
+        if (originalName != null && !originalName.isEmpty()) {
+            // 첫 글자 제외하고 나머지를 "O"로 변환
+            String maskedName = originalName.charAt(0) + originalName.substring(1).replaceAll(".", "O");
+            data.setParticipant(maskedName); // 이름 업데이트
+        }
+
+
+        model.addAttribute("data", data);
 
         String viewPage = "jobPlacementView/company-detail";
         log.info("jobPlacementDetailPage 반환할 뷰 이름: {}", viewPage);
-
         return viewPage;
     }
 }

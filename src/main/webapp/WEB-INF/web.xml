@@ -35,8 +35,8 @@
         <servlet-name>ds</servlet-name>
         <url-pattern>*.do</url-pattern>
         <url-pattern>*.login</url-pattern>
-        <url-pattern>/external/*</url-pattern>
-        <url-pattern>/chatBot/*</url-pattern>
+<!--        <url-pattern>/external/*</url-pattern>
+        <url-pattern>/chatBot/*</url-pattern>-->
         <url-pattern>/jobPlacement/*</url-pattern>
     </servlet-mapping>
 
