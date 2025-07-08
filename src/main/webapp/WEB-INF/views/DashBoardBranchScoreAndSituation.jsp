@@ -201,29 +201,29 @@
                             <thead id="performanceTableHead">
                             <tr class="text-center">
                                 <th>연번</th>
-                                <th id="counsel-th" class="d-none">상담사</th>
-                                <th>지점명</th>
-                                <th>참여자(2023)</th>
-                                <th>참여자(2024)</th>
-                                <th>참여자(2025)</th>
-                                <th>참여자 합계</th>
-                                <th>종료자</th>
-                                <th>취업자</th>
-                                <th>특정계층</th>
-                                <th>취업자실적</th>
-                                <th>취업자률실적</th>
-                                <th>알선</th>
-                                <th>알선실적</th>
-                                <th>나은취업</th>
-                                <th>나은실적</th>
-                                <th>조기취업</th>
-                                <th>조기실적</th>
-                                <th>취업점수</th>
-                                <th>알선점수</th>
-                                <th>나은점수</th>
-                                <th>조기취업점수</th>
-                                <th>고용유지점수</th>
-                                <th>총점</th>
+                                <th id="dashBoardUserName-th" class="d-none">상담사</th>
+                                <th id="dashboardBranch-th">지점명</th>
+                                <th id="dashboardByYearCount1-th">참여자(2023)</th>
+                                <th id="dashboardByYearCount2-th">참여자(2024)</th>
+                                <th id="dashboardByYearCount3-th">참여자(2025)</th>
+                                <th id="dashboardTotalCount-th">참여자 합계</th>
+                                <th id="totalCompleted-th">종료자</th>
+                                <th id="totalEmployed-th">취업자</th>
+                                <th id="specialGroupCount-th">특정계층</th>
+                                <th id="totalEmployedSpecialGroupCount-th">취업자실적</th>
+                                <th id="employmentRate-th">취업자률실적</th>
+                                <th id="referredEmploymentCount-th">알선</th>
+                                <th id="placementRate-th">알선실적</th>
+                                <th id="betterJobCount-th">나은취업</th>
+                                <th id="betterJobRate-th">나은실적</th>
+                                <th id="earlyEmploymentCount-th">조기취업</th>
+                                <th id="earlyEmploymentRate-th">조기실적</th>
+                                <th id="employmentScore-th">취업점수</th>
+                                <th id="placementScore-th">알선점수</th>
+                                <th id="betterJobScore-th">나은점수</th>
+                                <th id="earlyEmploymentScore-th">조기취업점수</th>
+                                <th id="retentionScore-th">고용유지점수</th>
+                                <th id="totalScore-th">총점</th>
                             </tr>
                             </thead>
                             <tbody id="performanceTableBody" class="text-center">
@@ -1020,7 +1020,11 @@
         }
 
 
-        function fetchPerformanceTableContract(conditionFlag) {
+        function fetchPerformanceTableContract(conditionFlag,sortType,sortColumn) {
+            //테이블 조회 기본 설정
+            sortType = sortType || 'DESC';
+            sortColumn = sortColumn || 'totalScore';
+
             return new Promise((resolve, reject) => {
                 console.log(conditionFlag, " 실적 표 생성중");
                 $("#scoreChartDiv").empty();
@@ -1033,11 +1037,11 @@
                 let peopleRadioIS = peopleRadio.is(':checked');
 
                 if (peopleRadioIS) {
-                    const counselTH = $('#counsel-th');
+                    const counselTH = $('#dashBoardUserName-th');
                     counselTH.removeClass('d-none');
                 }
                 else {
-                    const counselTH = $('#counsel-th');
+                    const counselTH = $('#dashBoardUserName-th');
                     counselTH.addClass('d-none');
                 }
 
@@ -1069,7 +1073,9 @@
                         dashboardExcludeRetention: isExcludeRetention,
                         isManagement: ${IS_MANAGER},
                         isBranchManagement: ${IS_BRANCH_MANAGER},
-                        dashboardBranchAndPeople: branchAndPeople
+                        dashboardBranchAndPeople: branchAndPeople,
+                        sortType: sortType,
+                        sortColumn: sortColumn
                     })
                 })
                     .then(async response => {
@@ -1131,18 +1137,47 @@
             });
         }
 
+
+        const performanceTableHead = $('#performanceTableHead');
+        performanceTableHead.on('click', 'th', function () {
+            const $this = $(this);
+            const $sort = $('#sort');
+            // 현재 선택한 th 글자
+            let beforeText = $this.text().trim();
+            // span tag가 있는 th 태그의 글자
+            let afterText = $('th:has(span)').text().trim();
+            // span tag가 있는 th 태그의 class가 down 여부
+            let isUp = $sort.find('i').hasClass('bi-sort-up');
+
+            if (beforeText === '연번') {
+                return;
+            }
+
+            $sort.remove();
+
+            console.log("isUp : [" + isUp + "]");
+            if (beforeText === afterText && !isUp) {
+                //내림차순
+                console.log('내림차순 실행');
+                $this.append('<span id="sort"><i class="bi bi-sort-up"></i></span>');
+                fetchPerformanceTableContract(chartFlag, 'asc', $this.attr('id'));
+            }
+            else{
+                //오름차순
+                console.log('오름차순 실행');
+                $this.append('<span id="sort"><i class="bi bi-sort-down"></i></span>');
+                fetchPerformanceTableContract(chartFlag, 'desc', $this.attr('id'));
+            }
+        })
+
     });
 </script>
-<!-- 실적표 컬럼 실행함수  -->
+<!-- 실적표 컬럼 필터 실행 함수  --><%--
 <script>
     $(document).ready(function () {
-        scoreOrder();
-        function scoreOrder(){
-            const d = $('#performanceTableHead').find('th').select().text();
-            alert(d)
-        }
+
     });
-</script>
+</script>--%>
 <script
         src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
         integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="

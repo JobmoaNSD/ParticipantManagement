@@ -12,13 +12,13 @@
             <if test="ageStartFilter != null and ageStartFilter >=  0">
                 AND 나이 <![CDATA[>=]]> #{ageStartFilter}
             </if>
-            <if test="ageEndFilter != null and ageEndFilter >= 0">
+            <if test="ageEndFilter != null and ageEndFilter > 0">
                 AND 나이 <![CDATA[<=]]> #{ageEndFilter}
             </if>
             <if test="desiredSalaryStartFilter != null and desiredSalaryStartFilter >= 0">
                 AND 희망연봉 <![CDATA[>=]]> #{desiredSalaryStartFilter}
             </if>
-            <if test="desiredSalaryEndFilter != null and desiredSalaryEndFilter >= 0">
+            <if test="desiredSalaryEndFilter != null and desiredSalaryEndFilter > 0">
                 AND 희망연봉 <![CDATA[<=]]> #{desiredSalaryEndFilter}
             </if>
             <if test="genderFilter != null and genderFilter != ''">

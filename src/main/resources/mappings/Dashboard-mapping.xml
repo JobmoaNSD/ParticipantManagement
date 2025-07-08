@@ -2,6 +2,99 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="DashboardDAO">
+
+    <sql id="sortByColumn">
+        <if test="sortColumn != null and sortColumn != ''">
+            ORDER BY
+            <choose>
+                <when test="sortColumn == 'dashBoardUserName-th'">
+                    dashBoardUserName
+                </when>
+                <when test="sortColumn == 'dashboardBranch-th'">
+                    dashboardBranch
+                </when>
+                <when test="sortColumn == 'dashboardByYearCount1-th'">
+                    dashboardByYearCount1
+                </when>
+                <when test="sortColumn == 'dashboardByYearCount2-th'">
+                    dashboardByYearCount2
+                </when>
+                <when test="sortColumn == 'dashboardByYearCount3-th'">
+                    dashboardByYearCount3
+                </when>
+                <when test="sortColumn == 'dashboardTotalCount-th'">
+                    dashboardTotalCount
+                </when>
+                <when test="sortColumn == 'totalCompleted-th'">
+                    totalCompleted
+                </when>
+                <when test="sortColumn == 'totalEmployed-th'">
+                    totalEmployed
+                </when>
+                <when test="sortColumn == 'specialGroupCount-th'">
+                    specialGroupCount
+                </when>
+                <when test="sortColumn == 'totalEmployedSpecialGroupCount-th'">
+                    totalEmployedSpecialGroupCount
+                </when>
+                <when test="sortColumn == 'employmentRate-th'">
+                    employmentRate
+                </when>
+                <when test="sortColumn == 'referredEmploymentCount-th'">
+                    referredEmploymentCount
+                </when>
+                <when test="sortColumn == 'placementRate-th'">
+                    placementRate
+                </when>
+                <when test="sortColumn == 'betterJobCount-th'">
+                    betterJobCount
+                </when>
+                <when test="sortColumn == 'betterJobRate-th'">
+                    betterJobRate
+                </when>
+                <when test="sortColumn == 'earlyEmploymentCount-th'">
+                    earlyEmploymentCount
+                </when>
+                <when test="sortColumn == 'earlyEmploymentRate-th'">
+                    earlyEmploymentRate
+                </when>
+                <when test="sortColumn == 'employmentScore-th'">
+                    employmentScore
+                </when>
+                <when test="sortColumn == 'placementScore-th'">
+                    placementScore
+                </when>
+                <when test="sortColumn == 'betterJobScore-th'">
+                    betterJobScore
+                </when>
+                <when test="sortColumn == 'earlyEmploymentScore-th'">
+                    earlyEmploymentScore
+                </when>
+                <when test="sortColumn == 'retentionScore-th'">
+                    retentionScore
+                </when>
+                <when test="sortColumn == 'totalScore-th'">
+                    totalScore
+                </when>
+                <otherwise>
+                    totalScore  <!-- 기본 정렬 컬럼 -->
+                </otherwise>
+            </choose>
+
+            <!-- 정렬 방향 -->
+            <choose>
+                <when test="sortType != null and sortType.toUpperCase() == 'ASC'">
+                    ASC
+                </when>
+                <otherwise>
+                    DESC  <!-- 기본 정렬: 내림차순 -->
+                </otherwise>
+            </choose>
+        </if>
+    </sql>
+
+
+
     <!-- Main DashBoard 시작 -->
     <select id="myKPIDashboard" resultType="dashboard">
         SELECT
@@ -652,7 +745,8 @@
             P.참여자_2025,
             P.참여자_합계,
             C.상담사총인원
-        ORDER BY totalScore DESC
+        <include refid="sortByColumn"/>
+--         ORDER BY totalScore DESC
     </select>
 
     <!-- 개인별 실적 데이터 실적 표 Query -->
@@ -750,7 +844,8 @@
             P.참여자_2024,
             P.참여자_2025,
             P.참여자_합계
-        ORDER BY totalScore DESC
+        <include refid="sortByColumn"/>
+        --         ORDER BY totalScore DESC
     </select>
 
     <!-- 지점 평균 및 총점 평균 출력 (1년 미만 상담사 포함)-->
