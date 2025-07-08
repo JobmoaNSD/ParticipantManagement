@@ -144,29 +144,29 @@
           </tr>
           </thead>
           <tbody id="participantTableBody">
-          <c:forEach items="${jobPlacementDatas}" var="company">
+          <c:forEach items="${jobPlacementDatas}" var="datas">
               <tr>
-                  <td>${company.jobNumber}</td>
-                  <td>${fn:substring(company.participant, 0, 4)}</td>
-                  <td>${company.age == 0 ? '비공개':company.age}</td>
-                  <td>${company.gender}</td>
+                  <td>${datas.jobNumber}</td>
+                  <td>${fn:substring(datas.participant, 0, 4)}</td>
+                  <td>${datas.age == 0 ? '비공개':datas.age}</td>
+                  <td>${datas.gender}</td>
                   <c:choose>
-                      <c:when test="${company.address eq ''}">
+                      <c:when test="${datas.address eq ''}">
                           <td></td>
                       </c:when>
                       <c:otherwise>
-                          <td>${fn:substring(company.address, 0, 11)}...</td>
+                          <td>${fn:substring(datas.address, 0, 11)}...</td>
                       </c:otherwise>
                   </c:choose>
-                  <td>${company.desiredJob}</td>
-                  <td>${company.desiredSalary}</td>
+                  <td>${datas.desiredJob}</td>
+                  <td>${datas.desiredSalary}</td>
                   <td>
                       <a href="#"
                          class="btn btn-outline-primary btn-sm detailPageATag"
                          title="상세보기">
                           <i class="bi bi-eye"></i>
                       </a>
-                      <input type="hidden" value="${company.jobNumber}" name="jobNumber">
+                      <input type="hidden" value="${datas.jobNumber}" name="jobNumber">
                   </td>
               </tr>
           </c:forEach>
@@ -207,6 +207,16 @@
         paginationAddItems(page, startButton, endButton, totalButton);
         <%-- pagination 끝 --%>
 
+        <%-- 검색 폼 input --%>
+        let searchType = $('#search');
+        let ageStartFilter = $('#ageStartFilter');
+        let ageEndFilter = $('#ageEndFilter');
+        let desiredSalaryStartFilter = $('#desiredSalaryStartFilter');
+        let desiredSalaryEndFilter = $('#desiredSalaryEndFilter');
+        let genderFilter = $('#genderFilter');
+        let countFilter = $('#countFilter');
+        <%-- 검색 폼 input --%>
+
         /* 상세보기 버튼 주소 추가 */
         $('.detailPageATag').click(function(){
             let jobNumber = $(this).parent().find('input[name="jobNumber"]').val();
@@ -214,6 +224,39 @@
             window.location.href = href;
         })
         /* 상세보기 버튼 주소 추가 */
+
+        /* 검색 시작*/
+        $('#refreshListBtn').on('click',function(){
+                let searchTypeVal = searchType.val();
+                let ageStartFilterVal = ageStartFilter.val();
+                let ageEndFilterVal = ageEndFilter.val();
+                let desiredSalaryStartFilterVal = desiredSalaryStartFilter.val();
+                let desiredSalaryEndFilterVal = desiredSalaryEndFilter.val();
+                let genderFilterVal = genderFilter.val();
+                let countFilterVal = countFilter.val();
+                let searchHref = '?page=1';//+page;
+
+                searchHref += searchTypeVal == '' ? '' : '&searchType='+searchTypeVal;
+                searchHref += ageStartFilterVal == '' ? '' : '&ageStartFilter='+ageStartFilterVal;
+                searchHref += ageEndFilterVal == '' ? '' : '&ageEndFilter='+ageEndFilterVal;
+                searchHref += desiredSalaryStartFilterVal == '' ? '' : '&desiredSalaryStartFilter='+desiredSalaryStartFilterVal;
+                searchHref += desiredSalaryEndFilterVal == '' ? '' : '&desiredSalaryEndFilter='+desiredSalaryEndFilterVal;
+                searchHref += genderFilterVal == '' ? '' : '&genderFilter='+genderFilterVal;
+                searchHref += countFilterVal == '' ? '&pageRows=10' : '&pageRows='+countFilterVal;
+                window.location.href = '/jobPlacement/placementList'+searchHref;
+            }
+        )
+        /* 검색 끝*/
+
+        /* 검색 폼 데이터 및 추가 시작 */
+        searchType.val('${param.searchType}');
+        ageStartFilter.val(${param.ageStartFilter});
+        ageEndFilter.val(${param.ageEndFilter});
+        desiredSalaryStartFilter.val(${param.desiredSalaryStartFilter});
+        desiredSalaryEndFilter.val(${param.desiredSalaryEndFilter});
+        genderFilter.val('${param.genderFilter}');
+        countFilter.val('${param.pageRows}'==='' ? '10' : '${param.pageRows}');
+        /* 검색 폼 데이터 및 추가 끝 */
 
     })
 </script>
