@@ -277,7 +277,7 @@ public class UpdateController {
                 message = "직업훈련 등록중 문제가 발생했습니다.";
             }
         }
-        //만약 상담번호가 0이라면 신규 상담으로 확인하여 상담정보에 추가한다.
+/*        //만약 상담번호가 0이라면 신규 상담으로 확인하여 상담정보에 추가한다.
         else if(counselJobNo <= 0){
             icon = "success";
             title = "상담정보 추가 완료";
@@ -292,7 +292,7 @@ public class UpdateController {
             educationDTO.setEducationJobNo(counselJobNo);
             //직업훈련을 삭제하고 추가를 진행한다.(service 에서 삭제 예정)
             educationService.insert(educationDTO);
-        }
+        }*/
 
         InfoBean.info(model, url, icon, title, message);
 
@@ -390,10 +390,12 @@ public class UpdateController {
         particcertifDTO.setParticcertifCondition("particcertifSelectALLParticOne");
         List<ParticcertifDTO> particcertifList = particcertifService.selectAll(particcertifDTO);
 
+
         //상담 정보 조회
         counselDTO.setCounselJobNo(basicDTO.getBasicJobNo());
         counselDTO.setCounselCondition("counselSelectOne");
         counselDTO = counselService.selectOne(counselDTO);
+
 
         //직업훈련 정보
         educationDTO.setEducationJobNo(basicDTO.getBasicJobNo());

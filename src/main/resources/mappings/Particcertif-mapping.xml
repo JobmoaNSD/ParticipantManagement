@@ -28,7 +28,7 @@
             자격증 = ${particcertifCertif}
     </update>
 
-    <!-- 자격증 삭제용 쿼리 -->
+    <!-- 자격증 삭제용 쿼리 외래키로 자동 삭제 -->
     <delete id="particcertifDelete">
         DELETE
         FROM

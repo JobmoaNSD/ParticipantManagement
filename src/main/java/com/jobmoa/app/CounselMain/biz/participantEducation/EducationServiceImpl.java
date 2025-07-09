@@ -58,6 +58,7 @@ public class EducationServiceImpl implements EducationService {
 //        log.info("EducationDTO delete : [{}]", educationDTO);
         log.info("EducationDTO delete Start");
         log.info("EducationDTO delete End");
-        return educationDAO.delete(educationDTO);
+//        return educationDAO.delete(educationDTO);
+        return false;
     }
 }

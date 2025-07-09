@@ -104,6 +104,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <script src="js/sweetAlert.js"></script>
 
+    <!-- kakao 주소 API 호출 JS API 문서 주소 https://postcode.map.daum.net/guide#usage -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -307,6 +310,10 @@
         changeSelect(counselProgress, employmentEmpType,"${counsel.counselProgress}");
         //취업유형
         selectOption(employmentEmpType,"${employment.employmentEmpType}");
+
+        //page 로딩시 알선 상세정보 입력란을 숨김 여부 확인
+        const jobPlacementDiv = $("#jobPlacementDiv");
+        JobPlacementDetail(jobPlacementDiv);
         <%-- 취업유형 변경 끝 --%>
 
     });

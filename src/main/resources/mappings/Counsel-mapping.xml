@@ -40,48 +40,53 @@
     <!-- 상담정보 하나 확인용 쿼리 -->
     <select id="counselSelectOne" resultType="counsel">
         SELECT
-            구직번호 AS counselJobNo,
-            참여자 AS counselPartic,
-            취업역량 AS counselJobSkill,
+            A.구직번호 AS counselJobNo,
+            A.참여자 AS counselPartic,
+            A.취업역량 AS counselJobSkill,
             CASE
-                WHEN 최근상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 최근상담일
+                WHEN A.최근상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.최근상담일
                 END AS counselLastCons,
-            진행단계 AS counselProgress,
+            A.진행단계 AS counselProgress,
             CASE
-                WHEN 초기상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN 초기상담일
+                WHEN A.초기상담일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.초기상담일
                 END AS counselInItCons,
             CASE
-                WHEN 구직만료일 >= DATEADD(YEAR, -100, GETDATE()) THEN 구직만료일
+                WHEN A.구직만료일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.구직만료일
                 END AS counselJobEX,
             CASE
-                WHEN IAP수료일 >= DATEADD(YEAR, -100, GETDATE()) THEN IAP수료일
+                WHEN A.IAP수료일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.IAP수료일
                 END AS counselIAPDate,
             CASE
-                WHEN [3단계진입일] >= DATEADD(YEAR, -100, GETDATE()) THEN [3단계진입일]
+                WHEN A.[3단계진입일] >= DATEADD(YEAR, -100, GETDATE()) THEN A.[3단계진입일]
                 END AS counselStepPro,
             CASE
-                WHEN 기간만료일 >= DATEADD(YEAR, -100, GETDATE()) THEN 기간만료일
+                WHEN A.기간만료일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.기간만료일
                 END AS counselEXPDate,
             CASE
-                WHEN 클리닉실시일 >= DATEADD(YEAR, -100, GETDATE()) THEN 클리닉실시일
+                WHEN A.클리닉실시일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.클리닉실시일
                 END AS counselClinic,
             CASE
-                WHEN IAP3개월일자 >= DATEADD(YEAR, -100, GETDATE()) THEN IAP3개월일자
+                WHEN A.IAP3개월일자 >= DATEADD(YEAR, -100, GETDATE()) THEN A.IAP3개월일자
                 END AS counselIAP3Month,
             CASE
-                WHEN IAP5개월일자 >= DATEADD(YEAR, -100, GETDATE()) THEN IAP5개월일자
+                WHEN A.IAP5개월일자 >= DATEADD(YEAR, -100, GETDATE()) THEN A.IAP5개월일자
                 END AS counselIAP5Month,
             CASE
-                WHEN 수당지급일 >= DATEADD(YEAR, -100, GETDATE()) THEN 수당지급일
+                WHEN A.수당지급일 >= DATEADD(YEAR, -100, GETDATE()) THEN A.수당지급일
                 END AS counselAllowancePayment,
-            희망직무 AS counselJobWant,
-            희망급여 AS counselSalWant,
-            알선요청 AS counselPlacement,
-            간접고용서비스 AS counselEmploymentService
+            A.희망직무 AS counselJobWant,
+            A.희망급여 AS counselSalWant,
+            A.알선요청 AS counselPlacement,
+            A.간접고용서비스 AS counselEmploymentService,
+            B.상세정보 AS placementDetail
         FROM
-            J_참여자관리
+            J_참여자관리 A
+        JOIN
+            J_참여자관리_알선상세정보 B
+        ON
+            A.구직번호 = B.구직번호
         WHERE
-            구직번호=#{counselJobNo}
+            A.구직번호=#{counselJobNo}
     </select>
 
     <!-- -->
@@ -95,5 +100,24 @@
             구직번호=#{counselJobNo}
     </select>
 
+    <!-- 알선 상세 정보 추가 Query -->
+    <insert id="counselPlacementInsert">
+        INSERT INTO
+            J_참여자관리_알선상세정보
+            (구직번호,상세정보)
+        VALUES
+            (#{counselJobNo},#{placementDetail});
+    </insert>
+
+    <!-- 알선 상세 정보 저장 Query -->
+    <update id="counselPlacementUpdate">
+        UPDATE
+            J_참여자관리_알선상세정보
+        SET
+            상세정보 = #{placementDetail},
+            수정일 = GETDATE()
+        WHERE
+            구직번호 = #{counselJobNo}
+    </update>
 
 </mapper>

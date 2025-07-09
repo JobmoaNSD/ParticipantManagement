@@ -398,48 +398,6 @@
 
 </div>
 
-<!-- iapBeforeButton Modal Start -->
-<%--<div class="modal fade" id="iapBeforeButtonModal" tabindex="-1" aria-labelledby="iapBeforeButtonModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="iapBeforeButtonModalLabel">IAP 수립 후 상담 여부</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        &lt;%&ndash; IAP 수립 후 3,5개월 지난 시점에서 상담을 완료했다면 &ndash;%&gt;
-                        &lt;%&ndash; 체크가 가능하도록 한다. &ndash;%&gt;
-                        <div class="row">
-                            <input type="hidden" id="iapBeforeJobNo" name="participantJobNo">
-                            <div class="col-md-6">
-                                <label for="iap3MonthModalCheckBox">IAP 3개월</label>
-                                <input type="checkbox" id="iap3MonthModalCheckBox" name="participantISIAP3Month">
-                                <div>
-                                    <input type="text" id="iap3MonthText" name="iap3MonthText" placeholder="1900-01-01" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="iap5MonthModalCheckBox">IAP 5개월</label>
-                                <input type="checkbox" id="iap5MonthModalCheckBox" name="participantISIAP5Month">
-                                <div>
-                                    <input type="text" id="iap5MonthText" name="iap5MonthText" placeholder="1900-01-01" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" id="iapBeforeSave" class="btn btn-primary">저장</button>
-            </div>
-        </div>
-    </div>
-</div>--%>
-<!-- iapBeforeButton Modal End -->
-
 </body>
 <!--begin::Script-->
 <!--begin::OverlayScrollbars Configure-->

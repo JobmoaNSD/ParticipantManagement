@@ -31,6 +31,10 @@ public class CounselDTO {
     private boolean counselISIAP5Month; // IAP수료일 5개월 이후 여부
     private String counselAllowancePayment; // 수당지급
 
+    //알선상세정보 조회 DB 정보
+//    private String placementJobNo; //알선상세정보 구직번호 (나중에 추가사용을 할 수 있으니 추가)
+    private String placementDetail; //알선상세정보 글 데이터
+
     // DB 외 변수
     private String counselCondition; //개발자 구분
 

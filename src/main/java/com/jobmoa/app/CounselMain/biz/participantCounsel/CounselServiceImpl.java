@@ -34,7 +34,11 @@ public class CounselServiceImpl implements CounselService {
 
     @Override
     public boolean insert(CounselDTO counselDTO) {
-        return counselDAO.insert(counselDTO);
+        boolean flag = false;
+        if(counselDTO != null && counselDTO.getCounselCondition() != null) {
+            flag = counselDAO.insert(counselDTO);
+        }
+        return flag;
     }
 
     @Override

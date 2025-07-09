@@ -7,7 +7,7 @@
     <sql id="externalAllSearch">
         <where>
             <if test="searchType != null and searchType != ''">
-                (주소 LIKE CONCAT('%', #{searchType}, '%') OR 희망직무 LIKE CONCAT('%', #{searchType}, '%'))
+                (주소 LIKE CONCAT('%', #{searchType}, '%') OR 희망직무 LIKE CONCAT('%', #{searchType}, '%')) OR 상세정보 LIKE CONCAT('%', #{searchType}, '%'))
             </if>
             <if test="ageStartFilter != null and ageStartFilter >=  0">
                 AND 나이 <![CDATA[>=]]> #{ageStartFilter}
@@ -106,7 +106,8 @@
             자격증 AS certificate,
             IIF(희망연봉 <![CDATA[<=]]> 0,'회사내규에 따름',CONVERT(VARCHAR(20),희망연봉)) AS desiredSalary,
             이메일 AS email,
-            고유번호 AS uniqueNumber
+            고유번호 AS uniqueNumber,
+            상세정보 AS placementDetail
         FROM
             dbo.EXTERNALPARTICIPANT
         WHERE

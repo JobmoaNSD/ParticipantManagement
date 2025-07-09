@@ -1022,8 +1022,8 @@
 
         function fetchPerformanceTableContract(conditionFlag,sortType,sortColumn) {
             //테이블 조회 기본 설정
-            sortType = sortType || 'DESC';
-            sortColumn = sortColumn || 'totalScore';
+            // sortType = sortType || 'DESC';
+            // sortColumn = sortColumn || 'totalScore';
 
             return new Promise((resolve, reject) => {
                 console.log(conditionFlag, " 실적 표 생성중");
@@ -1140,6 +1140,11 @@
 
         const performanceTableHead = $('#performanceTableHead');
         performanceTableHead.on('click', 'th', function () {
+
+            //여러번 클릭을 방지하기 위해 버튼클릭을 잠금
+            isProcessing = true;
+            disableRadioButtons();
+
             const $this = $(this);
             const $sort = $('#sort');
             // 현재 선택한 th 글자
@@ -1148,6 +1153,8 @@
             let afterText = $('th:has(span)').text().trim();
             // span tag가 있는 th 태그의 class가 down 여부
             let isUp = $sort.find('i').hasClass('bi-sort-up');
+            // asc desc 필터 확인을 확인 후 값을 변경
+            let sortType = 'ASC';
 
             if (beforeText === '연번') {
                 return;
@@ -1157,27 +1164,29 @@
 
             console.log("isUp : [" + isUp + "]");
             if (beforeText === afterText && !isUp) {
-                //내림차순
-                console.log('내림차순 실행');
-                $this.append('<span id="sort"><i class="bi bi-sort-up"></i></span>');
-                fetchPerformanceTableContract(chartFlag, 'asc', $this.attr('id'));
-            }
-            else{
                 //오름차순
                 console.log('오름차순 실행');
-                $this.append('<span id="sort"><i class="bi bi-sort-down"></i></span>');
-                fetchPerformanceTableContract(chartFlag, 'desc', $this.attr('id'));
+                $this.append('<span id="sort"><i class="bi bi-sort-up"></i></span>');
+                // sortType = 'ASC';
             }
+            else{
+                //내림차순
+                console.log('내림차순 실행');
+                $this.append('<span id="sort"><i class="bi bi-sort-down"></i></span>');
+                sortType = 'DESC';
+
+            }
+
+            fetchPerformanceTableContract(chartFlag, sortType, $this.attr('id')).finally(() => {
+                //Error Or success 시 버튼 잠금 해제 및 값 출력
+                isProcessing = false;
+                enableRadioButtons();
+            });
+
         })
 
     });
 </script>
-<!-- 실적표 컬럼 필터 실행 함수  --><%--
-<script>
-    $(document).ready(function () {
-
-    });
-</script>--%>
 <script
         src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
         integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
