@@ -61,6 +61,7 @@ public class ParticcertifServiceImpl implements ParticcertifService {
         log.info("ParticcertifServiceImpl delete Start Log");
         //log.info("particcertifDTO delete : [{}]",particcertifDTO);
         log.info("ParticcertifServiceImpl delete End Log");
-        return particcertifDAO.delete(particcertifDTO);
+//        return particcertifDAO.delete(particcertifDTO);
+        return false;
     }
 }

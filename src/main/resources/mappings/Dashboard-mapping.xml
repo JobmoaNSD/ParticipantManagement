@@ -848,59 +848,6 @@
         --         ORDER BY totalScore DESC
     </select>
 
-    <!-- 지점 평균 및 총점 평균 출력 (1년 미만 상담사 포함)-->
-<!--    <select id="scoreBranchPerformanceAjax" resultType="dashboard">-->
-<!--        WITH 지점순서 AS (-->
-<!--        SELECT 지점, 순서 FROM J_참여자관리_지점-->
-<!--        UNION ALL-->
-<!--        SELECT '평균' AS 지점, 0 AS 순서-->
-<!--        ),-->
-<!--        전체점수데이터 AS (-->
-<!--        SELECT-->
-<!--        A.지점,-->
-<!--        A.이름,-->
-<!--        A.전담자_계정,-->
-<!--        A.총점-->
-<!--        <choose>-->
-<!--            <when test="!dashboardExcludeRetention">-->
-<!--                FROM 고용부평가실적및점수_고용제거 A-->
-<!--            </when>-->
-<!--            <otherwise>-->
-<!--                FROM 고용부평가실적및점수 A-->
-<!--            </otherwise>-->
-<!--        </choose>-->
-<!--        JOIN J_참여자관리_로그인정보 L-->
-<!--        ON A.전담자_계정 = L.아이디-->
-<!--        ),-->
-<!--        총점및인원데이터 AS (-->
-<!--        SELECT-->
-<!--        지점,-->
-<!--        SUM(총점) AS 지점_총점,-->
-<!--        COUNT(이름) AS 지점_전담자수-->
-<!--        FROM 전체점수데이터-->
-<!--        GROUP BY 지점-->
-<!--        ),-->
-<!--        전체통계 AS (-->
-<!--        SELECT-->
-<!--        지점,-->
-<!--        ROUND(지점_총점/NULLIF(지점_전담자수, 0), 2) AS 지점평균-->
-<!--        FROM 총점및인원데이터-->
-<!--        UNION ALL-->
-<!--        SELECT-->
-<!--        '평균' AS 지점,-->
-<!--        ROUND(SUM(지점_총점)/NULLIF(SUM(지점_전담자수), 0), 2) AS 지점평균-->
-<!--        FROM 총점및인원데이터-->
-<!--        )-->
-<!--        SELECT-->
-<!--        T.지점 dashboardBranch,-->
-<!--        T.지점평균 AS totalBranchScoreAVG-->
-<!--        FROM 전체통계 T-->
-<!--        JOIN 지점순서 S ON T.지점 = S.지점-->
-<!--        ORDER BY-->
-<!--        CASE WHEN T.지점 = '평균' THEN 0 ELSE 1 END,-->
-<!--        T.지점평균 DESC-->
-<!--    </select>-->
-
     <!-- (지점 관리자 미포함)지점별 상담사 실적 점수 데이터 -->
     <select id="selectBranchConsolScore" resultType="dashboard">
         WITH 전체점수데이터 AS (

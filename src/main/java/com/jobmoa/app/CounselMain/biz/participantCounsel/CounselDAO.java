@@ -27,16 +27,22 @@ public class CounselDAO {
         return null;
     }
     public boolean insert(CounselDTO counselDTO) {
+        log.info("counsel insert SQL counselDTO : [{}]",counselDTO);
+        String condition = counselDTO.getCounselCondition();
+        log.info("counsel insert SQL counselDTO condition : [{}]",condition);
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.insert(ns+"counselInsert", counselDTO) > 0;
+        boolean flag = sqlSession.insert(ns+condition, counselDTO) > 0;
         log.info("counsel insert SQL flag : [{}]",flag);
         return flag;
     }
     public boolean update(CounselDTO counselDTO) {
+        log.info("counsel update SQL counselDTO : [{}]",counselDTO);
+        String condition = counselDTO.getCounselCondition();
+        log.info("counsel update SQL counselDTO condition : [{}]",condition);
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.update(ns+counselDTO.getCounselCondition(), counselDTO) > 0;
+        boolean flag = sqlSession.update(ns+condition, counselDTO) > 0;
         log.info("counsel update SQL flag : [{}]",flag);
         return flag;
     }

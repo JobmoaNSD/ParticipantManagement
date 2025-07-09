@@ -285,10 +285,11 @@ public class DashboardAjaxController {
 
         log.info("scoreBranchPerformanceTableAjax dashboardDTO.isDashboardBranchAndPeople() : [{}]",dashboardDTO.isDashboardBranchAndPeople());
 
-//        String sortType = dashboardDTO.getSortType() == null ? "DESC" : dashboardDTO.getSortType();
-//        String sortColumn = dashboardDTO.getSortColumn() == null ? "totalScore" : dashboardDTO.getSortColumn();
-//        dashboardDTO.setSortType(sortType);
-//        dashboardDTO.setSortColumn(sortColumn);
+        // 정렬 사용을 위해 null 값일때 기본값을 설정
+        String sortType = dashboardDTO.getSortType() == null ? "DESC" : dashboardDTO.getSortType();
+        String sortColumn = dashboardDTO.getSortColumn() == null ? "totalScore" : dashboardDTO.getSortColumn();
+        dashboardDTO.setSortType(sortType);
+        dashboardDTO.setSortColumn(sortColumn);
 
         String condition = "selectBranchTable";
         if(!dashboardDTO.isDashboardBranchAndPeople()){

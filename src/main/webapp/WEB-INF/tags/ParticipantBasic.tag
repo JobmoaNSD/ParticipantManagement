@@ -53,8 +53,11 @@
                 </select>
             </div>
             <div class="col-md-1 w-auto">
-                <label for="basicAddress" class="form-label">주소(시,구)<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="basicAddress" name="basicAddress" value="${not empty basic ? basic.basicAddress : ""}">
+                <label for="basicAddress" class="form-label">주소(시,구)<span class="text-danger">* </span></label>
+                <input type="text" class="form-control" id="basicAddress" name="basicAddress" value="${not empty basic ? basic.basicAddress : ""}" readonly>
+                <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+                    <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" alt="닫기 버튼">
+                </div>
             </div>
             <div class="col-md-1 w-auto">
                 <label for="basicSchool" class="form-label">학교명<span class="text-danger">*</span></label>

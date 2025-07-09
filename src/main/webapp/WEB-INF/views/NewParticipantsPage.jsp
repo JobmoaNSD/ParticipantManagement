@@ -141,6 +141,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <script src="js/sweetAlert.js"></script>
 
+    <!-- kakao 주소 API 호출 JS API 문서 주소 https://postcode.map.daum.net/guide#usage -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -253,6 +255,11 @@
 
         //직업훈련 Div를 생성
         education();
+
+        //알선 상세 정보 page 로딩시 한번 실행
+        //page 로딩시 알선 상세정보 입력란을 숨김
+        const jobPlacementDiv = $("#jobPlacementDiv");
+        JobPlacementDetail(jobPlacementDiv);
     });
 </script>
 

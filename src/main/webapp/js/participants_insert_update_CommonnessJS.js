@@ -1,61 +1,109 @@
 $(document).ready(function () {
-    // <%-- form 전달 시작 --%>
+
+    /* 기본 정보 */
+    //참여자 성명
+    const basicPartic = $("#basicPartic");
+    //생년월일
+    const basicDob = $("#basicDob");
+    //주소
+    const basicAddress = $("#basicAddress");
+    //학교명
+    const basicSchool = $("#basicSchool");
+    //전공
+    const basicSpecialty = $("#basicSpecialty");
+
+    /* 상담 정보 */
+    //취업역량
+    const counselJobSkill = $("#counselJobSkill");
+    //진행단계
+    const counselProgress = $("#counselProgress");
+    //초기상담일
+    const counselInItCons = $("#counselInItCons");
+    //최근상담일
+    const counselLastCons = $("#counselLastCons");
+    //IAP 수립일
+    const counselIAPDateVal = $("#counselIAPDate");
+    //IAP 수립일 3개월차
+    const counselIAP3Month = $("#counselIAP3Month");
+
+    //IAP 수립일 5개월차
+    const counselIAP5Month = $("#counselIAP5Month");
+    //기간만료일
+    let counselEXPDate = $("#counselEXPDate");
+    //알선요청
+    const counselPlacement = $("#counselPlacement");
+    //알선 상세정보
+    const jobPlacementTextArea = $("#jobPlacementTextArea");
+
+    /* 취업정보 */
+    //취창업일
+    const employmentStartDate = $("#employmentStartDate");
+    //취창업처리일
+    const employmentProcDate = $("#employmentProcDate");
+    //퇴사일
+    const employmentQuit = $("#employmentQuit");
+    //취업유형
+    const employmentEmpType = $("#employmentEmpType");
+    //취업처
+    const employmentLoyer = $("#employmentLoyer");
+    //임금
+    const employmentSalary = $("#employmentSalary");
+    //취업인센티브_구분
+    const employmentIncentive = $("#employmentIncentive");
+
+
+    // form 전달 시작
     const btn_check = $("#btn_check") // 전송 버튼을 추가
     btn_check.on("click", function () {
         /* 기본 정보 */
         //참여자 성명
-        const basicParticVal = $("#basicPartic").val();
+        const basicParticVal = basicPartic.val();
         //생년월일
-        const basicDobVal = $("#basicDob").val();
+        const basicDobVal = basicDob.val();
         //주소
-        const basicAddressVal = $("#basicAddress").val();
+        let basicAddressVal = basicAddress.val();
         //학교명
-        const basicSchoolVal = $("#basicSchool").val();
+        const basicSchoolVal = basicSchool.val();
         //전공
-        const basicSpecialtyVal = $("#basicSpecialty").val();
+        const basicSpecialtyVal = basicSpecialty.val();
 
         /* 상담 정보 */
         //취업역량
-        const counselJobSkill = $("#counselJobSkill");
         let counselJobSkillVal = counselJobSkill.val();
         //진행단계
-        const counselProgress = $("#counselProgress");
         let counselProgressVal = counselProgress.val();
         //초기상담일
-        const counselInItCons = $("#counselInItCons");
         let counselInItConsVal = counselInItCons.val();
         //최근상담일
-        const counselLastCons = $("#counselLastCons");
         let counselLastConsVal = counselLastCons.val();
         //IAP 수립일
-        const counselIAPDateVal = $("#counselIAPDate").val();
+        const counselIAPDateVal = counselIAPDate.val();
         //IAP 수립일 3개월차
-        const counselIAP3Month = $("#counselIAP3Month");
         const counselIAP3MonthVal = counselIAP3Month.val();
         //IAP 수립일 5개월차
-        const counselIAP5Month = $("#counselIAP5Month");
         const counselIAP5MonthVal = counselIAP5Month.val();
         //기간만료일
-        let counselEXPDateVal = $("#counselEXPDate").val();
+        let counselEXPDateVal = counselEXPDate.val();
         //알선요청
-        const counselPlacement = $("#counselPlacement");
         let counselPlacementVal = counselPlacement.val();
+        //알선 상세정보
+        let jobPlacementTextAreaVal = jobPlacementTextArea.val();
 
         /* 취업정보 */
         //취창업일
-        const employmentStartDateVal = $("#employmentStartDate").val();
+        const employmentStartDateVal = employmentStartDate.val();
         //취창업처리일
-        const employmentProcDateVal = $("#employmentProcDate").val();
+        const employmentProcDateVal = employmentProcDate.val();
         //퇴사일
-        const employmentQuitVal = $("#employmentQuit").val();
+        const employmentQuitVal = employmentQuit.val();
         //취업유형
-        const employmentEmpTypeVal = $("#employmentEmpType").val();
+        const employmentEmpTypeVal = employmentEmpType.val();
         //취업처
-        const employmentLoyerVal = $("#employmentLoyer").val();
+        const employmentLoyerVal = employmentLoyer.val();
         //임금
-        const employmentSalaryVal = $("#employmentSalary").val();
+        const employmentSalaryVal = employmentSalary.val();
         //취업인센티브_구분
-        const employmentIncentiveVal = $("#employmentIncentive").val();
+        const employmentIncentiveVal = employmentIncentive.val();
 
         //flag 변수 생성
         //각 변수들이 비어 있다면 값이 없는 것으로 간주하여 form 태그 실행 함수에서 내보낸다.
@@ -89,9 +137,9 @@ $(document).ready(function () {
             alertDefaultInfo("현재 선택한 진행단계의 "+counselProgressVal+"은/는 기간만료(예정)일은 필수로 입력되어야 합니다.");
             return;
         }
-        else if (counselPlacementVal == '희망'){
-            if(basicDobVal === '' && basicAddressVal === '' && basicSchoolVal === '' && basicSpecialtyVal === ''){
-                alertDefaultInfo('알선요청 희망시 4가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공을 입력해주세요.')
+        else if (counselPlacementVal.trim() === '희망'){
+            if(basicDobVal === '' || basicAddressVal === '' || basicSchoolVal === '' || basicSpecialtyVal === '' || jobPlacementTextAreaVal === ''){
+                alertDefaultInfo('알선요청 희망시 4가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 상세정보를 반드시 입력해주세요.')
                 return;
             }
 
@@ -137,9 +185,9 @@ $(document).ready(function () {
         const form = $("#participantsForm");
         form.submit();
     });
-// <%-- form 전달 끝 --%>
+//  form 전달 끝
 
-// <%-- 사용자 편의성을 위해 목록 리스트 출력 시작 --%>
+// 사용자 편의성을 위해 목록 리스트 출력 시작
     //자격증 목록 리스트 출력
     $(document).on("focus", ".particcertifCertif", function () {
         recommendFunction($(this), "#basicParticcertiflist",xmlData("./XMLData/particcertifXMLData.xml", "particcertif name"));
@@ -147,9 +195,9 @@ $(document).ready(function () {
 
     //학교명 목록 리스트 출력
     recommendFunction("#basicSchool", "#basicSchoollist",xmlData("./XMLData/SchoolXMLData.xml", "school name"));
-// <%-- 사용자 편의성을 위해 목록 리스트 출력 끝 --%>
+//  사용자 편의성을 위해 목록 리스트 출력 끝
 
-// <%-- IAP 수립일 기준 3,5개월 일자 지정 시작 --%>
+//  IAP 수립일 기준 3,5개월 일자 지정 시작
     const counselIAPDate = $('#counselIAPDate');
 
     if(counselIAPDate.val().length > 0){
@@ -227,7 +275,136 @@ $(document).ready(function () {
         const day = String(date.getDate()).padStart(2, '0');
         return year+'-'+month+'-'+day;
     };
-// <%-- IAP 수립일 기준 3,5개월 일자 지정 끝 --%>
+//  IAP 수립일 기준 3,5개월 일자 지정 끝
 
+    // kakao 주소 api function 시작
+    const btnCloseLayer = $("#btnCloseLayer");
+
+    // 주소 입력 필드 클릭 시 주소 검색 창 열기
+    basicAddress.on("click", function () {
+        getAddress();
+    });
+
+    // 닫기 버튼 클릭 시 주소 검색 창 닫기
+    btnCloseLayer.on("click", function () {
+        closeDaumPostcode();
+    });
+
+    // 우편번호 찾기 화면을 넣을 element
+    const element_layer = $("#layer");
+
+    function closeDaumPostcode() {
+        // iframe을 넣은 element를 안보이게 한다.
+        element_layer.css('display', 'none');
+    }
+
+    function getAddress(){
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                basicAddress.val(addr + extraAddr);
+
+                // 커서를 상세주소 필드로 이동한다.
+                basicAddress.focus();
+
+                // iframe을 넣은 element를 안보이게 한다.
+                element_layer.css('display', 'none');
+            },
+            width : '100%',
+            height : '100%',
+            maxSuggestItems : 5
+        }).embed(element_layer[0]); // jQuery 객체를 DOM 객체로 변환
+
+        // iframe을 넣은 element를 보이게 한다.
+        element_layer.css('display', 'block');
+
+        // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
+        initLayerPosition();
+    }
+
+    // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
+    // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
+    // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
+    function initLayerPosition(){
+        var width = 400; //우편번호서비스가 들어갈 element의 width
+        var height = 500; //우편번호서비스가 들어갈 element의 height
+        var borderWidth = 1; //샘플에서 사용하는 border의 두께
+
+        // 위에서 선언한 값들을 실제 element에 넣는다.
+        element_layer.css({
+            'width': width + 'px',
+            'height': height + 'px',
+            'border': borderWidth + 'px solid',
+            'left': (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px',
+            'top': (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px'
+        });
+    }
+    // kakao 주소 api function 끝
+
+    //알선 상세 정보 입력 function 시작
+    /*
+    상단에 이미 선언해둔 변수
+    //알선요청
+    const counselPlacement = $("#counselPlacement");
+    //알선 상세정보
+    const jobPlacementTextArea = $("#jobPlacementTextArea");
+    */
+
+    //page 로딩시 알선 상세정보 입력란을 숨김
+    const jobPlacementDiv = $("#jobPlacementDiv");
+
+    //알선요청을 변경할 때마다 함수를 실행
+    counselPlacement.on("change", function () {
+        JobPlacementDetail(jobPlacementDiv);
+    })
+    //알선 상세 정보 입력 function 끝
 
 })
+
+//알선요청 함수 시작
+function JobPlacementDetail(jobPlacementDiv){
+    //알선요청
+    const counselPlacement = $("#counselPlacement");
+    //알선 상세정보
+    const jobPlacementTextArea = $("#jobPlacementTextArea");
+
+    let counselPlacementVal = counselPlacement.val();
+    console.log('counselPlacementVal : ['+counselPlacementVal+']')
+    if (counselPlacementVal.trim() === '희망' ){
+        jobPlacementTextArea.attr("readonly", false);
+        jobPlacementDiv.show();
+    }
+    else{
+        jobPlacementTextArea.attr("readonly", true);
+        jobPlacementDiv.hide();
+    }
+}
+//알선요청 함수 끝

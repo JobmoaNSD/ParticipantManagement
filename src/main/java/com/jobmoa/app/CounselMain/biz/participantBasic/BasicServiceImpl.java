@@ -4,6 +4,7 @@ import com.jobmoa.app.CounselMain.biz.particcertif.ParticcertifDTO;
 import com.jobmoa.app.CounselMain.biz.particcertif.ParticcertifServiceImpl;
 import com.jobmoa.app.CounselMain.biz.participantCounsel.CounselDAO;
 import com.jobmoa.app.CounselMain.biz.participantCounsel.CounselDTO;
+import com.jobmoa.app.CounselMain.biz.participantCounsel.CounselService;
 import com.jobmoa.app.CounselMain.biz.participantEducation.EducationDTO;
 import com.jobmoa.app.CounselMain.biz.participantEducation.EducationServiceImpl;
 import com.jobmoa.app.CounselMain.biz.participantEmployment.EmploymentDAO;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service("basicService")
@@ -77,6 +79,15 @@ public class BasicServiceImpl implements BasicService {
                 log.error("구직 번호 [{}] 직업훈련 정보 등록 실패", jobno);
                 throw new RuntimeException("구직 번호 ["+jobno+"] 직업훈련 정보 등록 실패");
             }
+            String counselPlacement = counselDTO.getCounselPlacement();
+            if(Objects.equals(counselPlacement, "희망")){
+                counselDTO.setCounselCondition("counselPlacementInsert");
+                if(!counselDAO.insert(counselDTO)){
+                    log.error("구직 번호 [{}] 알선 상세 정보 등록 실패", jobno);
+                    throw new RuntimeException("구직 번호 ["+jobno+"] 알선 상세 정보 등록 실패");
+                }
+            }
+
             flag = true;
         }
         return flag;
@@ -109,6 +120,17 @@ public class BasicServiceImpl implements BasicService {
         //직업훈련 업데이트
         flag = flag && educationService.insert(educationDTO);
         log.info("직업훈련 업데이트 상태 : [{}]",flag);
+        //알선 상세 정보 업데이트
+        String counselPlacement = counselDTO.getCounselPlacement();
+        if(Objects.equals(counselPlacement, "희망")){
+            counselDTO.setCounselCondition("counselPlacementUpdate");
+            flag = flag && counselDAO.update(counselDTO);
+            log.info("알선 상세 정보 업데이트 상태 : [{}]",flag);
+        }
+
+        if (!flag){
+            throw new RuntimeException("참여자 정보 업데이트 실패");
+        }
 
         return flag;
     }

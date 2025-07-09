@@ -156,12 +156,10 @@
 <%--            <span class="readonly-label">등록일</span>--%>
 <%--            <span class="readonly-value" id="detailRegistrationDate">${data.career}</span>--%>
 <%--          </div>--%>
-<%--          <div class="readonly-item">
-            <span class="readonly-label">상태</span>
-            <span class="readonly-value">
-                                <span class="status-badge saved" id="detailStatus">저장완료</span>
-                            </span>
-          </div>--%>
+          <div class="readonly-item">
+            <span class="readonly-label">상세정보</span>
+            <textarea class="readonly-value" id="placementDetail" disabled>${data.placementDetail eq '' ? '' : data.placementDetail}</textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -183,7 +181,7 @@
 <%--              앞으로의 포부는 단순히 주어진 업무를 수행하는 것을 넘어서, 업무 프로세스 개선과 효율성 향상에 기여하고 싶습니다. 또한 지속적인 학습을 통해 전문성을 키워나가며, 팀원들과의 협업을 통해 더 나은 결과를 만들어내고 싶습니다.</p>--%>
 <%--          </div>--%>
           <div class="essay-section">
-            <h4 class="essay-title">상세 이력서와 자기소개서는 아래 상담사에게 문의 부탁드립니다.</h4>
+            <h4 class="essay-title">이력서와 자기소개서는 아래 상담사에게 문의 부탁드립니다.</h4>
             <p class="essay-content">
               <strong>상담사 : </strong> ${data.counselor}
               <strong>이메일 : </strong> ${data.email}
@@ -192,155 +190,6 @@
         </div>
       </div>
     </div>
-
-<%--    <!-- 기업 평가 섹션 -->--%>
-<%--    <div class="card-modern">--%>
-<%--      <div class="card-header">--%>
-<%--        <h3 class="card-title">--%>
-<%--          <i class="bi bi-clipboard-check"></i>--%>
-<%--          기업 평가 및 메모--%>
-<%--        </h3>--%>
-<%--      </div>--%>
-<%--      <div class="card-body">--%>
-<%--        <!-- 기존 평가 내역 표시 -->--%>
-<%--        <div id="existingEvaluation" class="mb-4" style="display: none;">--%>
-<%--          <div class="alert alert-info">--%>
-<%--            <h5 class="alert-heading">--%>
-<%--              <i class="bi bi-info-circle"></i> 기존 평가 내역--%>
-<%--            </h5>--%>
-<%--            <div class="row">--%>
-<%--&lt;%&ndash;              <div class="col-md-6">--%>
-<%--                <strong>평가 점수:</strong>--%>
-<%--                <div class="score-display mt-1">--%>
-<%--                  <span class="score-stars" id="existingScoreStars">★★★★☆</span>--%>
-<%--                  <span class="score-number" id="existingScoreNumber">4점</span>--%>
-<%--                </div>--%>
-<%--              </div>&ndash;%&gt;--%>
-<%--              <div class="col-md-6">--%>
-<%--                <div class="form-group">--%>
-<%--                  <strong>연락 계획</strong>--%>
-<%--                  <span id="contactPlanStatus" class="ms-2">상담사 연락</span>--%>
-<%--                </div>--%>
-<%--              </div>--%>
-<%--              <div class="col-md-6">--%>
-<%--                <strong>채용 단계:</strong>--%>
-<%--                <span id="existingStatus" class="ms-2">면접 예정</span>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--            <div class="mt-2">--%>
-<%--              <strong>평가 메모:</strong>--%>
-<%--              <p id="existingMemo" class="mt-1 mb-0">IT 관련 경험이 풍부하고 자기소개서가 잘 작성되어 있음. 면접을 통해 구체적인 역량을 확인해볼 필요가 있음.</p>--%>
-<%--            </div>--%>
-<%--            <div class="mt-2">--%>
-<%--              <small class="text-muted">평가일: <span id="existingEvaluationDate">2025-06-25 14:30</span></small>--%>
-<%--            </div>--%>
-<%--          </div>--%>
-<%--        </div>--%>
-
-<%--        <form id="companyEvaluationForm">--%>
-<%--          <div class="row">--%>
-<%--            <div class="col-md-6">--%>
-<%--              <div class="form-group">--%>
-<%--                <label for="contactPlan" class="form-label">--%>
-<%--                  <i class="bi bi-telephone"></i> 연락 계획--%>
-<%--                </label>--%>
-<%--                <select class="form-select"--%>
-<%--                        id="contactPlan"--%>
-<%--                        name="contactPlan">--%>
-<%--                  <option value="">참여자 컨택 계획</option>--%>
-<%--                  <option value="immediate">상담사 연락</option>--%>
-<%--                  <option value="within_week">상담사 메일 전달</option>--%>
-<%--                  <option value="within_month">세부 이력서 요청</option>--%>
-<%--                  <option value="later">추후 연락</option>--%>
-<%--                  <option value="no_contact">연락 안함</option>--%>
-<%--                </select>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--            <div class="col-md-6">--%>
-<%--              <div class="form-group">--%>
-<%--                <label for="evaluationStatus" class="form-label">--%>
-<%--                  <i class="bi bi-clipboard-check"></i> 채용 단계--%>
-<%--                </label>--%>
-<%--                <select class="form-select"--%>
-<%--                        id="evaluationStatus"--%>
-<%--                        name="evaluationStatus">--%>
-<%--                  <option value="">단계 선택</option>--%>
-<%--                  <option value="review">서류 검토 중</option>--%>
-<%--                  <option value="interview">면접 예정</option>--%>
-<%--                  <option value="final">최종 검토</option>--%>
-<%--                  <option value="pass">채용 확정</option>--%>
-<%--                  <option value="fail">채용 보류</option>--%>
-<%--                  <option value="reject">불합격</option>--%>
-<%--                </select>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </div>--%>
-
-<%--          <div class="form-group">--%>
-<%--            <label for="evaluationMemo" class="form-label">--%>
-<%--              <i class="bi bi-chat-text"></i> 평가 메모--%>
-<%--            </label>--%>
-<%--            <textarea class="form-control"--%>
-<%--                      id="evaluationMemo"--%>
-<%--                      name="evaluationMemo"--%>
-<%--                      rows="4"--%>
-<%--                      placeholder="참여자에 대한 평가 내용, 면접 계획, 추가 확인사항 등을 입력하세요..."></textarea>--%>
-<%--            <div class="form-text">--%>
-<%--              평가 내용은 내부 기록용이며, 참여자에게 공개되지 않습니다.--%>
-<%--            </div>--%>
-<%--          </div>--%>
-
-<%--          <div class="d-flex gap-3 justify-content-end">--%>
-<%--            <button type="button"--%>
-<%--                    class="btn btn-modern btn-secondary"--%>
-<%--                    id="resetEvaluationBtn">--%>
-<%--              <i class="bi bi-arrow-clockwise"></i> 초기화--%>
-<%--            </button>--%>
-<%--            <button type="button"--%>
-<%--                    class="btn btn-modern btn-outline"--%>
-<%--                    id="saveAsDraftBtn">--%>
-<%--              <i class="bi bi-file-earmark"></i> 임시저장--%>
-<%--            </button>--%>
-<%--            <button type="submit"--%>
-<%--                    class="btn btn-modern btn-primary">--%>
-<%--              <i class="bi bi-floppy"></i> 평가 저장--%>
-<%--            </button>--%>
-<%--          </div>--%>
-<%--        </form>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-
-    <%--<!-- 평가 히스토리 -->
-    <div class="card-modern">
-      <div class="card-header">
-        <h3 class="card-title">
-          <i class="bi bi-clock-history"></i>
-          평가 히스토리
-        </h3>
-      </div>
-      <div class="card-body">
-        <div id="evaluationHistory">
-          <div class="readonly-section">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-              <div>
-                <strong class="text-primary">2025-06-25 14:30</strong>
-                <span class="ms-3">평가자: 김담당</span>
-              </div>
-              <div class="score-display">
-                <span class="score-stars">★★★★☆</span>
-                <span class="score-number">4점</span>
-              </div>
-            </div>
-            <div class="mb-2">
-              <strong>단계:</strong> 면접 예정
-            </div>
-            <div>
-              <strong>메모:</strong> IT 관련 경험이 풍부하고 자기소개서가 잘 작성되어 있음. 면접을 통해 구체적인 역량을 확인해볼 필요가 있음.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>--%>
 
   </div>
 </main>
@@ -359,6 +208,10 @@
 
     /* 리스트 돌아가기 버튼 주소 추가 */
     $('#backToListATag').on('click',function(){
+      let href = 'placementList'+searchHref(page);
+      window.location.href = href.lastIndexOf('jobNumber') > 0 ? href.substring(0,href.lastIndexOf('jobNumber')-1) : href;
+    })
+    $('#backToListBtn').on('click',function(){
       let href = 'placementList'+searchHref(page);
       window.location.href = href.lastIndexOf('jobNumber') > 0 ? href.substring(0,href.lastIndexOf('jobNumber')-1) : href;
     })

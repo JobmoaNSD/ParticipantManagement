@@ -28,7 +28,7 @@
             직업훈련 = ${education}
     </update>
 
-    <!-- 교육내역 삭제용 쿼리 -->
+    <!-- 교육내역 삭제용 쿼리 외래키로 자동삭제 -->
     <delete id="educationDelete">
         DELETE
         FROM
