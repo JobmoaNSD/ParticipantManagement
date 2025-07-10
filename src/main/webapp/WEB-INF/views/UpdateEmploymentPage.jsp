@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>잡모아</title>
@@ -326,7 +327,7 @@
         let employmentSalary = $("#employmentSalary");
 
         //임금 최소 최대 입력 값
-        inputLimits(employmentSalary, 0, 1000);
+        inputLimitsWithRegex(employmentSalary, 0, 1000);
 
     });
 </script>

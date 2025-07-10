@@ -118,7 +118,7 @@
             <div class="col-md-1 w-auto">
                 <label for="counselPlacement" class="form-label">알선요청</label>
                 <select class="form-select" aria-label="Default select example" id="counselPlacement" name="counselPlacement">
-                    <option value="미희망">미희망</option>
+                    <option value="미희망" selected>미희망</option>
                     <option value="희망">희망</option>
                 </select>
             </div>

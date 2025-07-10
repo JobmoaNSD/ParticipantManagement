@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>잡모아</title>
@@ -262,7 +263,7 @@
         let basicAntecedents = $("#basicAntecedents");
 
         //경력 최소 최대 입력 값
-        inputLimits(basicAntecedents, 0, 40);
+        inputLimitsWithRegex(basicAntecedents, 0, 40);
     });
 </script>
 
