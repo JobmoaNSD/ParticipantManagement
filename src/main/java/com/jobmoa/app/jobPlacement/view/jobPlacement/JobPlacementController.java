@@ -65,6 +65,9 @@ public class JobPlacementController {
 
         //나이 필터, 희망 연봉 필터, 성별 필터가 비어 있지 않다면 필터 사용으로 간주한다.
         if(ageStartFilter != 0 || ageEndFilter != 0 || desiredSalaryStartFilter != 0 || desiredSalaryEndFilter != 0 || genderFilter != null || searchType != null){
+            searchType = searchType.trim();
+            searchType = searchType.replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]", "");
+
             isFilter = true;
             log.info("jobPlacementListPage isFilter : [{}]", isFilter);
             log.info("jobPlacementListPage ageStartFilter : [{}]", ageStartFilter);

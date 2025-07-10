@@ -236,6 +236,17 @@ body {
     flex-grow: 1;
 }
 
+.readonly-pre {
+    color: var(--secondary-700);
+    white-space: pre-line;
+    font: 0.942em/1.5 var(--font-family);
+    width: 100%;
+    overflow: auto;
+    max-height: 200px;
+    border-radius: var(--radius-md);
+    background: var(--secondary-50);
+}
+
 /* 자기소개서 스타일 */
 .essay-section {
     background: white;
@@ -699,6 +710,7 @@ body {
 }
 
 /* 반응형 디자인 */
+
 @media (max-width: 768px) {
     .system-title {
         font-size: 1.5rem;
@@ -750,37 +762,3 @@ body {
     }
 }
 
-/* 인쇄 스타일 */
-@media print {
-    .system-header,
-    .main-nav,
-    .search-filters,
-    .breadcrumb-nav,
-    .btn-modern,
-
-    .card-header {
-        display: none !important;
-    }
-
-    .essay-controls {
-        display: none !important;
-    }
-
-    .main-content {
-        box-shadow: none !important;
-        border-radius: 0 !important;
-    }
-
-    .pagination {
-        display: none !important;
-    }
-
-    .card-modern {
-        box-shadow: none !important;
-        border: 1px solid #ccc !important;
-    }
-
-    .essay-section {
-        break-inside: avoid;
-    }
-}

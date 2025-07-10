@@ -142,7 +142,6 @@ $(document).ready(function () {
                 alertDefaultInfo('알선요청 희망시 4가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 상세정보를 반드시 입력해주세요.')
                 return;
             }
-
         }
 
 
@@ -398,7 +397,9 @@ function JobPlacementDetail(jobPlacementDiv){
 
     let counselPlacementVal = counselPlacement.val();
     console.log('counselPlacementVal : ['+counselPlacementVal+']')
-    if (counselPlacementVal.trim() === '희망' ){
+    counselPlacementVal = (counselPlacementVal !== '' && counselPlacementVal != null)? counselPlacementVal.trim():''
+
+    if (counselPlacementVal === '희망'){
         jobPlacementTextArea.attr("readonly", false);
         jobPlacementDiv.show();
     }
