@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+<!DOCTYPE html>
 <html>
 <head>
   <title>잡모아</title>
