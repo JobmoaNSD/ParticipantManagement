@@ -92,6 +92,7 @@
     <select id="selectExternalDetail" resultType="jobPlacement">
         SELECT
             구직번호 AS jobNumber,
+            지점 AS counselorBranch,
             상담사 AS counselor,
             상담사_아이디 AS counselorId,
             참여자 AS participant,

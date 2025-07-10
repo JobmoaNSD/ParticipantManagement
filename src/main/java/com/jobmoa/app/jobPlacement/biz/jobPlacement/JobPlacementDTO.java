@@ -10,6 +10,11 @@ public class JobPlacementDTO {
     private String jobNumber;
 
     /**
+     * 상담사 지점
+     */
+    private String counselorBranch;
+
+    /**
      * 상담사
      */
     private String counselor;

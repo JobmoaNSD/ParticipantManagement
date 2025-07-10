@@ -153,7 +153,7 @@
             </div>
             <div id="jobPlacementDiv" class="col-md-12 experience-div mt-2">
                 <label for="jobPlacementTextArea" class="form-label">알선 상세 정보<span class="text-danger">*</span></label>
-                <textarea class="form-control w-100" id="jobPlacementTextArea" name="placementDetail" placeholder="기업에게 전달할 상세 경력, 자격증, 교육 내역등 작성해주세요." style="height: 150px; resize: none;" readonly>${not empty counsel ? counsel.placementDetail:""}</textarea>
+                <textarea class="form-control w-100" id="jobPlacementTextArea" name="placementDetail" placeholder="기업에게 전달할 상세 경력, 자격증, 교육 내역등 작성해주세요." style="height: 300px; resize: none;" readonly>${not empty counsel ? counsel.placementDetail:""}</textarea>
             </div>
         </div>
     </div>

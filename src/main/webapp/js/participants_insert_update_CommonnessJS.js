@@ -46,6 +46,10 @@ $(document).ready(function () {
     const employmentEmpType = $("#employmentEmpType");
     //취업처
     const employmentLoyer = $("#employmentLoyer");
+    //희망급여
+    const counselSalWant = $("#counselSalWant");
+    //희망직무
+    const counselJobWant = $("#counselJobWant");
     //임금
     const employmentSalary = $("#employmentSalary");
     //취업인센티브_구분
@@ -76,6 +80,10 @@ $(document).ready(function () {
         let counselInItConsVal = counselInItCons.val();
         //최근상담일
         let counselLastConsVal = counselLastCons.val();
+        //희망급여
+        const counselSalWantVal = counselSalWant.val();
+        //희망직무
+        const counselJobWantVal = counselJobWant.val();
         //IAP 수립일
         const counselIAPDateVal = counselIAPDate.val();
         //IAP 수립일 3개월차
@@ -138,8 +146,8 @@ $(document).ready(function () {
             return;
         }
         else if (counselPlacementVal.trim() === '희망'){
-            if(basicDobVal === '' || basicAddressVal === '' || basicSchoolVal === '' || basicSpecialtyVal === '' || jobPlacementTextAreaVal === ''){
-                alertDefaultInfo('알선요청 희망시 4가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 상세정보를 반드시 입력해주세요.')
+            if(basicDobVal === '' || basicAddressVal === '' || basicSchoolVal === '' || basicSpecialtyVal === '' || jobPlacementTextAreaVal === '' || counselJobWantVal === '' || counselSalWantVal === ''){
+                alertDefaultInfo('알선요청 희망시 7가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 희망직무, 희망급여, 상세정보를 반드시 입력해주세요.')
                 return;
             }
         }
