@@ -88,7 +88,12 @@ public class JobPlacementDTO {
      * 알선 상세 정보
      */
     private String placementDetail;
-    
+
+    /**
+     * 상담사 전화번호
+     */
+    private String counselorPhone;
+
     /**
      * 페이지네이션 현재 페이지 번호
      */

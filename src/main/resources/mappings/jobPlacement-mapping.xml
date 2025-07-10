@@ -7,7 +7,7 @@
     <sql id="externalAllSearch">
         <where>
             <if test="searchType != null and searchType != ''">
-                (주소 LIKE CONCAT('%', #{searchType}, '%') OR 희망직무 LIKE CONCAT('%', #{searchType}, '%')) OR 상세정보 LIKE CONCAT('%', #{searchType}, '%'))
+                (주소 LIKE CONCAT('%', #{searchType}, '%') OR 희망직무 LIKE CONCAT('%', #{searchType}, '%') OR 상세정보 LIKE CONCAT('%', #{searchType}, '%'))
             </if>
             <if test="ageStartFilter != null and ageStartFilter >=  0">
                 AND 나이 <![CDATA[>=]]> #{ageStartFilter}
@@ -31,40 +31,40 @@
     <select id="selectExternalAll" resultType="jobPlacement">
         SELECT
             구직번호 AS jobNumber,
-            상담사 AS counselor,
-            상담사_아이디 AS counselorId,
+--             상담사 AS counselor,
+--             상담사_아이디 AS counselorId,
             참여자 AS participant,
             성별 AS gender,
-            생년월일 AS birthDate,
+--             생년월일 AS birthDate,
             주소 AS address,
-            학교명 AS schoolName,
-            전공 AS major,
+--             학교명 AS schoolName,
+--             전공 AS major,
             희망직무 AS desiredJob,
-            경력 AS career,
+--             경력 AS career,
             나이 AS age,
             자격증 AS certificate,
-            IIF(희망연봉 <![CDATA[<=]]> 0,'회사내규에 따름',CONVERT(VARCHAR(20),희망연봉)) AS desiredSalary,
-            이메일 AS email,
-            고유번호 AS uniqueNumber
+            IIF(희망연봉 <![CDATA[<=]]> 0,'회사내규에 따름',CONVERT(VARCHAR(20),희망연봉)) AS desiredSalary
+--             상담사이메일 AS email,
+--             고유번호 AS uniqueNumber
         FROM (
                  SELECT
                      ROW_NUMBER() OVER (ORDER BY 구직번호 DESC) AS RowNum,
                      구직번호,
-                     상담사,
+--                      상담사,
                      상담사_아이디,
                      참여자,
                      성별,
                      생년월일,
                      주소,
-                     학교명,
-                     전공,
+--                      학교명,
+--                      전공,
                      희망직무,
                      경력,
                      나이,
                      자격증,
-                     희망연봉,
-                     이메일,
-                     고유번호
+                     희망연봉
+--                      상담사이메일,
+--                      고유번호
                  FROM
                      EXTERNALPARTICIPANT
                 <!-- 알선 관리 검색 필터 -->
@@ -105,9 +105,10 @@
             나이 AS age,
             자격증 AS certificate,
             IIF(희망연봉 <![CDATA[<=]]> 0,'회사내규에 따름',CONVERT(VARCHAR(20),희망연봉)) AS desiredSalary,
-            이메일 AS email,
+            상담사이메일 AS email,
             고유번호 AS uniqueNumber,
-            상세정보 AS placementDetail
+            상세정보 AS placementDetail,
+            상담사전화번호 AS counselorPhone
         FROM
             dbo.EXTERNALPARTICIPANT
         WHERE

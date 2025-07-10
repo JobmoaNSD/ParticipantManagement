@@ -12,24 +12,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="국민취업지원제도 참여자 목록 확인 페이지">
-  <title>참여자 목록 확인 - 국민취업지원제도</title>
-  <mytag:Logo/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="국민취업지원제도 참여자 목록 확인 페이지">
+    <title>참여자 목록 확인 - 국민취업지원제도</title>
+    <mytag:Logo/>
 
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
 
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet"/>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
-  <!-- Custom Style CSS  -->
-  <link href="/css/jobPlacementDefault.css" rel="stylesheet">
+    <!-- Custom Style CSS  -->
+    <link href="/css/jobPlacementDefault.css" rel="stylesheet"/>
+
+    <!-- jobPlacementListJS -->
+    <script src="/js/jobPlacementJs/jobPlacementListJS.js"></script>
+
+    <!-- InputLimits.js -->
+    <script src="/js/InputLimits.js"></script>
 
 </head>
 <body>
@@ -38,7 +44,7 @@
 
 <mytag:jobPlacementView-header/>
 
-<mytag:jobPlacementView-nav pageController="list"/>
+<%--<mytag:jobPlacementView-nav pageController="list"/>--%>
 
 <!-- Main Content -->
 <main id="main-content" role="main" class="container">
@@ -225,25 +231,41 @@
         })
         /* 상세보기 버튼 주소 추가 */
 
+        /* 검색어 및 각 필터값 특수 문자 처리 시작 */
+        // 특수문자 검증
+        searchType.on('input', function(){
+            regexSpecialSymbols($(this).val(), $(this));
+        });
+
+        // 숫자 검증 + 범위 제한 (한 번에 처리)
+        inputLimitsWithRegex(ageStartFilter, 0, 120);
+        inputLimitsWithRegex(ageEndFilter, 0, 120);
+        inputLimitsWithRegex(desiredSalaryStartFilter, 0, 99999);
+        inputLimitsWithRegex(desiredSalaryEndFilter, 0, 99999);
+
+
+        //
+        /* 검색어 및 각 필터값 특수 문자 처리 끝 */
+
         /* 검색 시작*/
         $('#refreshListBtn').on('click',function(){
-                let searchTypeVal = searchType.val();
-                let ageStartFilterVal = ageStartFilter.val();
-                let ageEndFilterVal = ageEndFilter.val();
-                let desiredSalaryStartFilterVal = desiredSalaryStartFilter.val();
-                let desiredSalaryEndFilterVal = desiredSalaryEndFilter.val();
-                let genderFilterVal = genderFilter.val();
-                let countFilterVal = countFilter.val();
-                let searchHref = '?page=1';//+page;
+            let searchTypeVal = searchType.val();
+            let ageStartFilterVal = ageStartFilter.val();
+            let ageEndFilterVal = ageEndFilter.val();
+            let desiredSalaryStartFilterVal = desiredSalaryStartFilter.val();
+            let desiredSalaryEndFilterVal = desiredSalaryEndFilter.val();
+            let genderFilterVal = genderFilter.val();
+            let countFilterVal = countFilter.val();
+            let searchHref = '?page=1';//+page;
 
-                searchHref += searchTypeVal == '' ? '' : '&searchType='+searchTypeVal;
-                searchHref += ageStartFilterVal == '' ? '' : '&ageStartFilter='+ageStartFilterVal;
-                searchHref += ageEndFilterVal == '' ? '' : '&ageEndFilter='+ageEndFilterVal;
-                searchHref += desiredSalaryStartFilterVal == '' ? '' : '&desiredSalaryStartFilter='+desiredSalaryStartFilterVal;
-                searchHref += desiredSalaryEndFilterVal == '' ? '' : '&desiredSalaryEndFilter='+desiredSalaryEndFilterVal;
-                searchHref += genderFilterVal == '' ? '' : '&genderFilter='+genderFilterVal;
-                searchHref += countFilterVal == '' ? '&pageRows=10' : '&pageRows='+countFilterVal;
-                window.location.href = '/jobPlacement/placementList'+searchHref;
+            searchHref += searchTypeVal == '' ? '' : '&searchType='+searchTypeVal.trim();
+            searchHref += ageStartFilterVal == '' ? '' : '&ageStartFilter='+ageStartFilterVal;
+            searchHref += ageEndFilterVal == '' ? '' : '&ageEndFilter='+ageEndFilterVal;
+            searchHref += desiredSalaryStartFilterVal == '' ? '' : '&desiredSalaryStartFilter='+desiredSalaryStartFilterVal;
+            searchHref += desiredSalaryEndFilterVal == '' ? '' : '&desiredSalaryEndFilter='+desiredSalaryEndFilterVal;
+            searchHref += genderFilterVal == '' ? '' : '&genderFilter='+genderFilterVal;
+            searchHref += countFilterVal == '' ? '&pageRows=10' : '&pageRows='+countFilterVal;
+            window.location.href = '/jobPlacement/placementList'+searchHref;
             }
         )
         /* 검색 끝*/
@@ -259,224 +281,6 @@
         /* 검색 폼 데이터 및 추가 끝 */
 
     })
-</script>
-<!-- Pagination Function End -->
-
-<script>
-  /*// 참여자 목록 관리
-  class ParticipantListManager {
-    constructor() {
-      this.allParticipants = [];
-      this.filteredParticipants = [];
-      this.selectedParticipants = [];
-      this.init();
-    }
-
-    init() {
-      this.setupEventListeners();
-      // this.updateStatistics();
-    }
-
-    // 이벤트 리스너 설정
-    setupEventListeners() {
-        // 검색
-        $('#participantSearch').on('input', (e) => {
-            clearTimeout(this.searchTimeout);
-            this.searchTimeout = setTimeout(() => {
-            }, 300);
-        })
-
-        // 새로고침
-        $('#refreshListBtn').on('click', (e) => {
-            this.refreshList();
-        })
-    }
-
-    /!*!// 테이블 행 생성
-    createTableRow(participant, rowNumber) {
-      const tr = document.createElement('tr');
-      tr.setAttribute('data-status', participant.status);
-      tr.setAttribute('data-job', participant.job);
-
-      const statusBadge = this.getStatusBadge(participant.status);
-
-      tr.innerHTML = '<td>' +
-              '<input type="checkbox" class="form-check-input row-checkbox" ' +
-              'value="' + participant.id + '" aria-label="참여자 ' + participant.id + ' 선택">' +
-              '</td>' +
-              '<td>' + rowNumber + '</td>' +
-              '<td>' + participant.name + '</td>' +
-              '<td>' + participant.age + '</td>' +
-              '<td>' + participant.location + '</td>' +
-              '<td>' + participant.job + '</td>' +
-              '<td>' + participant.salary + '</td>' +
-              '<td>' + participant.registrationDate + '</td>' +
-              '<td>' + statusBadge + '</td>' +
-              '<td>' +
-              '<a href="placementDetail?id=' + participant.id + '" ' +
-              'class="btn btn-outline-primary btn-sm" title="상세보기">' +
-              '<i class="bi bi-eye"></i>' +
-              '</a>' +
-              '</td>';
-
-      return tr;
-    }*!/
-
-
-   /!* // 목록 새로고침
-    refreshList() {
-      const refreshBtn = document.getElementById('refreshListBtn');
-      const originalText = refreshBtn.innerHTML;
-
-      refreshBtn.innerHTML = '<span class="loading-spinner"></span> 새로고침 중...';
-      refreshBtn.disabled = true;
-
-      //ajax or fetch function change
-      setTimeout(() => {
-        refreshBtn.innerHTML = originalText;
-        refreshBtn.disabled = false;
-
-        this.showToast('success', '목록이 새로고침되었습니다.');
-      }, 1000);
-    }*!/
-
-    /!*!// 데이터 내보내기
-    exportData() {
-      const data = this.filteredParticipants.map(p => ({
-        '번호': p.id,
-        '이름': p.name,
-        '나이': p.age,
-        '거주지': p.location,
-        '희망직종': p.job,
-        '희망연봉': p.salary,
-        '등록일': p.registrationDate,
-        '상태': this.getStatusText(p.status)
-      }));
-
-      this.downloadCSV(data, '참여자_목록_' + new Date().toISOString().slice(0, 10) + '.csv');
-      this.showToast('success', '데이터가 내보내기되었습니다.');
-    }*!/
-
-    /!*!// 선택된 항목 내보내기
-    exportSelected() {
-      if (this.selectedParticipants.length === 0) {
-        this.showToast('warning', '내보낼 항목을 선택해주세요.');
-        return;
-      }
-
-      const selectedData = this.allParticipants
-              .filter(p => this.selectedParticipants.includes(p.id.toString()))
-              .map(p => ({
-                '번호': p.id,
-                '이름': p.name,
-                '나이': p.age,
-                '거주지': p.location,
-                '희망직종': p.job,
-                '희망연봉': p.salary,
-                '등록일': p.registrationDate,
-                '상태': this.getStatusText(p.status)
-              }));
-
-      this.downloadCSV(selectedData, '선택된_참여자_' + new Date().toISOString().slice(0, 10) + '.csv');
-      this.showToast('success', '선택된 항목이 내보내기되었습니다.');
-    }*!/
-
-    /!*!// 선택된 항목 상세보기
-    viewSelectedDetails() {
-      if (this.selectedParticipants.length === 0) {
-        this.showToast('warning', '상세보기할 항목을 선택해주세요.');
-        return;
-      }
-
-      if (this.selectedParticipants.length === 1) {
-        window.location.href = 'placementDetail?id=' + this.selectedParticipants[0];
-      } else {
-        window.location.href = 'placementDetail?ids=' + this.selectedParticipants.join(',');
-      }
-    }*!/
-
-    /!*!// CSV 다운로드
-    downloadCSV(data, filename) {
-      if (data.length === 0) return;
-
-      const headers = Object.keys(data[0]);
-      const csvContent = [
-        headers.join(','),
-        ...data.map(row => headers.map(header => '"' + (row[header] || '') + '"').join(','))
-      ].join('\n');
-
-      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-
-      link.setAttribute('href', url);
-      link.setAttribute('download', filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }*!/
-
-    // 토스트 알림 표시
-    showToast(type, message) {
-      const toastContainer = document.getElementById('toastContainer');
-      const toastId = 'toast-' + Date.now();
-
-      const toastHTML = '<div class="toast toast-custom toast-' + type + '" id="' + toastId + '" role="alert" aria-live="assertive" aria-atomic="true">' +
-              '<div class="toast-header">' +
-              '<i class="bi bi-' + this.getToastIcon(type) + ' me-2"></i>' +
-              '<strong class="me-auto">' + this.getToastTitle(type) + '</strong>' +
-              '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="닫기"></button>' +
-              '</div>' +
-              '<div class="toast-body">' +
-              message +
-              '</div>' +
-              '</div>';
-
-      toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-
-      const toastElement = document.getElementById(toastId);
-      const toast = new bootstrap.Toast(toastElement, {
-        autohide: true,
-        delay: 4000
-      });
-
-      toast.show();
-
-      // 토스트가 숨겨진 후 DOM에서 제거
-      toastElement.addEventListener('hidden.bs.toast', () => {
-        toastElement.remove();
-      });
-    }
-
-    // 토스트 아이콘 반환
-    getToastIcon(type) {
-      const icons = {
-        success: 'check-circle-fill',
-        error: 'exclamation-triangle-fill',
-        warning: 'exclamation-triangle-fill',
-        info: 'info-circle-fill'
-      };
-      return icons[type] || 'info-circle-fill';
-    }
-
-    // 토스트 제목 반환
-    getToastTitle(type) {
-      const titles = {
-        success: '성공',
-        error: '오류',
-        warning: '주의',
-        info: '정보'
-      };
-      return titles[type] || '알림';
-    }
-  }
-
-  // 페이지 초기화
-  document.addEventListener('DOMContentLoaded', function() {
-    window.participantListManager = new ParticipantListManager();
-    console.log('참여자 목록 페이지가 초기화되었습니다.');
-  });*/
 </script>
 </body>
 </html>
