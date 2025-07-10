@@ -439,6 +439,14 @@
             <span class="readonly-value" id="detailSalary">${data.desiredSalary}</span>
           </div>
           <div class="readonly-item">
+            <span class="readonly-label">학교명</span>
+            <span class="readonly-value" id="schoolName">${data.schoolName}</span>
+          </div>
+          <div class="readonly-item">
+            <span class="readonly-label">전공</span>
+            <span class="readonly-value" id="major">${data.major}</span>
+          </div>
+          <div class="readonly-item">
             <span class="readonly-label">자격증</span>
             <span class="readonly-value" id="detailCertificates">${data.certificate eq '' ? '없음':data.certificate}</span>
           </div>
@@ -477,6 +485,7 @@
           <div class="essay-section">
             <h4 class="essay-title">이력서와 자기소개서는 아래 상담사에게 문의 부탁드립니다.</h4>
             <p class="essay-content">
+              <strong>지점 : </strong> ${data.counselorBranch}
               <strong>상담사 : </strong> ${data.counselor}
               <strong>이메일 : </strong> ${data.email}
               <strong>전화 번호 : </strong> ${data.counselorPhone}
