@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>잡모아</title>
@@ -247,11 +248,11 @@
         let employmentSalary = $("#employmentSalary");
 
         //경력 최소 최대 입력 값
-        inputLimits(basicAntecedents, 0, 40);
+        inputLimitsWithRegex(basicAntecedents, 0, 40);
         //희망급여 최소 최대 입력 값
-        inputLimits(counselSalWant, 0, 1000);
+        inputLimitsWithRegex(counselSalWant, 0, 1000);
         //임금 최소 최대 입력 값
-        inputLimits(employmentSalary, 0, 1000);
+        inputLimitsWithRegex(employmentSalary, 0, 1000);
 
         //자격증 배열을 백단에서 전달받습니다.
         let specialtyArr = JSON.parse('${particcertifs}') ;
@@ -279,7 +280,7 @@
         selectOption($("#counselJobSkill"),"${counsel.counselJobSkill}");
 
         //알선요청 목록 내용 변경
-        selectOption($("#counselPlacement"),"${counsel.counselPlacement}");
+        selectOption($("#counselPlacement"),"${(counsel.counselPlacement eq '' || counsel.counselPlacement eq null)?'미희망':counsel.counselPlacement}");
         <%-- 목록 내용 변경 끝 --%>
 
         <%-- 각 ID 별 변수 --%>
