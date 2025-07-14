@@ -6,7 +6,7 @@
      </appender>
 
      <!-- MyBatis 매퍼의 패키지 경로를 지정하여 로그 레벨 설정 -->
-     <logger name="com.jobmoa.app.*" level="DEBUG"/>
+     <logger name="com.jobmoa.app.jobPlacement.*" level="DEBUG"/>
      <!-- 또는 매퍼 네임스페이스로 지정 -->
 <!--     <logger name="ParticipantDAO" level="DEBUG"/>-->
 
