@@ -75,6 +75,11 @@ public class JobPlacementDTO {
     private String certificate;
 
     /**
+     * 여러 자격증
+     */
+    private String[] certificates;
+
+    /**
      * 희망연봉
      */
     private String desiredSalary;
@@ -88,6 +93,11 @@ public class JobPlacementDTO {
      * 고유번호
      */
     private String uniqueNumber;
+
+    /**
+     * 알선 상세 등록 정보
+     */
+    private int placementDetailNumber;
 
     /**
      * 알선 상세 정보
@@ -135,9 +145,14 @@ public class JobPlacementDTO {
     private String condition;
 
     /**
-     * 검색어
+     * 검색 조건
      */
     private String searchType;
+
+    /**
+     * 검색어
+     */
+    private String searchKeyword;
 
     /**
      * 나이 필터 시작

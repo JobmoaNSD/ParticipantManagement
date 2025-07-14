@@ -72,15 +72,24 @@
     <!-- 검색 및 필터 -->
     <div class="search-filters">
       <div class="row">
+
         <div class="col-md-5 ps-0 pe-0">
-          <label for="search" class="form-label">
-            <i class="bi bi-search"></i> 검색
-          </label>
-          <input type="search"
-                 class="form-control search-input"
-                 id="search"
-                 name="searchType"
-                 placeholder="희망직종, 거주지로 검색">
+            <label for="searchKeyword" class="form-label">
+                <i class="bi bi-search"></i> 검색
+            </label>
+            <div class="d-flex flex-row bd-highlight">
+                <select class="form-select w-25" id="searchType" name="searchType">
+                    <option value="">전체</option>
+                    <option value="구직번호">구직번호</option>
+                    <option value="희망직종">희망직종</option>
+                    <option value="거주지">거주지</option>
+                </select>
+                <input type="search"
+                       class="form-control search-input"
+                       id="searchKeyword"
+                       name="searchKeyword"
+                       placeholder="검색어를 입력해주세요.">
+            </div>
         </div>
         <div class="col-md-2">
           <label for="ageStartFilter" class="form-label">
@@ -156,14 +165,7 @@
                   <td>${fn:substring(datas.participant, 0, 4)}</td>
                   <td>${datas.age == 0 ? '비공개':datas.age}</td>
                   <td>${datas.gender}</td>
-                  <c:choose>
-                      <c:when test="${datas.address eq ''}">
-                          <td></td>
-                      </c:when>
-                      <c:otherwise>
-                          <td>${fn:substring(datas.address, 0, 11)}...</td>
-                      </c:otherwise>
-                  </c:choose>
+                  <td>${datas.address}</td>
                   <td>${datas.desiredJob}</td>
                   <td>${datas.desiredSalary}</td>
                   <td>
@@ -214,7 +216,8 @@
         <%-- pagination 끝 --%>
 
         <%-- 검색 폼 input --%>
-        let searchType = $('#search');
+        let searchKeyword = $('#searchKeyword');
+        let searchType = $('#searchType');
         let ageStartFilter = $('#ageStartFilter');
         let ageEndFilter = $('#ageEndFilter');
         let desiredSalaryStartFilter = $('#desiredSalaryStartFilter');
@@ -226,14 +229,13 @@
         /* 상세보기 버튼 주소 추가 */
         $('.detailPageATag').click(function(){
             let jobNumber = $(this).parent().find('input[name="jobNumber"]').val();
-            let href = 'placementDetail'+searchHref(page)+'&jobNumber='+jobNumber;
-            window.location.href = href;
+            window.location.href = 'placementDetail' + searchHref(page) + '&jobNumber=' + jobNumber;
         })
         /* 상세보기 버튼 주소 추가 */
 
         /* 검색어 및 각 필터값 특수 문자 처리 시작 */
         // 특수문자 검증
-        searchType.on('input', function(){
+        searchKeyword.on('input', function(){
             regexSpecialSymbols($(this).val(), $(this));
         });
 
@@ -249,6 +251,7 @@
 
         /* 검색 시작*/
         $('#refreshListBtn').on('click',function(){
+            let searchKeywordVal = searchKeyword.val();
             let searchTypeVal = searchType.val();
             let ageStartFilterVal = ageStartFilter.val();
             let ageEndFilterVal = ageEndFilter.val();
@@ -258,7 +261,8 @@
             let countFilterVal = countFilter.val();
             let searchHref = '?page=1';//+page;
 
-            searchHref += searchTypeVal == '' ? '' : '&searchType='+searchTypeVal.trim();
+            searchHref += searchKeywordVal == '' ? '' : '&searchKeyword='+searchKeywordVal.trim();
+            searchHref += searchTypeVal == '' ? '' : '&searchType='+searchTypeVal;
             searchHref += ageStartFilterVal == '' ? '' : '&ageStartFilter='+ageStartFilterVal;
             searchHref += ageEndFilterVal == '' ? '' : '&ageEndFilter='+ageEndFilterVal;
             searchHref += desiredSalaryStartFilterVal == '' ? '' : '&desiredSalaryStartFilter='+desiredSalaryStartFilterVal;
@@ -271,6 +275,7 @@
         /* 검색 끝*/
 
         /* 검색 폼 데이터 및 추가 시작 */
+        searchKeyword.val('${param.searchKeyword}');
         searchType.val('${param.searchType}');
         ageStartFilter.val(${param.ageStartFilter});
         ageEndFilter.val(${param.ageEndFilter});
