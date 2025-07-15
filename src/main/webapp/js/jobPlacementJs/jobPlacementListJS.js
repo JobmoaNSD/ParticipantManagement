@@ -1,5 +1,5 @@
 function regexSpecialSymbols(val, input) {
-    let changeData = val.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]/gm, "");
+    let changeData = val.replace(/[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9 ]/gm, "");
     // console.log(changeData);
     input.val(changeData);
 }

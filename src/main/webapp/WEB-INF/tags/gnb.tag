@@ -152,21 +152,21 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-people-fill"></i>
                         <p>
-                            알선기업관리
+                            알선관리
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item" onclick="alert('미구현 페이지 입니다.')">
-                            <a href="#" class="nav-link">
-                                <small><p>알선기업</p></small>
+                        <li class="nav-item">
+                            <a href="/jobPlacement/" class="nav-link">
+                                <small><p>알선참여자확인</p></small>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <!--end::알선기업관리-->
                 <!--begin::지점관리-->
-                <!--TODO FIXME 권한 확인하고 어디까지 열어둘지 확인해야함-->
+                <!-- FIXME 권한 확인하고 어디까지 열어둘지 확인해야함 -->
                 <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
                     <li class="nav-item ${gnb_main_header eq '지점관리' ? 'menu-open' : ''}">
                         <a href="#" class="nav-link">

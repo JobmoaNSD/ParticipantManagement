@@ -424,6 +424,7 @@ public class UpdateController {
         //조회된 내용을 정리하여 페이지로 전달.
         model.addAttribute("basic", basicDTO);
         model.addAttribute("counsel", counselDTO);
+        log.info("counselDTO : [{}]", counselDTO);
         model.addAttribute("employment", employmentDTO);
         model.addAttribute("educations", educationArr);
         model.addAttribute("particcertifs", particcertifArr);

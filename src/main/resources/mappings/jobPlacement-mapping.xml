@@ -8,7 +8,7 @@
         <where>
             <if test="searchKeyword != null and searchKeyword != ''">
                 <choose>
-                    <when test="searchType == null and searchType == '' or searchType == '전체'">
+                    <when test="searchType == null or searchType == '' or searchType == '전체'">
                         (구직번호 LIKE CONCAT('%', #{searchKeyword}, '%') OR 주소 LIKE CONCAT('%', #{searchKeyword}, '%') OR 희망직무 LIKE CONCAT('%', #{searchKeyword}, '%') OR 상세정보 LIKE CONCAT('%', #{searchKeyword}, '%'))
                     </when>
                     <when test="searchType == '구직번호'">
@@ -35,7 +35,7 @@
                 AND 희망연봉 <![CDATA[<=]]> #{desiredSalaryEndFilter}
             </if>
             <if test="genderFilter != null and genderFilter != ''">
-                AND 성별 = #{genderFilter}
+                AND 성별 LIKE CONCAT('%', #{genderFilter}, '%')
             </if>
         </where>
     </sql>

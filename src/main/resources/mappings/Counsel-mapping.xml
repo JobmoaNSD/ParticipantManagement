@@ -81,7 +81,7 @@
             B.상세정보 AS placementDetail
         FROM
             J_참여자관리 A
-        JOIN
+        LEFT JOIN
             J_참여자관리_알선상세정보 B
         ON
             A.구직번호 = B.구직번호
