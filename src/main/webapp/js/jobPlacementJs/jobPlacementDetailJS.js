@@ -106,6 +106,9 @@ $(document).ready(function() {
                     '<option value="여" '+(!flag?'selected':'')+' >여</option>' +
                     '</select>'
                 }
+                else if (fieldId === 'detailLocation') {
+                    inputHtml = '<input type="text" class="form-control editable-input" id="' + fieldId + '" name="' + inputName + '" value="' + currentValue + '" readonly>';
+                }
                 else {
                     inputHtml = '<input type="text" class="form-control editable-input" id="' + fieldId + '" name="' + inputName + '" value="' + currentValue + '">';
                 }
