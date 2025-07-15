@@ -271,24 +271,6 @@
       }
     });
     /* datePicker 날짜 형식 변환 끝 */
-
-
-    /*// kakao 주소 api function 시작 TODO 여기서 부터 시작
-    const addressBtn = $("#detailLocation");
-    const btnCloseLayer = $("#btnCloseLayer");
-    const layer = $("#addressBtn");
-    // 주소 입력 필드 클릭 시 주소 검색 창 열기
-    addressBtn.on("keyup", function () {
-      console.log(layer.val());
-      getAddress();
-    });
-
-    // 닫기 버튼 클릭 시 주소 검색 창 닫기
-    btnCloseLayer.on("click", function () {
-      closeDaumPostcode();
-    });
-    // kakao 주소 api function 끝*/
-
   })
 </script>
 </body>

@@ -1,27 +1,26 @@
-
+$(document).ready(function () {
     // kakao 주소 api function 시작
-    const addressBtn = $("#detailLocation");
     const btnCloseLayer = $("#btnCloseLayer");
 
-// // 주소 입력 필드 클릭 시 주소 검색 창 열기
-//     addressBtn.on("click", function () {
-//         getAddress();
-//     });
-//
-// // 닫기 버튼 클릭 시 주소 검색 창 닫기
-//     btnCloseLayer.on("click", function () {
-//         closeDaumPostcode();
-//     });
+// 주소 입력 필드 클릭 시 주소 검색 창 열기
+    $(document).on("click",".editable-input#detailLocation", function () {
+        getAddress($(this),$("#layer"));
+    });
+
+// 닫기 버튼 클릭 시 주소 검색 창 닫기
+    btnCloseLayer.on("click", function () {
+        closeDaumPostcode();
+    });
 
     // 우편번호 찾기 화면을 넣을 element
-    const element_layer = $("#layer");
+    // const element_layer = ;
 
     function closeDaumPostcode() {
         // iframe을 넣은 element를 안보이게 한다.
-        element_layer.css('display', 'none');
+        $("#layer").css('display', 'none');
     }
 
-    function getAddress(){
+    function getAddress(addressBtn,element_layer){
         new daum.Postcode({
             oncomplete: function(data) {
                 // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -70,16 +69,16 @@
         element_layer.css('display', 'block');
 
         // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
-        initLayerPosition();
+        initLayerPosition(element_layer);
     }
 
 // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
 // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
 // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
-    function initLayerPosition(){
-        var width = 400; //우편번호서비스가 들어갈 element의 width
-        var height = 500; //우편번호서비스가 들어갈 element의 height
-        var borderWidth = 1; //샘플에서 사용하는 border의 두께
+    function initLayerPosition(element_layer){
+        let width = 500; //우편번호서비스가 들어갈 element의 width
+        let height = 600; //우편번호서비스가 들어갈 element의 height
+        let borderWidth = 1; //샘플에서 사용하는 border의 두께
 
         // 위에서 선언한 값들을 실제 element에 넣는다.
         element_layer.css({
@@ -91,3 +90,5 @@
         });
     }
 // kakao 주소 api function 끝
+})
+
