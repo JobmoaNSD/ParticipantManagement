@@ -63,8 +63,13 @@
         </button>--%>
         <button type="button"
                 class="btn btn-modern btn-primary"
+                id="filterResetBtn">
+            <i class="bi bi-arrow-clockwise"></i> 필터 초기화
+        </button>
+        <button type="button"
+                class="btn btn-modern btn-primary"
                 id="refreshListBtn">
-          <i class="bi bi-arrow-clockwise"></i> 검색 및 새로고침
+          <i class="bi bi-search"></i> 검색 및 새로고침
         </button>
       </div>
     </div>
@@ -159,25 +164,34 @@
           </tr>
           </thead>
           <tbody id="participantTableBody">
-          <c:forEach items="${jobPlacementDatas}" var="datas">
-              <tr>
-                  <td>${datas.jobNumber}</td>
-                  <td>${fn:substring(datas.participant, 0, 4)}</td>
-                  <td>${datas.age == 0 ? '비공개':datas.age}</td>
-                  <td>${datas.gender}</td>
-                  <td>${datas.address}</td>
-                  <td>${datas.desiredJob}</td>
-                  <td>${datas.desiredSalary}</td>
-                  <td>
-                      <a href="#"
-                         class="btn btn-outline-primary btn-sm detailPageATag"
-                         title="상세보기">
-                          <i class="bi bi-eye"></i>
-                      </a>
-                      <input type="hidden" value="${datas.jobNumber}" name="jobNumber">
-                  </td>
-              </tr>
-          </c:forEach>
+          <c:choose>
+              <c:when test="${not empty jobPlacementDatas}">
+                  <c:forEach items="${jobPlacementDatas}" var="datas">
+                      <tr>
+                          <td>${datas.jobNumber}</td>
+                          <td>${fn:substring(datas.participant, 0, 4)}</td>
+                          <td>${datas.age == 0 ? '비공개':datas.age}</td>
+                          <td>${datas.gender}</td>
+                          <td>${datas.address}</td>
+                          <td>${datas.desiredJob}</td>
+                          <td>${datas.desiredSalary}</td>
+                          <td>
+                              <a href="#"
+                                 class="btn btn-outline-primary btn-sm detailPageATag"
+                                 title="상세보기">
+                                  <i class="bi bi-eye"></i>
+                              </a>
+                              <input type="hidden" value="${datas.jobNumber}" name="jobNumber">
+                          </td>
+                      </tr>
+                  </c:forEach>
+              </c:when>
+              <c:otherwise>
+                  <tr>
+                      <td colspan="8" style="font-size: 1.5em; text-align: center;">검색된 참여자가 없습니다.</td>
+                  </tr>
+              </c:otherwise>
+          </c:choose>
           </tbody>
         </table>
       </div>
@@ -226,6 +240,19 @@
         let countFilter = $('#countFilter');
         <%-- 검색 폼 input --%>
 
+        <%-- 검색 초기화 시작 --%>
+        $("#filterResetBtn").on('click', function(){
+            searchKeyword.val('');
+            searchType.val('');
+            ageStartFilter.val('');
+            ageEndFilter.val('');
+            desiredSalaryStartFilter.val('');
+            desiredSalaryEndFilter.val('');
+            genderFilter.val('');
+            countFilter.val('10');
+        })
+        <%-- 검색 초기화 끝 --%>
+
         /* 상세보기 버튼 주소 추가 */
         $('.detailPageATag').click(function(){
             let jobNumber = $(this).parent().find('input[name="jobNumber"]').val();
@@ -239,6 +266,7 @@
             regexSpecialSymbols($(this).val(), $(this));
         });
 
+
         // 숫자 검증 + 범위 제한 (한 번에 처리)
         inputLimitsWithRegex(ageStartFilter, 0, 120);
         inputLimitsWithRegex(ageEndFilter, 0, 120);
@@ -250,6 +278,13 @@
         /* 검색어 및 각 필터값 특수 문자 처리 끝 */
 
         /* 검색 시작*/
+        //enter Key Event
+        searchKeyword.on('keypress', function(e){
+            if(e.keyCode === 13){
+                $('#refreshListBtn').click();
+            }
+        })
+
         $('#refreshListBtn').on('click',function(){
             let searchKeywordVal = searchKeyword.val();
             let searchTypeVal = searchType.val();

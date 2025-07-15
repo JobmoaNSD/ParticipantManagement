@@ -58,6 +58,7 @@
                 <span class="inner-status">Server Error!</span>
                 <span class="inner-detail" id="email-a-tag">사이트 담당자에게 메일 전달</span>
                 <span class="inner-detail"><a href="/index.jsp">메인 페이지로 이동</a></span>
+                <span class="inner-detail"><a href="/jobPlacement/">알선 페이지로 이동</a></span>
                 <!--END CONTENT-->
             </div>
         </div>

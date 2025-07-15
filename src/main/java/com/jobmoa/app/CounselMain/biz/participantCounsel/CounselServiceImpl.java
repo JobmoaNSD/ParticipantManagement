@@ -22,8 +22,9 @@ public class CounselServiceImpl implements CounselService {
         //만약 condition 값이 있고 DTO 데이터가 null이 아니면 selectOne 진행
         if(counselDTO != null && counselDTO.getCounselCondition() != null) {
             data = counselDAO.selectOne(counselDTO);
+//            log.info("counsel selectOne SQL counselDTO selectOne Success : [{}]",data);
         }
-        log.info("data : [{}]",data);
+//        log.info("data : [{}]",data);
         return data;
     }
 

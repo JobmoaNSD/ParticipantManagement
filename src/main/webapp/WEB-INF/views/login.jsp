@@ -109,12 +109,11 @@
                 </div>
                 <div class="text-center">
                     <a href="#" class="text-decoration-none text-primary fw-bold"
-                       data-bs-toggle="modal" data-bs-target=".#findPasswordModal">
+                       data-bs-toggle="modal" data-bs-target="#findPasswordModal">
                         비밀번호 찾기
                     </a>
                     <br>
-                    <a href="/jobPlacement/placementList" class="text-decoration-none text-primary fw-bold"
-                       data-bs-toggle="modal" data-bs-target=".#findPasswordModal">
+                    <a href="/jobPlacement/placementList" class="text-decoration-none text-primary fw-bold">
                         기업회원 알선 확인
                     </a>
                 </div>
@@ -141,6 +140,10 @@
                     <div class="mb-3">
                         <label for="userPrimaryKey" class="form-label">고유번호</label>
                         <input type="text" class="form-control" id="userPrimaryKey" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userEmail" class="form-label">고유번호</label>
+                        <input type="email" class="form-control" id="userEmail" required>
                     </div>
                 </form>
             </div>

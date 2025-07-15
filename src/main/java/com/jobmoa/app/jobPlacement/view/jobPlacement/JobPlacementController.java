@@ -70,9 +70,11 @@ public class JobPlacementController {
 
         //나이 필터, 희망 연봉 필터, 성별 필터가 비어 있지 않다면 필터 사용으로 간주한다.
         if(ageStartFilter != 0 || ageEndFilter != 0 || desiredSalaryStartFilter != 0 || desiredSalaryEndFilter != 0 || genderFilter != null || searchKeyword != null){
-            searchKeyword = searchKeyword.trim();
-            searchKeyword = searchKeyword.replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]", "");
-            jobPlacementDTO.setSearchKeyword(searchKeyword);
+            if(searchKeyword != null){
+                searchKeyword = searchKeyword.trim();
+                searchKeyword = searchKeyword.replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]", "");
+                jobPlacementDTO.setSearchKeyword(searchKeyword);
+            }
 
             isFilter = true;
         }
@@ -107,7 +109,7 @@ public class JobPlacementController {
             jobPlacementDTO.setPageRows(pageRows);
             // DB(J_참여자관리)로부터 참여자 목록 조회
             jobPlacementDTO.setCondition("selectExternalAll");
-            log.info("jobPlacementListPage jobPlacementDTO : [{}]", jobPlacementDTO);
+//            log.info("jobPlacementListPage jobPlacementDTO : [{}]", jobPlacementDTO);
             List<JobPlacementDTO> jobPlacementDatas = jobPlacementService.selectAll(jobPlacementDTO);
 
             // ParticipantDTO에서 이름 설정

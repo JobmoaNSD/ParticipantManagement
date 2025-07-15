@@ -140,18 +140,18 @@ $(document).ready(function () {
             }
 
         }
-        else if ((counselProgressVal == "미고보" || counselProgressVal == "고보일반" || counselProgressVal == "등록창업" || counselProgressVal == "미등록창업" ||
+
+        if ((counselProgressVal == "미고보" || counselProgressVal == "고보일반" || counselProgressVal == "등록창업" || counselProgressVal == "미등록창업" ||
             counselProgressVal == "미취업사후종료" || counselProgressVal == "이관" || counselProgressVal == "중단") && counselEXPDateVal == ''){
             alertDefaultInfo("현재 선택한 진행단계의 "+counselProgressVal+"은/는 기간만료(예정)일은 필수로 입력되어야 합니다.");
             return;
         }
-        else if (counselPlacementVal.trim() === '희망'){
-            if(basicDobVal === '' || basicAddressVal === '' || basicSchoolVal === '' || basicSpecialtyVal === '' || jobPlacementTextAreaVal === '' || counselJobWantVal === '' || counselSalWantVal === ''){
+        else if (counselPlacementVal == '희망'){
+            if(basicDobVal == '' || basicAddressVal == '' || basicSchoolVal == '' || basicSpecialtyVal == '' || jobPlacementTextAreaVal == '' || counselJobWantVal == '' || counselSalWantVal == ''){
                 alertDefaultInfo('알선요청 희망시 7가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 희망직무, 희망급여, 상세정보를 반드시 입력해주세요.')
                 return;
             }
         }
-
 
         // 초기상담일이 비어있는 상태라면 최근상담일이 초기상담일이 입력된다는 안내를 출력한다.
         if(!counselInItConsVal.length > 0){
@@ -177,6 +177,11 @@ $(document).ready(function () {
             }
         }
         else {
+
+            if(employmentSalaryVal <= 0 || employmentSalaryVal > 1000){
+                alertDefaultInfo("임금을 정확히 입력해주세요","1~1000까지 입력부탁드립니다.");
+                return;
+            }
             //임금이 작성되어 있거나
             if (!employmentSalaryVal.length > 0){
                 alertDefaultInfo("임금은 필수 입력입니다.","");

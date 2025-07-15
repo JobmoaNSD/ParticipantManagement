@@ -23,6 +23,7 @@
                 <span class="inner-status">페이지를 찾지 못했습니다!</span>
                 <span class="inner-detail pointer" onclick="history.back()">이전 페이지로 돌아가기.</span>
                 <span class="inner-detail"><a href="/index.jsp">메인 페이지로 이동</a></span>
+                <span class="inner-detail"><a href="/jobPlacement/">알선 페이지로 이동</a></span>
                 <!--END CONTENT-->
             </div>
         </div>
