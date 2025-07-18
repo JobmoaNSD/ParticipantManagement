@@ -17,6 +17,7 @@
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.report"/>
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.chatBot"/>
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.branchManagement"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.participantRandomAssignment"/>
 
     <context:component-scan base-package="com.jobmoa.app.jobPlacement.view.jobPlacement"/>
     <context:component-scan base-package="com.jobmoa.app.jobPlacement.view.async"/>

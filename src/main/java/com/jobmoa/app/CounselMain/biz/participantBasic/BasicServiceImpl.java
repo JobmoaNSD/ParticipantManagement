@@ -124,7 +124,10 @@ public class BasicServiceImpl implements BasicService {
         String counselPlacement = counselDTO.getCounselPlacement();
         if(Objects.equals(counselPlacement, "희망")){
             counselDTO.setCounselCondition("counselPlacementUpdate");
-            flag = flag && counselDAO.update(counselDTO);
+            if(!counselDAO.update(counselDTO)){
+                counselDTO.setCounselCondition("counselPlacementInsert");
+                flag = flag && counselDAO.insert(counselDTO);
+            }
             log.info("알선 상세 정보 업데이트 상태 : [{}]",flag);
         }
 
