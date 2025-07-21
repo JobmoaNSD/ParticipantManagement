@@ -57,8 +57,11 @@ public class ParticipantRandomAssignmentDAO {
         log.info("ParticipantRandomAssignmentDAO Select SQL data : [{}]",data);
         return data;
     }
-    public List<ParticipantRandomAssignmentDTO> selectAll(ParticipantRandomAssignmentDTO basicDTO) {
-
-        return null;
+    public List<ParticipantRandomAssignmentDTO> selectAll(ParticipantRandomAssignmentDTO praDTO) {
+        String condition = praDTO.getCondition();
+        log.info("ParticipantRandomAssignmentDAO List<ParticipantRandomAssignmentDTO> SQL praDTO condition : [{}]",condition);
+        List<ParticipantRandomAssignmentDTO> datas = sqlSession.selectList(ns+condition, praDTO);
+        log.info("ParticipantRandomAssignmentDAO List<ParticipantRandomAssignmentDTO> SQL data : [{}]",datas);
+        return datas;
     }
 }

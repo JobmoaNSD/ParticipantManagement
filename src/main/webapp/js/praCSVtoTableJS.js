@@ -91,6 +91,8 @@ function readCsvFile(file) {
  */
 function processCSV(csvText) {
     const responseTextDiv = $('.response-text-div');
+    const csv_column = $('.csv-column');
+
 
     try {
         // 1단계: CSV 파싱 전 기본적인 데이터 정제
@@ -115,35 +117,40 @@ function processCSV(csvText) {
         }
 
         // 4단계: HTML 테이블 생성 시작
-        let table = '<table class="table table-striped">';
-        table += '<thead><tr>';
-
-        // 첫 번째 행을 테이블 헤더로 처리
-        if (data.length > 0) {
-            for (let j = 0; j < data[0].length; j++) {
-                if (j === 0) {
-                    table += '<th>전담자 계정</th>';
-                }
-                table += '<th>' + escapeHtml(data[0][j]) + '</th>';
+        // 예상 헤더를 배열로 미리 수집 (한 번만 실행)
+        const expectedHeaders = [];
+        csv_column.each(function(i) {
+            if (i !== 0) {
+                expectedHeaders.push($(this).text().trim());
             }
-        }
-        table += '</tr></thead><tbody>';
+        });
 
+        // 헤더 검증 (O(n+m) → O(n))
+        if (data.length > 0 && !validateCSVHeaders(data[0], expectedHeaders)) {
+            responseTextDiv.show();
+            responseTextDiv.append('<strong class="csv-danger">CSV 파일의 헤더가 다릅니다.</strong>');
+            return; // 헤더가 맞지 않으면 처리 중단
+        }
+
+
+        let table = '';
         // 나머지 데이터를 테이블 바디로 처리
         for (let i = 1; i < data.length; i++) {
             table += '<tr class="csv-data-tr">';
             for (let j = 0; j < data[i].length; j++) {
                 if (j === 0) {
-                    table += '<td class="random-td-input" ><input type="text" class="random-input" id="random-'+(i+1)+' readonly"></td>';
+                    table += '<td>'+i+'</td>'
+                    // table += '<td class="random-td-input" ><input type="text" class="random-input" id="random-'+(i+1)+' readonly"></td>';
+                    table += '<td class="random-td-input"></td>';
                 }
-                table += '<td>' + escapeHtml(data[i][j]) + '</td>';
+                table += '<td class="random-td">' + escapeHtml(data[i][j]) + '</td>';
             }
             table += '</tr>';
         }
-        table += '</tbody></table>';
+        // table += '</tbody></table>';
 
         // 5단계: 생성된 테이블을 DOM에 삽입
-        $('#csvData').html(table);
+        $('#csv-data').html(table);
 
         // 6단계: 성공 메시지 표시
         responseTextDiv.show();
@@ -161,6 +168,29 @@ function processCSV(csvText) {
         }
     }
 }
+
+// CSV 헤더 검증 함수 (효율적인 버전)
+function validateCSVHeaders(csvHeaders, expectedHeaders) {
+    // 길이가 다르면 바로 false 반환
+    if (csvHeaders.length !== expectedHeaders.length) {
+        console.log(`컬럼 개수가 맞지 않습니다. CSV: ${csvHeaders.length}, 예상: ${expectedHeaders.length}`);
+        return false;
+    }
+
+    // 순서대로 비교 (O(n))
+    for (let i = 1; i < csvHeaders.length; i++) {
+        const csvHeader = escapeHtml(csvHeaders[i]).trim();
+        const expectedHeader = expectedHeaders[i].trim();
+
+        if (csvHeader !== expectedHeader) {
+            console.log(`컬럼이 맞지 않습니다. ${csvHeader} != ${expectedHeader} (위치: ${i})`);
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
 /**
  * CSV 데이터를 정제하는 유틸리티 함수
@@ -209,4 +239,92 @@ function escapeHtml(text) {
         "'": '&#039;'
     };
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+/**
+ * 테이블의 모든 행에 대해 상담사 랜덤 배정을 실행하는 메인 함수
+ *
+ * 동작 과정:
+ * 1. CSV 데이터 테이블의 모든 행(.csv-data-tr) 탐색
+ * 2. 각 행마다 dataAssignment() 함수 호출하여 상담사 배정
+ * 3. 배정 결과를 해당 행의 입력 필드에 설정
+ * 4. 배정 실패 시 전체 프로세스 중단
+ *
+ * @returns {boolean} 배정 성공 여부
+ * - true: 모든 참여자에게 상담사 배정 완료
+ * - false: 배정 가능한 상담사 부족으로 실패
+ */
+function randomTableData(currentCounselor,counselorAssignments) {
+    const $randomTr = $(".csv-data-tr");  // 데이터 행 선택
+    let flag = true;                       // 전체 배정 성공 플래그
+    let selectedCounselor = null;          // 선택된 상담사 임시 저장
+
+    // 각 참여자 행에 대해 상담사 배정 실행
+    $randomTr.each(function () {
+        selectedCounselor = dataAssignment(currentCounselor,counselorAssignments);  // 상담사 배정 함수 호출
+
+        // 배정 실패 시 플래그 설정
+        if (selectedCounselor == null) {
+            flag = false;
+            return false;
+        }
+
+        // 배정 결과를 입력 필드에 설정
+        // $(this).find("td").find("input").val(selectedCounselor);
+        $(this).find("td").filter(".random-td-input").text(selectedCounselor);
+    });
+
+    return flag;  // 전체 배정 성공 여부 반환
+}
+
+/**
+ * 균등 배정 알고리즘을 통한 상담사 선택 함수
+ *
+ * 알고리즘 단계:
+ * 1. 배정 가능한 상담사 필터링 (current < max)
+ * 2. 가장 적게 배정받은 상담사들 식별
+ * 3. 동일 조건 상담사들 중 랜덤 선택
+ * 4. 선택된 상담사의 배정 인원 증가
+ *
+ * @returns {string|null} 선택된 상담사 ID 또는 null (배정 불가)
+ *
+ * @example
+ * // 상담사별 현재 배정 인원이 [20, 5, 10, 4]인 경우
+ * // 최소값 4를 가진 'test4'가 우선 선택됨
+ * const counselor = dataAssignment(); // 'test4' 반환
+ */
+function dataAssignment(currentCounselor,counselorAssignments) {
+    // 1단계: 배정 가능한 상담사 필터링
+    const availableCounselors = Object.keys(counselorAssignments).filter(
+        counselor => counselorAssignments[counselor].current < counselorAssignments[counselor].max
+    );
+
+    // 2단계: 배정 가능한 상담사가 없는 경우 처리
+    if (availableCounselors.length === 0) {
+        console.log("모든 상담사가 최대 배정 인원에 도달했습니다.");
+        return null;
+    }
+
+    // 3단계: 가장 적게 배정받은 상담사들 찾기
+    const minAssignments = Math.min(...availableCounselors.map(
+        counselor => counselorAssignments[counselor].current
+    ));
+
+    // 4단계: 최소 배정 인원을 가진 상담사들 필터링
+    const priorityCounselors = availableCounselors.filter(
+        counselor => counselorAssignments[counselor].current === minAssignments
+    );
+
+    // 5단계: 우선순위 상담사 중에서 랜덤 선택
+    const randomIndex = Math.floor(Math.random() * priorityCounselors.length);
+    const selectedCounselor = priorityCounselors[randomIndex];
+
+    // 6단계: 선택된 상담사의 배정 인원 증가
+    counselorAssignments[selectedCounselor].current++;
+
+    // 7단계: 디버깅용 로그 출력
+    // console.log('선택된 상담사: ' + selectedCounselor);
+    // console.log('현재 배정 현황: ', counselorAssignments);
+
+    return selectedCounselor;
 }

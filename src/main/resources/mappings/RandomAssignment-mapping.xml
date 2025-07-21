@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PraDAO">
+    <insert id="praInsert">
+        INSERT INTO J_참여자관리
+            (등록일,
+             전담자_계정,
+             참여자,
+             생년월일,
+             성별,
+             모집경로,
+             참여유형,
+             진행단계,
+             참여자_수정일)
+        VALUES
+            (
+             GETDATE(),
+             #{counselor},
+             #{participant},
+             #{birthDate},
+             #{gender},
+             #{recruitmentPath},
+             #{participationType},
+             #{progressStage},
+             GETDATE()
+            )
+    </insert>
+</mapper>

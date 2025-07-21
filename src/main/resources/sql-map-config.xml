@@ -18,6 +18,7 @@
         <typeAlias type="com.jobmoa.app.CounselMain.biz.participantEducation.EducationDTO" alias="education" />
         <typeAlias type="com.jobmoa.app.CounselMain.biz.dashboard.DashboardDTO" alias="dashboard" />
         <typeAlias type="com.jobmoa.app.CounselMain.biz.report.ReportDTO" alias="report" />
+        <typeAlias type="com.jobmoa.app.CounselMain.biz.participantRandomAssignment.ParticipantRandomAssignmentDTO" alias="pra"/>
         <typeAlias type="com.jobmoa.app.jobPlacement.biz.jobPlacement.JobPlacementDTO" alias="jobPlacement"/>
     </typeAliases>
 
@@ -32,5 +33,6 @@
         <mapper resource="mappings/Dashboard-mapping.xml" />
         <mapper resource="mappings/Report-mapping.xml" />
         <mapper resource="mappings/jobPlacement-mapping.xml"/>
+        <mapper resource="mappings/RandomAssignment-mapping.xml"/>
     </mappers>
 </configuration>
