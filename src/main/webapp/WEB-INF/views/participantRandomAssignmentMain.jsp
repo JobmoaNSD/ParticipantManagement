@@ -143,7 +143,7 @@
             cursor: pointer;
         }
 
-        .save-button-label{
+        .save-button{
             display: inline-block;
             padding: 10px 20px;
             background-color: #018b38;
@@ -188,7 +188,7 @@
                                         <li>첫 번째 줄은 헤더(컬럼명)로 작성해주세요.</li>
                                         <li>데이터에 쉼표(,)가 포함된 경우 따옴표(")로 감싸주세요.</li>
                                         <li>따옴표가 포함된 데이터는 두 개의 따옴표("")로 표시해주세요.</li>
-                                        <li>파일 인코딩은 UTF-8로 저장해주세요.</li>
+                                        <li>CSV파일 저장시 CSV UTF-8(쉼표로 분리)로 저장해주세요.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -204,15 +204,29 @@
                             <input type="file" id="file-input" class="file-input" accept=".csv">
                             <label class="random-button-label"><i class="bi bi-shuffle"></i> 랜덤 배정</label>
                             <label class="reset-button-label"><i class="bi bi-arrow-counterclockwise"></i> 초기화</label>
-                            <%-- TODO 저장 기능 제작해야함 --%>
-                            <button class="save-button-label"><i class="bi bi-save-fill"></i> 저장</button>
+                            <button id="save-button" class="save-button"><i class="bi bi-save-fill"></i> 저장</button>
 
                             <div class="response-text-div pb-2">경고 내용 출력 부분</div>
                         </div>
                     </div>
                     <div class="content-body col-md-12">
                         <div class="csvData" id="csvData">
-
+                            <table class="table table-striped">
+                                <thead class="csv-data-header">
+                                    <tr>
+                                        <th class="">번호</th>
+                                        <th class="csv-column">전담자_계정</th>
+                                        <th class="csv-column">참여자 성명</th>
+                                        <th class="csv-column">생년월일</th>
+                                        <th class="csv-column">성별</th>
+                                        <th class="csv-column">모집경로</th>
+                                        <th class="csv-column">참여유형</th>
+                                        <th class="csv-column">진행단계</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="csv-data" id="csv-data">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -392,7 +406,7 @@
              * 2. 성공 시: 배정 완료
              * 3. 실패 시: 오류 메시지 표시 및 버튼 상태 변경
              */
-            if (!randomTableData()) {
+            if (!randomTableData(currentCounselor,counselorAssignments)) {
                 const responseTextDiv = $('.response-text-div');
                 responseTextDiv.append('<br><small>오류 : 새로고침으로 참여자 진행인원을 초기화 해주세요.</small>');
                 $randomButton.hide();  // 랜덤 배정 버튼 숨김
@@ -402,102 +416,171 @@
 
         // 초기화 버튼 - 모든 상태를 원래대로 복원
         $resetButton.on("click", function () {
+            resetFunction();
+        });
+
+        function resetFunction(){
             $randomButton.show();                           // 랜덤 배정 버튼 표시
             $resetButton.hide();                            // 초기화 버튼 숨김
             counselorAssignments = currentCounselor;        // 배정 현황 초기화
-            $("#csvData").empty();                          // 테이블 데이터 삭제
+            $("#csv-data").empty();                         // 테이블 데이터 삭제
+            $("#file-input").val("");                       // 파일 데이터 초기화
             $(".response-text-div").empty();                // 응답 메시지 초기화
-        });
-
-        // ================================
-        // 4. 핵심 비즈니스 로직 함수들
-        // ================================
-
-        /**
-         * 테이블의 모든 행에 대해 상담사 랜덤 배정을 실행하는 메인 함수
-         *
-         * 동작 과정:
-         * 1. CSV 데이터 테이블의 모든 행(.csv-data-tr) 탐색
-         * 2. 각 행마다 dataAssignment() 함수 호출하여 상담사 배정
-         * 3. 배정 결과를 해당 행의 입력 필드에 설정
-         * 4. 배정 실패 시 전체 프로세스 중단
-         *
-         * @returns {boolean} 배정 성공 여부
-         * - true: 모든 참여자에게 상담사 배정 완료
-         * - false: 배정 가능한 상담사 부족으로 실패
-         */
-        function randomTableData() {
-            const $randomTr = $(".csv-data-tr");  // 데이터 행 선택
-            let flag = true;                       // 전체 배정 성공 플래그
-            let selectedCounselor = null;          // 선택된 상담사 임시 저장
-
-            // 각 참여자 행에 대해 상담사 배정 실행
-            $randomTr.each(function () {
-                selectedCounselor = dataAssignment();  // 상담사 배정 함수 호출
-
-                // 배정 실패 시 플래그 설정
-                if (selectedCounselor == null) {
-                    flag = false;
-                }
-
-                // 배정 결과를 입력 필드에 설정
-                $(this).find("td").find("input").val(selectedCounselor);
-            });
-
-            return flag;  // 전체 배정 성공 여부 반환
         }
 
-        /**
-         * 균등 배정 알고리즘을 통한 상담사 선택 함수
-         *
-         * 알고리즘 단계:
-         * 1. 배정 가능한 상담사 필터링 (current < max)
-         * 2. 가장 적게 배정받은 상담사들 식별
-         * 3. 동일 조건 상담사들 중 랜덤 선택
-         * 4. 선택된 상담사의 배정 인원 증가
-         *
-         * @returns {string|null} 선택된 상담사 ID 또는 null (배정 불가)
-         *
-         * @example
-         * // 상담사별 현재 배정 인원이 [20, 5, 10, 4]인 경우
-         * // 최소값 4를 가진 'test4'가 우선 선택됨
-         * const counselor = dataAssignment(); // 'test4' 반환
-         */
-        function dataAssignment() {
-            // 1단계: 배정 가능한 상담사 필터링
-            const availableCounselors = Object.keys(counselorAssignments).filter(
-                counselor => counselorAssignments[counselor].current < counselorAssignments[counselor].max
-            );
+        $('#save-button').on("click", function () {
+            sendAsJobPlacementDTO();
+        })
 
-            // 2단계: 배정 가능한 상담사가 없는 경우 처리
-            if (availableCounselors.length === 0) {
-                console.log("모든 상담사가 최대 배정 인원에 도달했습니다.");
-                return null;
+
+        /**
+         * JobPlacementDTO에 맞춘 데이터 구조로 변환
+         */
+        function convertToJobPlacementDTO(participantData) {
+            return {
+                pkNumber:participantData.pkNumber, // PK 번호
+                counselor: participantData.counselor,           // 상담사
+                participant: participantData.participant,       // 참여자
+                birthDate: participantData.birthDate,          // 생년월일
+                gender: participantData.gender,                // 성별
+                // 추가 필드들은 기본값 또는 빈 값으로 설정
+                counselorBranch: '',
+                counselorId: participantData.counselor,
+                address: '',
+                schoolName: '',
+                major: '',
+                desiredJob: '',
+                career: '',
+                age: 0,
+                certificate: '',
+                certificates: [],
+                desiredSalary: '',
+                email: '',
+                uniqueNumber: '',
+                // CSV에서 추출한 추가 정보
+                recruitmentPath: participantData.recruitmentPath,
+                participationType: participantData.participationType,
+                progressStage: participantData.progressStage
+            };
+        }
+
+        function validateParticipantData(participantData) {
+            const errors = [];
+
+            if (!participantData.counselor) {
+                errors.push('전담자가 배정되지 않았습니다.');
             }
 
-            // 3단계: 가장 적게 배정받은 상담사들 찾기
-            const minAssignments = Math.min(...availableCounselors.map(
-                counselor => counselorAssignments[counselor].current
-            ));
+            if (!participantData.participant) {
+                errors.push('참여자 성명이 없습니다.');
+            }
 
-            // 4단계: 최소 배정 인원을 가진 상담사들 필터링
-            const priorityCounselors = availableCounselors.filter(
-                counselor => counselorAssignments[counselor].current === minAssignments
-            );
+            if (!participantData.birthDate) {
+                errors.push('생년월일이 없습니다.');
+            }
 
-            // 5단계: 우선순위 상담사 중에서 랜덤 선택
-            const randomIndex = Math.floor(Math.random() * priorityCounselors.length);
-            const selectedCounselor = priorityCounselors[randomIndex];
+            if (!participantData.gender) {
+                errors.push('성별이 없습니다.');
+            }
+            if(!participantData.participationType){
+                errors.push('진행단계가 없습니다.');
+            }
 
-            // 6단계: 선택된 상담사의 배정 인원 증가
-            counselorAssignments[selectedCounselor].current++;
-
-            // 7단계: 디버깅용 로그 출력
-            console.log('선택된 상담사: ' + selectedCounselor);
-            console.log('현재 배정 현황: ', counselorAssignments);
-
-            return selectedCounselor;
+            return errors;
         }
+
+        /**
+         * DTO 형식으로 데이터 전송
+         */
+        function sendAsJobPlacementDTO() {
+            const jobPlacementList = [];
+            const validationErrors = [];
+            let arrayData = [];
+
+            $('.csv-data-tr').each(function(index) {
+                const $row = $(this);
+                const $cells = $row.find('td');
+
+                const participantData = {
+                    pkNumber: $cells.eq(0).text().trim(),
+                    counselor: $cells.eq(1).text().trim(),
+                    participant: $cells.eq(2).text().trim(),
+                    birthDate: $cells.eq(3).text().trim(),
+                    gender: $cells.eq(4).text().trim(),
+                    recruitmentPath: $cells.eq(5).text().trim(),
+                    participationType: $cells.eq(6).text().trim(),
+                    progressStage: $cells.eq(7).text().trim()
+                };
+
+                // 데이터 검증
+                const errors = validateParticipantData(participantData);
+                if (errors.length > 0) {
+                    validationErrors.push('행 '+(index+1)+': '+errors.join(', '));
+                    arrayData.push(index+1);
+                } else {
+                    const jobPlacementDTO = convertToJobPlacementDTO(participantData);
+                    jobPlacementList.push(jobPlacementDTO);
+                }
+
+
+            });
+            console.log("jobPlacementList:"+JSON.stringify(jobPlacementList));
+            console.log("validationErrors:"+JSON.stringify(validationErrors));
+
+
+            let responseTimer = setInterval(function() {
+            },1000)
+
+            // 백엔드로 전송
+            $.ajax({
+                url: '/api/pra.login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(jobPlacementList),
+                success: function(response) {
+                    if (jobPlacementList.length > 0){
+                        alert(responseTimer+'초 동안 '+jobPlacementList.length+'명의 참여자 정보가 저장되었습니다.');
+                        // clearInterval(responseTimer);
+                        insertCheck(arrayData);
+                    }
+                    else{
+                        alert(responseTimer+'초 동안 응답 참여자 등록에 실패했습니다.');
+                    }
+                    // console.log("response:["+response+"]");
+                },
+                error: function(xhr, status, error) {
+                    alert('저장 중 오류가 발생했습니다.');
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function insertCheck(responseData){
+            const $rows = $('.csv-data-tr');
+            $rows.each(function(index) {
+                const $row = $(this);
+                const $cells = $row.find('td');
+                let currentData = $cells.eq(0).text().trim();
+                let flag = false;
+
+                for (let data of responseData){
+                    flag = currentData == data
+                    // console.log("flag:"+data);
+                    if(flag) break;
+                }
+                // console.log("flag:"+flag);
+
+                if(!flag){
+                    $cells.eq(0).css('background-color', 'white');
+                }
+                else{
+                    $cells.eq(0).css('background-color', 'red');
+                    // console.log("error:"+currentData);
+
+                }
+            });
+        }
+
     });
 </script>
 </html>
