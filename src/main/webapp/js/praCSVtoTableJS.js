@@ -72,10 +72,12 @@ function readCsvFile(file) {
     fileReader.onerror = function() {
         responseTextDiv.show();
         responseTextDiv.append('<strong class="csv-danger">파일 읽기 중 오류가 발생했습니다.</strong>');
+        return false;
     }
 
     // 파일을 텍스트 형태로 읽기 시작
     fileReader.readAsText(fileData, 'UTF-8');
+    return true;
 }
 
 /**

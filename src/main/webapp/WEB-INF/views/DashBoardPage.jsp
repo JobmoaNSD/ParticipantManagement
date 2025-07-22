@@ -408,81 +408,8 @@
                     </div>
                     <!-- KPI & 성공금 End -->
                 </div>
+
                 <!-- end::main chart 본문 끝 -->
-                <!-- begin::sub chart 본문 시작 -->
-                <%-- 나의 성과 현황 사용을 안하다고 하셔서 주석 처리 --%>
-                <%--<div class="row bg-white border border-black rounded-2 pt-1 pb-1 m-1">
-                    <div class="col-md-12">
-                        <!-- begin::sub chart header 시작 -->
-                        <div class="row">
-                            <div class="col-md-12 pt-2 pb-2 h2 me-auto">
-                                <div class="row">
-                                    <div class="col-md-11">
-                                        나의 성과 현황
-                                    </div>
-                                    <div class="col-md-1">
-                                        <div class="row h2 ps-3 me-auto">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" id="my-btn">
-                                                상세보기<i class="bi bi-arrow-bar-right"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- begin::sub chart header 끝 -->
-                        <!-- begin::sub chart body 시작 -->
-                        <div class="row text-center d-flex justify-content-center" id="my-chart-div">
-                            <!-- 나의 성과 현황 시작 -->
-                            <div class="row">
-                                <div class="col-md-2 chart-div">
-                                    <div class="text-center d-flex justify-content-center h-100">
-                                        &lt;%&ndash;FIXME ex-chart-bar2 &ndash;%&gt;
-                                        <canvas id="ex-chart-bar2"></canvas>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 chart-div">
-                                    <div class="text-center d-flex justify-content-center h-100">
-                                        &lt;%&ndash;FIXME ex-chart-bar3 &ndash;%&gt;
-                                        <canvas id="ex-chart-bar3"></canvas>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 chart-div">
-                                    <div class="text-center d-flex justify-content-center h-100">
-                                        &lt;%&ndash;FIXME ex-chart-bar4 &ndash;%&gt;
-                                        <canvas id="ex-chart-bar4"></canvas>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 chart-div">
-                                    <div class="text-center d-flex justify-content-center h-100">
-                                        &lt;%&ndash;FIXME ex-chart-bar5 &ndash;%&gt;
-                                        <canvas id="ex-chart-bar5"></canvas>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 chart-div">
-                                    <div class="text-center d-flex justify-content-center h-100">
-                                        &lt;%&ndash;FIXME ex-chart-bar6 &ndash;%&gt;
-                                        <canvas id="ex-chart-bar6"></canvas>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2 chart-div">
-                                    <div class="text-center d-flex justify-content-center h-100">
-                                        &lt;%&ndash;FIXME ex-chart-bar7 &ndash;%&gt;
-                                        <canvas id="ex-chart-bar7"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--나의 성과 현황 끝 -->
-                        </div>
-                        <!-- begin::sub chart body 끝 -->
-                    </div>
-                </div>--%>
-                <!-- begin::sub chart 본문 끝 -->
             </div>
             <!--end::Main content-->
         </div>

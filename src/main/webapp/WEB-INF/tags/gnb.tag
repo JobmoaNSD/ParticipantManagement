@@ -59,6 +59,7 @@
                     <!--begin::Menu Footer-->
                     <li class="user-footer">
                         <a href="logout.do" class="btn btn-default btn-flat float-end">Sign out</a>
+                        <a href="pwChange.do" class="btn btn-default btn-flat float-end">Change Pw</a>
                     </li>
                     <!--end::Menu Footer-->
                 </ul>

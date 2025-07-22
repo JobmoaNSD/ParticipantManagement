@@ -81,6 +81,9 @@
     <!-- praCSVtoTable JS -->
     <script src="<c:url value="/js/praCSVtoTableJS.js"/>"></script>
 
+    <!-- praCSVtoTable JS -->
+    <script src="<c:url value="/js/praDataVerification.js"/>"></script>
+
     <!-- csv file inline css -->
     <!-- id&class file-text, file-button-label, file-input -->
     <style>
@@ -152,6 +155,16 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        #varification-button{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #018b38;
+            color: #fff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -205,6 +218,7 @@
                             <label class="random-button-label"><i class="bi bi-shuffle"></i> 랜덤 배정</label>
                             <label class="reset-button-label"><i class="bi bi-arrow-counterclockwise"></i> 초기화</label>
                             <button id="save-button" class="save-button"><i class="bi bi-save-fill"></i> 저장</button>
+                            <button id="varification-button" class="varification-button"><i class="bi bi-save-fill"></i> 데이터 검증</button>
 
                             <div class="response-text-div pb-2">경고 내용 출력 부분</div>
                         </div>
@@ -387,7 +401,20 @@
         // ================================
 
         // 파일 선택 시 CSV 파일 읽기 실행
-        $fileInput.on('change', readCsvFile);
+        // $fileInput.on('change', readCsvFile);
+        $fileInput.on('change', function (e) {
+            // console.log(e.target.files[0]);
+            // console.log(e);
+            if(!readCsvFile(e)){
+                resetFunction();
+            }
+            else{
+                jobPlacementList.splice(0);
+                validationErrors.splice(0);
+                arrayData.splice(0);
+                verificationFlag = false;
+            }
+        });
 
         // 도움말 토글 기능
         $helpButton.on('click', function () {
@@ -398,6 +425,7 @@
             }
         });
 
+        //TODO 상담사 랜덤 배정에 관한 정보를 취합 후 산정 방식을 다시 만들어야함
         // 랜덤 배정 실행 버튼
         $randomButton.on("click", function () {
             /**
@@ -426,12 +454,25 @@
             $("#csv-data").empty();                         // 테이블 데이터 삭제
             $("#file-input").val("");                       // 파일 데이터 초기화
             $(".response-text-div").empty();                // 응답 메시지 초기화
+            verificationFlag = false;                       // 데이터 검증 초기화
         }
 
         $('#save-button').on("click", function () {
             sendAsJobPlacementDTO();
         })
 
+
+        /**
+         * jobPlacementList csv 파일 참여자 정보
+         * validationErrors 에러 로그
+         * arrayData 오류난 PK 번호 확인
+         * verificationFlag 검증 완료 여부 확인
+         * @type {*[]}
+         */
+        const jobPlacementList = [];
+        const validationErrors = [];
+        let arrayData = [];
+        let verificationFlag = false;
 
         /**
          * JobPlacementDTO에 맞춘 데이터 구조로 변환
@@ -445,7 +486,7 @@
                 gender: participantData.gender,                // 성별
                 // 추가 필드들은 기본값 또는 빈 값으로 설정
                 counselorBranch: '',
-                counselorId: participantData.counselor,
+                counselorId: participantData.counselor, //상담사 아이디
                 address: '',
                 schoolName: '',
                 major: '',
@@ -458,9 +499,9 @@
                 email: '',
                 uniqueNumber: '',
                 // CSV에서 추출한 추가 정보
-                recruitmentPath: participantData.recruitmentPath,
-                participationType: participantData.participationType,
-                progressStage: participantData.progressStage
+                recruitmentPath: participantData.recruitmentPath, // 모집경로
+                participationType: participantData.participationType, // 참여유형
+                progressStage: participantData.progressStage // 진행단계
             };
         }
 
@@ -478,58 +519,158 @@
             if (!participantData.birthDate) {
                 errors.push('생년월일이 없습니다.');
             }
+            else{
+                let birthDate = participantData.birthDate;
+                let response = validateBirthDate(birthDate);
+                if (!response.isValid){
+                    errors.push(response.message);
+                }
+            }
 
             if (!participantData.gender) {
                 errors.push('성별이 없습니다.');
             }
+            else{
+                const gender = participantData.gender;
+                if (gender != '남' && gender != '여'){
+                    errors.push('등록되지 않은 성별이 들어가 있습니다.')
+                }
+            }
+
+            if (!participantData.recruitmentPath) {
+                errors.push("모집경로가 없습니다.")
+            }
+            else{
+                const recruitmentPath = participantData.recruitmentPath;
+                const recruitmentPathArray = ['센터배정','대학','고교','훈련기관','자체모집','이관'];
+                let flag = false;
+                for(let path of recruitmentPathArray){
+                    if(path === recruitmentPath){
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if(!flag) errors.push("모집경로를 변경해주세요. ('센터배정','대학','고교','훈련기관','자체모집','이관')")
+
+            }
+
             if(!participantData.participationType){
+                errors.push('참여유형이 없습니다.');
+            }
+            else{
+                const type = participantData.participationType;
+                if (type != "1" && type != "2"){
+                    errors.push("유형을 확인해주세요. ('1','2')")
+                }
+            }
+
+            if(!participantData.progressStage){
                 errors.push('진행단계가 없습니다.');
+            }
+            else{
+                const stage = participantData.progressStage;
+                const stageArray = ['IAP 전','IAP 후','미고보','고보일반','등록창업','미등록창업','미취업사후관리','미취업사후종료','유예','취소','이관','중단'];
+                let flag = false;
+                for(let path of stageArray){
+                    if(path === stage){
+                        flag = true;
+                        break;
+                    }
+                }
+                if(!flag) errors.push("진행단계를 변경해주세요. ('IAP 전','IAP 후','미고보','고보일반','등록창업','미등록창업','미취업사후관리','미취업사후종료','유예','취소','이관','중단')")
             }
 
             return errors;
         }
 
         /**
+         * Table내에 있는 데이터 배열 전환 및 잘못된 값에 대한 내용 저장용 배열 등록 함수
+         *
+         */
+        function dataInsertFunction(){
+            jobPlacementList.splice(0);
+            validationErrors.splice(0);
+            arrayData.splice(0);
+
+            try{
+                $('.csv-data-tr').each(function(index) {
+                    const $row = $(this);
+                    const $cells = $row.find('td');
+
+                    const participantData = {
+                        pkNumber: $cells.eq(0).text().trim(),
+                        counselor: $cells.eq(1).text().trim(),
+                        participant: $cells.eq(2).text().trim(),
+                        birthDate: $cells.eq(3).text().trim(),
+                        gender: $cells.eq(4).text().trim(),
+                        recruitmentPath: $cells.eq(5).text().trim(),
+                        participationType: $cells.eq(6).text().trim(),
+                        progressStage: $cells.eq(7).text().trim()
+                    };
+
+                    // 데이터 검증
+                    const errors = validateParticipantData(participantData);
+                    if (errors.length > 0) {
+                        validationErrors.push('행 '+(index+1)+': '+errors.join(', '));
+                        arrayData.push(index+1);
+                    } else {
+                        const jobPlacementDTO = convertToJobPlacementDTO(participantData);
+                        jobPlacementList.push(jobPlacementDTO);
+                    }
+                });
+                console.log("errors : "+validationErrors.join('\n'));
+
+                //배열에 값이 있는지 여부를 전달한다.
+                verificationFlag = jobPlacementList.length > 0;
+                if(!verificationFlag){
+                    alert("데이터가 없거나 모든 데이터에 문제가 발생했습니다.")
+                }
+            }
+            catch(e){
+                //오류 발생시 내용 false를 반환하여 더 이상 진행이 불가능하도록 수정
+                verificationFlag = false;
+            }
+        }
+
+        $("#varification-button").on("click", function () {
+            dataInsertFunction();
+            insertCheck(arrayData);
+
+            if(!verificationFlag){
+                alert("데이터 검증 실패")
+            }
+            else{
+                alert("데이터 검증 완료")
+            }
+        })
+
+
+        /**
          * DTO 형식으로 데이터 전송
          */
         function sendAsJobPlacementDTO() {
-            const jobPlacementList = [];
-            const validationErrors = [];
-            let arrayData = [];
 
-            $('.csv-data-tr').each(function(index) {
-                const $row = $(this);
-                const $cells = $row.find('td');
+            if(!verificationFlag){
+                //데이터 추가 함수
+                //dataInsertFunction();
+                console.log("verificationFlag : "+verificationFlag);
+                alert("데이터 검증 완료 후 진행해주세요.");
+                return;
+            }
 
-                const participantData = {
-                    pkNumber: $cells.eq(0).text().trim(),
-                    counselor: $cells.eq(1).text().trim(),
-                    participant: $cells.eq(2).text().trim(),
-                    birthDate: $cells.eq(3).text().trim(),
-                    gender: $cells.eq(4).text().trim(),
-                    recruitmentPath: $cells.eq(5).text().trim(),
-                    participationType: $cells.eq(6).text().trim(),
-                    progressStage: $cells.eq(7).text().trim()
-                };
+            if(validationErrors.length > 0){
+                alert("다음 정보를 확인 후 저장해주세요.\n"+validationErrors.join('\n'));
+                return;
+            }
 
-                // 데이터 검증
-                const errors = validateParticipantData(participantData);
-                if (errors.length > 0) {
-                    validationErrors.push('행 '+(index+1)+': '+errors.join(', '));
-                    arrayData.push(index+1);
-                } else {
-                    const jobPlacementDTO = convertToJobPlacementDTO(participantData);
-                    jobPlacementList.push(jobPlacementDTO);
-                }
+            // console.log("verificationFlag 외부 실행 : "+verificationFlag);
+            //
+            // console.log("jobPlacementList:"+JSON.stringify(jobPlacementList));
+            // console.log("validationErrors:"+JSON.stringify(validationErrors));
 
-
-            });
-            console.log("jobPlacementList:"+JSON.stringify(jobPlacementList));
-            console.log("validationErrors:"+JSON.stringify(validationErrors));
-
-
-            let responseTimer = setInterval(function() {
-            },1000)
+            let count = 0 ;
+            let responseTimer = setInterval(function() {count++},1000)
 
             // 백엔드로 전송
             $.ajax({
@@ -539,18 +680,20 @@
                 data: JSON.stringify(jobPlacementList),
                 success: function(response) {
                     if (jobPlacementList.length > 0){
-                        alert(responseTimer+'초 동안 '+jobPlacementList.length+'명의 참여자 정보가 저장되었습니다.');
-                        // clearInterval(responseTimer);
+                        alert(count+'초 동안 '+jobPlacementList.length+'명의 참여자 정보가 저장되었습니다.');
+                        clearInterval(responseTimer);
                         insertCheck(arrayData);
                     }
                     else{
-                        alert(responseTimer+'초 동안 응답 참여자 등록에 실패했습니다.');
+                        alert(count+'초 동안 응답 참여자 등록에 실패했습니다.');
                     }
                     // console.log("response:["+response+"]");
+                    verificationFlag = false;
                 },
                 error: function(xhr, status, error) {
                     alert('저장 중 오류가 발생했습니다.');
                     console.error('Error:', error);
+                    verificationFlag = false;
                 }
             });
         }
