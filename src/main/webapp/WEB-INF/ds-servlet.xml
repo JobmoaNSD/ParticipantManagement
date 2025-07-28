@@ -6,7 +6,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context
-						http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+						http://www.springframework.org/schema/context/spring-context-4.2.xsd
+						http://www.springframework.org/schema/mvc
+						https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:annotation-driven/>
 
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.login"/>
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.participant"/>
@@ -18,6 +22,7 @@
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.chatBot"/>
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.branchManagement"/>
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.participantRandomAssignment"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.mailSend"/>
 
     <context:component-scan base-package="com.jobmoa.app.jobPlacement.view.jobPlacement"/>
     <context:component-scan base-package="com.jobmoa.app.jobPlacement.view.async"/>
@@ -38,16 +43,12 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <!-- Interceptor를 적용할 URL 패턴 -->
-            <mvc:mapping path="/*.login"/>
-<!--            <mvc:mapping path="/secure/*"/>-->
-
-            <!-- 로그인 예외 URL -->
-            <mvc:exclude-mapping path="/login.do"/>
-<!--            <mvc:exclude-mapping path="/resources/**"/>-->
+            <!-- 모든 URL에 인터셉터 적용 -->
+            <mvc:mapping path="/**"/>
 
             <!-- Interceptor 클래스 등록 -->
             <bean class="com.jobmoa.app.CounselMain.biz.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
 </beans>

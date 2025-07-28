@@ -66,6 +66,16 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,123,255,0.3);
         }
+
+        #findUserID, #primaryKey{
+            width: 73%;
+        }
+
+        #sendMail, #checkAuth{
+            width: 27%;
+            margin-left: auto;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -113,6 +123,7 @@
                         비밀번호 찾기
                     </a>
                     <br>
+                    <br>
                     <a href="/jobPlacement/placementList" class="text-decoration-none text-primary fw-bold">
                         기업회원 알선 확인
                     </a>
@@ -133,17 +144,15 @@
             </div>
             <div class="modal-body">
                 <form id="findPasswordForm">
-                    <div class="mb-3">
+                    <div class="mb-3 row">
                         <label for="findUserID" class="form-label">아이디</label>
                         <input type="text" class="form-control" id="findUserID" required>
+                        <button type="button" class="btn btn-primary" id="sendMail">인증번호 발송</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="userPrimaryKey" class="form-label">고유번호</label>
-                        <input type="text" class="form-control" id="userPrimaryKey" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="userEmail" class="form-label">고유번호</label>
-                        <input type="email" class="form-control" id="userEmail" required>
+                    <div id="primaryKeyDiv" class="mb-3 row">
+                        <label for="primaryKey" class="form-label">인증번호</label>
+                        <input type="text" class="form-control" id="primaryKey">
+                        <button type="button" class="btn btn-primary" id="checkAuth">인증번호 확인</button>
                     </div>
                 </form>
             </div>
@@ -158,10 +167,15 @@
 
 <script>
     $(document).ready(function() {
-        let formControl = $('.form-control');
-        let findPasswordBtn = $('#findPasswordBtn');
-        let findPasswordForm = $('#findPasswordForm');
-        let findPasswordModal = $('#findPasswordModal');
+        let formControl = $('.form-control'); // form control
+        let findPasswordBtn = $('#findPasswordBtn'); // 비밀번호 찾기 버튼
+        let sendMailBtn = $('#sendMail'); //인증번호 발송 버튼
+        let findPasswordForm = $('#findPasswordForm'); // 비밀번호 찾기 from
+        let findPasswordModal = $('#findPasswordModal'); // 비밀번호 찾기 modal
+        let primaryKeyInput = $('#primaryKey'); // 인증번호 입력 란
+        let primaryKeyDiv = $('#primaryKeyDiv'); // 인증번호 Div
+        let checkAuthBtn = $('#checkAuth'); // 인증번호 확인 버튼
+        primaryKeyDiv.hide();
 
         // 입력 필드에 포커스 효과
         formControl.focus(function() {
@@ -170,25 +184,83 @@
             $(this).parent().removeClass('shadow-sm');
         });
 
-        findPasswordBtn.click(function() {
+        sendMailBtn.click(function() {
             if(findPasswordForm[0].checkValidity()) {
                 // 비밀번호 찾기 로직 구현
                 $.ajax({
-                  url: '/findPassword.do',
+                  url: 'pwChangeSendEmail.api',
                   type: 'POST',
-                  data: [],
+                  data: JSON.stringify({
+                      "userId": findPasswordForm.find('#findUserID').val(),
+                  }),
+                  contentType: 'application/json; charset=utf-8',
                   dataType: 'json',
-                  success: function(data) {
+                  success: function(data,status,xhr) {
+                      // const responseData = JSON.parse(data);
+                      console.log("responseData:[" + data + "]");
+                      console.log("responseData:[" + status + "]");
+                      console.log("responseData:[" + data.flag + "]");
+                      console.log("responseData:[" + data.responseText + "]");
+                      if(!data.flag){
+                          alert(data.responseText);
+                          return;
+                      }
 
+                      alert(data.responseText);
+                      primaryKeyDiv.show();
                   },
                   error: function(request, status, error) {
+                      /*console.log("code:" + request.status);
+                      console.log("message:" + request.responseText);
+                      console.log("error:" + error);*/
 
+                      alert(request.responseText);
                   }
                 })
-            } else {
-                findPasswordForm[0].reportValidity();
             }
         });
+
+        checkAuthBtn.on('click', function() {
+            if(findPasswordForm[0].checkValidity()) {
+                // 비밀번호 찾기 로직 구현
+                $.ajax({
+                    url: 'checkAuthCode.api',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        "authCode": findPasswordForm.find('#primaryKey').val(),
+                        "userId": findPasswordForm.find('#findUserID').val(),
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function(data,status,xhr) {
+                        // const responseData = JSON.parse(data);
+                        console.log("responseData:[" + data + "]");
+                        console.log("responseData:[" + status + "]");
+                        console.log("responseData:[" + data.flag + "]");
+                        console.log("responseData:[" + data.responseText + "]");
+
+                        if(!data.flag){
+                            alert(data.responseText);
+                            return;
+                        }
+
+                        alert(data.responseText);
+                        // primaryKeyDiv.show();
+                    },
+                    error: function(request, status, error) {
+                        console.log("code:" + request.status);
+                        console.log("message:" + request.responseText);
+                        console.log("error:" + error);
+
+                        alert(request.responseText);
+                    }
+                })
+            }
+        })
+
+        findPasswordModal.on('hide.bs.modal', function (event) {
+            primaryKeyDiv.hide();
+        })
     });
 </script>
 </html>
