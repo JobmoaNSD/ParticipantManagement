@@ -112,7 +112,7 @@
                 <input type="text" class="form-control" id="counselJobWant" name="counselJobWant" value="${not empty counsel ? counsel.counselJobWant:""}">
             </div>
             <div class="w-auto">
-                <label for="counselSalWant" class="form-label">희망급여(단위 만원)<span class="text-danger">*</span></label>
+                <label for="counselSalWant" class="form-label">희망월급(단위 만원)<span class="text-danger">*</span></label>
                 <input type="number" class="form-control" id="counselSalWant" name="counselSalWant" min="0" max="1000" placeholder="단위 만원" value="${not empty counsel ? counsel.counselSalWant:""}">
             </div>
             <div class="col-md-1 w-auto">

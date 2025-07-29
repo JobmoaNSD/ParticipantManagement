@@ -220,6 +220,7 @@
             }
         });
 
+        // 인증 후 비밀번호 찾기 버튼 활성화
         checkAuthBtn.on('click', function() {
             if(findPasswordForm[0].checkValidity()) {
                 // 비밀번호 찾기 로직 구현
