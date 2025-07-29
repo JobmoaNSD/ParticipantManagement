@@ -242,8 +242,9 @@ function escapeHtml(text) {
     };
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
+/*
 
-/**
+/!**
  * 테이블의 모든 행에 대해 상담사 랜덤 배정을 실행하는 메인 함수
  *
  * 동작 과정:
@@ -255,7 +256,7 @@ function escapeHtml(text) {
  * @returns {boolean} 배정 성공 여부
  * - true: 모든 참여자에게 상담사 배정 완료
  * - false: 배정 가능한 상담사 부족으로 실패
- */
+ *!/
 function randomTableData(currentCounselor,counselorAssignments) {
     const $randomTr = $(".csv-data-tr");  // 데이터 행 선택
     let flag = true;                       // 전체 배정 성공 플래그
@@ -279,10 +280,26 @@ function randomTableData(currentCounselor,counselorAssignments) {
     return flag;  // 전체 배정 성공 여부 반환
 }
 
-/**
+/!**
  * 균등 배정 알고리즘을 통한 상담사 선택 함수
  *
- * 알고리즘 단계:
+알고리즘 단계:
+ * 변경될 알고리즘 단계
+ * 1. 제외 인원 설정 추가.
+ * 2. 총 배정인원을 확인
+ * 3. 이후 청년, 특정계층, 중장년으로 나눠 각각의 배정인원을 확인 후 점수 산정
+ * 4. 특정계층의 경우 인원이 많지 않으면 청년, 중장년으로 배정해 점수를 산정
+ * 5. 산정된 점수의 총합을 기준으로 배정점수가 낮으면서 배정인원이 적은 상담사에게 청년 우선 배정
+ * 6. 이후 특정계층과 중장년을 각각 배정
+ *
+ * @EXAMPLE
+ * // 상담사별 전체 총 진행 인원 확인 [100,87,86,91,90]
+ * // 총 진행 인원 중 진행 인원이 100이 넘지 않는 상담사의 2025년 진행자 수, 청년 수, 중장년 수 를 확인 [0,47,54,52,50],[0,79,57,62,67],[0,16,27,21,14]
+ * // 총 진행 인원, 2025년 진행자 수, 청년 수, 중장년 수 4가지를 모두 비교한다.
+ * // 비교가 완료된 후 총 진행인원 100이 아니면서 2025년도 배정된 참여자가 가장 적고 청년 수가 많으면 중장년 우선 배정
+ * // 비교가 완료된 후 총 진행인원 100이 아니면서 2025년도 배정된 쳠아자가 가장 적고 청년 수가 적으면 청년 우선 배정
+ * const counselor = dataAssignment();
+ *
  * 1. 배정 가능한 상담사 필터링 (current < max)
  * 2. 가장 적게 배정받은 상담사들 식별
  * 3. 동일 조건 상담사들 중 랜덤 선택
@@ -294,7 +311,8 @@ function randomTableData(currentCounselor,counselorAssignments) {
  * // 상담사별 현재 배정 인원이 [20, 5, 10, 4]인 경우
  * // 최소값 4를 가진 'test4'가 우선 선택됨
  * const counselor = dataAssignment(); // 'test4' 반환
- */
+ *
+ *!/
 function dataAssignment(currentCounselor,counselorAssignments) {
     // 1단계: 배정 가능한 상담사 필터링
     const availableCounselors = Object.keys(counselorAssignments).filter(
@@ -329,4 +347,247 @@ function dataAssignment(currentCounselor,counselorAssignments) {
     // console.log('현재 배정 현황: ', counselorAssignments);
 
     return selectedCounselor;
+}*/
+
+
+/**
+ * 개선된 상담사 배정 알고리즘
+ *
+ * 알고리즘 단계:
+ * 1. 제외 인원 설정 추가
+ * 2. 총 배정인원을 확인
+ * 3. 청년, 특정계층, 중장년으로 나눠 각각의 배정인원을 확인 후 점수 산정
+ * 4. 특정계층의 경우 인원이 많지 않으면 청년, 중장년으로 배정해 점수를 산정
+ * 5. 산정된 점수의 총합을 기준으로 배정점수가 낮으면서 배정인원이 적은 상담사에게 청년 우선 배정
+ * 6. 이후 특정계층과 중장년을 각각 배정
+ *
+ * @param {string} currentCounselor - 현재 상담사 정보
+ * @param {Object} counselorAssignments - 상담사별 배정 정보
+ * @param {string} participantAgeGroup - 참여자 연령대 ('청년', '특정계층', '중장년')
+ * @param {Object} excludedPersonnel - 제외 인원 설정
+ * @returns {string|null} 선택된 상담사 ID 또는 null
+ */
+function dataAssignment(currentCounselor, counselorAssignments, participantAgeGroup = '청년', excludedPersonnel = {}) {
+    // 1단계: 제외 인원 설정 적용 및 배정 가능한 상담사 필터링
+    const availableCounselors = Object.keys(counselorAssignments).filter(counselor => {
+        const counselorData = counselorAssignments[counselor];
+        const isExcluded = excludedPersonnel[counselor] || false;
+        const hasCapacity = counselorData.current < counselorData.max;
+        const under100Limit = counselorData.total < 100; // 총 진행인원 100 미만
+
+        console.log("excludedPersonnel[counselor] : " + excludedPersonnel[counselor]);
+        console.log("counselorData.current : " + counselorData.current);
+        console.log("counselorData.max : " + counselorData.max);
+        console.log("counselorData.total : " + counselorData.total);
+        console.log("isExcluded : " + isExcluded);
+        console.log("hasCapacity : " + hasCapacity);
+        console.log("under100Limit : " + under100Limit);
+        return !isExcluded && hasCapacity && under100Limit;
+    });
+
+    // 2단계: 배정 가능한 상담사가 없는 경우 처리
+    if (availableCounselors.length === 0) {
+        console.log("배정 가능한 상담사가 없습니다.");
+        return null;
+    }
+
+    // 3단계: 각 상담사별 점수 계산
+    const counselorScores = availableCounselors.map(counselor => {
+        const data = counselorAssignments[counselor];
+
+        // 점수 계산 (낮을수록 우선순위 높음)
+        const totalScore = data.total || 0;           // 전체 총 진행 인원
+        const year2025Score = data.year2025 || 0;     // 2025년 진행자 수
+        const youthScore = data.youth || 0;           // 청년 수
+        const middleAgedScore = data.middleAged || 0; // 중장년 수
+        const specialGroupScore = data.specialGroup || 0; // 특정계층 수
+
+        // 가중치를 적용한 종합 점수 계산
+        const comprehensiveScore = (totalScore * 0.4) + (year2025Score * 0.3) +
+            (youthScore * 0.15) + (middleAgedScore * 0.15);
+
+        return {
+            counselor: counselor,
+            totalScore: totalScore,
+            year2025Score: year2025Score,
+            youthScore: youthScore,
+            middleAgedScore: middleAgedScore,
+            specialGroupScore: specialGroupScore,
+            comprehensiveScore: comprehensiveScore,
+            data: data
+        };
+    });
+
+    // 4단계: 특정계층 인원이 적은 경우 청년/중장년으로 재배정 로직
+    if (participantAgeGroup === '특정계층') {
+        const totalSpecialGroup = counselorScores.reduce((sum, score) => sum + score.specialGroupScore, 0);
+
+        // 특정계층 총 인원이 10명 이하인 경우 청년/중장년으로 분산 배정
+        if (totalSpecialGroup <= 10) {
+            console.log("특정계층 인원이 적어 청년/중장년으로 분산 배정합니다.");
+
+            // 청년과 중장년 중 더 적은 쪽으로 우선 배정
+            const avgYouth = counselorScores.reduce((sum, score) => sum + score.youthScore, 0) / counselorScores.length;
+            const avgMiddleAged = counselorScores.reduce((sum, score) => sum + score.middleAgedScore, 0) / counselorScores.length;
+
+            participantAgeGroup = avgYouth <= avgMiddleAged ? '청년' : '중장년';
+        }
+    }
+
+    // 5단계: 연령대별 배정 우선순위 결정
+    let selectedCounselor = null;
+
+    if (participantAgeGroup === '청년') {
+        selectedCounselor = selectCounselorForYouth(counselorScores);
+    } else if (participantAgeGroup === '중장년') {
+        selectedCounselor = selectCounselorForMiddleAged(counselorScores);
+    } else if (participantAgeGroup === '특정계층') {
+        selectedCounselor = selectCounselorForSpecialGroup(counselorScores);
+    }
+
+    // 6단계: 선택된 상담사의 배정 인원 증가
+    if (selectedCounselor) {
+        const counselorData = counselorAssignments[selectedCounselor];
+        counselorData.current++;
+        counselorData.year2025 = (counselorData.year2025 || 0) + 1;
+
+        // 연령대별 카운트 증가
+        if (participantAgeGroup === '청년') {
+            counselorData.youth = (counselorData.youth || 0) + 1;
+        } else if (participantAgeGroup === '중장년') {
+            counselorData.middleAged = (counselorData.middleAged || 0) + 1;
+        } else if (participantAgeGroup === '특정계층') {
+            counselorData.specialGroup = (counselorData.specialGroup || 0) + 1;
+        }
+
+        console.log(`선택된 상담사: ${selectedCounselor} (${participantAgeGroup})`);
+        console.log('현재 배정 현황:', counselorAssignments);
+    }
+
+    return selectedCounselor;
+}
+
+/**
+ * 청년 배정을 위한 상담사 선택
+ * 종합점수가 낮으면서 배정인원이 적은 상담사 우선 선택
+ */
+function selectCounselorForYouth(counselorScores) {
+    // 종합점수 기준 정렬 (낮은 순)
+    counselorScores.sort((a, b) => {
+        if (a.comprehensiveScore !== b.comprehensiveScore) {
+            return a.comprehensiveScore - b.comprehensiveScore;
+        }
+        // 종합점수가 같으면 2025년 배정자 수가 적은 순
+        if (a.year2025Score !== b.year2025Score) {
+            return a.year2025Score - b.year2025Score;
+        }
+        // 청년 수가 적은 순으로 우선 배정
+        return a.youthScore - b.youthScore;
+    });
+
+    return counselorScores[0]?.counselor || null;
+}
+
+/**
+ * 중장년 배정을 위한 상담사 선택
+ * 청년 수가 많은 상담사에게 중장년 우선 배정
+ */
+function selectCounselorForMiddleAged(counselorScores) {
+    // 종합점수가 낮으면서 청년 수가 많은 상담사 우선 선택
+    counselorScores.sort((a, b) => {
+        if (a.comprehensiveScore !== b.comprehensiveScore) {
+            return a.comprehensiveScore - b.comprehensiveScore;
+        }
+        // 종합점수가 같으면 2025년 배정자 수가 적은 순
+        if (a.year2025Score !== b.year2025Score) {
+            return a.year2025Score - b.year2025Score;
+        }
+        // 청년 수가 많은 순으로 중장년 배정 (균형 조정)
+        return b.youthScore - a.youthScore;
+    });
+
+    return counselorScores[0]?.counselor || null;
+}
+
+/**
+ * 특정계층 배정을 위한 상담사 선택
+ */
+function selectCounselorForSpecialGroup(counselorScores) {
+    // 종합점수 기준 정렬 (낮은 순)
+    counselorScores.sort((a, b) => {
+        if (a.comprehensiveScore !== b.comprehensiveScore) {
+            return a.comprehensiveScore - b.comprehensiveScore;
+        }
+        // 종합점수가 같으면 2025년 배정자 수가 적은 순
+        if (a.year2025Score !== b.year2025Score) {
+            return a.year2025Score - b.year2025Score;
+        }
+        // 특정계층 수가 적은 순으로 우선 배정
+        return a.specialGroupScore - b.specialGroupScore;
+    });
+
+    return counselorScores[0]?.counselor || null;
+}
+
+/**
+ * 개선된 랜덤 테이블 데이터 배정 함수
+ * CSV 데이터에서 연령대 정보를 추출하여 적절한 배정 수행
+ */
+function randomTableData(currentCounselor, counselorAssignments, excludedPersonnel = {}) {
+    const $randomTr = $(".csv-data-tr");
+    let flag = true;
+    let selectedCounselor = null;
+
+    $randomTr.each(function (index) {
+        const $row = $(this);
+        const rowData = [];
+
+        // 행의 모든 셀 데이터 수집
+        $row.find("td.random-td").each(function() {
+            rowData.push($(this).text().trim());
+        });
+
+        // 연령대 정보 추출 (예: 나이 컬럼에서 연령대 판단)
+        // 실제 CSV 구조에 맞게 인덱스 조정 필요
+        const participantAgeGroup = determineAgeGroup(rowData);
+
+        // 상담사 배정
+        selectedCounselor = dataAssignment(
+            currentCounselor,
+            counselorAssignments,
+            participantAgeGroup,
+            excludedPersonnel
+        );
+
+        // 배정 실패 시 플래그 설정
+        if (selectedCounselor == null) {
+            flag = false;
+            console.log(`${index + 1}번째 참여자 배정 실패`);
+            return false;
+        }
+
+        // 배정 결과를 테이블에 표시
+        $row.find("td.random-td-input").text(selectedCounselor);
+    });
+
+    return flag;
+}
+
+/**
+ * 참여자 데이터에서 연령대 판단 함수
+ * @param {Array} rowData - 참여자 행 데이터
+ * @returns {string} 연령대 ('청년', '특정계층', '중장년')
+ */
+function determineAgeGroup(rowData) {
+    // 실제 CSV 구조에 맞게 구현 필요
+    // 예시: 나이 컬럼이 3번째 인덱스에 있다고 가정
+    const age = parseInt(rowData[2]) || 25; // 기본값 25세
+
+    if (age <= 34) {
+        return '청년';
+    } else if (age >= 50) {
+        return '중장년';
+    } else {
+        return '특정계층';
+    }
 }

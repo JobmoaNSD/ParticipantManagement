@@ -371,30 +371,60 @@
          * - 시스템 시작 시의 기준 상태
          * - 초기화 시 복원 기준점으로 사용
          *
-         * @type {Object.<string, {current: number, max: number}>}
+         * @type {Object.<string, {total:number, year2025:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
+         * @property {number} total - 총 배정 인원 수
+         * @property {number} year2025 - 2025년도 배정 인원 수
+         * @property {number} youth - 청년 배정 인원 수
+         * @property {number} middleAged - 중장년 배정 인원 수
+         * @property {number} specialGroup - 특정 계층 배정 인원 수
          * @property {number} current - 현재 배정된 인원 수
          * @property {number} max - 최대 배정 가능 인원 수
          */
         const currentCounselor = {
-            'test1': {current: 20, max: 100},  // 상담사1: 20/100명
-            'test2': {current: 5, max: 100},   // 상담사2: 5/100명
-            'test3': {current: 10, max: 100},  // 상담사3: 10/100명
-            'test4': {current: 4, max: 100}    // 상담사4: 4/100명
+            'counselor001': {total:85, year2025:25, youth: 20, middleAged:35, specialGroup:5, current: 42, max: 100},
+            'counselor002': {total:92, year2025:28, youth: 22, middleAged:38, specialGroup:4, current: 48, max: 100},
+            'counselor003': {total:78, year2025:22, youth: 18, middleAged:32, specialGroup:6, current: 39, max: 100},
+            'counselor004': {total:96, year2025:30, youth: 24, middleAged:40, specialGroup:2, current: 51, max: 100},
+            'counselor005': {total:73, year2025:20, youth: 16, middleAged:28, specialGroup:9, current: 35, max: 100},
+            'counselor006': {total:88, year2025:26, youth: 21, middleAged:36, specialGroup:5, current: 44, max: 100},
+            'counselor007': {total:91, year2025:27, youth: 23, middleAged:37, specialGroup:4, current: 47, max: 100},
+            'counselor008': {total:82, year2025:24, youth: 19, middleAged:33, specialGroup:6, current: 41, max: 100},
+            'counselor009': {total:75, year2025:21, youth: 17, middleAged:29, specialGroup:8, current: 36, max: 100},
+            'counselor010': {total:90, year2025:29, youth: 25, middleAged:39, specialGroup:3, current: 46, max: 100}
         };
+
 
         /**
          * 실시간 상담사 배정 현황 (작업 데이터)
          * - 랜덤 배정 과정에서 실시간으로 업데이트
          * - 배정 알고리즘의 기준 데이터
          *
-         * @type {Object.<string, {current: number, max: number}>}
+         * @type {Object.<string, {total:number, year2025:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
          */
         let counselorAssignments = {
-            'test1': {current: 20, max: 100},
-            'test2': {current: 5, max: 100},
-            'test3': {current: 10, max: 100},
-            'test4': {current: 4, max: 100}
+            'counselor001': {total:85, year2025:25, youth: 20, middleAged:35, specialGroup:5, current: 42, max: 100},
+            'counselor002': {total:92, year2025:28, youth: 22, middleAged:38, specialGroup:4, current: 48, max: 100},
+            'counselor003': {total:78, year2025:22, youth: 18, middleAged:32, specialGroup:6, current: 39, max: 100},
+            'counselor004': {total:96, year2025:30, youth: 24, middleAged:40, specialGroup:2, current: 51, max: 100},
+            'counselor005': {total:73, year2025:20, youth: 16, middleAged:28, specialGroup:9, current: 35, max: 100},
+            'counselor006': {total:88, year2025:26, youth: 21, middleAged:36, specialGroup:5, current: 44, max: 100},
+            'counselor007': {total:91, year2025:27, youth: 23, middleAged:37, specialGroup:4, current: 47, max: 100},
+            'counselor008': {total:82, year2025:24, youth: 19, middleAged:33, specialGroup:6, current: 41, max: 100},
+            'counselor009': {total:75, year2025:21, youth: 17, middleAged:29, specialGroup:8, current: 36, max: 100},
+            'counselor010': {total:90, year2025:29, youth: 25, middleAged:39, specialGroup:3, current: 46, max: 100}
         };
+
+
+        /**
+         * 랜덤 배정을 제외할 인원을 추가해서
+         * 랜덤 배정이 불가능하도록 등록
+         *
+         * @type {Object.<string, string>}
+         */
+        let excludedPersonnel = {
+            'counselor006':'counselor006',
+            'counselor010':'counselor010',
+        }
 
         // ================================
         // 3. 이벤트 리스너 등록
@@ -434,7 +464,7 @@
              * 2. 성공 시: 배정 완료
              * 3. 실패 시: 오류 메시지 표시 및 버튼 상태 변경
              */
-            if (!randomTableData(currentCounselor,counselorAssignments)) {
+            if (!randomTableData(currentCounselor,counselorAssignments,excludedPersonnel)) {
                 const responseTextDiv = $('.response-text-div');
                 responseTextDiv.append('<br><small>오류 : 새로고침으로 참여자 진행인원을 초기화 해주세요.</small>');
                 $randomButton.hide();  // 랜덤 배정 버튼 숨김

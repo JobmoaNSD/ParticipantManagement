@@ -23,7 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor { // 스프링 MVC�
             "/**/*.do",          // 모든 .do 파일
             "/login.do",         // 로그인 페이지 (명시적으로 포함)
             "/jobPlacement/**"  // 기업회원 페이지
-//            "/mailSend/**"  // 기업회원 페이지
+//            "/mailSend/**"  // 메일전달용
     );
 
     @Override
