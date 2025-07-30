@@ -183,36 +183,32 @@
             <div class="container-fluid">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <div class="row">
-                    <div class="title-header col-md-12 pt-2">
-                        참여자 랜덤 배정 <span id="helpButton" data-toggle="tooltip" data-placement="top" title="사용 방법 및 파일 설명"><i class="bi bi-lightbulb-fill"></i>도움말</span>
-                    </div>
-                    <div class="title-sub-header col-md-12" id="helpText">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="alert alert-info">
-                                    <h6>랜덤 배정 사용 방법:</h6>
-                                    <ul>
-                                        <li>csv 파일 찾기 클릭</li>
-                                        <li>상담사 랜덤 배정 클릭</li>
-                                        <li>배정 상담사 확인 후 저장</li>
-                                    </ul>
-                                    <h6>CSV 파일 작성 가이드:</h6>
-                                    <ul>
-                                        <li>첫 번째 줄은 헤더(컬럼명)로 작성해주세요.</li>
-                                        <li>데이터에 쉼표(,)가 포함된 경우 따옴표(")로 감싸주세요.</li>
-                                        <li>따옴표가 포함된 데이터는 두 개의 따옴표("")로 표시해주세요.</li>
-                                        <li>CSV파일 저장시 CSV UTF-8(쉼표로 분리)로 저장해주세요.</li>
-                                    </ul>
+                    <div class="row col-md-6">
+                        <div class="title-header col-md-12 pt-2">
+                            참여자 랜덤 배정 <span id="helpButton" data-toggle="tooltip" data-placement="top" title="사용 방법 및 파일 설명"><i class="bi bi-lightbulb-fill"></i>도움말</span>
+                        </div>
+                        <div class="title-sub-header col-md-12" id="helpText">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        <h6>랜덤 배정 사용 방법:</h6>
+                                        <ul>
+                                            <li>csv 파일 찾기 클릭</li>
+                                            <li>상담사 랜덤 배정 클릭</li>
+                                            <li>배정 상담사 확인 후 저장</li>
+                                        </ul>
+                                        <h6>CSV 파일 작성 가이드:</h6>
+                                        <ul>
+                                            <li>첫 번째 줄은 헤더(컬럼명)로 작성해주세요.</li>
+                                            <li>데이터에 쉼표(,)가 포함된 경우 따옴표(")로 감싸주세요.</li>
+                                            <li>따옴표가 포함된 데이터는 두 개의 따옴표("")로 표시해주세요.</li>
+                                            <li>CSV파일 저장시 CSV UTF-8(쉼표로 분리)로 저장해주세요.</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="row body-content col-md-12">
-                        <div class="file-input-container col-md-12">
+                        <div class="file-input-container col-md-12 align-content-end">
                             <label for="file-input" class="file-button-label"><i class="bi bi-filetype-csv"></i> 파일 찾기</label>
                             <input type="file" id="file-input" class="file-input" accept=".csv">
                             <label class="random-button-label"><i class="bi bi-shuffle"></i> 랜덤 배정</label>
@@ -223,6 +219,33 @@
                             <div class="response-text-div pb-2">경고 내용 출력 부분</div>
                         </div>
                     </div>
+
+                    <div class="row body-content col-md-6">
+                        <div class="counselor-container col-md-12">
+                            <button class="btn btn-secondary float-end" id="excludeBtn">선택 상담사 배정 제외</button>
+                        </div>
+                        <div class="counselor-container col-md-12 overflow-y-scroll" style="max-height: 200px;">
+                            <table class="table table-striped text-center" id="assign-count-table">
+                                <thead id="assign-count-table-header">
+                                    <tr>
+                                        <th>상담사ID</th>
+                                        <th>상담사</th>
+                                        <th>총 (배정)진행자</th>
+                                        <th>청년</th>
+                                        <th>중장년</th>
+                                        <th>특정계층</th>
+                                        <th>현재 배정 인원</th>
+                                        <th>최대 배정 인원</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="assign-count-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="content-body col-md-12">
                         <div class="csvData" id="csvData">
                             <table class="table table-striped">
@@ -371,60 +394,74 @@
          * - 시스템 시작 시의 기준 상태
          * - 초기화 시 복원 기준점으로 사용
          *
-         * @type {Object.<string, {total:number, year2025:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
+         * @type {Object.<string, {name:String, total:number, year:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
+         * @property {String} name - 상담사 성명
          * @property {number} total - 총 배정 인원 수
-         * @property {number} year2025 - 2025년도 배정 인원 수
+         * @property {number} year - 2025년도 배정 인원 수
          * @property {number} youth - 청년 배정 인원 수
          * @property {number} middleAged - 중장년 배정 인원 수
          * @property {number} specialGroup - 특정 계층 배정 인원 수
          * @property {number} current - 현재 배정된 인원 수
          * @property {number} max - 최대 배정 가능 인원 수
          */
-        const currentCounselor = {
-            'counselor001': {total:85, year2025:25, youth: 20, middleAged:35, specialGroup:5, current: 42, max: 100},
-            'counselor002': {total:92, year2025:28, youth: 22, middleAged:38, specialGroup:4, current: 48, max: 100},
-            'counselor003': {total:78, year2025:22, youth: 18, middleAged:32, specialGroup:6, current: 39, max: 100},
-            'counselor004': {total:96, year2025:30, youth: 24, middleAged:40, specialGroup:2, current: 51, max: 100},
-            'counselor005': {total:73, year2025:20, youth: 16, middleAged:28, specialGroup:9, current: 35, max: 100},
-            'counselor006': {total:88, year2025:26, youth: 21, middleAged:36, specialGroup:5, current: 44, max: 100},
-            'counselor007': {total:91, year2025:27, youth: 23, middleAged:37, specialGroup:4, current: 47, max: 100},
-            'counselor008': {total:82, year2025:24, youth: 19, middleAged:33, specialGroup:6, current: 41, max: 100},
-            'counselor009': {total:75, year2025:21, youth: 17, middleAged:29, specialGroup:8, current: 36, max: 100},
-            'counselor010': {total:90, year2025:29, youth: 25, middleAged:39, specialGroup:3, current: 46, max: 100}
-        };
-
+        const currentCounselor = ${assignData};
+            /*{
+            'counselor001': {name: "홍길동1", total:85, year:25, youth: 20, middleAged:35, specialGroup:5, current: 0, max: 100},
+            'counselor002': {name: "홍길동2", total:92, year:28, youth: 22, middleAged:38, specialGroup:4, current: 0, max: 100},
+            'counselor003': {name: "홍길동3", total:78, year:22, youth: 18, middleAged:32, specialGroup:6, current: 0, max: 100},
+            'counselor004': {name: "홍길동4", total:96, year:30, youth: 24, middleAged:40, specialGroup:2, current: 0, max: 100},
+            'counselor005': {name: "홍길동5", total:73, year:20, youth: 16, middleAged:28, specialGroup:9, current: 0, max: 100},
+            'counselor006': {name: "홍길동6", total:88, year:26, youth: 21, middleAged:36, specialGroup:5, current: 0, max: 100},
+            'counselor007': {name: "홍길동7", total:91, year:27, youth: 23, middleAged:37, specialGroup:4, current: 0, max: 100},
+            'counselor008': {name: "홍길동8", total:82, year:24, youth: 19, middleAged:33, specialGroup:6, current: 0, max: 100},
+            'counselor009': {name: "홍길동9", total:75, year:21, youth: 17, middleAged:29, specialGroup:8, current: 0, max: 100},
+            'counselor010': {name: "홍길동10", total:90, year:29, youth: 25, middleAged:39, specialGroup:3, current: 0, max: 100}
+        };*/
 
         /**
          * 실시간 상담사 배정 현황 (작업 데이터)
          * - 랜덤 배정 과정에서 실시간으로 업데이트
          * - 배정 알고리즘의 기준 데이터
          *
-         * @type {Object.<string, {total:number, year2025:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
+         * @type {Object.<string, {name:String, total:number, year:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
          */
-        let counselorAssignments = {
-            'counselor001': {total:85, year2025:25, youth: 20, middleAged:35, specialGroup:5, current: 42, max: 100},
-            'counselor002': {total:92, year2025:28, youth: 22, middleAged:38, specialGroup:4, current: 48, max: 100},
-            'counselor003': {total:78, year2025:22, youth: 18, middleAged:32, specialGroup:6, current: 39, max: 100},
-            'counselor004': {total:96, year2025:30, youth: 24, middleAged:40, specialGroup:2, current: 51, max: 100},
-            'counselor005': {total:73, year2025:20, youth: 16, middleAged:28, specialGroup:9, current: 35, max: 100},
-            'counselor006': {total:88, year2025:26, youth: 21, middleAged:36, specialGroup:5, current: 44, max: 100},
-            'counselor007': {total:91, year2025:27, youth: 23, middleAged:37, specialGroup:4, current: 47, max: 100},
-            'counselor008': {total:82, year2025:24, youth: 19, middleAged:33, specialGroup:6, current: 41, max: 100},
-            'counselor009': {total:75, year2025:21, youth: 17, middleAged:29, specialGroup:8, current: 36, max: 100},
-            'counselor010': {total:90, year2025:29, youth: 25, middleAged:39, specialGroup:3, current: 46, max: 100}
-        };
+        let counselorAssignments = ${assignData};
+        /*{
+            'counselor001': {name: "홍길동1", total:85, year:25, youth: 20, middleAged:35, specialGroup:5, current: 0, max: 100},
+            'counselor002': {name: "홍길동2", total:92, year:28, youth: 22, middleAged:38, specialGroup:4, current: 0, max: 100},
+            'counselor003': {name: "홍길동3", total:78, year:22, youth: 18, middleAged:32, specialGroup:6, current: 0, max: 100},
+            'counselor004': {name: "홍길동4", total:96, year:30, youth: 24, middleAged:40, specialGroup:2, current: 0, max: 100},
+            'counselor005': {name: "홍길동5", total:73, year:20, youth: 16, middleAged:28, specialGroup:9, current: 0, max: 100},
+            'counselor006': {name: "홍길동6", total:88, year:26, youth: 21, middleAged:36, specialGroup:5, current: 0, max: 100},
+            'counselor007': {name: "홍길동7", total:91, year:27, youth: 23, middleAged:37, specialGroup:4, current: 0, max: 100},
+            'counselor008': {name: "홍길동8", total:82, year:24, youth: 19, middleAged:33, specialGroup:6, current: 0, max: 100},
+            'counselor009': {name: "홍길동9", total:75, year:21, youth: 17, middleAged:29, specialGroup:8, current: 0, max: 100},
+            'counselor010': {name: "홍길동10", total:90, year:29, youth: 25, middleAged:39, specialGroup:3, current: 0, max: 100}
+        };*/
 
 
         /**
          * 랜덤 배정을 제외할 인원을 추가해서
          * 랜덤 배정이 불가능하도록 등록
          *
-         * @type {Object.<string, string>}
+         * @type {Object.<string, boolean>}
          */
         let excludedPersonnel = {
-            'counselor006':'counselor006',
-            'counselor010':'counselor010',
         }
+
+        /**
+         * 참여자 배정 현황 시각화
+         *  - 각 전담자에게 랜덤하게 배정하기 전에 시각화를 진행
+         */
+        assignTable(counselorAssignments,excludedPersonnel);
+
+        /**
+         * 배정 제외 상담사 지정
+         *  - 선택된 상담사에 대해 배정을 제외하도록 설정
+         */
+        $("#excludeBtn").on("click", function () {
+            excludeCounselor(excludedPersonnel);
+        });
 
         // ================================
         // 3. 이벤트 리스너 등록
@@ -455,9 +492,11 @@
             }
         });
 
-        //TODO 상담사 랜덤 배정에 관한 정보를 취합 후 산정 방식을 다시 만들어야함
         // 랜덤 배정 실행 버튼
         $randomButton.on("click", function () {
+            Object.entries(counselorAssignments).forEach(([key, value]) => {
+                counselorAssignments[key].current = 0;
+            })
             /**
              * 랜덤 배정 실행 과정:
              * 1. randomTableData() 함수 호출

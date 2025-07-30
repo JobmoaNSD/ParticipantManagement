@@ -242,113 +242,6 @@ function escapeHtml(text) {
     };
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
-/*
-
-/!**
- * 테이블의 모든 행에 대해 상담사 랜덤 배정을 실행하는 메인 함수
- *
- * 동작 과정:
- * 1. CSV 데이터 테이블의 모든 행(.csv-data-tr) 탐색
- * 2. 각 행마다 dataAssignment() 함수 호출하여 상담사 배정
- * 3. 배정 결과를 해당 행의 입력 필드에 설정
- * 4. 배정 실패 시 전체 프로세스 중단
- *
- * @returns {boolean} 배정 성공 여부
- * - true: 모든 참여자에게 상담사 배정 완료
- * - false: 배정 가능한 상담사 부족으로 실패
- *!/
-function randomTableData(currentCounselor,counselorAssignments) {
-    const $randomTr = $(".csv-data-tr");  // 데이터 행 선택
-    let flag = true;                       // 전체 배정 성공 플래그
-    let selectedCounselor = null;          // 선택된 상담사 임시 저장
-
-    // 각 참여자 행에 대해 상담사 배정 실행
-    $randomTr.each(function () {
-        selectedCounselor = dataAssignment(currentCounselor,counselorAssignments);  // 상담사 배정 함수 호출
-
-        // 배정 실패 시 플래그 설정
-        if (selectedCounselor == null) {
-            flag = false;
-            return false;
-        }
-
-        // 배정 결과를 입력 필드에 설정
-        // $(this).find("td").find("input").val(selectedCounselor);
-        $(this).find("td").filter(".random-td-input").text(selectedCounselor);
-    });
-
-    return flag;  // 전체 배정 성공 여부 반환
-}
-
-/!**
- * 균등 배정 알고리즘을 통한 상담사 선택 함수
- *
-알고리즘 단계:
- * 변경될 알고리즘 단계
- * 1. 제외 인원 설정 추가.
- * 2. 총 배정인원을 확인
- * 3. 이후 청년, 특정계층, 중장년으로 나눠 각각의 배정인원을 확인 후 점수 산정
- * 4. 특정계층의 경우 인원이 많지 않으면 청년, 중장년으로 배정해 점수를 산정
- * 5. 산정된 점수의 총합을 기준으로 배정점수가 낮으면서 배정인원이 적은 상담사에게 청년 우선 배정
- * 6. 이후 특정계층과 중장년을 각각 배정
- *
- * @EXAMPLE
- * // 상담사별 전체 총 진행 인원 확인 [100,87,86,91,90]
- * // 총 진행 인원 중 진행 인원이 100이 넘지 않는 상담사의 2025년 진행자 수, 청년 수, 중장년 수 를 확인 [0,47,54,52,50],[0,79,57,62,67],[0,16,27,21,14]
- * // 총 진행 인원, 2025년 진행자 수, 청년 수, 중장년 수 4가지를 모두 비교한다.
- * // 비교가 완료된 후 총 진행인원 100이 아니면서 2025년도 배정된 참여자가 가장 적고 청년 수가 많으면 중장년 우선 배정
- * // 비교가 완료된 후 총 진행인원 100이 아니면서 2025년도 배정된 쳠아자가 가장 적고 청년 수가 적으면 청년 우선 배정
- * const counselor = dataAssignment();
- *
- * 1. 배정 가능한 상담사 필터링 (current < max)
- * 2. 가장 적게 배정받은 상담사들 식별
- * 3. 동일 조건 상담사들 중 랜덤 선택
- * 4. 선택된 상담사의 배정 인원 증가
- *
- * @returns {string|null} 선택된 상담사 ID 또는 null (배정 불가)
- *
- * @example
- * // 상담사별 현재 배정 인원이 [20, 5, 10, 4]인 경우
- * // 최소값 4를 가진 'test4'가 우선 선택됨
- * const counselor = dataAssignment(); // 'test4' 반환
- *
- *!/
-function dataAssignment(currentCounselor,counselorAssignments) {
-    // 1단계: 배정 가능한 상담사 필터링
-    const availableCounselors = Object.keys(counselorAssignments).filter(
-        counselor => counselorAssignments[counselor].current < counselorAssignments[counselor].max
-    );
-
-    // 2단계: 배정 가능한 상담사가 없는 경우 처리
-    if (availableCounselors.length === 0) {
-        console.log("모든 상담사가 최대 배정 인원에 도달했습니다.");
-        return null;
-    }
-
-    // 3단계: 가장 적게 배정받은 상담사들 찾기
-    const minAssignments = Math.min(...availableCounselors.map(
-        counselor => counselorAssignments[counselor].current
-    ));
-
-    // 4단계: 최소 배정 인원을 가진 상담사들 필터링
-    const priorityCounselors = availableCounselors.filter(
-        counselor => counselorAssignments[counselor].current === minAssignments
-    );
-
-    // 5단계: 우선순위 상담사 중에서 랜덤 선택
-    const randomIndex = Math.floor(Math.random() * priorityCounselors.length);
-    const selectedCounselor = priorityCounselors[randomIndex];
-
-    // 6단계: 선택된 상담사의 배정 인원 증가
-    counselorAssignments[selectedCounselor].current++;
-
-    // 7단계: 디버깅용 로그 출력
-    // console.log('선택된 상담사: ' + selectedCounselor);
-    // console.log('현재 배정 현황: ', counselorAssignments);
-
-    return selectedCounselor;
-}*/
-
 
 /**
  * 개선된 상담사 배정 알고리즘
@@ -367,22 +260,23 @@ function dataAssignment(currentCounselor,counselorAssignments) {
  * @param {Object} excludedPersonnel - 제외 인원 설정
  * @returns {string|null} 선택된 상담사 ID 또는 null
  */
-function dataAssignment(currentCounselor, counselorAssignments, participantAgeGroup = '청년', excludedPersonnel = {}) {
+//TODO 청년 중장년 관련해서 데이터 대입이 잘 되는지 확인 하면 완료
+function dataAssignment(currentCounselor, counselorAssignments, participantAgeGroup = '중장년', excludedPersonnel = {}) {
     // 1단계: 제외 인원 설정 적용 및 배정 가능한 상담사 필터링
     const availableCounselors = Object.keys(counselorAssignments).filter(counselor => {
         const counselorData = counselorAssignments[counselor];
         const isExcluded = excludedPersonnel[counselor] || false;
-        const hasCapacity = counselorData.current < counselorData.max;
-        const under100Limit = counselorData.total < 100; // 총 진행인원 100 미만
+        const hasCapacity = counselorData.total < counselorData.max;
+        //const under100Limit = counselorData.total < 100; // 총 진행인원 100 미만
 
-        console.log("excludedPersonnel[counselor] : " + excludedPersonnel[counselor]);
-        console.log("counselorData.current : " + counselorData.current);
-        console.log("counselorData.max : " + counselorData.max);
-        console.log("counselorData.total : " + counselorData.total);
-        console.log("isExcluded : " + isExcluded);
-        console.log("hasCapacity : " + hasCapacity);
-        console.log("under100Limit : " + under100Limit);
-        return !isExcluded && hasCapacity && under100Limit;
+        // console.log("excludedPersonnel[counselor] : " + excludedPersonnel[counselor]);
+        // console.log("counselorData.current : " + counselorData.current);
+        // console.log("counselorData.max : " + counselorData.max);
+        // console.log("counselorData.total : " + counselorData.total);
+        // console.log("isExcluded : " + isExcluded);
+        // console.log("hasCapacity : " + hasCapacity);
+        // console.log("under100Limit : " + under100Limit);
+        return !isExcluded && hasCapacity;// && under100Limit;
     });
 
     // 2단계: 배정 가능한 상담사가 없는 경우 처리
@@ -397,19 +291,19 @@ function dataAssignment(currentCounselor, counselorAssignments, participantAgeGr
 
         // 점수 계산 (낮을수록 우선순위 높음)
         const totalScore = data.total || 0;           // 전체 총 진행 인원
-        const year2025Score = data.year2025 || 0;     // 2025년 진행자 수
+        const yearScore = data.year || 0;     // 2025년 진행자 수
         const youthScore = data.youth || 0;           // 청년 수
         const middleAgedScore = data.middleAged || 0; // 중장년 수
         const specialGroupScore = data.specialGroup || 0; // 특정계층 수
 
         // 가중치를 적용한 종합 점수 계산
-        const comprehensiveScore = (totalScore * 0.4) + (year2025Score * 0.3) +
+        const comprehensiveScore = (totalScore * 0.4) + (yearScore * 0.3) +
             (youthScore * 0.15) + (middleAgedScore * 0.15);
 
         return {
             counselor: counselor,
             totalScore: totalScore,
-            year2025Score: year2025Score,
+            yearScore: yearScore,
             youthScore: youthScore,
             middleAgedScore: middleAgedScore,
             specialGroupScore: specialGroupScore,
@@ -438,10 +332,13 @@ function dataAssignment(currentCounselor, counselorAssignments, participantAgeGr
     let selectedCounselor = null;
 
     if (participantAgeGroup === '청년') {
+        console.log('청년 데이터 등록')
         selectedCounselor = selectCounselorForYouth(counselorScores);
     } else if (participantAgeGroup === '중장년') {
+        console.log('중장년 데이터 등록')
         selectedCounselor = selectCounselorForMiddleAged(counselorScores);
     } else if (participantAgeGroup === '특정계층') {
+        console.log('특정계층 데이터 등록')
         selectedCounselor = selectCounselorForSpecialGroup(counselorScores);
     }
 
@@ -449,7 +346,8 @@ function dataAssignment(currentCounselor, counselorAssignments, participantAgeGr
     if (selectedCounselor) {
         const counselorData = counselorAssignments[selectedCounselor];
         counselorData.current++;
-        counselorData.year2025 = (counselorData.year2025 || 0) + 1;
+        counselorData.total++;
+        counselorData.year = (counselorData.year || 0) + 1;
 
         // 연령대별 카운트 증가
         if (participantAgeGroup === '청년') {
@@ -460,8 +358,8 @@ function dataAssignment(currentCounselor, counselorAssignments, participantAgeGr
             counselorData.specialGroup = (counselorData.specialGroup || 0) + 1;
         }
 
-        console.log(`선택된 상담사: ${selectedCounselor} (${participantAgeGroup})`);
-        console.log('현재 배정 현황:', counselorAssignments);
+        // console.log(`선택된 상담사: ${selectedCounselor} (${participantAgeGroup})`);
+        // console.log('현재 배정 현황:', counselorAssignments);
     }
 
     return selectedCounselor;
@@ -478,8 +376,8 @@ function selectCounselorForYouth(counselorScores) {
             return a.comprehensiveScore - b.comprehensiveScore;
         }
         // 종합점수가 같으면 2025년 배정자 수가 적은 순
-        if (a.year2025Score !== b.year2025Score) {
-            return a.year2025Score - b.year2025Score;
+        if (a.yearScore !== b.yearScore) {
+            return a.yearScore - b.yearScore;
         }
         // 청년 수가 적은 순으로 우선 배정
         return a.youthScore - b.youthScore;
@@ -499,8 +397,8 @@ function selectCounselorForMiddleAged(counselorScores) {
             return a.comprehensiveScore - b.comprehensiveScore;
         }
         // 종합점수가 같으면 2025년 배정자 수가 적은 순
-        if (a.year2025Score !== b.year2025Score) {
-            return a.year2025Score - b.year2025Score;
+        if (a.yearScore !== b.yearScore) {
+            return a.yearScore - b.yearScore;
         }
         // 청년 수가 많은 순으로 중장년 배정 (균형 조정)
         return b.youthScore - a.youthScore;
@@ -519,8 +417,8 @@ function selectCounselorForSpecialGroup(counselorScores) {
             return a.comprehensiveScore - b.comprehensiveScore;
         }
         // 종합점수가 같으면 2025년 배정자 수가 적은 순
-        if (a.year2025Score !== b.year2025Score) {
-            return a.year2025Score - b.year2025Score;
+        if (a.yearScore !== b.yearScore) {
+            return a.yearScore - b.yearScore;
         }
         // 특정계층 수가 적은 순으로 우선 배정
         return a.specialGroupScore - b.specialGroupScore;
@@ -565,6 +463,8 @@ function randomTableData(currentCounselor, counselorAssignments, excludedPersonn
             console.log(`${index + 1}번째 참여자 배정 실패`);
             return false;
         }
+        //배정 인원 확인
+        assignTable(counselorAssignments, excludedPersonnel);
 
         // 배정 결과를 테이블에 표시
         $row.find("td.random-td-input").text(selectedCounselor);
@@ -578,16 +478,78 @@ function randomTableData(currentCounselor, counselorAssignments, excludedPersonn
  * @param {Array} rowData - 참여자 행 데이터
  * @returns {string} 연령대 ('청년', '특정계층', '중장년')
  */
+// TODO 날짜 비교 함수 수정해야함
 function determineAgeGroup(rowData) {
     // 실제 CSV 구조에 맞게 구현 필요
     // 예시: 나이 컬럼이 3번째 인덱스에 있다고 가정
-    const age = parseInt(rowData[2]) || 25; // 기본값 25세
+    const birthDate = parseInt(rowData[1]) || 34; // 기본값 25세
+
+    let currentDate = new Date();
+    console.log("currentDate : "+currentDate)
+    console.log("birthDate : "+birthDate)
+    const age = currentDate.getDate() - currentDate.setDate(birthDate);
+
+    console.log("age : "+age)
 
     if (age <= 34) {
         return '청년';
-    } else if (age >= 50) {
+    } else if (age >= 35) {
         return '중장년';
     } else {
         return '특정계층';
     }
+}
+
+
+/**
+ * 상담사 시각화 자료를 위해 전달받은 데이터를 기반으로 값을 설정
+ *
+ * @param {Object} counselorAssignments 실시간 상담사 배정 현황 (작업 데이터)
+ * @param {Object} excludedPersonnel 배정 제외 상당사 지정
+ */
+function assignTable(counselorAssignments, excludedPersonnel) {
+    const $assignCountTable = $('#assign-count-table');
+    const $assignCountTableHeader = $('#assign-count-table-header');
+    const $assignCountTableBody = $('#assign-count-table-body');
+
+    //tbody tag를 제거
+    $assignCountTableBody.empty();
+
+    //백단에서 전달받은 데이터 id 값을 기준으로 값을 추가.
+    Object.keys(counselorAssignments).forEach(counselor => {
+        let tableHTML = "<tr class='assign-tr'>";
+        tableHTML += "<td class='assign-counselor-td'>" +
+            "<input type='checkbox' value='"+counselor+"' id='"+counselor+"' class='assign-counselor-input'>" +
+            "<label for='" +counselor+"'>" + counselor + "</label></td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].name + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].total + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].youth + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].middleAged + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].specialGroup + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].current + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].max + "</td>";
+        tableHTML += "</tr>";
+        $assignCountTableBody.append(tableHTML);
+
+        $('#'+counselor+'').prop('checked', excludedPersonnel[counselor]);
+    })
+}
+
+
+/**
+ * // excludedPersonnel = {}
+ *
+ * @param {Object} excludedPersonnel 제외 상담사를 담을 객체
+ */
+function excludeCounselor(excludedPersonnel) {
+    let $assignCounselorInput = $(".assign-counselor-input");
+
+    $assignCounselorInput.each(function (){
+        let $this = $(this);
+        let excludedCounselor = $this.val();
+        excludedPersonnel[excludedCounselor] = $this.is(":checked");
+    })
+
+    let alertMassage = "다음과 같이 배정 제외 설정을 완료했습니다. \n"+Object.entries(excludedPersonnel).map(([key, value]) => key + ' : ' + value).join("\n");
+    alert(alertMassage);
 }
