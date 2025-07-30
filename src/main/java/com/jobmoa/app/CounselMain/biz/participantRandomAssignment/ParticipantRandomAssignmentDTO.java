@@ -8,6 +8,8 @@ import java.util.List;
 public class ParticipantRandomAssignmentDTO {
     private int pkNumber; // PK 번호
     private String counselor; // 상담사
+    private String counselorID; // 상담사 ID
+    private String branch; // 지점
     private String participant; // 참여자
     private String birthDate; // 생년월일
     private String gender; // 성별
@@ -21,6 +23,15 @@ public class ParticipantRandomAssignmentDTO {
     private List<String> recruitmentPaths;
     private List<String> participationTypes;
     private List<String> progressStages;
+
+    //조회할 데이터 DTO
+    private int assignmentTotal;
+    private int assignmentYear;
+    private int assignmentYouth;
+    private int assignmentMiddleAged;
+    private int assignmentSpecialGroup;
+    private int assignmentCurrent;
+    private int assignmentMax;
 
     //개발자 구분
     private String condition;

@@ -26,4 +26,78 @@
              GETDATE()
             )
     </insert>
+    
+    <select id="selectAssign" resultType="pra">
+        WITH 참여자_기본정보 AS (
+            SELECT
+                sp.이름,
+                p.전담자_계정,
+                p.등록일,
+                p.지점,
+                p.생년월일,
+                구직번호,
+                특정계층,
+                CASE
+                    WHEN 초기상담일 = '1900-01-01' AND 초기상담일 IS NOT NULL
+                        THEN p.등록일
+                    ELSE 초기상담일
+                    END as 기준날짜,
+                CASE
+                    WHEN 생년월일 IS NOT NULL
+                        THEN DATEDIFF(YEAR, 생년월일, GETDATE()) -
+                             CASE WHEN DATEADD(YEAR, DATEDIFF(YEAR, 생년월일, GETDATE()), 생년월일) > GETDATE()
+                                      THEN 1 ELSE 0 END
+                    ELSE NULL
+                    END as 계산나이
+            FROM J_참여자관리 p
+                     RIGHT JOIN J_참여자관리_로그인정보 sp ON p.전담자_계정 = sp.아이디
+            WHERE 마감 = 0
+              AND 진행단계 NOT IN ('미고보', '고보일반', '등록창업', '미취업사후종료', '취소', '이관', '중단')
+              AND 전담자_계정 NOT LIKE '%퇴사자%'
+              AND 전담자_계정 NOT LIKE '%exit%'
+--               AND 전담자_계정 NOT LIKE '%test%'
+        ),
+             참여자_분석정보 AS (
+                 SELECT
+                     이름,
+                     전담자_계정,
+                     지점,
+                     구직번호,
+                     특정계층,
+                     YEAR(기준날짜) as 기준년도,
+                     CASE
+                         WHEN 계산나이 <![CDATA[<=]]> 34 THEN '청년'
+                         WHEN 계산나이 > 34 THEN '중장년'
+                         ELSE NULL
+                         END as 연령대구분
+                 FROM 참여자_기본정보
+                 WHERE 기준날짜 IS NOT NULL AND 계산나이 IS NOT NULL
+             )
+        SELECT
+            이름 as counselor,
+            전담자_계정 as counselorID,
+            지점 as branch,
+            COUNT(*) as assignmentTotal,--총진행자
+            -- 모든 년도를 CASE문으로 처리 (데이터에 따라 자동 조정)
+            COUNT(CASE WHEN 기준년도 = 2021 THEN 1 END) as '2021년_진행자',
+            COUNT(CASE WHEN 기준년도 = 2022 THEN 1 END) as '2022년_진행자',
+            COUNT(CASE WHEN 기준년도 = 2023 THEN 1 END) as '2023년_진행자',
+            COUNT(CASE WHEN 기준년도 = 2024 THEN 1 END) as '2024년_진행자',
+            COUNT(CASE WHEN 기준년도 = 2025 THEN 1 END) as assignmentYear,--'2025년_진행자',
+            -- 연령대별 집계
+            COUNT(CASE WHEN 연령대구분 = '청년' AND (특정계층='' OR 특정계층 IS NULL OR TRIM(특정계층) = 'X') THEN 1 END) as assignmentYouth,--'청년_34이하_진행자',
+            COUNT(CASE WHEN 특정계층 IS NOT NULL AND TRIM(특정계층) = 'O' THEN 1 END) as assignmentSpecialGroup,--특정계층진행자,
+            COUNT(CASE WHEN 연령대구분 = '중장년' AND (특정계층='' OR 특정계층 IS NULL OR TRIM(특정계층) = 'X') THEN 1 END) as assignmentMiddleAged --'중장년_35이상_진행자'
+        FROM 참여자_분석정보
+        WHERE 지점 = #{branch}
+        GROUP BY 전담자_계정, 이름, 지점
+        HAVING COUNT(*) > 0
+        ORDER BY COUNT(*) DESC
+    </select>
+    
+    
+    
+    
+    
+    
 </mapper>
