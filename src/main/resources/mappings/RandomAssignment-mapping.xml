@@ -12,6 +12,7 @@
              모집경로,
              참여유형,
              진행단계,
+             특정계층,
              참여자_수정일)
         VALUES
             (
@@ -23,6 +24,7 @@
              #{recruitmentPath},
              #{participationType},
              #{progressStage},
+             #{specificClass},
              GETDATE()
             )
     </insert>

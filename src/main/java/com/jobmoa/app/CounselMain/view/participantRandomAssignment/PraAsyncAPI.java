@@ -1,7 +1,9 @@
 package com.jobmoa.app.CounselMain.view.participantRandomAssignment;
 
+import com.jobmoa.app.CounselMain.biz.bean.LoginBean;
 import com.jobmoa.app.CounselMain.biz.participantRandomAssignment.ParticipantRandomAssignmentDTO;
 import com.jobmoa.app.CounselMain.biz.participantRandomAssignment.ParticipantRandomAssignmentService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,17 @@ public class PraAsyncAPI {
     private ParticipantRandomAssignmentService praService;
 
     @PostMapping("/api/pra.login")
-    public ResponseEntity<?> praInsertAPI(@RequestBody List<ParticipantRandomAssignmentDTO> asyncList){
+    public ResponseEntity<?> praInsertAPI(@RequestBody List<ParticipantRandomAssignmentDTO> asyncList, HttpSession session){
         //입력 데이터 확인
          log.info("praInsertAPI : [{}]",asyncList);
         try{
+            LoginBean loginBean = (LoginBean)session.getAttribute("JOBMOA_LOGIN_DATA");
+            String branch = loginBean.getMemberBranch();
             boolean flag = false;
             //정보 업데이트
             for(ParticipantRandomAssignmentDTO dto : asyncList){
                 dto.setCondition("praInsert");
+                dto.setBranch(branch);
                 flag = praService.insert(dto);
             }
 

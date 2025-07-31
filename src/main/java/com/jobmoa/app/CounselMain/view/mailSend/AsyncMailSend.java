@@ -110,15 +110,15 @@ public class AsyncMailSend {
             this.redisService.setStringWithExpire(expireTimeKey,joinCode, AUTH_TIME_MINUTES, TimeUnit.MINUTES);
             
             //Auth 인증키 설정완료 후 메일전달
-//            boolean flag = mailService.send(SEND_EMAIL,email,subject,sb.toString());
+            boolean flag = mailService.send(SEND_EMAIL,email,subject,sb.toString());
 
             //실패 여부 확인용
-            boolean flag = true;
+//            boolean flag = true;
 
-            log.info("Redis Key : [{}]", redisKey);
-            log.info("Redis Value : [{}]", this.redisService.getString(redisKey));
-            log.info("Redis AuthCode Key : [{}]", expireTimeKey);
-            log.info("Redis AuthCode Value : [{}]", this.redisService.getString(expireTimeKey));
+//            log.info("Redis Key : [{}]", redisKey);
+//            log.info("Redis Value : [{}]", this.redisService.getString(redisKey));
+//            log.info("Redis AuthCode Key : [{}]", expireTimeKey);
+//            log.info("Redis AuthCode Value : [{}]", this.redisService.getString(expireTimeKey));
 
             String responseText = email+" 로 메일 발송되었습니다.";
             if(!flag){
@@ -168,8 +168,8 @@ public class AsyncMailSend {
             //Redis 인증키 호출
             String redisKey = this.redisService.getString(expireTimeKey);
 
-            log.info("checkAuthCode.api Redis AuthCode Key : [{}]", expireTimeKey);
-            log.info("checkAuthCode.api Redis AuthCode Value : [{}]", redisKey);
+//            log.info("checkAuthCode.api Redis AuthCode Key : [{}]", expireTimeKey);
+//            log.info("checkAuthCode.api Redis AuthCode Value : [{}]", redisKey);
 
             //인증키가 없다면
             if (redisKey == null) {
@@ -177,8 +177,8 @@ public class AsyncMailSend {
                 throw new Exception("Redis Key is null");
             }
 
-            log.info("AuthCode : [{}]", mailDTO.getAuthCode());
-            log.info("AuthCode Value : [{}]", this.redisService.getString(expireTimeKey));
+//            log.info("AuthCode : [{}]", mailDTO.getAuthCode());
+//            log.info("AuthCode Value : [{}]", this.redisService.getString(expireTimeKey));
 
             if(!redisKey.equals(mailDTO.getAuthCode())){
                 responseJson = "{\"flag\":\""+false+"\",\"responseText\":\"인증실패\"}";

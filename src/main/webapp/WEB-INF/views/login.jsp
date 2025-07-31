@@ -26,6 +26,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<%--    눈 아이콘(예: fa-eye및 fa-eye-slash)--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <style>
@@ -67,7 +70,7 @@
             box-shadow: 0 5px 15px rgba(0,123,255,0.3);
         }
 
-        #findUserID, #primaryKey{
+        #changeUserID, #primaryKey{
             width: 73%;
         }
 
@@ -86,6 +89,28 @@
                 transform: translateY(0);
             }
         }
+
+        #changePassword, #changePasswordCheck{
+            width: 90%;
+        }
+
+        #toggle-password, #toggle-password-check{
+            width: 10%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #toggle-password:hover, #toggle-password-check:hover{
+            color: #007bff;
+        }
+
+        #toggle-password:visited, #toggle-password-check:visited{
+            color: #007bff;
+        }
+
+
     </style>
 </head>
 <body>
@@ -112,6 +137,9 @@
                         </span>
                         <input type="password" class="form-control" id="memberUserPW" name="memberUserPW"
                                placeholder="비밀번호를 입력해주세요" required>
+                        <span class="input-group-text">
+                            <i class="fas fa-eye-slash" id="icon-password"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="d-grid gap-2 mb-4">
@@ -119,7 +147,7 @@
                 </div>
                 <div class="text-center">
                     <a href="#" class="text-decoration-none text-primary fw-bold"
-                       data-bs-toggle="modal" data-bs-target="#findPasswordModal">
+                       data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                         비밀번호 찾기
                     </a>
                     <br>
@@ -135,7 +163,7 @@
 
 
 <!-- 비밀번호 찾기 Modal -->
-<div class="modal fade" id="findPasswordModal" data-bs-backdrop="static" tabindex="-1">
+<div class="modal fade" id="changePasswordModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -143,10 +171,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="findPasswordForm">
+                <form id="changePasswordForm">
                     <div class="mb-3 row">
-                        <label for="findUserID" class="form-label">아이디</label>
-                        <input type="text" class="form-control" id="findUserID" required>
+                        <label for="changeUserID" class="form-label">아이디</label>
+                        <input type="text" class="form-control" id="changeUserID" required>
                         <button type="button" class="btn btn-primary" id="sendMail">인증번호 발송</button>
                     </div>
                     <div id="primaryKeyDiv" class="mb-3 row">
@@ -154,11 +182,24 @@
                         <input type="text" class="form-control" id="primaryKey">
                         <button type="button" class="btn btn-primary" id="checkAuth">인증번호 확인</button>
                     </div>
+                    <div id="changePasswordDiv" class="mb-3 row">
+                        <label for="changePassword" class="form-label">변경 비밀번호</label>
+                        <input type="password" class="form-control mb-3" id="changePassword">
+                        <i class="fas fa-eye-slash" id="toggle-password"></i>
+
+                        <label for="changePasswordCheck" class="form-label">변경 비밀번호 확인</label>
+                        <input type="password" class="form-control" id="changePasswordCheck">
+                        <i class="fas fa-eye-slash" id="toggle-password-check"></i>
+
+                        <div id="changePasswordResult">
+
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary" id="findPasswordBtn">비밀번호 찾기</button>
+                <button type="button" class="btn btn-primary" id="changePasswordBtn">비밀번호 찾기</button>
             </div>
         </div>
     </div>
@@ -168,14 +209,25 @@
 <script>
     $(document).ready(function() {
         let formControl = $('.form-control'); // form control
-        let findPasswordBtn = $('#findPasswordBtn'); // 비밀번호 찾기 버튼
+        let changePasswordBtn = $('#changePasswordBtn'); // 비밀번호 찾기 버튼
         let sendMailBtn = $('#sendMail'); //인증번호 발송 버튼
-        let findPasswordForm = $('#findPasswordForm'); // 비밀번호 찾기 from
-        let findPasswordModal = $('#findPasswordModal'); // 비밀번호 찾기 modal
+        let changePasswordForm = $('#changePasswordForm'); // 비밀번호 찾기 from
+        let changePasswordModal = $('#changePasswordModal'); // 비밀번호 찾기 modal
         let primaryKeyInput = $('#primaryKey'); // 인증번호 입력 란
         let primaryKeyDiv = $('#primaryKeyDiv'); // 인증번호 Div
         let checkAuthBtn = $('#checkAuth'); // 인증번호 확인 버튼
-        primaryKeyDiv.hide();
+        let checkAuthFlag = false; // 인증 완료
+
+        const changePasswordDiv = $("#changePasswordDiv");
+        const toggleChangePassword = $("#toggle-password"); // 변경 비밀번호 숨기기 보이기 아이콘
+        const toggleChangePasswordCheck = $("#toggle-password-check"); // 변경 비밀번호 확인 숨기기 보이기 아이콘
+        const changePassword = $("#changePassword"); // 변경 비밀번호
+        const changePasswordCheck = $("#changePasswordCheck"); // 변경 비밀번호 확인
+        const changePasswordResult = $("#changePasswordResult");
+
+        const memberUserPW = $("#memberUserPW") // 로그인 비밀번호
+        const iconPassword = $("#icon-password"); // 로그인 비밀번호 아이콘 숨기기
+        resetForm() // 초기 설정 진행
 
         // 입력 필드에 포커스 효과
         formControl.focus(function() {
@@ -185,13 +237,13 @@
         });
 
         sendMailBtn.click(function() {
-            if(findPasswordForm[0].checkValidity()) {
+            if(changePasswordForm[0].checkValidity()) {
                 // 비밀번호 찾기 로직 구현
                 $.ajax({
                   url: 'pwChangeSendEmail.api',
                   type: 'POST',
                   data: JSON.stringify({
-                      "userId": findPasswordForm.find('#findUserID').val(),
+                      "userId": changePasswordForm.find('#changeUserID').val(),
                   }),
                   contentType: 'application/json; charset=utf-8',
                   dataType: 'json',
@@ -222,14 +274,14 @@
 
         // 인증 후 비밀번호 찾기 버튼 활성화
         checkAuthBtn.on('click', function() {
-            if(findPasswordForm[0].checkValidity()) {
+            if(changePasswordForm[0].checkValidity()) {
                 // 비밀번호 찾기 로직 구현
                 $.ajax({
                     url: 'checkAuthCode.api',
                     type: 'POST',
                     data: JSON.stringify({
-                        "authCode": findPasswordForm.find('#primaryKey').val(),
-                        "userId": findPasswordForm.find('#findUserID').val(),
+                        "authCode": changePasswordForm.find('#primaryKey').val(),
+                        "userId": changePasswordForm.find('#changeUserID').val(),
                     }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
@@ -246,7 +298,9 @@
                         }
 
                         alert(data.responseText);
-                        // primaryKeyDiv.show();
+                        changePasswordBtn.prop('disabled', false);
+                        checkAuthFlag = true;
+                        changePasswordDiv.show();
                     },
                     error: function(request, status, error) {
                         console.log("code:" + request.status);
@@ -259,9 +313,104 @@
             }
         })
 
-        findPasswordModal.on('hide.bs.modal', function (event) {
-            primaryKeyDiv.hide();
+        changePasswordModal.on('hide.bs.modal', function (event) {
+            resetForm()
         })
+
+        function resetForm() {
+            changePasswordForm.find('#changeUserID').val('');
+            changePasswordForm.find('#primaryKey').val('');
+            primaryKeyDiv.hide();
+            changePasswordBtn.prop('disabled', true);
+            checkAuthFlag = false;
+
+            changePasswordDiv.hide();
+            changePassword.val('');
+            changePasswordCheck.val('');
+            changePasswordResult.empty();
+        }
+
+         changePasswordBtn.on('click', function() {
+             let changePasswordVal = changePassword.val();
+             let changePasswordCheckVal = changePasswordCheck.val();
+
+             let reg = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{5,}$/;//(?=.*?[A-Z]) 대소문자 확인
+
+/*             if(!checkAuthFlag){
+                alert("인증 완료 후 비밀번호 초기화가 가능합니다.")
+                return;
+             }*/
+
+             changePasswordResult.empty();
+
+             console.log(changePasswordVal === changePasswordCheckVal);
+             if (changePasswordVal.search(/\s/) !== -1) {
+                 passwordCheckInnerSpan(changePasswordResult, "비밀번호는 공백없이 부탁드립니다.", "red");
+                 return false;
+             }
+             else if (false === reg.test(changePasswordVal)) {
+                 passwordCheckInnerSpan(changePasswordResult, "비밀번호는 5자 이상이어야 하며, 숫자/소문자/특수문자(#?!@$%^&*-)를 모두 포함해야 합니다.", "red");
+                 return;
+             }
+             else if (changePasswordVal === changePasswordCheckVal) {
+                 passwordCheckInnerSpan(changePasswordResult, "비밀번호가 정상적으로 입력되었습니다.", "green");
+             }
+             else {
+                 passwordCheckInnerSpan(changePasswordResult, "동일한 비밀번호를 입력해주세요.", "red");
+             }
+
+             fetchChangePassword()
+
+         })
+
+        function passwordCheckInnerSpan(innerDiv, str, color = "red") {
+            let spanHTML = "<span style='color:"+color+";'>"+str+"</span>";
+            innerDiv.append(spanHTML)
+        }
+
+        toggleChangePassword.on('click', function() {
+            togglePasswordShow($(this), changePassword);
+        })
+
+        toggleChangePasswordCheck.on('click', function() {
+            togglePasswordShow($(this), changePasswordCheck);
+        })
+
+        iconPassword.on('click', function() {
+            togglePasswordShow($(this), memberUserPW);
+        })
+
+        function togglePasswordShow($togglePassword, $password) {
+            if ($password.attr('type') === 'password') {
+                $password.attr('type', 'text');
+                $togglePassword.removeClass('fa-eye-slash').addClass('fa-eye');
+            } else {
+                $password.attr('type', 'password');
+                $togglePassword.removeClass('fa-eye').addClass('fa-eye-slash');
+            }
+        }
+
+        //TODO 업데이트 완료 및 실패에 대한 피드백을 추가해야함
+        async function fetchChangePassword() {
+            fetch('changePW.api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "memberUserID": changePasswordForm.find('#changeUserID').val(),
+                    "memberUserPW": changePasswordForm.find('#changePassword').val(),
+                    "memberUserChangePW": changePasswordForm.find('#changePasswordCheck').val(),
+                })
+            })
+                .then(function(response) {
+                    const responseData = response.json();
+                    console.log(response);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+        }
     });
 </script>
 </html>

@@ -519,11 +519,13 @@
         function resetFunction(){
             $randomButton.show();                           // 랜덤 배정 버튼 표시
             $resetButton.hide();                            // 초기화 버튼 숨김
-            counselorAssignments = currentCounselor;        // 배정 현황 초기화
+            counselorAssignments = {}                     // 배정 현황 정보 초기화(삭제)
+            counselorAssignments = currentCounselor;       // 배정 현황 초기화(원본 추가)
             $("#csv-data").empty();                         // 테이블 데이터 삭제
             $("#file-input").val("");                       // 파일 데이터 초기화
             $(".response-text-div").empty();                // 응답 메시지 초기화
             verificationFlag = false;                       // 데이터 검증 초기화
+            assignTable(counselorAssignments,excludedPersonnel); // 배정 현황 시각 자료 초기화
         }
 
         $('#save-button').on("click", function () {
@@ -553,6 +555,7 @@
                 participant: participantData.participant,       // 참여자
                 birthDate: participantData.birthDate,          // 생년월일
                 gender: participantData.gender,                // 성별
+                specificClass: participantData.specificClass,  // 특정계층
                 // 추가 필드들은 기본값 또는 빈 값으로 설정
                 counselorBranch: '',
                 counselorId: participantData.counselor, //상담사 아이디
@@ -650,6 +653,10 @@
                 if(!flag) errors.push("진행단계를 변경해주세요. ('IAP 전','IAP 후','미고보','고보일반','등록창업','미등록창업','미취업사후관리','미취업사후종료','유예','취소','이관','중단')")
             }
 
+            if(!participantData.specificClass){
+                errors.push('특정계층 설정이 없습니다.');
+            }
+
             return errors;
         }
 
@@ -668,14 +675,15 @@
                     const $cells = $row.find('td');
 
                     const participantData = {
-                        pkNumber: $cells.eq(0).text().trim(),
-                        counselor: $cells.eq(1).text().trim(),
-                        participant: $cells.eq(2).text().trim(),
-                        birthDate: $cells.eq(3).text().trim(),
-                        gender: $cells.eq(4).text().trim(),
-                        recruitmentPath: $cells.eq(5).text().trim(),
-                        participationType: $cells.eq(6).text().trim(),
-                        progressStage: $cells.eq(7).text().trim()
+                        pkNumber: $cells.eq(0).text().trim(), //PK 번호
+                        counselor: $cells.eq(1).text().trim(), //상담사 성명
+                        participant: $cells.eq(2).text().trim(), //참여자 성명
+                        birthDate: $cells.eq(3).text().trim(), // 참여자 생년월일
+                        gender: $cells.eq(4).text().trim(), // 참여자 성별
+                        recruitmentPath: $cells.eq(5).text().trim(), //참여자 모집경로
+                        participationType: $cells.eq(6).text().trim(), //참여유형
+                        progressStage: $cells.eq(7).text().trim(), //진행단계
+                        specificClass: $cells.eq(8).text().trim() //특정계층
                     };
 
                     // 데이터 검증
