@@ -77,6 +77,12 @@
             WHERE 지점 = #{memberBranch}
     </update>
 
-
+    <update id="changePassword">
+        UPDATE J_참여자관리_로그인정보
+        SET
+            비밀번호 = #{memberUserPW}
+        WHERE
+            아이디 = #{memberUserID}
+    </update>
 
 </mapper>

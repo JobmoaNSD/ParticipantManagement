@@ -261,7 +261,7 @@ function escapeHtml(text) {
  * @returns {string|null} 선택된 상담사 ID 또는 null
  */
 //TODO 청년 중장년 관련해서 데이터 대입이 잘 되는지 확인 하면 완료
-function dataAssignment(currentCounselor, counselorAssignments, participantAgeGroup = '중장년', excludedPersonnel = {}) {
+function dataAssignment(currentCounselor, counselorAssignments, participantAgeGroup = '청년', excludedPersonnel = {}) {
     // 1단계: 제외 인원 설정 적용 및 배정 가능한 상담사 필터링
     const availableCounselors = Object.keys(counselorAssignments).filter(counselor => {
         const counselorData = counselorAssignments[counselor];
@@ -474,20 +474,17 @@ function randomTableData(currentCounselor, counselorAssignments, excludedPersonn
 }
 
 /**
- * 참여자 데이터에서 연령대 판단 함수
+ * 참여자 데이터에서 연령대, 특정계층 판단 함수
  * @param {Array} rowData - 참여자 행 데이터
  * @returns {string} 연령대 ('청년', '특정계층', '중장년')
  */
-// TODO 날짜 비교 함수 수정해야함
 function determineAgeGroup(rowData) {
     // 실제 CSV 구조에 맞게 구현 필요
     // 예시: 나이 컬럼이 3번째 인덱스에 있다고 가정
-    const birthDate = parseInt(rowData[1]) || 34; // 기본값 25세
+    const birthDate = rowData[1]; // 기본값 25세
+    let specificClass = rowData[6];
 
-    let currentDate = new Date();
-    console.log("currentDate : "+currentDate)
-    console.log("birthDate : "+birthDate)
-    const age = currentDate.getDate() - currentDate.setDate(birthDate);
+    let age = createAge(birthDate);
 
     console.log("age : "+age)
 
@@ -495,9 +492,20 @@ function determineAgeGroup(rowData) {
         return '청년';
     } else if (age >= 35) {
         return '중장년';
-    } else {
+    } else if (specificClass == 'O') {
         return '특정계층';
     }
+}
+
+function createAge (birthDate) {
+    let todayDate = new Date();
+    let newBirthDate = new Date(birthDate);
+    let age = todayDate.getFullYear() - newBirthDate.getFullYear();
+    let m = todayDate.getMonth() - newBirthDate.getMonth();
+    if (m < 0 || (m === 0 && todayDate.getDate() < newBirthDate.getDate())) {
+        age--;
+    }
+    return age;
 }
 
 

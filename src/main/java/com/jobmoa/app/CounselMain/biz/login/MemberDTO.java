@@ -13,6 +13,7 @@ public class MemberDTO {
     private String memberRole; //전담자 권한
     private String memberUserID; //전담자 아이디
     private String memberUserPW; //전담자 비밀번호
+    private String memberUserChangePW; //전담자 변경 비밀번호
     private boolean memberISManager; //전담자 관리자 권한
     private String memberRegDate; //전담자 동록일
     private String memberUniqueNumber; //전담자 고유번호

@@ -16,6 +16,7 @@ public class ParticipantRandomAssignmentDTO {
     private String recruitmentPath; // 모집경로
     private String participationType; // 참여유형
     private String progressStage; // 진행단계
+    private String specificClass; // 특정계층
     private List<String> counselors;
     private List<String> participants;
     private List<String> birthDates;
