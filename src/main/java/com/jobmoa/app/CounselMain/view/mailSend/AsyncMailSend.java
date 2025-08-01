@@ -34,7 +34,7 @@ public class AsyncMailSend {
     private RedisService redisService;
 
     //메일 전달하는 메인 Email
-    private static final String SEND_EMAIL="namsd@jobmoa.com";
+    private static final String SEND_EMAIL="webmaster@jobmoa.com";
     //도메인 주소
     private static final String DOMAIN_EMAIL_PATH = "@jobmoa.com";
     //인증키 횟수 Redis키
