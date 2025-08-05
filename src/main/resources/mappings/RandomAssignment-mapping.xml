@@ -13,6 +13,7 @@
              참여유형,
              진행단계,
              특정계층,
+             초기전담자_계정,
              참여자_수정일)
         VALUES
             (
@@ -25,6 +26,7 @@
              #{participationType},
              #{progressStage},
              #{specificClass},
+             #{counselor},
              GETDATE()
             )
     </insert>
@@ -37,6 +39,8 @@
                 p.등록일,
                 p.지점,
                 p.생년월일,
+                성별,
+                참여유형,
                 구직번호,
                 특정계층,
                 CASE
@@ -64,8 +68,10 @@
                      이름,
                      전담자_계정,
                      지점,
+                     성별,
                      구직번호,
                      특정계층,
+                     참여유형,
                      YEAR(기준날짜) as 기준년도,
                      CASE
                          WHEN 계산나이 <![CDATA[<=]]> 34 THEN '청년'
@@ -86,6 +92,10 @@
             COUNT(CASE WHEN 기준년도 = 2023 THEN 1 END) as '2023년_진행자',
             COUNT(CASE WHEN 기준년도 = 2024 THEN 1 END) as '2024년_진행자',
             COUNT(CASE WHEN 기준년도 = 2025 THEN 1 END) as assignmentYear,--'2025년_진행자',
+            COUNT(CASE WHEN 참여유형 = '1' THEN 1 END) as assignmentType1, -- 참여유형 1
+            COUNT(CASE WHEN 참여유형 = '2' THEN 1 END) as assignmentType2, -- 참여유형 2
+            COUNT(CASE WHEN 성별 = '남' THEN 1 END) as assignmentGenderMan, -- 성별(남)
+            COUNT(CASE WHEN 성별 = '여' THEN 1 END) as assignmentGenderWoman, -- 성별(여)
             -- 연령대별 집계
             COUNT(CASE WHEN 연령대구분 = '청년' AND (특정계층='' OR 특정계층 IS NULL OR TRIM(특정계층) = 'X') THEN 1 END) as assignmentYouth,--'청년_34이하_진행자',
             COUNT(CASE WHEN 특정계층 IS NOT NULL AND TRIM(특정계층) = 'O' THEN 1 END) as assignmentSpecialGroup,--특정계층진행자,

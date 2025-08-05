@@ -531,6 +531,10 @@ function assignTable(counselorAssignments, excludedPersonnel) {
             "<label for='" +counselor+"'>" + counselor + "</label></td>";
         tableHTML += "<td>" + counselorAssignments[counselor].name + "</td>";
         tableHTML += "<td>" + counselorAssignments[counselor].total + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].type1 + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].type2 + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].man + "</td>";
+        tableHTML += "<td>" + counselorAssignments[counselor].woman + "</td>";
         tableHTML += "<td>" + counselorAssignments[counselor].youth + "</td>";
         tableHTML += "<td>" + counselorAssignments[counselor].middleAged + "</td>";
         tableHTML += "<td>" + counselorAssignments[counselor].specialGroup + "</td>";

@@ -27,6 +27,10 @@ public class ParticipantRandomAssignmentDTO {
 
     //조회할 데이터 DTO
     private int assignmentTotal;
+    private int assignmentType1;
+    private int assignmentType2;
+    private int assignmentGenderMan;
+    private int assignmentGenderWoman;
     private int assignmentYear;
     private int assignmentYouth;
     private int assignmentMiddleAged;

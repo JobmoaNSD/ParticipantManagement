@@ -183,7 +183,7 @@
             <div class="container-fluid">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <div class="row">
-                    <div class="row col-md-6">
+                    <div class="row col-md-4">
                         <div class="title-header col-md-12 pt-2">
                             참여자 랜덤 배정 <span id="helpButton" data-toggle="tooltip" data-placement="top" title="사용 방법 및 파일 설명"><i class="bi bi-lightbulb-fill"></i>도움말</span>
                         </div>
@@ -220,7 +220,7 @@
                         </div>
                     </div>
 
-                    <div class="row body-content col-md-6">
+                    <div class="row body-content col-md-8">
                         <div class="counselor-container col-md-12">
                             <button class="btn btn-secondary float-end" id="excludeBtn">선택 상담사 배정 제외</button>
                         </div>
@@ -231,6 +231,10 @@
                                         <th>상담사ID</th>
                                         <th>상담사</th>
                                         <th>총 (배정)진행자</th>
+                                        <th>1유형</th>
+                                        <th>2유형</th>
+                                        <th>남</th>
+                                        <th>여</th>
                                         <th>청년</th>
                                         <th>중장년</th>
                                         <th>특정계층</th>
@@ -259,6 +263,7 @@
                                         <th class="csv-column">모집경로</th>
                                         <th class="csv-column">참여유형</th>
                                         <th class="csv-column">진행단계</th>
+                                        <th class="csv-column">특정계층</th>
                                     </tr>
                                 </thead>
                                 <tbody class="csv-data" id="csv-data">
@@ -394,9 +399,13 @@
          * - 시스템 시작 시의 기준 상태
          * - 초기화 시 복원 기준점으로 사용
          *
-         * @type {Object.<string, {name:String, total:number, year:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
+         * @type {Object.<string, {name:String, total:number, type1:number, type2:number, man:number, woman:number, year:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
          * @property {String} name - 상담사 성명
          * @property {number} total - 총 배정 인원 수
+         * @property {number} type1 - 1유형 인원 수
+         * @property {number} type2 - 2유형 인원 수
+         * @property {number} man - 남성 인원 수
+         * @property {number} woman - 여성 인원 수
          * @property {number} year - 2025년도 배정 인원 수
          * @property {number} youth - 청년 배정 인원 수
          * @property {number} middleAged - 중장년 배정 인원 수
@@ -405,38 +414,26 @@
          * @property {number} max - 최대 배정 가능 인원 수
          */
         const currentCounselor = ${assignData};
-            /*{
-            'counselor001': {name: "홍길동1", total:85, year:25, youth: 20, middleAged:35, specialGroup:5, current: 0, max: 100},
-            'counselor002': {name: "홍길동2", total:92, year:28, youth: 22, middleAged:38, specialGroup:4, current: 0, max: 100},
-            'counselor003': {name: "홍길동3", total:78, year:22, youth: 18, middleAged:32, specialGroup:6, current: 0, max: 100},
-            'counselor004': {name: "홍길동4", total:96, year:30, youth: 24, middleAged:40, specialGroup:2, current: 0, max: 100},
-            'counselor005': {name: "홍길동5", total:73, year:20, youth: 16, middleAged:28, specialGroup:9, current: 0, max: 100},
-            'counselor006': {name: "홍길동6", total:88, year:26, youth: 21, middleAged:36, specialGroup:5, current: 0, max: 100},
-            'counselor007': {name: "홍길동7", total:91, year:27, youth: 23, middleAged:37, specialGroup:4, current: 0, max: 100},
-            'counselor008': {name: "홍길동8", total:82, year:24, youth: 19, middleAged:33, specialGroup:6, current: 0, max: 100},
-            'counselor009': {name: "홍길동9", total:75, year:21, youth: 17, middleAged:29, specialGroup:8, current: 0, max: 100},
-            'counselor010': {name: "홍길동10", total:90, year:29, youth: 25, middleAged:39, specialGroup:3, current: 0, max: 100}
-        };*/
 
         /**
          * 실시간 상담사 배정 현황 (작업 데이터)
          * - 랜덤 배정 과정에서 실시간으로 업데이트
          * - 배정 알고리즘의 기준 데이터
          *
-         * @type {Object.<string, {name:String, total:number, year:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
+         * @type {Object.<string, {name:String, total:number, type1:number, type2:number, man:number, woman:number, year:number, youth: number, middleAged:number, specialGroup:number ,current: number, max: number}>}
          */
         let counselorAssignments = ${assignData};
         /*{
-            'counselor001': {name: "홍길동1", total:85, year:25, youth: 20, middleAged:35, specialGroup:5, current: 0, max: 100},
-            'counselor002': {name: "홍길동2", total:92, year:28, youth: 22, middleAged:38, specialGroup:4, current: 0, max: 100},
-            'counselor003': {name: "홍길동3", total:78, year:22, youth: 18, middleAged:32, specialGroup:6, current: 0, max: 100},
-            'counselor004': {name: "홍길동4", total:96, year:30, youth: 24, middleAged:40, specialGroup:2, current: 0, max: 100},
-            'counselor005': {name: "홍길동5", total:73, year:20, youth: 16, middleAged:28, specialGroup:9, current: 0, max: 100},
-            'counselor006': {name: "홍길동6", total:88, year:26, youth: 21, middleAged:36, specialGroup:5, current: 0, max: 100},
-            'counselor007': {name: "홍길동7", total:91, year:27, youth: 23, middleAged:37, specialGroup:4, current: 0, max: 100},
-            'counselor008': {name: "홍길동8", total:82, year:24, youth: 19, middleAged:33, specialGroup:6, current: 0, max: 100},
-            'counselor009': {name: "홍길동9", total:75, year:21, youth: 17, middleAged:29, specialGroup:8, current: 0, max: 100},
-            'counselor010': {name: "홍길동10", total:90, year:29, youth: 25, middleAged:39, specialGroup:3, current: 0, max: 100}
+            'counselor001': {name: "홍길동1", total:85, typ1:23, type2:40, man:40, woman:45, year:25, youth: 20, middleAged:35, specialGroup:5, current: 0, max: 100},
+            'counselor002': {name: "홍길동2", total:92, typ1:23, type2:40, man:40, woman:45, year:28, youth: 22, middleAged:38, specialGroup:4, current: 0, max: 100},
+            'counselor003': {name: "홍길동3", total:78, typ1:23, type2:40, man:40, woman:45, year:22, youth: 18, middleAged:32, specialGroup:6, current: 0, max: 100},
+            'counselor004': {name: "홍길동4", total:96, typ1:23, type2:40, man:40, woman:45, year:30, youth: 24, middleAged:40, specialGroup:2, current: 0, max: 100},
+            'counselor005': {name: "홍길동5", total:73, typ1:23, type2:40, man:40, woman:45, year:20, youth: 16, middleAged:28, specialGroup:9, current: 0, max: 100},
+            'counselor006': {name: "홍길동6", total:88, typ1:23, type2:40, man:40, woman:45, year:26, youth: 21, middleAged:36, specialGroup:5, current: 0, max: 100},
+            'counselor007': {name: "홍길동7", total:91, typ1:23, type2:40, man:40, woman:45, year:27, youth: 23, middleAged:37, specialGroup:4, current: 0, max: 100},
+            'counselor008': {name: "홍길동8", total:82, typ1:23, type2:40, man:40, woman:45, year:24, youth: 19, middleAged:33, specialGroup:6, current: 0, max: 100},
+            'counselor009': {name: "홍길동9", total:75, typ1:23, type2:40, man:40, woman:45, year:21, youth: 17, middleAged:29, specialGroup:8, current: 0, max: 100},
+            'counselor010': {name: "홍길동10", total:90, typ1:23, type2:40, man:40, woman:45, year:29, youth: 25, middleAged:39, specialGroup:3, current: 0, max: 100}
         };*/
 
 
