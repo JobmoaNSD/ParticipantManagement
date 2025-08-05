@@ -83,11 +83,15 @@ public class PraPageController {
 
     @NotNull
     private static String getString(ParticipantRandomAssignmentDTO dto) {
-        String defaultValue = "\"%s\": {name: \"%s\", total:%d, year2025:%d, youth:%d, middleAged:%d, specialGroup:%d, current: 0, max:100}";
+        String defaultValue = "\"%s\": {name: \"%s\", total:%d, type1:%d, type2:%d, man:%d, woman:%d, year2025:%d, youth:%d, middleAged:%d, specialGroup:%d, current: 0, max:100}";
         return String.format(defaultValue,
                 dto.getCounselorID(),
                 dto.getCounselor(),
                 dto.getAssignmentTotal(),
+                dto.getAssignmentType1(),
+                dto.getAssignmentType2(),
+                dto.getAssignmentGenderMan(),
+                dto.getAssignmentGenderWoman(),
                 dto.getAssignmentYear(),
                 dto.getAssignmentYouth(),
                 dto.getAssignmentMiddleAged(),
