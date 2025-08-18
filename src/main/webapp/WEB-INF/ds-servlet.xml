@@ -23,6 +23,7 @@
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.branchManagement"/>
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.participantRandomAssignment"/>
     <context:component-scan base-package="com.jobmoa.app.CounselMain.view.mailSend"/>
+    <context:component-scan base-package="com.jobmoa.app.CounselMain.view.mypage"/>
 
     <context:component-scan base-package="com.jobmoa.app.jobPlacement.view.jobPlacement"/>
     <context:component-scan base-package="com.jobmoa.app.jobPlacement.view.async"/>

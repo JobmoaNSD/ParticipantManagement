@@ -58,8 +58,8 @@
                     <!--end::Menu Body-->
                     <!--begin::Menu Footer-->
                     <li class="user-footer">
-                        <a href="logout.do" class="btn btn-default btn-flat float-end">Sign out</a>
-                        <a href="pwChange.do" class="btn btn-default btn-flat float-end">Change Pw</a>
+                        <a href="logout.do" class="btn btn-default btn-flat float-end">로그아웃</a>
+                        <a href="mypage.login" class="btn btn-default btn-flat float-end">계정정보</a>
                     </li>
                     <!--end::Menu Footer-->
                 </ul>
@@ -159,7 +159,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/jobPlacement/" class="nav-link">
+                            <a href="/jobPlacement/" class="nav-link" target="_blank">
                                 <small><p>알선참여자확인</p></small>
                             </a>
                         </li>

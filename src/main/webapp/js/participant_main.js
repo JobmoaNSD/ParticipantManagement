@@ -190,18 +190,11 @@ $(document).ready(function () {
     const searchBtn = $('#searchBtn');
     //검색 입력 div
     const $searchTextDiv = $('#searchTextDiv');
-    //진행단계 select option 변수
+    //select option 변수
     const $searchOptionParam = getUrlParameter('searchOption');
     //검색 param 값 변수
     const $searchParam = getUrlParameter('search');
 
-    //진행단계 옵션 생성 시작
-    // 진행단계 옵션 목록
-    const PROGRESS_STAGE_OPTIONS = [
-        'IAP 전', 'IAP 후', '미고보', '고보일반', '등록창업',
-        '미등록창업', '미취업사후관리', '미취업사후종료',
-        '유예', '취소', '이관', '중단'
-    ];
 
     // 옵션 HTML 생성 함수
     function createOptionHtml(value, selectedValue) {
@@ -209,9 +202,9 @@ $(document).ready(function () {
         return '<option '+selected+' value="'+value+'">'+value+'</option>';
     }
 
-    // 진행단계 검색 셀렉트 박스 생성 함수
-    function createProgressStageSelect(searchParam) {
-        const optionsHtml = PROGRESS_STAGE_OPTIONS
+    // 검색 셀렉트 박스 생성 함수
+    function createProgressStageSelect(searchParam, options = PROGRESS_OPTIONS) {
+        const optionsHtml = options
             .map(option => createOptionHtml(option, searchParam))
             .join('');
 
@@ -222,8 +215,25 @@ $(document).ready(function () {
             '</div>';
     }
 
+    //진행단계 옵션 생성 시작
+    // 진행단계 옵션 목록
+    const PROGRESS_OPTIONS = [
+        'IAP 전', 'IAP 후', '미고보', '고보일반', '등록창업',
+        '미등록창업', '미취업사후관리', '미취업사후종료',
+        '유예', '취소', '이관', '중단'
+    ];
+
     //진행단계 옵션
     let changeHtml = createProgressStageSelect($searchParam);
+
+    //알선요청 옵션 생성 시작
+    // 알선요청 옵션 목록
+    const PROGRESS_OPTIONS_PLACEMENT = [
+        '희망', '미희망'
+    ];
+
+    //알선요청 옵션
+    let changeHtmlPlacement = createProgressStageSelect($searchParam, PROGRESS_OPTIONS_PLACEMENT);
 
     //검색 옵션 변경 함수
     function searchOptionHref(optionValue) {
@@ -242,10 +252,10 @@ $(document).ready(function () {
             $searchTextDiv.empty()
             $searchTextDiv.append(changeHtml)
         }
-        else if(optionValue == '학교명'){
-            console.log("search_option_value 실행중 [학교]")
+        else if(optionValue == '알선'){
+            console.log("search_option_value 실행중 [알선요청]")
             $searchTextDiv.empty()
-            $searchTextDiv.append('<input type="text" class="form-control shadow-sm" id="search" name="search" placeholder="참여자 학교를 입력해주세요." value="'+$searchParam+'" />')
+            $searchTextDiv.append(changeHtmlPlacement)
         }
         else if(optionValue == '전담자'){
             console.log("search_option_value 실행중 [전담자]")
@@ -254,7 +264,7 @@ $(document).ready(function () {
         }
     }
 
-    //진행단계 옵션 생성 끝
+    //옵션 생성 끝
     searchOptionHref($searchOptionParam)
 
     //검색 옵션이 변경될 때 실행

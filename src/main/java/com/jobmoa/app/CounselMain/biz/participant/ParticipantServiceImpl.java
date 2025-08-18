@@ -20,8 +20,22 @@ public class ParticipantServiceImpl implements ParticipantService {
             log.error("selectAll participantDTO null OR participantCondition null");
             return null;
         }
+
+        sanitizeSearchTerm(participantDTO);
+
         return participantDAO.selectAll(participantDTO);
     }
+
+    private void sanitizeSearchTerm(ParticipantDTO participantDTO) {
+        String search = participantDTO.getSearch();
+
+        if(search != null && !search.isEmpty()){
+            search = search.replaceAll("[!@#$%^&*]", "");
+
+            participantDTO.setSearch(search);
+        }
+    }
+
 
     @Override
     public ParticipantDTO selectOne(ParticipantDTO participantDTO) {
