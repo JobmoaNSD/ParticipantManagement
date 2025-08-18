@@ -24,8 +24,8 @@
                     <when test="searchOption == '전담자'">
                         AND B.이름 like '%'+#{search}+'%'
                     </when>
-                    <when test="searchOption == '학교명'">
-                        AND A.학교명 like '%'+#{search}+'%'
+                    <when test="searchOption == '알선'">
+                        AND A.알선요청 like '%'+#{search}+'%'
                     </when>
                 </choose>
             </when>
@@ -37,6 +37,14 @@
         <choose>
             <when test="participantInItCons != 'All' and participantInItCons != null">
                 AND YEAR(IIF(A.초기상담일 = '1900-01-01', A.등록일, ISNULL(A.초기상담일, ''))) = #{participantInItCons}
+            </when>
+        </choose>
+        <choose>
+            <when test="participantPartType == 1">
+                AND A.참여유형 = '1'
+            </when>
+            <when test="participantPartType == 2">
+                AND A.참여유형 = '2'
             </when>
         </choose>
         <choose>

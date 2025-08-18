@@ -167,7 +167,7 @@
                         <input type="hidden" name="page" value="1">
                         <!-- 검색 조건 선택 -->
 
-                        <div class="col-md-3 ms-auto d-flex justify-content-center pe-1">
+                        <div class="col-md-4 ms-auto d-flex justify-content-center pe-1">
                             <select
                                     class="form-select shadow-sm  w-75 me-2"
                                     name="endDateOption"
@@ -188,6 +188,15 @@
                                 <option ${param.participantInItCons.equals("2022") ? 'selected' : ''} value="2022">2022</option>
                             </select>
                             <select
+                                    class="form-select shadow-sm w-75 me-2"
+                                    name="participantPartType"
+                                    id="search-PartType"
+                            >
+                                <option ${param.participantPartType.equals("") ? 'selected' : ''} value="">유형</option>
+                                <option ${param.participantPartType.equals("1") ? 'selected' : ''} value="1">1유형</option>
+                                <option ${param.participantPartType.equals("2") ? 'selected' : ''} value="2">2유형</option>
+                            </select>
+                            <select
                                     class="form-select shadow-sm"
                                     name="searchOption"
                                     id="search-Option"
@@ -195,11 +204,11 @@
                                 <option ${param.searchOption.equals("참여자") ? 'selected' : ''} value="참여자">참여자</option>
                                 <option ${param.searchOption.equals("구직번호") ? 'selected' : ''} value="구직번호">구직번호</option>
                                 <option ${param.searchOption.equals("진행단계") ? 'selected' : ''} value="진행단계">진행단계</option>
-                                <option ${param.searchOption.equals("학교명") ? 'selected' : ''} value="학교명">학교</option>
+                                <option ${param.searchOption.equals("알선") ? 'selected' : ''} value="알선">알선요청</option>
                             </select>
                         </div>
                         <!-- 검색 입력 -->
-                        <div id="searchTextDiv" class="col-md-7 ps-1">
+                        <div id="searchTextDiv" class="col-md-6 ps-1">
                             <input
                                     type="text"
                                     class="form-control shadow-sm"

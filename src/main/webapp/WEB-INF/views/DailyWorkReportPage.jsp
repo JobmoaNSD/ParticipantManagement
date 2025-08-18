@@ -476,7 +476,7 @@
             previousValues[type].set(rowId, newValue);
         };
 
-// 날짜 검사 및 초기화
+        // 날짜 검사 및 초기화
         const initializeValues = () => {
             const lastSavedDate = $('#lastSavedDate').val();
 
@@ -503,16 +503,13 @@
         const isDate = (date, condition) => {
             date = new Date(date);
             today = new Date();
-            if(condition === 'year'){
+            if (condition === 'year') {
                 return today.getFullYear() === date.getFullYear();
-            }
-            else if(condition === 'month'){
+            } else if (condition === 'month') {
                 return today.getMonth() === date.getMonth();
-            }
-            else if(condition === 'week'){
+            } else if (condition === 'week') {
                 return getWeek(today) === getWeek(date);
-            }
-            else if(condition === 'day'){
+            } else if (condition === 'day') {
                 return today.getDate() === date.getDate();
             }
             return false;

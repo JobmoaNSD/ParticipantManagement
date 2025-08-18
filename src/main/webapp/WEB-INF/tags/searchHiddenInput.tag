@@ -13,3 +13,4 @@
 <input type="hidden" name="pageRows" value="${empty param.pageRows ? '100' : param.pageRows}">
 <input type="hidden" name="participantRegDate" value="${empty param.participantRegDate ? 'All' : param.participantRegDate}">
 <input type="hidden" name="participantInItCons" value="${empty param.participantInItCons ? 'All' : param.participantInItCons}">
+<input type="hidden" name="participantPartType" value="${empty param.participantPartType ? '' : param.participantPartType}">
