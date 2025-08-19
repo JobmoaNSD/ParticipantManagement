@@ -5,6 +5,7 @@ $(document).ready(function(){
     const $changeAccount = $('#changeAccount');
     let password_check_flag = false;
     let password_change_flag = false;
+    let password_change_confirm_flag = false;
     
     //변경 버튼 숨김처리
     $changeAccount.hide();
@@ -45,9 +46,8 @@ $(document).ready(function(){
         initializeDateValues();
 */
 
-        // TODO FIXME 백단 제작 후 변경예정
-        fetch('checkPassword.login', {
-            Method: 'POST',
+        fetch('checkPassword.api', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -56,21 +56,40 @@ $(document).ready(function(){
             })
         })
             .then(r => {
-                const result = r.json();
                 const status = r.status;
+                console.log("Response status:", status);
+
                 if (status === 200) {
-                    //변경 버튼 숨김처리
-                    $changeAccount.show();
-                    password_check_flag = true;
-                    $card_mypage_body.empty();
-                    changeCardBody(result);
+                    return r.json(); // JSON 파싱된 데이터를 다음 then으로 전달
+                }
+                else if (status === 401) {
+                    return r.json();
+                }
+                else if(status === 400){
+                    throw new Error(`비밀번호를 입력해주세요! status: ${status}`);
+                }
+                else {
+                    throw new Error(`HTTP Server error! status: ${status}`);
+                }
+            })
+            .then(result => {  // 파싱된 JSON 데이터 수신
+                console.log("Parsed result:", result);
+                console.log("Result data:", result.data);
+                
+                if(result.status === 401){
+                    throw new Error(`message: ${result.message} status: ${result.status}`)
                 }
 
-        })
-            .catch(e => {
-                console.log(e);
+                // 변경 버튼 표시
+                $changeAccount.show();
+                password_check_flag = true;
+                $card_mypage_body.empty();
+                changeCardBody(result.data);  // 올바른 데이터 전달
             })
-
+            .catch(e => {
+                console.error("Fetch error:", e);
+                alert(e)
+            });
 
     })
 
@@ -285,46 +304,83 @@ $(document).ready(function(){
         return Math.floor(diffDays / 7) + 1;
     };
 
-
-    $(document).on('click', '#changeAccount', function(){
+    $(document).on('click', '#changeAccount', async function(){
         const $form_control = $(".form-control");
         const data = {};
+
+        // 폼 데이터 수집
         $form_control.each(function(){
             data[$(this).attr('name')] = $(this).val();
-        })
+        });
+
+        // 비밀번호 변경 확인
+        const passwordChangeResult = await passwordChangeCheck();
+        if (passwordChangeResult === false) {
+            return; // 사용자가 취소한 경우
+        }
+
+        data['memberPasswordChange'] = password_change_confirm_flag;
         console.log(data);
-        if (passwordChangeCheck()){
-            // TODO FIXME 백단 제작 후 변경예정
-            const result = fetch('changeAccount.login', {
-                Method: 'POST',
+
+        try {
+            // fetch 요청
+            const response = await fetch('changeAccount.api', {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json;charset=UTF-8',
                 },
-                body: JSON.stringify({data})
-            })
-                .catch(e => {
-                        console.log(e);
-                    })
+                body: JSON.stringify(data)
+            });
 
-            result.then(r => {
-                console.log(r);
-            })
-                .catch(e => {
-                    console.log(e);
-                })
-            console.log("changeAccount success");
-        }
-        else{
-            console.log("changeAccount fail");
-        }
-    })
+            const result = await response.json();
+            console.log('서버 응답:', result);
 
-    function passwordChangeCheck(){
-        if(password_change_flag){
-            if (confirm("비밀번호도 같이 변경됩니다.\n정말 수정하시겠습니까?")) {
-                return true;
+            // 응답 상태에 따른 처리
+            if (response.ok && result.result === "true") {
+                // 성공 시
+                alert(`✅ ${result.message || '계정 정보가 성공적으로 업데이트되었습니다.'}`);
+
+                // 성공 후 페이지 새로고침 또는 데이터 갱신
+                if (result.data) {
+                    $card_mypage_body.empty();
+                    changeCardBody(result.data);
+                }
+
+                // 비밀번호 입력 필드 초기화
+                $('#checkPassword').val('');
+                password_change_flag = false;
+
+            } else {
+                // 서버에서 반환한 오류 메시지
+                const errorMessage = result.message || '계정 정보 업데이트에 실패했습니다.';
+                alert(`❌ 오류: ${errorMessage}`);
             }
+
+        } catch (error) {
+            console.error('네트워크 오류:', error);
+            alert('❌ 서버 연결 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.');
         }
+    });
+
+// 비밀번호 변경 확인 함수를 Promise로 수정
+    function passwordChangeCheck(){
+        return new Promise((resolve) => {
+            if(password_change_flag){
+                if (confirm("🔐 비밀번호도 같이 변경됩니다.\n정말 수정하시겠습니까?")) {
+                    password_change_confirm_flag = true;
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            } else {
+                // 비밀번호 변경이 없는 경우 일반 정보만 업데이트
+                if (confirm("📝 계정 정보를 업데이트하시겠습니까?")) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            }
+        });
     }
 
 })
