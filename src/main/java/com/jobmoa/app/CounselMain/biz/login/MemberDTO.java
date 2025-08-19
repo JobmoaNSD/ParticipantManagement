@@ -47,6 +47,8 @@ public class MemberDTO {
 
     private int memberType1; // Ⅰ유형
     private int memberType2; // Ⅱ유형
+    
+    private boolean memberPasswordChange; // 패스워드 변경 여부
 
     private String memberCondition; // 개발자 구분
 }

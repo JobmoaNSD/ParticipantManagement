@@ -13,6 +13,7 @@
     <title>잡모아</title>
     <!-- Jobmoa 로고 탭 이미지 -->
     <mytag:Logo/>
+    <meta charset="utf-8" />
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE v4 | Dashboard" />
