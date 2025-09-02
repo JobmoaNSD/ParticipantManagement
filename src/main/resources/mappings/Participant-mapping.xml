@@ -151,7 +151,7 @@
             </otherwise>
         </choose>
     </sql>
-    <!-- 참여자 검색 fragment 시작 -->
+    <!-- 참여자 검색 fragment 종료 -->
 
     <!-- 상담관리 기본 쿼리 시작 -->
     <select id="selectAllParticipantBasic" resultType="participant">
@@ -339,114 +339,6 @@
         DELETE FROM J_참여자관리_직업훈련 WHERE 구직번호 = #{participantJobNo}
     </delete>
     <!-- 삭제 쿼리 끝 -->
-
-<!--    &lt;!&ndash; 개인 전담자 참여자 전체 데이터 엑셀 다운 쿼리 시작 &ndash;&gt;-->
-<!--    <select id="participantExcel" resultType="participant">-->
-<!--        SELECT-->
-<!--            ISNULL(구직번호, '') AS participantJobNo,-->
-<!--            ISNULL(A.등록일, '') AS participantRegDate,-->
-<!--            ISNULL(이름, '') AS participantUserName,-->
-<!--            ISNULL(참여자, '') AS participantPartic,-->
-<!--            ISNULL(생년월일, '') AS participantDob,-->
-<!--            ISNULL(성별, '') AS participantGender,-->
-<!--            ISNULL(모집경로, '') AS participantRecruit,-->
-<!--            ISNULL(참여유형, '') AS participantPartType,-->
-<!--            ISNULL(학교명, '') AS participantSchool,-->
-<!--            ISNULL(전공, '') AS participantSpecialty,-->
-<!--            ISNULL(주소, '') AS participantAddress,-->
-<!--            ISNULL(경력, '') AS participantAntecedents,-->
-<!--            ISNULL(특정계층, '') AS participantSpecific,-->
-<!--            ISNULL(알선요청, '') AS participantPlacement,-->
-<!--            ISNULL(취업역량, '') AS participantJobSkill,-->
-<!--            ISNULL(최근상담일, '') AS participantLastCons,-->
-<!--            ISNULL(진행단계, '') AS participantProgress,-->
-<!--            ISNULL(초기상담일, '') AS participantInItCons,-->
-<!--            ISNULL(구직만료일, '') AS participantJobEX,-->
-<!--            ISNULL(IAP수료일, '') AS participantIAPDate,-->
-<!--            ISNULL([3단계진입일], '') AS participantStepPro,-->
-<!--            ISNULL(기간만료일, '') AS participantEXPDate,-->
-<!--            ISNULL(희망직무, '') AS participantJobWant,-->
-<!--            ISNULL(-->
-<!--                    CASE-->
-<!--                        WHEN ISNUMERIC(희망급여) = 1 THEN 희망급여-->
-<!--                        ELSE '0'-->
-<!--                        END, '0'-->
-<!--            ) AS participantSalWant,-->
-<!--            ISNULL(취창업일, '') AS participantStartDate,-->
-<!--            ISNULL(취창업처리일, '') AS participantProcDate,-->
-<!--            ISNULL(취업유형, '') AS participantEmpType,-->
-<!--            ISNULL(취업처, '') AS participantLoyer,-->
-<!--            ISNULL(-->
-<!--                    CASE-->
-<!--                        WHEN ISNUMERIC(임금) = 1 THEN 임금-->
-<!--                        ELSE '0'-->
-<!--                        END, '0'-->
-<!--            ) AS participantSalary,-->
-<!--            ISNULL(직무, '') AS participantJobRole,-->
-<!--            ISNULL(취업인센티브_구분, '') AS participantIncentive,-->
-<!--            ISNULL(일경험분류, '') AS participantJobcat,-->
-<!--            ISNULL(메모, '') AS participantMemo,-->
-<!--            ISNULL(기타, '') AS participantOthers,-->
-<!--            ISNULL(마감, '') AS participantClose,-->
-<!--            ISNULL(퇴사일, '') AS participantQuit,-->
-<!--            ISNULL(A.지점, '') AS participantBranch,-->
-<!--            ISNULL(간접고용서비스, '') AS participantEmploymentService-->
-<!--        FROM J_참여자관리 A-->
-<!--                 LEFT JOIN J_참여자관리_로그인정보 B-->
-<!--                           ON A.전담자_계정 = B.아이디-->
-<!--        WHERE-->
-<!--            B.아이디 = #{participantUserid} AND-->
-<!--            B.지점 = #{participantBranch}-->
-<!--        <if test="searchOption != null">-->
-<!--            AND-->
-<!--            <choose>-->
-<!--                <when test="searchOption=='전담자'">B.이름</when>-->
-<!--                <when test="searchOption=='참여자'">A.참여자</when>-->
-<!--                <when test="searchOption=='구직번호'">A.구직번호</when>-->
-<!--                <when test="searchOption=='진행단계'">A.진행단계</when>-->
-<!--                <when test="searchOption=='학교명'">A.학교명</when>-->
-<!--                <otherwise>A.구직번호</otherwise> &lt;!&ndash; 기본값 설정 &ndash;&gt;-->
-<!--            </choose> like '%'+#{search}+'%'-->
-<!--        </if>-->
-<!--        <choose>-->
-<!--            <when test="participantInItCons != 'All' and participantInItCons != null">-->
-<!--                &lt;!&ndash;AND YEAR(초기상담일) = #{participantInItCons}&ndash;&gt;-->
-<!--                AND YEAR(IIF(초기상담일 = '1900-01-01', A.등록일, ISNULL(초기상담일, ''))) = #{participantInItCons}-->
-<!--            </when>-->
-<!--        </choose>-->
-<!--        <choose>-->
-<!--            <when test="endDateOption == 'false'">-->
-<!--                AND (마감 = 'false' OR 마감 = '')-->
-<!--            </when>-->
-<!--            <when test="endDateOption == 'true'">-->
-<!--                AND 마감 = 'true'-->
-<!--            </when>-->
-<!--        </choose>-->
-<!--        <if test="searchType != null">-->
-<!--            <choose>-->
-<!--                <when test="searchType == 'noInitial'">-->
-<!--                    AND 초기상담일 = ''-->
-<!--                </when>-->
-<!--                <when test="searchType == 'recent21'">-->
-<!--                    AND DATEDIFF(DAY, 최근상담일, GETDATE()) <![CDATA[>=]]> 21-->
-<!--                    AND 최근상담일 <![CDATA[<>]]> ''-->
-<!--                </when>-->
-<!--                <when test="searchType == 'jobExpire'">-->
-<!--                    AND DATEDIFF(DAY, GETDATE(), 구직만료일) <![CDATA[<=]]> 15-->
-<!--                    AND 구직만료일 <![CDATA[<>]]> ''-->
-<!--                </when>-->
-<!--                <when test="searchType == 'periodExpire'">-->
-<!--                    AND DATEDIFF(DAY, GETDATE(), 기간만료일) <![CDATA[<=]]> 15-->
-<!--                    AND 기간만료일 <![CDATA[<>]]> ''-->
-<!--                    AND 최근상담일 <![CDATA[<>]]> ''-->
-<!--                </when>-->
-<!--                <when test="searchType == 'employment'">-->
-<!--                    AND 취창업일 <![CDATA[<>]]> ''-->
-<!--                </when>-->
-<!--            </choose>-->
-<!--        </if>-->
-<!--    </select>-->
-<!--    &lt;!&ndash; 개인 전담자 참여자 전체 데이터 엑셀 다운 쿼리 끝 &ndash;&gt;-->
 
     <!-- 지점 관리자 및 개인 참여자 전체 데이터 엑셀 다운 쿼리 시작 -->
     <select id="participantExcel" resultType="participant">

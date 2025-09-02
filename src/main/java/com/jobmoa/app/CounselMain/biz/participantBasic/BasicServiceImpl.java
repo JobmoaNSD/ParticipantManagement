@@ -71,13 +71,18 @@ public class BasicServiceImpl implements BasicService {
                 log.error("구직 번호 [{}] 취업 정보 등록 실패", jobno);
                 throw new RuntimeException("구직 번호 ["+jobno+"] 취업 정보 등록 실패");
             }
-            if(!particcertifService.insert(particcertifDTO)){
-                log.error("구직 번호 [{}] 자격증 정보 등록 실패", jobno);
-                throw new RuntimeException("구직 번호 ["+jobno+"] 자격증 정보 등록 실패");
+
+            if(particcertifDTO.getParticcertifCertifs() != null){
+                if(!particcertifService.insert(particcertifDTO)){
+                    log.error("구직 번호 [{}] 자격증 정보 등록 실패", jobno);
+                    throw new RuntimeException("구직 번호 ["+jobno+"] 자격증 정보 등록 실패");
+                }
             }
-            if(!educationService.insert(educationDTO)){
-                log.error("구직 번호 [{}] 직업훈련 정보 등록 실패", jobno);
-                throw new RuntimeException("구직 번호 ["+jobno+"] 직업훈련 정보 등록 실패");
+            if(educationDTO.getEducations() != null){
+                if(!educationService.insert(educationDTO)){
+                    log.error("구직 번호 [{}] 직업훈련 정보 등록 실패", jobno);
+                    throw new RuntimeException("구직 번호 ["+jobno+"] 직업훈련 정보 등록 실패");
+                }
             }
             String counselPlacement = counselDTO.getCounselPlacement();
             if(Objects.equals(counselPlacement, "희망")){

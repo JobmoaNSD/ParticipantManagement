@@ -3,21 +3,20 @@
 
 <mapper namespace="ParticcertifDAO">
 
-    <!-- 자격증 등록용 쿼리 -->
+    <!-- 자격증 등록용 쿼리: 배열이 비어있을 때는 서비스에서 호출을 건너뜀 -->
     <insert id="particcertifInsert">
         INSERT INTO J_참여자관리_자격증
         (구직번호, 자격증)
-        VALUES
-        <foreach collection="particcertifCertifs" item="data" separator=",">
+        <foreach collection="particcertifCertifs" item="data" separator="," open="VALUES">
             (
             #{particcertifJobNo},
-            #{data}
+            #{data, jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
 
     <!-- 자격증 업데이트 용 쿼리 사용안하는 중 -->
-    <update id="particcertifUpdate">
+<!--    <update id="particcertifUpdate">
         UPDATE
             J_참여자관리_자격증
         SET
@@ -26,16 +25,15 @@
             구직번호 = ${particcertifJobNo}
           AND
             자격증 = ${particcertifCertif}
-    </update>
+    </update>-->
 
     <!-- 자격증 삭제용 쿼리 외래키로 자동 삭제 -->
     <delete id="particcertifDelete">
         DELETE
-        FROM
-            J_참여자관리_자격증
-        WHERE
-            구직번호 = ${particcertifJobNo}
+        FROM J_참여자관리_자격증
+        WHERE 구직번호 = #{particcertifJobNo}
     </delete>
+
 
     <!-- 참여자 자격증 찾기용 -->
     <select id="particcertifSelectOne" resultType="particcertif">
