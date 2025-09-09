@@ -5,6 +5,7 @@ import com.jobmoa.app.CounselMain.biz.participant.ParticipantServiceImpl;
 import com.jobmoa.app.CounselMain.view.function.ChangeJson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,23 +23,28 @@ public class ParticipantsTransferAjax {
     @Autowired
     private ChangeJson changeJson;  // 컴포넌트로 주입받기
 
-    @GetMapping("/transferGetAjax.login")
-    public String ParticipantsTransfer(ParticipantDTO participantDTO){
-        log.info("transferGetAjax.login : [{}]",participantDTO.getParticipantIDs());
+    // Java
+    @GetMapping(value = "/transferGetAjax.login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParticipantResponse> participantsTransfer(ParticipantDTO participantDTO) {
         participantDTO.setParticipantCondition("transferSelect");
-        List<ParticipantDTO> listData = this.participantService.selectAll(participantDTO);
-        String json = this.changeJson.convertListToJsonArray(listData, item -> {
-            ParticipantDTO dto = (ParticipantDTO) item;  // 객체 캐스팅
-            String test = dto.getParticipantDob()==null?"":dto.getParticipantDob();
-            return "{\"jobno\":\"" + dto.getParticipantJobNo() + "\"," //참여자 구직번호
-                          + "\"userName\":\"" + dto.getParticipantUserName() + "\"," //상담사 성명
-                          + "\"particName\":\"" + dto.getParticipantPartic() + "\"," //참여자 성명
-                          + "\"dob\":\"" + test + "\"," //참여자 생년월일
-                          + "\"gender\":\"" + dto.getParticipantGender() //참여자 성별
-                          + "\"}";
-        });
-        return json;
+        List<ParticipantDTO> list = participantService.selectAll(participantDTO);
+        return list.stream().map(dto -> new ParticipantResponse(
+                dto.getParticipantJobNo(),
+                dto.getParticipantUserName(),
+                dto.getParticipantPartic(),
+                dto.getParticipantDob() == null ? "" : dto.getParticipantDob(),
+                dto.getParticipantGender()
+        )).toList();
     }
+
+    public record ParticipantResponse(
+            int jobno,
+            String userName,
+            String particName,
+            String dob,
+            String gender
+    ) {}
+
 
     @PostMapping("/transferPostAjax.login")
     public boolean ParticipantsTransferUpdate(@RequestBody ParticipantDTO participantDTO){

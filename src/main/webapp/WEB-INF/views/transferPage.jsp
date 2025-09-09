@@ -402,29 +402,39 @@
         });
 
         function loadParticipants(counselorId, pkArray) {
-            $.get('transferGetAjax.login', {
-                participantUserid: counselorId,
-                participantBranch: '${JOBMOA_LOGIN_DATA.memberBranch}',
-                participantIDs: pkArray ? pkArray : ''
+
+            $.ajax({
+                url: 'transferGetAjax.login',
+                method: 'GET',
+                dataType: 'json', // 중요: 응답을 JSON으로 파싱
+                data: {
+                    participantUserid: counselorId,
+                    participantBranch: '${JOBMOA_LOGIN_DATA.memberBranch}',
+                    participantIDs: pkArray ? pkArray : ''
+                }
             }).done(function(data) {
                 const list = $('#participantList');
                 list.empty();
-                JSON.parse(data).forEach(participant => {
-                    let appendHTML = '<div class="list-group-item participant-item">' +
-                        '<input type="checkbox" class="form-check-input participant-check" id="'+participant.jobno+'" value="'+participant.jobno+'">'+
-                        '<label class="form-check-label ms-2 participant-label" for="'+participant.jobno+'">'+
-                        '<div class="d-flex justify-content-between align-items-center w-100">'+
-                        '<span class="participant-name">'+ participant.jobno +'</span>'+
-                        '<span class="participant-jobno">'+ participant.particName +'</span>'+
-                        '<div class="participant-info">'+
-                        '<span class="info-item">'+ participant.dob +'</span>'+
-                        '<span class="info-item">'+ participant.gender +'</span>'+
-                        '</div></div></label></div>';
 
+                // 여기서 data는 이미 배열(객체)이므로 JSON.parse 제거
+                data.forEach(function(participant) {
+                    const appendHTML =
+                        '<div class="list-group-item participant-item">' +
+                        '<input type="checkbox" class="form-check-input participant-check" id="'+participant.jobno+'" value="'+participant.jobno+'">' +
+                        '<label class="form-check-label ms-2 participant-label" for="'+participant.jobno+'">' +
+                        '<div class="d-flex justify-content-between align-items-center w-100">' +
+                        '<span class="participant-name">'+ participant.jobno +'</span>' +
+                        '<span class="participant-jobno">'+ participant.particName +'</span>' +
+                        '<div class="participant-info">' +
+                        '<span class="info-item">'+ participant.dob +'</span>' +
+                        '<span class="info-item">'+ participant.gender +'</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</label>' +
+                        '</div>';
                     list.append(appendHTML);
                 });
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                // 상세한 오류 정보 로깅
                 console.error('AJAX 실패 상태:', textStatus);
                 console.error('HTTP 상태:', jqXHR.status);
                 console.error('오류 메시지:', errorThrown);

@@ -7,8 +7,7 @@
     <insert id="educationInsert">
         INSERT INTO J_참여자관리_직업훈련
         (구직번호, 직업훈련)
-        VALUES
-        <foreach collection="educations" item="data" separator=",">
+        <foreach collection="educations" item="data" separator="," open="VALUES">
             (
             #{educationJobNo},
             #{data}
