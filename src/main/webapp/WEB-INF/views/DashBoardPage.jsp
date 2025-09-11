@@ -196,6 +196,24 @@
                                             </div>
                                         </li>
                                     </c:if>
+                                    <hr/>
+                                    <%--
+                                    FIXME 상담사 개인별 취업율을 확실하게 구분할 수 있도록 페이지에 내용을 추가.
+                                    이번에 추가하면서 최적화가 가능하면 최적화를 진행하는 것이 가장 좋을 것 같다.
+                                    Hosting server에서 DB 연결 후 사용하는 것이 DB 데이터가 쫌 더 빠르게 불러와질 확율이 있다.
+                                    이유: local에서 직접 요청 불러오기 진행되는 것이니 사용자 요청 수신만 빠르면 되는 상황
+                                    PC내에서 테스트하는 것과 동일하다고 볼 수 있을 듯함
+                                    --%>
+                                    <li class="list-group-item d-flex border-bottom-0">
+                                        <div>
+                                            <div>현재 취업자 X명</div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item d-flex border-bottom-0">
+                                        <div>
+                                            <div>취업률 X%</div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
