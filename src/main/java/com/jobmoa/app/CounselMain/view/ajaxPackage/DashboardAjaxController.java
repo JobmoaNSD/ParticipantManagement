@@ -28,7 +28,7 @@ public class DashboardAjaxController {
     @Autowired
     private ChangeJson changeJson;
 
-    @PostMapping("/dashBoardSuccess.login")
+    @PostMapping(value = "/dashBoardSuccess.login", headers = "application/json; charset=utf-8")
     public String dashBoardAjaxSuccess(@RequestBody DashboardDTO dashboardDTO){
         String branch = dashboardDTO.getDashboardBranch();
         String startDate = dashboardDTO.getDashBoardStartDate();

@@ -74,10 +74,10 @@ $(document).ready(function(){
             })
             .then(result => {  // 파싱된 JSON 데이터 수신
                 console.log("Parsed result:", result);
-                console.log("Result data:", result.data);
-                
-                if(result.status === 401){
-                    throw new Error(`message: ${result.message} status: ${result.status}`)
+                // console.log("Result data:", result.data);
+
+                if(result.status == 401){
+                    throw new Error(`${result.message} status: ${result.status}`)
                 }
 
                 // 변경 버튼 표시

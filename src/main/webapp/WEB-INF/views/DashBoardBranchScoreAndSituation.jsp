@@ -984,7 +984,8 @@
                 fetch('scoreBranchPerformanceGraphAjax.login', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json; charset=utf-8',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
                         dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
@@ -999,7 +1000,10 @@
                         console.log(conditionFlag, " 실적 그래프삭제 진행끝");
                         $("#scoreChartDiv").html('<h5><i class="bi bi-graph-up"></i>지점별 실적 현황</h5><div id="scoreChart"></div>');
 
-                        let data = JSON.parse(await response.json());
+
+                        console.log(response);
+                        const data = await response.json();
+
                         if (data.length === 0) {
                             throw new Error("실적 데이터를 불러오는 동안 오류가 발생했습니다.");
                         }
