@@ -662,7 +662,7 @@
         fetch('dashBoardAjaxBranchScore.login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json; charset=UTF-8',
             },
             body: JSON.stringify({
                 dashboardBranch:data,
@@ -670,7 +670,8 @@
                 dashboardExcludeRetention: isExcludeRetention //고용유지 포함 여부확인
             })
         }).then(async response => {
-            let data = JSON.parse(await response.json());
+            // let data = JSON.parse(await response.json());
+            let data = await response.json();
 
             console.log(data);
             console.log(data);
@@ -690,6 +691,7 @@
             disableFlag = true;
         }).catch(r => {
             $loadingDiv.html('<div class="status-error p-3"> 오류가 발생했습니다.(다른 지점은 선택할 수 없습니다. </div>');
+            console.log(r);
             //오류가 발생해도 사용해야하니 활성화
             disableFlag = true;
         })

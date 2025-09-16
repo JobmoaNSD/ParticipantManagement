@@ -109,7 +109,7 @@ public class DashboardAjaxController {
     }
 
     //총점, 취업자, 알선취업자, 고용유지, 조기취업자, 나은일자리 비동기 조회
-    @PostMapping("dashBoardAjaxBranchScore.login")
+    @PostMapping(value = "dashBoardAjaxBranchScore.login", produces = "application/json; charset=utf-8")
     public String consolScore(@RequestBody DashboardDTO dashboardDTO, HttpSession session){
 //        Code 실행 시간을 확인하기 위해 작성
         long beforeTime = System.currentTimeMillis();
