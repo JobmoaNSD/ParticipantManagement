@@ -101,6 +101,10 @@ public class DashboardMainController {
         dashboardDTO.setDashboardCondition("selectDailyDashboard");
         DashboardDTO dailyParticipant = dashboardService.selectOne(dashboardDTO);
         model.addAttribute("dailyDashboard", dailyParticipant);
+        // 3-1. 취업자 인원 및 비율
+        dashboardDTO.setDashboardCondition("selectEmploymentRate");
+        DashboardDTO employmentRate = dashboardService.selectOne(dashboardDTO);
+        model.addAttribute("employmentRate", employmentRate);
 
         // 4. 참여자 현황 - 기존 changeJson 활용
         processParticipantData(model, dashboardDTO);

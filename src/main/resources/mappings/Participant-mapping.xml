@@ -25,7 +25,7 @@
                         AND B.이름 like '%'+#{search}+'%'
                     </when>
                     <when test="searchOption == '알선'">
-                        AND A.알선요청 like '%'+#{search}+'%'
+                        AND A.알선요청 like #{search}
                     </when>
                 </choose>
             </when>

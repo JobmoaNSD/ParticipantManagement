@@ -206,12 +206,12 @@
                                     --%>
                                     <li class="list-group-item d-flex border-bottom-0">
                                         <div>
-                                            <div>현재 취업자 X명</div>
+                                            <div>현재 취업자 ${employmentRate.dashBoardEarlyEmployedCountUser}명</div>
                                         </div>
                                     </li>
                                     <li class="list-group-item d-flex border-bottom-0">
                                         <div>
-                                            <div>취업률 X%</div>
+                                            <div>취업률 ${employmentRate.employmentRate}%</div>
                                         </div>
                                     </li>
                                 </ul>

@@ -264,6 +264,58 @@
     </select>
     <!-- 전담자 금일 업무 현황 끝 -->
 
+    <!-- 전담자 취업자,취업률 조회 시작 -->
+    <select id="selectEmploymentRate" resultType="dashboard">
+        WITH 날짜_전처리 AS (
+        SELECT
+            전담자_계정,
+            취창업일,
+            진행단계,
+            지점,
+            등록일,
+            -- 유효한 날짜 계산을 CTE로 분리
+            CASE
+                WHEN 취창업일 > '1900-01-01' AND 기간만료일 > '1900-01-01' THEN COALESCE(취창업일, 기간만료일)
+                WHEN 취창업일 > '1900-01-01' THEN 취창업일
+                WHEN 기간만료일 > '1900-01-01' THEN 기간만료일
+                ELSE NULL
+            END AS 유효날짜
+        FROM J_참여자관리
+        WHERE 전담자_계정 = #{dashboardUserID}
+        ),
+        조건_필터 AS (
+        SELECT
+            전담자_계정,
+            취창업일,
+            진행단계,
+            -- 조건을 명확하게 분리
+            CASE
+            WHEN 지점 IN ('인천', '성남') AND 등록일 BETWEEN '2025-01-01' AND '2025-10-31' THEN 1
+            WHEN 지점 IN ('서부', '남부', '부천', '수원', '의정부',
+            '인천남부', '동대문', '광명', '안양', '북부',
+            '천호', '관악') AND 유효날짜 BETWEEN '2024-11-01' AND '2025-10-31' THEN 1
+            ELSE 0
+            END AS 조건충족여부
+        FROM 날짜_전처리
+        )
+        SELECT
+            전담자_계정,
+            SUM(CASE WHEN 취창업일 <![CDATA[<>]]> '' THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountUser,
+            -- 0으로 나누기 방지 및 백분율 계산
+            CASE
+                WHEN SUM(CASE WHEN 진행단계 NOT IN ('유예', '취소') THEN 1 ELSE 0 END) = 0
+                THEN 0
+            ELSE ROUND(
+                CAST(SUM(CASE WHEN 취창업일 <![CDATA[<>]]> '' THEN 1 ELSE 0 END) AS FLOAT)
+                / SUM(CASE WHEN 진행단계 NOT IN ('유예', '취소') THEN 1 ELSE 0 END)
+                * 100, 2)
+            END AS employmentRate
+        FROM 조건_필터
+        WHERE 조건충족여부 = 1
+        GROUP BY 전담자_계정;
+    </select>
+    <!-- 전담자 취업자,취업률 조회 끝 -->
+
     <!-- 성공금 현황 시작 -->
     <select id="selectSuccessMoneyDetails" resultType="dashboard">
         SELECT TOP(100)
