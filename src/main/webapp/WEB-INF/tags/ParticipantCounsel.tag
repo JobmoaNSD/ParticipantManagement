@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ attribute name="counsel" type="com.jobmoa.app.CounselMain.biz.participantCounsel.CounselDTO" %>
 
+<script href=""></script>
+
 <%-- 상담정보 입력 폼 시작 --%>
 <div class="row card mt-3">
     <div class="card-header">
@@ -107,6 +109,30 @@
                     <input type="text" class="form-control datepicker_on" id="counselEXPDate" name="counselEXPDate" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일" value="${not empty counsel ? counsel.counselEXPDate:""}" autocomplete="off">
                 </div>
             </div>
+            <!-- 직무카테고리-중분류 -->
+            <div class="w-auto">
+                <label for="jobCategoryMid" class="form-label">
+                    직무카테고리-중분류<span class="text-danger">*</span>
+                </label>
+                <select class="form-select" id="jobCategoryMid" name="jobCategoryMid" required>
+                    <option value="">선택하세요</option>
+                    <option value="TEST1">테스트1</option>
+                    <option value="TEST2">테스트2</option>
+                </select>
+            </div>
+
+            <!-- 직무카테고리-소분류 -->
+            <div class="w-auto">
+                <label for="jobCategorySub" class="form-label">
+                    직무카테고리-소분류<span class="text-danger">*</span>
+                </label>
+                <select class="form-select" id="jobCategorySub" name="jobCategorySub" required>
+                    <option value="">선택하세요</option>
+                    <option value="TEST1">테스트1</option>
+                    <option value="TEST2">테스트2</option>
+                </select>
+            </div>
+
             <div class="w-auto">
                 <label for="counselJobWant" class="form-label">희망직무<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="counselJobWant" name="counselJobWant" value="${not empty counsel ? counsel.counselJobWant:""}">
@@ -151,10 +177,106 @@
                 <div class="education-div-content d-flex" id="education">
                 </div>
             </div>
-            <div id="jobPlacementDiv" class="col-md-12 experience-div mt-2">
-                <label for="jobPlacementTextArea" class="form-label">알선 상세 정보<span class="text-danger">*</span></label>
-                <textarea class="form-control w-100" id="jobPlacementTextArea" name="placementDetail" placeholder="기업에게 전달할 상세 경력, 자격증, 교육 내역등 작성해주세요." style="height: 300px; resize: none;" readonly>${not empty counsel ? counsel.placementDetail:""}</textarea>
+            <div class="row hidden-div" id="hiddenDiv">
+                <div id="keywordContainer" class="col-md-12 mt-2 keyword-container">
+                    <div class="bg-white">
+                        <h1 class="mb-2 mt-2">키워드 추가하기</h1>
+                        <p id="description" class="text-slate-500 mb-1">프로젝트에 관련된 키워드를 입력하거나 추천 키워드를 클릭하세요.</p>
+
+                        <!-- 키워드 입력 컨테이너 -->
+                        <div id="keywords-container" class="w-full border-2 border-slate-200 rounded-lg p-2 flex items-center flex-wrap gap-2 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200 transition-all duration-300">
+                            <!-- 여기에 태그들이 동적으로 추가됩니다 -->
+                            <input type="text" id="keyword-input" name="keyword-input" class="flex-grow bg-transparent text-slate-700 placeholder-slate-400 focus:outline-none min-w-[100px] text-sm py-1" placeholder="2~10자 사이 키워드 입력...">
+                        </div>
+                        <p id="error-message" class="text-red-500 text-xs mt-1 h-4"></p>
+
+                        <!-- 추천 키워드 목록 -->
+                        <div id="suggested-section" class="mt-1">
+                            <p class="text-sm font-medium text-slate-600 mb-2">추천 키워드</p>
+                            <div id="suggested-keywords-container" class="flex flex-wrap gap-2">
+                                <!-- 추천 키워드가 여기에 동적으로 추가됩니다 -->
+                            </div>
+                        </div>
+
+                        <!-- 키워드 UI 바로 아래 아무 위치나 OK (같은 form 내부) -->
+                        <div id="keywords-hidden-container" style="display:none;"></div>
+
+                        <!-- 현재 키워드 목록 (선택 사항) -->
+                        <div class="mt-1">
+                            <p class="text-sm font-medium text-slate-600">현재 키워드: <span id="keyword-count" class="font-bold text-indigo-600">0</span>개</p>
+                            <div id="keyword-list" class="text-sm text-slate-500 mt-2 mb-3">
+                                <!-- 키워드 배열을 텍스트로 표시 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="jobPlacementDiv" class="col-md-6 experience-div mt-2">
+                    <label for="jobPlacementTextArea" class="form-label">알선 상세 정보<span class="text-danger">*</span></label>
+                    <textarea class="form-control w-100" id="jobPlacementTextArea" name="placementDetail" placeholder="1. 핵심 역량 요약
+7년차 시니어 프론트엔드 개발자로서 대규모 트래픽을 처리하는 웹 서비스 개발 및 운영 경험 다수 보유
+React 및 Vue.js 기반의 SPA(Single Page Application) 설계 및 구축에 능숙
+성능 최적화에 대한 높은 이해: Web Vitals 지표 개선 및 렌더링 속도 향상 경험
+팀 리딩 및 코드 리뷰, 기술 멘토링을 통한 팀의 기술 역량 강화에 기여
+다양한 직군(기획, 디자인, 백엔드)과의 원활한 협업 능력 및 커뮤니케이션 스킬 보유
+
+2. 경력 사항
+1) (주)알파테크 (AlphaTech Inc.)
+재직 기간: 2019년 3월 ~ 2025년 8월 (6년 6개월)
+직급: 선임 개발자 (Senior Frontend Developer)
+
+주요 업무 및 성과:
+e커머스 플랫폼 '알파몰' 프론트엔드 개발 리딩
+Next.js를 도입하여 SSR(서버사이드 렌더링)을 적용, 초기 로딩 속도 40% 개선
+Recoil을 활용한 전역 상태 관리 시스템 설계 및 구축
+결제 시스템 연동 및 사용자 인증 플로우 개발
+신규 서비스 '알파 라이브' 기획 및 개발
+WebRTC 기반의 라이브 커머스 방송 기능 개발
+실시간 채팅 기능 구현 및 성능 안정화
+프론트엔드 개발 문화 개선
+팀 내 코드 컨벤션 및 Git-flow 전략 수립
+주 1회 기술 공유 세션 운영
+
+2) (주)스타트컴퍼니 (Start Company)
+재직 기간: 2018년 1월 ~ 2019년 2월 (1년 2개월)
+직급: 개발자 (Frontend Developer)
+
+주요 업무 및 성과:
+여행 정보 플랫폼 웹사이트 개발
+Vue.js 기반 반응형 웹 UI 개발
+RESTful API 연동 및 데이터 시각화 작업
+
+3. 보유 기술
+구분 기술 스택
+Languages: JavaScript(ES6+), TypeScript, HTML5, CSS3/Sass
+Frameworks: React, Next.js, Vue.js, Nuxt.js
+State Management: Recoil, Redux Toolkit, MobX, Vuex
+Styling: Styled-components, Emotion, Tailwind CSS
+Build Tools: Webpack, Vite
+Collaboration: Git, GitHub, Jira, Slack
+
+4. 자격증
+자격증명 정보처리기사
+취득일 2017년 11월 발급
+기관 한국산업인력공단
+자격증명 SQL 개발자 (SQLD)
+취득일 2018년 6월
+기관 한국데이터산업진흥원
+
+5. 교육 내역
+기간 2014.03 ~ 2018.02
+교육 과정명 한국대학교 컴퓨터공학과 (학사 졸업)
+교육 기관 한국대학교
+
+기간 2023.05
+교육 과정명 Advanced TypeScript Workshop (온라인)
+교육 기관 Inflearn" style="height: 300px; resize: none;">${not empty counsel ? counsel.placementDetail:""}</textarea>
+                </div>
+                <div id="suggestionDiv" class="col-md-6 experience-div mt-2">
+                    <label for="suggestionTextArea" class="form-label">추천사<span class="text-danger">*</span></label>
+                    <textarea class="form-control w-100" id="suggestionTextArea" name="suggestionDetail" placeholder="알선을 희망하는 참여자의 추천 멘트를 작성해주세요." style="height: 300px; resize: none;"></textarea>
+                </div>
             </div>
+
         </div>
     </div>
 </div>

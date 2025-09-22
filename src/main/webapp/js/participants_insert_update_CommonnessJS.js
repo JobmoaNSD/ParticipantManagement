@@ -34,6 +34,14 @@ $(document).ready(function () {
     const counselPlacement = $("#counselPlacement");
     //알선 상세정보
     const jobPlacementTextArea = $("#jobPlacementTextArea");
+    //알선 추천사
+    const suggestionTextArea = $("#suggestionTextArea");
+    //키워드 배열
+    const keywordArray = [];
+    //직무 카테고리 중분류
+    const jobCategoryMid = $("#jobCategoryMid");
+    //직무 카테고리 소분류
+    const jobCategorySub = $("#jobCategorySub");
 
     /* 취업정보 */
     //취창업일
@@ -55,10 +63,24 @@ $(document).ready(function () {
     //취업인센티브_구분
     const employmentIncentive = $("#employmentIncentive");
 
+    //키워드 등록 개수 확인용 함수
+    function keywordCountFunction(){
+        //알선 키워드 클릭시 개수 확인을 위해 추가.
+        const hiddenKeywordInput = $(".hidden-keyword-input");
+
+        hiddenKeywordInput.each(function () {
+            keywordArray.push($(this).val());
+        })
+        //키워드 배열 개수 확인
+        console.log("keywordArray.length : "+keywordArray.length);
+        return keywordArray.length;
+    }
 
     // form 전달 시작
     const btn_check = $("#btn_check") // 전송 버튼을 추가
     btn_check.on("click", function () {
+
+
         /* 기본 정보 */
         //참여자 성명
         const basicParticVal = basicPartic.val();
@@ -96,6 +118,14 @@ $(document).ready(function () {
         let counselPlacementVal = counselPlacement.val();
         //알선 상세정보
         let jobPlacementTextAreaVal = jobPlacementTextArea.val();
+        //키워드 개수
+        const keywordCount = keywordCountFunction();
+        //알선 추천사
+        const suggestionTextAreaVal = suggestionTextArea.val();
+        //직무 카테고리 중분류
+        const jobCategoryMidVal = jobCategoryMid.val();
+        //직무 카테고리 소분류
+        const jobCategorySubVal = jobCategorySub.val();
 
         /* 취업정보 */
         //취창업일
@@ -147,8 +177,9 @@ $(document).ready(function () {
             return;
         }
         else if (counselPlacementVal == '희망'){
-            if(basicDobVal == '' || basicAddressVal == '' || basicSchoolVal == '' || basicSpecialtyVal == '' || jobPlacementTextAreaVal == '' || counselJobWantVal == '' || counselSalWantVal == ''){
-                alertDefaultInfo('알선요청 희망시 7가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 희망직무, 희망급여, 상세정보를 반드시 입력해주세요.')
+            if(basicDobVal == '' || basicAddressVal == '' || basicSchoolVal == '' || basicSpecialtyVal == '' || jobPlacementTextAreaVal == '' || counselJobWantVal == '' || counselSalWantVal == ''
+            || counselPlacementVal == '' || (keywordCount >= 1 && keywordCount <= 5) || suggestionTextAreaVal == '' || jobCategoryMidVal == '' || jobCategorySubVal == ''){
+                alertDefaultInfo('알선요청 희망시 11가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 희망직무, 희망급여, 직무카테고리(소ㆍ중분류), 키워드(1개이상), 상세정보, 추천사를 반드시 입력해주세요.')
                 return;
             }
         }
@@ -391,34 +422,38 @@ $(document).ready(function () {
     */
 
     //page 로딩시 알선 상세정보 입력란을 숨김
-    const jobPlacementDiv = $("#jobPlacementDiv");
+    const hiddenDiv = $("#hiddenDiv");
 
     //알선요청을 변경할 때마다 함수를 실행
     counselPlacement.on("change", function () {
-        JobPlacementDetail(jobPlacementDiv);
+        JobPlacementDetail(hiddenDiv);
     })
     //알선 상세 정보 입력 function 끝
+
+
+    //알선 상세 정보 page 로딩시 한번 실행
+    //page 로딩시 알선 상세정보 입력란을 숨김
+    JobPlacementDetail(hiddenDiv);
+
 
 })
 
 //알선요청 함수 시작
-function JobPlacementDetail(jobPlacementDiv){
+function JobPlacementDetail($div){
     //알선요청
     const counselPlacement = $("#counselPlacement");
-    //알선 상세정보
-    const jobPlacementTextArea = $("#jobPlacementTextArea");
 
     let counselPlacementVal = counselPlacement.val();
     console.log('counselPlacementVal : ['+counselPlacementVal+']')
     counselPlacementVal = (counselPlacementVal !== '' && counselPlacementVal != null)? counselPlacementVal.trim():''
 
     if (counselPlacementVal === '희망'){
-        jobPlacementTextArea.attr("readonly", false);
-        jobPlacementDiv.show();
+        $div.attr("readonly", false);
+        $div.show();
     }
     else{
-        jobPlacementTextArea.attr("readonly", true);
-        jobPlacementDiv.hide();
+        $div.attr("readonly", true);
+        $div.hide();
     }
 }
 //알선요청 함수 끝

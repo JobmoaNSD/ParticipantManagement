@@ -124,60 +124,97 @@
         </h3>
       </div>
       <div class="card-body">
-        <div class="readonly-section">
-          <div class="readonly-item">
-            <input type="hidden" id="detailJobNumber" name="jobNumber" value="${data.jobNumber}">
-            <input type="hidden" id="detailCounselorId" name="counselorId" value="${JOBMOA_LOGIN_DATA.memberUserID}">
-            <span class="readonly-label">이름</span>
-            <span class="readonly-value" id="detailName" name="participant" >${data.participant}</span>
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">(만)나이</span>
-            <span class="readonly-value" id="detailAge" name="age" >${data.age == 0 ? '비공개':data.age}</span>
-            <input type="hidden" id="detailBirthDate" name="birthDate" value="${data.birthDate}">
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">성별</span>
-            <span class="readonly-value" id="detailGender" name="gender" >${data.gender == null ? '비공개':data.gender}</span>
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">거주지</span>
-            <span class="readonly-value" id="detailLocation" name="address" >${data.address}</span>
-            <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
-              <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" alt="닫기 버튼">
+        <div class="readonly-section row">
+          <div class="col-md-6">
+            <div class="readonly-item">
+              <input type="hidden" id="detailJobNumber" name="jobNumber" value="${data.jobNumber}">
+              <input type="hidden" id="detailCounselorId" name="counselorId" value="${JOBMOA_LOGIN_DATA.memberUserID}">
+              <span class="readonly-label">이름</span>
+              <span class="readonly-value" id="detailName" name="participant" >${data.participant}</span>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">(만)나이</span>
+              <span class="readonly-value" id="detailAge" name="age" >${data.age == 0 ? '비공개':data.age}</span>
+              <input type="hidden" id="detailBirthDate" name="birthDate" value="${data.birthDate}">
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">성별</span>
+              <span class="readonly-value" id="detailGender" name="gender" >${data.gender == null ? '비공개':data.gender}</span>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">거주지</span>
+              <span class="readonly-value" id="detailLocation" name="address" >${data.address}</span>
+              <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+                <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" alt="닫기 버튼">
+              </div>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">희망직종</span>
+              <span class="readonly-value" id="detailJob" name="desiredJob" >${data.desiredJob}</span>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">희망연봉</span>
+              <span class="readonly-value" id="detailSalary" name="desiredSalary" >${data.desiredSalary}</span>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">학교명</span>
+              <span class="readonly-value" id="schoolName" name="schoolName" >${data.schoolName}</span>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">전공</span>
+              <span class="readonly-value" id="major" name="major" >${data.major}</span>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">자격증</span>
+              <span class="readonly-value" id="detailCertificates" name="certificate" >${data.certificate eq '' ? '없음':data.certificate}</span>
+            </div>
+            <div class="readonly-item">
+              <span class="readonly-label">경력사항</span>
+              <span class="readonly-value" id="detailExperience" name="career" >${data.career eq '' ? '신입':data.career}</span>
+            </div>
+            <%--          <div class="readonly-item">--%>
+            <%--            <span class="readonly-label">등록일</span>--%>
+            <%--            <span class="readonly-value" id="detailRegistrationDate">${data.career}</span>--%>
+            <%--          </div>--%>
+            <div class="readonly-item">
+              <span class="readonly-label">상세정보</span>
+              <pre class="readonly-pre" id="placementDetail" name="placementDetail" >${data.placementDetail eq '' ? '' : data.placementDetail}</pre>
             </div>
           </div>
-          <div class="readonly-item">
-            <span class="readonly-label">희망직종</span>
-            <span class="readonly-value" id="detailJob" name="desiredJob" >${data.desiredJob}</span>
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">희망연봉</span>
-            <span class="readonly-value" id="detailSalary" name="desiredSalary" >${data.desiredSalary}</span>
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">학교명</span>
-            <span class="readonly-value" id="schoolName" name="schoolName" >${data.schoolName}</span>
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">전공</span>
-            <span class="readonly-value" id="major" name="major" >${data.major}</span>
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">자격증</span>
-            <span class="readonly-value" id="detailCertificates" name="certificate" >${data.certificate eq '' ? '없음':data.certificate}</span>
-          </div>
-          <div class="readonly-item">
-            <span class="readonly-label">경력사항</span>
-            <span class="readonly-value" id="detailExperience" name="career" >${data.career eq '' ? '신입':data.career}</span>
-          </div>
-<%--          <div class="readonly-item">--%>
-<%--            <span class="readonly-label">등록일</span>--%>
-<%--            <span class="readonly-value" id="detailRegistrationDate">${data.career}</span>--%>
-<%--          </div>--%>
-          <div class="readonly-item">
-            <span class="readonly-label">상세정보</span>
-            <pre class="readonly-pre" id="placementDetail" name="placementDetail" >${data.placementDetail eq '' ? '' : data.placementDetail}</pre>
+          <div class="col-md-6">
+            <div class="participant-profile-section">
+              <!-- 키워드 섹션 -->
+              <div>
+                <div class="keyword-title">
+                  ${data.participant}님의 키워드
+                </div>
+                <div class="keyword-container">
+                  <div class="keyWord-div" id="keyWord-div">
+                    <div>기술 적응력</div>
+                    <div>성실성</div>
+                    <div>문제해결능력</div>
+                    <div>문제해결능력</div>
+                    <div>문제해결능력</div>
+                  </div>
+                  <div class="resume-request-button-div" id="resume-request-button-div">
+                    <input type="button"
+                           class="resume-request-button"
+                           id="resume-request-button"
+                           value="이력서 요청하기"
+                           aria-label="참여자 이력서 요청">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 추천사 섹션 -->
+              <div class="recommendation-section">
+                <div class="recommendation-title">추천사</div>
+                <div class="recommendation-content">
+                  정OO 씨는 성실성과 꼼꼼함을 바탕으로 학업과 프로젝트를 수행하며 문제해결능력을 길러온 인재입니다. 팀 프로젝트에서 협업과 소통을 통해 과제를 완수한 경험이 있으며, 새로운 기술을 빠르게 학습하고 적용하는 능력이 뛰어납니다. 또한 자기주도적으로 학습 계획을 세워 꾸준히 성장해온 태도를 지니고 있어, IT 개발 현장에서 성실히 기여할 수 있는 신입 개발자입니다.
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
