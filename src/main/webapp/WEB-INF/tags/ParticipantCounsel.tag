@@ -186,13 +186,14 @@
                         <!-- 키워드 입력 컨테이너 -->
                         <div id="keywords-container" class="w-full border-2 border-slate-200 rounded-lg p-2 flex items-center flex-wrap gap-2 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200 transition-all duration-300">
                             <!-- 여기에 태그들이 동적으로 추가됩니다 -->
-                            <input type="text" id="keyword-input" name="keyword-input" class="flex-grow bg-transparent text-slate-700 placeholder-slate-400 focus:outline-none min-w-[100px] text-sm py-1" placeholder="2~10자 사이 키워드 입력...">
+                            <input type="text" id="keyword-input" name="keyword-input" value=""
+                                   class="flex-grow bg-transparent text-slate-700 placeholder-slate-400 focus:outline-none min-w-[100px] text-sm py-1" placeholder="2~10자 사이 키워드 입력...">
                         </div>
                         <p id="error-message" class="text-red-500 text-xs mt-1 h-4"></p>
 
                         <!-- 추천 키워드 목록 -->
                         <div id="suggested-section" class="mt-1">
-                            <p class="text-sm font-medium text-slate-600 mb-2">추천 키워드</p>
+                            <p class="text-sm font-medium text-slate-600 mb-2">추천 키워드<span class="text-danger">*</span></p>
                             <div id="suggested-keywords-container" class="flex flex-wrap gap-2">
                                 <!-- 추천 키워드가 여기에 동적으로 추가됩니다 -->
                             </div>
@@ -273,7 +274,8 @@ Collaboration: Git, GitHub, Jira, Slack
                 </div>
                 <div id="suggestionDiv" class="col-md-6 experience-div mt-2">
                     <label for="suggestionTextArea" class="form-label">추천사<span class="text-danger">*</span></label>
-                    <textarea class="form-control w-100" id="suggestionTextArea" name="suggestionDetail" placeholder="알선을 희망하는 참여자의 추천 멘트를 작성해주세요." style="height: 300px; resize: none;"></textarea>
+                    <textarea class="form-control w-100" id="suggestionTextArea" name="suggestionDetail"
+                              placeholder="알선을 희망하는 참여자의 추천 멘트를 작성해주세요." style="height: 300px; resize: none;">${not empty counsel ? counsel.suggestionDetail:""}</textarea>
                 </div>
             </div>
 

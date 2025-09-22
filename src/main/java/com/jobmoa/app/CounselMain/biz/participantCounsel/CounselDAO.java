@@ -47,9 +47,11 @@ public class CounselDAO {
         return flag;
     }
     public boolean delete(CounselDTO counselDTO) {
+        log.info("counsel delete SQL counselDTO : [{}]",counselDTO);
+        String condition = counselDTO.getCounselCondition();
         // 0보다 크면 True (성공)
         // 0보다 작거나 같으면 False (실패)
-        boolean flag = sqlSession.delete(ns+"counselDelete", counselDTO) > 0;
+        boolean flag = sqlSession.delete(ns+condition, counselDTO) > 0;
         log.info("counsel delete SQL flag : [{}]",flag);
         return flag;
     }

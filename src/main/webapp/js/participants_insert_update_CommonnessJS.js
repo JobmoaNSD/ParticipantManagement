@@ -430,12 +430,6 @@ $(document).ready(function () {
     })
     //알선 상세 정보 입력 function 끝
 
-
-    //알선 상세 정보 page 로딩시 한번 실행
-    //page 로딩시 알선 상세정보 입력란을 숨김
-    JobPlacementDetail(hiddenDiv);
-
-
 })
 
 //알선요청 함수 시작

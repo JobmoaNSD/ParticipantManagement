@@ -267,6 +267,11 @@
         //직업훈련 Div를 생성
         education();
 
+        //알선 상세 정보 page 로딩시 한번 실행
+        //page 로딩시 알선 상세정보 입력란을 숨김
+        const hiddenDiv = $("#hiddenDiv");
+        //page 로딩시 알선 상세정보 입력란을 숨김
+        JobPlacementDetail(hiddenDiv);
 
     });
 </script>

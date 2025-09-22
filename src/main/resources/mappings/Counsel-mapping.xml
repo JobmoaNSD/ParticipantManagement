@@ -22,7 +22,9 @@
             희망직무 = #{counselJobWant},
             희망급여 = #{counselSalWant},
             알선요청 = #{counselPlacement},
-            간접고용서비스 = #{counselEmploymentService}
+            간접고용서비스 = #{counselEmploymentService},
+            직무_카테고리_중 = #{jobCategoryMid},
+            직무_카테고리_소 = #{jobCategorySub}
         WHERE
             구직번호 = #{counselJobNo}
     </update>
@@ -37,8 +39,41 @@
             구직번호=#{counselJobNo}
     </update>
 
+    <!-- CounselDTO 매핑: 키워드는 collection으로 별도 select -->
+    <resultMap id="CounselResultMap" type="com.jobmoa.app.CounselMain.biz.participantCounsel.CounselDTO">
+        <id property="counselJobNo" column="counselJobNo"/>
+        <result property="counselPartic" column="counselPartic"/>
+        <result property="counselJobSkill" column="counselJobSkill"/>
+        <result property="counselLastCons" column="counselLastCons"/>
+        <result property="counselProgress" column="counselProgress"/>
+        <result property="counselInItCons" column="counselInItCons"/>
+        <result property="counselJobEX" column="counselJobEX"/>
+        <result property="counselIAPDate" column="counselIAPDate"/>
+        <result property="counselStepPro" column="counselStepPro"/>
+        <result property="counselEXPDate" column="counselEXPDate"/>
+        <result property="counselClinic" column="counselClinic"/>
+        <result property="counselIAP3Month" column="counselIAP3Month"/>
+        <result property="counselIAP5Month" column="counselIAP5Month"/>
+        <result property="counselAllowancePayment" column="counselAllowancePayment"/>
+        <result property="counselJobWant" column="counselJobWant"/>
+        <result property="counselSalWant" column="counselSalWant"/>
+        <result property="counselPlacement" column="counselPlacement"/>
+        <result property="counselEmploymentService" column="counselEmploymentService"/>
+        <result property="placementDetail" column="placementDetail"/>
+        <result property="suggestionDetail" column="suggestionDetail"/>
+        <result property="jobCategoryMid" column="jobCategoryMid"/>
+        <result property="jobCategorySub" column="jobCategorySub"/>
+
+        <!-- 키워드 리스트: 부모의 counselJobNo를 파라미터로 넘겨 별도 조회 -->
+        <collection property="recommendedKeywords"
+                    ofType="java.lang.String"
+                    column="counselJobNo"
+                    select="CounselDAO.counselSelectKeywords"/>
+    </resultMap>
+
+
     <!-- 상담정보 하나 확인용 쿼리 -->
-    <select id="counselSelectOne" resultType="counsel">
+    <select id="counselSelectOne" resultMap="CounselResultMap">
         SELECT
             A.구직번호 AS counselJobNo,
             A.참여자 AS counselPartic,
@@ -78,7 +113,10 @@
             A.희망급여 AS counselSalWant,
             A.알선요청 AS counselPlacement,
             A.간접고용서비스 AS counselEmploymentService,
-            B.상세정보 AS placementDetail
+            B.상세정보 AS placementDetail,
+            B.추천사 AS suggestionDetail,
+            A.직무_카테고리_중 AS jobCategoryMid,
+            A.직무_카테고리_소 AS jobCategorySub
         FROM
             J_참여자관리 A
         LEFT JOIN
@@ -87,6 +125,16 @@
             A.구직번호 = B.구직번호
         WHERE
             A.구직번호=#{counselJobNo}
+    </select>
+
+    <!-- 상담정보 키워드 확인용 쿼리 -->
+    <select id="counselSelectKeywords" resultType="string">
+        SELECT
+            키워드 AS recommendedKeywords
+        FROM
+            J_참여자관리_추천키워드
+        WHERE
+            구직번호=#{counselJobNo}
     </select>
 
     <!-- -->
@@ -104,9 +152,9 @@
     <insert id="counselPlacementInsert">
         INSERT INTO
             J_참여자관리_알선상세정보
-            (구직번호,상세정보)
+            (구직번호,상세정보,추천사)
         VALUES
-            (#{counselJobNo},#{placementDetail});
+            (#{counselJobNo},#{placementDetail},#{suggestionDetail});
     </insert>
 
     <!-- 알선 상세 정보 저장 Query -->
@@ -115,9 +163,31 @@
             J_참여자관리_알선상세정보
         SET
             상세정보 = #{placementDetail},
+            추천사 = #{suggestionDetail},
             수정일 = GETDATE()
         WHERE
             구직번호 = #{counselJobNo}
     </update>
+
+    <!-- 알선 키워드 추가 Query -->
+    <insert id="counselKeywordInsert">
+        INSERT INTO
+            J_참여자관리_추천키워드
+            (구직번호,등록일,수정일,키워드)
+        VALUES
+        <foreach collection="recommendedKeywords" item="data" separator=",">
+            (
+            #{counselJobNo},
+            GETDATE(),
+            GETDATE(),
+            #{data}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 알선 키워드 삭제 Query -->
+    <delete id="counselKeywordDelete">
+        DELETE FROM J_참여자관리_추천키워드 WHERE 구직번호=#{counselJobNo}
+    </delete>
 
 </mapper>

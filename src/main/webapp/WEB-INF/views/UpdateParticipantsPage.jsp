@@ -303,6 +303,10 @@
         const employmentJobcat = $("#employmentJobcat");
         //진행단계
         const counselProgress = $("#counselProgress");
+        //직무 카테고리 중분류
+        const jobCategoryMid = $("#jobCategoryMid");
+        //직무 카테고리 소분류
+        const jobCategorySub = $("#jobCategorySub");
 
         <%-- 목록 내용 변경 시작 --%>
         //진행단계
@@ -316,6 +320,15 @@
 
         //간접고용서비스 목록 내용 변경
         selectOption($("#counselEmploymentService"),"${counsel.counselEmploymentService}");
+
+        //직무 카테고리 중분류
+        selectOption(jobCategoryMid,"${counsel.jobCategoryMid}");
+        //직무 카테고리 소분류
+        selectOption(jobCategorySub,"${counsel.jobCategorySub}");
+
+
+
+
         <%-- 목록 내용 변경 끝 --%>
 
         <%-- 취업유형 변경 시작 --%>
@@ -323,10 +336,28 @@
         //취업유형
         selectOption(employmentEmpType,"${employment.employmentEmpType}");
 
-
         <%-- 취업유형 변경 끝 --%>
 
+        //알선 상세 정보 page 로딩시 한번 실행
+        //page 로딩시 알선 상세정보 입력란을 숨김
+        const hiddenDiv = $("#hiddenDiv");
+        //page 로딩시 알선 상세정보 입력란을 숨김
+        JobPlacementDetail(hiddenDiv);
+
     });
+
+
+    <%-- 키워드 등록 시작 --%>
+    // JavaScript
+    window.addEventListener('load', () => {
+        // 서버에서 온 값 예: "[자기주도성, 품질 관리 및 보안 인식, 책임감, 사용자 중심 사고(UI·UX 이해)]"
+        const serverKeywords = "${counsel.recommendedKeywords}";
+        if (serverKeywords && typeof window.addKeywordsFromBackend === 'function') {
+            window.addKeywordsFromBackend(serverKeywords);
+        }
+    });
+    <%-- 키워드 등록 끝 --%>
+
 </script>
 
 

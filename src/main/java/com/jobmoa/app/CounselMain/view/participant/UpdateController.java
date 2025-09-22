@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -395,6 +396,7 @@ public class UpdateController {
         counselDTO.setCounselJobNo(basicDTO.getBasicJobNo());
         counselDTO.setCounselCondition("counselSelectOne");
         counselDTO = counselService.selectOne(counselDTO);
+//        List<CounselDTO> counselList = counselService.selectAll(counselDTO);
 
 
         //직업훈련 정보
