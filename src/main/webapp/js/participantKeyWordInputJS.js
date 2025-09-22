@@ -51,7 +51,7 @@ $(document).ready(function () {
         tags.forEach(t => {
             const input = document.createElement('input');
             input.type = 'hidden';
-            input.name = 'keywords'; // 같은 name으로 여러 개 => List<String> 바인딩
+            input.name = 'recommendedKeywords'; // 같은 name으로 여러 개 => List<String> 바인딩
             // input.id = 'keyword-input';
             input.classList.add('hidden-keyword-input');
             input.value = t;
@@ -81,6 +81,35 @@ $(document).ready(function () {
         keywordListDiv.textContent = tags.length > 0 ? tags.join(', ') : '입력된 키워드가 없습니다.';
         updateInputState();
         syncHiddenInputs(); // 동기화 호출
+
+        /*
+         * 외부(백엔드에서 받은 초기값 등)에서 키워드 배열/문자열을 주입할 수 있도록 공개 API 제공
+         * - 배열: ['자기주도성', '책임감', ...]
+         * - 문자열: "[자기주도성, 책임감]" 또는 "자기주도성, 책임감"
+         */
+        window.addKeywordsFromBackend = function(input) {
+            // 이미 최대치인 경우 스킵
+            if (tags.length >= MAX_TAG_COUNT) return;
+
+            const toArray = (val) => {
+                if (Array.isArray(val)) return val;
+                if (val == null) return [];
+                // 양 끝 대괄호 제거 후 쉼표 분리
+                return String(val)
+                    .replace(/^\s*\[|\]\s*$/g, '')
+                    .split(',')
+                    .map(s => s.replace(/['"]/g, '').trim())
+                    .filter(Boolean);
+            };
+
+            const keywords = toArray(input);
+
+            for (const kw of keywords) {
+                if (tags.length >= MAX_TAG_COUNT) break; // 최대 5개 제한 준수
+                // addTag는 내부 유효성(중복/길이) 체크 수행
+                addTag(kw);
+            }
+        };
 
     }
 

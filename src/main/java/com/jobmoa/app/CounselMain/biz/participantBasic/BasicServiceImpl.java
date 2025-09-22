@@ -91,6 +91,13 @@ public class BasicServiceImpl implements BasicService {
                     log.error("구직 번호 [{}] 알선 상세 정보 등록 실패", jobno);
                     throw new RuntimeException("구직 번호 ["+jobno+"] 알선 상세 정보 등록 실패");
                 }
+
+                // 키워드 등록
+                counselDTO.setCounselCondition("counselKeywordInsert");
+                if (!counselDAO.insert(counselDTO)){
+                    log.error("구직 번호 [{}] 키워드 등록 실패", jobno);
+                    throw new RuntimeException("구직 번호 ["+jobno+"] 키워드 등록 실패");
+                }
             }
 
             flag = true;
@@ -134,6 +141,15 @@ public class BasicServiceImpl implements BasicService {
                 flag = flag && counselDAO.insert(counselDTO);
             }
             log.info("알선 상세 정보 업데이트 상태 : [{}]",flag);
+
+            // 키워드 등록
+            counselDTO.setCounselCondition("counselKeywordDelete");
+            flag = flag && counselDAO.delete(counselDTO);
+
+            counselDTO.setCounselCondition("counselKeywordInsert");
+            if (!counselDAO.insert(counselDTO)){
+                flag = false;
+            }
         }
 
         if (!flag){

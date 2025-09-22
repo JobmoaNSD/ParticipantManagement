@@ -72,8 +72,13 @@ public class ParticipantDTO {
     private String participantCode; // 고유 번호
 
     //알선상세정보 조회 DB 정보
-//    private String placementJobNo; //알선상세정보 구직번호 (나중에 추가사용을 할 수 있으니 추가)
+//    private String placementJobNo; //알선상세정보 구직번호 (나중에 추가사용을 할 수 있으니 주석)
     private String placementDetail; //알선상세정보 글 데이터
+
+    private List<String> recommendedKeywords; // 알선 추천 키워드
+    private String suggestionDetail; // 추천사 글 데이터
+    private String jobCategoryMid; // 키워드 중분류
+    private String jobCategorySub; // 키워드 소분류
 
     //DB 외 정보
     private String participantCondition; // 개발자 구분

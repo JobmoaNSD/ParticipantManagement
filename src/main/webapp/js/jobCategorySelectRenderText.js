@@ -1,6 +1,6 @@
 // jQuery 버전
 $(function() {
-    // 중분류 목록
+// 중분류 목록
     const jobCategoryMidArray = [
         { text: "카테고리 선택", value: "" },
         { text: "경영·사무·관리", value: "경영·사무·관리" },
@@ -13,7 +13,7 @@ $(function() {
         { text: "교육·연구", value: "교육·연구" }
     ];
 
-    // 소분류 매핑: key는 중분류 value와 동일
+// 소분류 매핑: key는 중분류 value와 동일
     const jobCategorySubArray = {
         "경영·사무·관리": [
             { text: "기획·전략", value: "기획·전략" },
@@ -88,11 +88,11 @@ $(function() {
         $sub.prop('disabled', subs.length === 0);
     }
 
-    // 초기 선택값 복원
+// 초기 선택값 복원
     const selectedMid = $mid.data('selected') || '';
     const selectedSub = $sub.data('selected') || '';
 
-    // 중분류 옵션(표시는 괄호 앞부분) 구성
+// 중분류 옵션(표시는 괄호 앞부분) 구성
     const midOptions = jobCategoryMidArray
         .filter(i => i.value !== '')
         .map(i => ({ text: i.text.split('(')[0], value: i.value }));
@@ -109,5 +109,9 @@ $(function() {
     // 이벤트: 중분류 변경 시 소분류 갱신
     $mid.on('change', function() {
         updateSubOptions(this.value, '');
+    });
+
+    $mid.on('', function() {
+        console.log('change');
     });
 });
