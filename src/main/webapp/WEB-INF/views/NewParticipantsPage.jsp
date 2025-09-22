@@ -145,6 +145,16 @@
     <!-- kakao 주소 API 호출 JS API 문서 주소 https://postcode.map.daum.net/guide#usage -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 키워드 입력 JS 추가 -->
+    <script src="js/participantKeyWordInputJS.js"></script>
+    <!-- 키워드 입력 CSS 추가 -->
+    <link rel="stylesheet" href="css/keyWordInputCss.css">
+
+    <!-- jobPlacementDefault JS -->
+    <script src="js/jobCategorySelectRenderText.js"></script>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
@@ -257,10 +267,7 @@
         //직업훈련 Div를 생성
         education();
 
-        //알선 상세 정보 page 로딩시 한번 실행
-        //page 로딩시 알선 상세정보 입력란을 숨김
-        const jobPlacementDiv = $("#jobPlacementDiv");
-        JobPlacementDetail(jobPlacementDiv);
+
     });
 </script>
 
