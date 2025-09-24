@@ -95,13 +95,13 @@
 
   <div class="main-content detail-content" data-participant-info="참여자: ${data.participant} | 구직번호: ${data.jobNumber}">
     <!-- 페이지 헤더 -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="pageHeader" id="pageHeader">
       <div>
         <h2 class="h4 mb-1">${data.participant} 상세 정보</h2>
         <p class="text-muted mb-0">선택된 참여자의 상담사정보를 확인하세요.<%--이력서와 자기소개서를 확인하세요.--%></p>
       </div>
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-muted">참여자 구직번호 : <strong id="selectedParticipantId">${data.jobNumber}</strong></span>
+      <div class="sub-title">
+        <div class="text-muted">참여자 구직번호 : <strong id="selectedParticipantId">${data.jobNumber}</strong></div>
         <c:if test="${JOBMOA_LOGIN_DATA.memberUserID eq data.counselorId}">
           <button type="button"
                   class="btn btn-modern btn-info"

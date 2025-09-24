@@ -242,7 +242,7 @@ body {
     font: 0.942em/1.5 var(--font-family);
     width: 100%;
     overflow: auto;
-    max-height: 230px;
+    max-height: 150px;
     margin: 0;
     border-radius: var(--radius-md);
     background: var(--secondary-50);
@@ -693,6 +693,20 @@ body {
     background: var(--warning);
 }
 
+.pageHeader {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+}
+
+.sub-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+}
+
 /* 로딩 스피너 */
 .loading-spinner {
     display: inline-block;
@@ -712,7 +726,34 @@ body {
 
 /* 반응형 디자인 */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+    /* 페이지 본문 헤더 */
+    .pageHeader {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-muted {
+        font-size: 0.875rem;
+        text-align: center;
+    }
+
+    .sub-title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-sm);
+    }
+
+    #updateBtn, #printBtn, #backToListBtn {
+        font-size: 0.6rem;
+        padding: 0.5rem 1rem;
+        justify-items: center;
+        text-align: center;
+    }
+
     .system-title {
         font-size: 1.5rem;
     }
@@ -745,8 +786,11 @@ body {
     }
 
     .readonly-item {
-        flex-direction: column;
-        gap: var(--space-xs);
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        padding: var(--space-sm) 0;
+        border-bottom: 1px solid var(--secondary-100);
     }
 
     .readonly-label {
@@ -936,7 +980,7 @@ body {
 
 /* 상세정보 섹션 */
 .detail-section {
-    height: 100%;
+    /*height: 100%;*/
     background: white;
     border-radius: var(--radius-lg);
     padding: var(--space-lg);
