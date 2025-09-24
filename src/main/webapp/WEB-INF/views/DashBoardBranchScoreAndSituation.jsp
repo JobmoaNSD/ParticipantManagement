@@ -441,9 +441,9 @@
                 position: 'bottom'
             },
             yaxis:{
-                max: 90,
-                min: 0,            // 최소값 설정
-                tickAmount: 5,     // 눈금 간격 설정
+                max: 45,
+                min: 35,            // 최소값 설정
+                tickAmount: 15,     // 눈금 간격 설정
                 labels: {
                     formatter: function(val) {
                         return val.toFixed(1);

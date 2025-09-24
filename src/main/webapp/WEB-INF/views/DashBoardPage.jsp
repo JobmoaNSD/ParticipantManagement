@@ -196,24 +196,6 @@
                                             </div>
                                         </li>
                                     </c:if>
-                                    <hr/>
-                                    <%--
-                                    FIXME 상담사 개인별 취업율을 확실하게 구분할 수 있도록 페이지에 내용을 추가.
-                                    이번에 추가하면서 최적화가 가능하면 최적화를 진행하는 것이 가장 좋을 것 같다.
-                                    Hosting server에서 DB 연결 후 사용하는 것이 DB 데이터가 쫌 더 빠르게 불러와질 확율이 있다.
-                                    이유: local에서 직접 요청 불러오기 진행되는 것이니 사용자 요청 수신만 빠르면 되는 상황
-                                    PC내에서 테스트하는 것과 동일하다고 볼 수 있을 듯함
-                                    --%>
-                                    <li class="list-group-item d-flex border-bottom-0">
-                                        <div>
-                                            <div>현재 취업자 ${employmentRate.dashBoardEarlyEmployedCountUser}명</div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item d-flex border-bottom-0">
-                                        <div>
-                                            <div>취업률 ${employmentRate.employmentRate}%</div>
-                                        </div>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -283,18 +265,33 @@
                             <div class="col-md-12">
                                 <div class="d-flex">
                                     <!-- 그래프 영역 -->
-                                    <div id="scoreChart" class="flex-grow-1 w-100 mw-100"></div>
-                                    <!-- 등수 표시 영역 -->
-                                    <div class="ms-1 d-flex flex-column justify-content-center">
-                                        <div class="rank-box text-center" style="width: 150px; max-width: 150px">
-                                            <h3 class="mb-0">등급 : <span id="myRanking"></span></h3>
-                                            <div id="myTotalRanking" class="rank-number display-4 fw-bold text-primary fs-1"></div>
-                                            <div id="nextRanking" class="fs-8"></div>
-                                            <div class="text-center fs-8 mt-3 font-color text-muted">
-                                                입사(발령) 1년 미만자는<br> 실적 데이터 신뢰도 낮음,<br> 참고용으로만 활용 바랍니다.
+                                    <div id="scoreChart" class="flex-grow-1 w-75 mw-100"></div>
+
+                                    <div class="d-flex flex-column">
+                                        <!-- 취업자 인원 영역 -->
+                                        <div class="d-flex flex-column justify-content-center text-center">
+                                            <div>
+                                                <div class="fw-bold" >취업률: </div>
+                                                <div id="employment-rate" class="fw-bold" style="color:red; font-size: 2.5rem">${employmentRate.employmentRate}%</div>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">현재 취업자: ${employmentRate.dashBoardEarlyEmployedCountUser}명</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 등수 표시 영역 -->
+                                        <div class="ms-1 d-flex flex-column justify-content-center mt-auto mb-auto">
+                                            <div class="rank-box  text-center" style="width: 150px; max-width: 150px">
+                                                <h4 class="mb-0">등급 : <span id="myRanking"></span></h4>
+                                                <div id="myTotalRanking" class="rank-number display-4 fw-bold text-primary fs-4"></div>
+                                                <div id="nextRanking" class="fs-8"></div>
                                             </div>
                                         </div>
                                     </div>
+
+                                </div>
+                                <div class="text-center fs-8 mt-3 font-color text-muted">
+                                    입사(발령) 1년 미만자는 실적 데이터 신뢰도 낮음, 참고용으로만 활용 바랍니다.
                                 </div>
                             </div>
                         </div>
@@ -770,16 +767,18 @@
         function createDiv(title, subtitle, percentage) {
             let returnValue =
                 "<div class='fw-bold'>"+title+"</div>"+
-                "<div>"+subtitle+"</div>"+
-                "<div class='progress rounded rounded-2'>";
+                "<div>"+subtitle+"</div>"
+            // 참여자 통계 그래프가 필요하다면 주성 해제
+            //     +
+            //     "<div class='progress rounded rounded-2'>";
+            //
+            // percentage.map((data)=> {
+            //     returnValue += "<div class='progress-bar' role='progressbar'" +
+            //         "style='width: " + data + "%; background: linear-gradient(90deg, "+randomColor()+", "+randomColor()+");color: black;font-weight: bold;' aria-valuenow='" + data + "'" +
+            //         "aria-valuemin='0' aria-valuemax='100'>" + data + "%</div>"
+            // });
+            // returnValue += "</div>";
 
-            percentage.map((data)=> {
-                returnValue += "<div class='progress-bar' role='progressbar'" +
-                    "style='width: " + data + "%; background: linear-gradient(90deg, "+randomColor()+", "+randomColor()+");color: black;font-weight: bold;' aria-valuenow='" + data + "'" +
-                    "aria-valuemin='0' aria-valuemax='100'>" + data + "%</div>"
-            });
-
-            returnValue += "</div>";
             return returnValue;
         }
 
@@ -901,12 +900,13 @@
                 title: {
                     text: '점수',
                 },
-                max: 90,
-                min: 0,            // 최소값 설정
-                tickAmount: 5,     // 눈금 간격 설정
+                max: 48,
+                min: 40,            // 최소값 설정
+                // stepSize: 20,
+                tickAmount: 35,     // 눈금 간격 설정
                 labels: {
                     formatter: function(val) {
-                        return val.toFixed(0);
+                        return val.toFixed(1);
                     }
                 }
             }],
@@ -923,6 +923,27 @@
         // 차트 생성
         const chart = new ApexCharts(document.querySelector("#scoreChart"), options);
         chart.render();
+
+        const $employmentRate = $("#employment-rate");
+        $employmentRate.on("click", function () {
+            randomColor();
+        })
+function randomColor() {
+    const $employmentRate = $("#employment-rate");
+    const employmentRateText = $employmentRate.text();
+    const employmentRate = employmentRateText.split("%")[0];
+    console.log(employmentRate);
+    console.log(employmentRate < 60);
+    console.log(employmentRateText);
+    if(employmentRate < 60){
+        $employmentRate.css("color", "#ff0707");
+    }
+    else{
+        $employmentRate.css("color", "#0d6efd");
+    }
+}
+
+
     });
 </script>
 
