@@ -77,6 +77,7 @@ public class ParticipantDTO {
 
     private List<String> recommendedKeywords; // 알선 추천 키워드
     private String suggestionDetail; // 추천사 글 데이터
+    private String jobCategoryLarge; // 키워드 대분류
     private String jobCategoryMid; // 키워드 중분류
     private String jobCategorySub; // 키워드 소분류
 

@@ -29,7 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
     <!-- Custom Style CSS  -->
-    <link href="/css/jobPlacementDefault.css" rel="stylesheet"/>
+    <link href="/css/jobPlacementCss/jobPlacementDefault.css" rel="stylesheet"/>
 
     <!-- jobPlacementListJS -->
     <script src="/js/jobPlacementJs/jobPlacementListJS.js"></script>
@@ -173,7 +173,14 @@
                           <td>${datas.age == 0 ? '비공개':datas.age}</td>
                           <td>${datas.gender}</td>
                           <td>${datas.address}</td>
-                          <td>${datas.desiredJob}</td>
+                          <c:choose>
+                              <c:when test="${not empty datas.jobCategoryLarge}">
+                                  <td>${datas.jobCategoryLarge} > ${datas.jobCategoryMid} > ${datas.desiredJob}</td>
+                              </c:when>
+                              <c:otherwise>
+                                  <td>${datas.desiredJob}</td>
+                              </c:otherwise>
+                          </c:choose>
                           <td>${datas.desiredSalary}</td>
                           <td>
                               <a href="#"

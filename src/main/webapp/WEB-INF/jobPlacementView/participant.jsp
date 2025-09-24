@@ -32,7 +32,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom Style CSS  -->
-    <link href="/css/jobPlacementDefault.css" rel="stylesheet">
+    <link href="/css/jobPlacementCss/jobPlacementDefault.css" rel="stylesheet">
 
     <script src="/js/jobPlacementJs/locationSelect.js"></script>
 </head>

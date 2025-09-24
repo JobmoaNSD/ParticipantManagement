@@ -38,10 +38,12 @@ $(document).ready(function () {
     const suggestionTextArea = $("#suggestionTextArea");
     //키워드 배열
     const keywordArray = [];
+    //직무 카테고리 대분류
+    const jobCategoryLarge = $("#jobCategoryLarge");
     //직무 카테고리 중분류
     const jobCategoryMid = $("#jobCategoryMid");
-    //직무 카테고리 소분류
-    const jobCategorySub = $("#jobCategorySub");
+    // //직무 카테고리 소분류
+    // const jobCategorySub = $("#jobCategorySub");
 
     /* 취업정보 */
     //취창업일
@@ -123,9 +125,9 @@ $(document).ready(function () {
         //알선 추천사
         const suggestionTextAreaVal = suggestionTextArea.val();
         //직무 카테고리 중분류
-        const jobCategoryMidVal = jobCategoryMid.val();
+        const jobCategoryLargeVal = jobCategoryLarge.val();
         //직무 카테고리 소분류
-        const jobCategorySubVal = jobCategorySub.val();
+        const jobCategoryMidVal = jobCategoryMid.val();
 
         /* 취업정보 */
         //취창업일
@@ -171,18 +173,57 @@ $(document).ready(function () {
 
         }
 
-        if ((counselProgressVal == "미고보" || counselProgressVal == "고보일반" || counselProgressVal == "등록창업" || counselProgressVal == "미등록창업" ||
-            counselProgressVal == "미취업사후종료" || counselProgressVal == "이관" || counselProgressVal == "중단") && counselEXPDateVal == ''){
-            alertDefaultInfo("현재 선택한 진행단계의 "+counselProgressVal+"은/는 기간만료(예정)일은 필수로 입력되어야 합니다.");
+        // 유효성 검사 상수 및 유틸 함수 도입
+        const PROGRESS_REQUIRING_EXP_DATE = new Set([
+            '미고보',
+            '고보일반',
+            '등록창업',
+            '미등록창업',
+            '미취업사후종료',
+            '이관',
+            '중단',
+        ]);
+
+        const KEYWORD_MIN = 1;
+        const KEYWORD_MAX = 5;
+
+        const isBlank = (v) => v == null || String(v).trim() === '';
+        const progressRequiresExpDate = (progress) => PROGRESS_REQUIRING_EXP_DATE.has(progress);
+        const isKeywordCountInvalid = (count) => count < KEYWORD_MIN || count > KEYWORD_MAX;
+
+        // 기존 조건문 리팩터링
+        if (progressRequiresExpDate(counselProgressVal) && isBlank(counselEXPDateVal)) {
+            alertDefaultInfo(
+                `현재 선택한 진행단계의 ${counselProgressVal}은/는 기간만료(예정)일은 필수로 입력되어야 합니다.`
+            );
             return;
-        }
-        else if (counselPlacementVal == '희망'){
-            if(basicDobVal == '' || basicAddressVal == '' || basicSchoolVal == '' || basicSpecialtyVal == '' || jobPlacementTextAreaVal == '' || counselJobWantVal == '' || counselSalWantVal == ''
-            || counselPlacementVal == '' || (keywordCount >= 1 && keywordCount <= 5) || suggestionTextAreaVal == '' || jobCategoryMidVal == '' || jobCategorySubVal == ''){
-                alertDefaultInfo('알선요청 희망시 11가지 항목은 필수 입니다.','생년월일, 주소, 학교명, 전공, 희망직무, 희망급여, 직무카테고리(소ㆍ중분류), 키워드(1개이상), 상세정보, 추천사를 반드시 입력해주세요.')
+        } else if (counselPlacementVal === '희망') {
+            // 필수 항목 묶음 체크 (알선요청 '희망'일 때 11가지)
+            const requiredFields = [
+                basicDobVal,              // 생년월일
+                basicAddressVal,          // 주소
+                basicSchoolVal,           // 학교명
+                basicSpecialtyVal,        // 전공
+                counselJobWantVal,        // 희망직무
+                counselSalWantVal,        // 희망급여
+                jobCategoryLargeVal,      // 직무카테고리(대분류)
+                jobCategoryMidVal,        // 직무카테고리(중분류)
+                jobPlacementTextAreaVal,  // 상세정보
+                suggestionTextAreaVal,    // 추천사
+            ];
+
+            const hasBlankRequired = requiredFields.some(isBlank);
+            const invalidKeywordRange = isKeywordCountInvalid(Number(keywordCount));
+
+            if (hasBlankRequired || invalidKeywordRange) {
+                alertDefaultInfo(
+                    '알선요청 희망시 11가지 항목은 필수 입니다.',
+                    '생년월일, 주소, 학교명, 전공, 희망직무, 희망급여, 직무카테고리(대ㆍ중분류), 키워드(1개이상~5개이하), 상세정보, 추천사를 반드시 입력해주세요.'
+                );
                 return;
             }
         }
+
 
         // 초기상담일이 비어있는 상태라면 최근상담일이 초기상담일이 입력된다는 안내를 출력한다.
         if(!counselInItConsVal.length > 0){
