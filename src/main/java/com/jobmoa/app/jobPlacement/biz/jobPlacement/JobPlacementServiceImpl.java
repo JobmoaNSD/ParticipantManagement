@@ -43,20 +43,24 @@ public class JobPlacementServiceImpl implements JobPlacementService{
         String placementDetail = jobPlacementDTO.getPlacementDetail();
         //구직번호
         String jobNumber = jobPlacementDTO.getJobNumber();
-//        log.info("JobPlacementDTO update certificates : [{}]", (Object) certificates);
-//        log.info("JobPlacementDTO update placementDetail : [{}]",placementDetail);
+        log.info("JobPlacementDTO update certificates : [{}]", (Object) certificates);
+        log.info("JobPlacementDTO update placementDetail : [{}]",placementDetail);
 
 
-        //자격증 삭제를 진행
-        jobPlacementDTO.setCondition("certificateDelete");
-        boolean certificateFlag = jobPlacementDAO.delete(jobPlacementDTO);
-//        log.info("JobPlacementDTO delete success certificateFlag : [{}]",certificateFlag);
+        boolean certificateFlag = false;
 
         // 자격증 배열이 비어 있지 않다면
-        if(certificates != null){
+        if(certificates.length > 0){
+            //자격증 삭제를 진행
+            jobPlacementDTO.setCondition("certificateDelete");
+            jobPlacementDAO.delete(jobPlacementDTO);
             //자격증 추가
             jobPlacementDTO.setCondition("certificateInsert");
-            certificateFlag = certificateFlag && jobPlacementDAO.insert(jobPlacementDTO);
+            certificateFlag = jobPlacementDAO.insert(jobPlacementDTO) ;
+            log.info("JobPlacementDTO delete success certificateFlag : [{}]",certificateFlag);
+        }
+        else{
+            jobPlacementDAO.delete(jobPlacementDTO);
         }
 
         //알선 상세 정보 수정

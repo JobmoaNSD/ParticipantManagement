@@ -109,6 +109,16 @@
                     <input type="text" class="form-control datepicker_on" id="counselEXPDate" name="counselEXPDate" placeholder="yyyy-mm-dd" aria-label="기간만료(예정)일" value="${not empty counsel ? counsel.counselEXPDate:""}" autocomplete="off">
                 </div>
             </div>
+            <!-- 직무카테고리-대분류 -->
+            <div class="w-auto">
+                <label for="jobCategoryLarge" class="form-label">
+                    직무카테고리-대분류<span class="text-danger">*</span>
+                </label>
+                <select class="form-select" id="jobCategoryLarge" name="jobCategoryLarge" required>
+                    <option value="">선택하세요</option>
+                </select>
+            </div>
+
             <!-- 직무카테고리-중분류 -->
             <div class="w-auto">
                 <label for="jobCategoryMid" class="form-label">
@@ -116,20 +126,6 @@
                 </label>
                 <select class="form-select" id="jobCategoryMid" name="jobCategoryMid" required>
                     <option value="">선택하세요</option>
-                    <option value="TEST1">테스트1</option>
-                    <option value="TEST2">테스트2</option>
-                </select>
-            </div>
-
-            <!-- 직무카테고리-소분류 -->
-            <div class="w-auto">
-                <label for="jobCategorySub" class="form-label">
-                    직무카테고리-소분류<span class="text-danger">*</span>
-                </label>
-                <select class="form-select" id="jobCategorySub" name="jobCategorySub" required>
-                    <option value="">선택하세요</option>
-                    <option value="TEST1">테스트1</option>
-                    <option value="TEST2">테스트2</option>
                 </select>
             </div>
 

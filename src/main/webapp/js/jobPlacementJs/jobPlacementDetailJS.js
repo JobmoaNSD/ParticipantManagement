@@ -15,6 +15,8 @@ $(document).ready(function() {
     const updateBtn = $('#updateBtn');
     let originalData = {};
 
+    let keywordDiv = $('#keyword-div');
+
     updateBtn.on('click', function() {
         if (!updateFlag) {
             updateFlag = true;
@@ -69,6 +71,12 @@ $(document).ready(function() {
                     case 'detailJob':
                         inputName = 'desiredJob';
                         break;
+                    case 'jobCategoryLargeValue':
+                        inputName = 'jobCategoryLarge';
+                        break;
+                    case 'jobCategoryMidValue':
+                        inputName = 'jobCategoryMid';
+                        break;
                     case 'detailSalary':
                         inputName = 'desiredSalary';
                         break;
@@ -109,6 +117,12 @@ $(document).ready(function() {
                 else if (fieldId === 'detailLocation') {
                     inputHtml = '<input type="text" class="form-control editable-input" id="' + fieldId + '" name="' + inputName + '" value="' + currentValue + '" readonly>';
                 }
+                else if (fieldId === 'jobCategoryLargeValue'){
+                    inputHtml = '<select class="form-control editable-input editable-select" id="'+inputName+'" name="'+inputName+'" required><option value="">선택하세요</option></select>';
+                }
+                else if (fieldId === 'jobCategoryMidValue'){
+                    inputHtml = '<select class="form-control editable-input editable-select" id="'+inputName+'" name="'+inputName+'" required><option value="">선택하세요</option></select>';
+                }
                 else {
                     inputHtml = '<input type="text" class="form-control editable-input" id="' + fieldId + '" name="' + inputName + '" value="' + currentValue + '">';
                 }
@@ -122,6 +136,12 @@ $(document).ready(function() {
                 const textareaHtml = '<textarea class="form-control editable-textarea" id="' + fieldId + '" name="' + inputName + '" rows="5">' + currentValue + '</textarea>';
                 $pre.replaceWith(textareaHtml);
             }
+
+            jobCategorySelectRender()
+            //직무 카테고리 대분류
+            selectOption($("#jobCategoryLarge"),originalData["jobCategoryLargeValue"]);
+            //직무 카테고리 중분류
+            selectOption($("#jobCategoryMid"),originalData["jobCategoryMidValue"]);
         });
     }
 
@@ -132,7 +152,7 @@ $(document).ready(function() {
             const $textarea = $item.find('.editable-textarea');
 
             if ($input.length > 0) {
-                const fieldId = $input.attr('id');
+                let fieldId = $input.attr('id');
                 let newValue = $input.val();
 
                 // 특정 필드의 값 처리
@@ -147,6 +167,10 @@ $(document).ready(function() {
                     newValue = '없음';
                 } else if (fieldId === 'detailExperience' && newValue === '') {
                     newValue = '신입';
+                }
+
+                if(fieldId === 'jobCategoryLarge' || fieldId === 'jobCategoryMid'){
+                    fieldId = fieldId === 'jobCategoryLarge' ? 'jobCategoryLargeValue' : 'jobCategoryMidValue';
                 }
 
                 const spanHtml = '<span class="readonly-value" id="' + fieldId + '">' + newValue + '</span>';
@@ -172,8 +196,13 @@ $(document).ready(function() {
                 const $textarea = $item.find('.editable-textarea');
 
                 if ($input.length > 0) {
-                    const fieldId = $input.attr('id');
-                    const originalValue = originalData[fieldId] || '';
+                    let fieldId = $input.attr('id');
+                    let originalValue = originalData[fieldId] || '';
+                    console.log(fieldId+' Original Value:', originalData[fieldId]);
+                    if(fieldId === 'jobCategoryLarge' || fieldId === 'jobCategoryMid'){
+                        fieldId = fieldId === 'jobCategoryLarge' ? 'jobCategoryLargeValue' : 'jobCategoryMidValue';
+                        originalValue = originalData[fieldId] = originalData[fieldId] || '';
+                    }
                     const spanHtml = '<span class="readonly-value" id="' + fieldId + '">' + originalValue + '</span>';
                     $input.replaceWith(spanHtml);
                 }
@@ -228,6 +257,12 @@ $(document).ready(function() {
                 case 'detailJob':
                     updatedData.desiredJob = value;
                     break;
+                case 'jobCategoryLarge':
+                    updatedData.jobCategoryLarge = value;
+                    break;
+                case 'jobCategoryMid':
+                    updatedData.jobCategoryMid = value;
+                    break;
                 case 'detailSalary':
                     updatedData.desiredSalary = Math.floor((value/12));
                     break;
@@ -278,5 +313,18 @@ $(document).ready(function() {
         }
         return age;
     }
+
+    function keywordDivChange(){
+        const keyword = keywordDiv.text();
+        const keywords = keyword.split(',');
+        // console.log(keywords);
+        keywordDiv.empty();
+        keywords.forEach(element => {
+            keywordDiv.append('<div>'+element+'</div>');
+        })
+    }
+
+    //시작시 적용
+    keywordDivChange();
 
 });

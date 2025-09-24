@@ -304,9 +304,9 @@
         //진행단계
         const counselProgress = $("#counselProgress");
         //직무 카테고리 중분류
-        const jobCategoryMid = $("#jobCategoryMid");
+        const jobCategoryLarge = $("#jobCategoryLarge");
         //직무 카테고리 소분류
-        const jobCategorySub = $("#jobCategorySub");
+        const jobCategoryMid = $("#jobCategoryMid");
 
         <%-- 목록 내용 변경 시작 --%>
         //진행단계
@@ -321,13 +321,10 @@
         //간접고용서비스 목록 내용 변경
         selectOption($("#counselEmploymentService"),"${counsel.counselEmploymentService}");
 
+        //직무 카테고리 대분류
+        selectOption(jobCategoryLarge,"${counsel.jobCategoryLarge}");
         //직무 카테고리 중분류
         selectOption(jobCategoryMid,"${counsel.jobCategoryMid}");
-        //직무 카테고리 소분류
-        selectOption(jobCategorySub,"${counsel.jobCategorySub}");
-
-
-
 
         <%-- 목록 내용 변경 끝 --%>
 

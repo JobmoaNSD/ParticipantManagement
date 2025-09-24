@@ -23,8 +23,8 @@
             희망급여 = #{counselSalWant},
             알선요청 = #{counselPlacement},
             간접고용서비스 = #{counselEmploymentService},
-            직무_카테고리_중 = #{jobCategoryMid},
-            직무_카테고리_소 = #{jobCategorySub}
+            직무_카테고리_대 = #{jobCategoryLarge},
+            직무_카테고리_중 = #{jobCategoryMid}
         WHERE
             구직번호 = #{counselJobNo}
     </update>
@@ -61,8 +61,8 @@
         <result property="counselEmploymentService" column="counselEmploymentService"/>
         <result property="placementDetail" column="placementDetail"/>
         <result property="suggestionDetail" column="suggestionDetail"/>
+        <result property="jobCategoryLarge" column="jobCategoryLarge"/>
         <result property="jobCategoryMid" column="jobCategoryMid"/>
-        <result property="jobCategorySub" column="jobCategorySub"/>
 
         <!-- 키워드 리스트: 부모의 counselJobNo를 파라미터로 넘겨 별도 조회 -->
         <collection property="recommendedKeywords"
@@ -115,8 +115,8 @@
             A.간접고용서비스 AS counselEmploymentService,
             B.상세정보 AS placementDetail,
             B.추천사 AS suggestionDetail,
-            A.직무_카테고리_중 AS jobCategoryMid,
-            A.직무_카테고리_소 AS jobCategorySub
+            A.직무_카테고리_대 AS jobCategoryLarge,
+            A.직무_카테고리_중 AS jobCategoryMid
         FROM
             J_참여자관리 A
         LEFT JOIN

@@ -110,6 +110,36 @@ public class JobPlacementDTO {
     private String counselorPhone;
 
     /**
+     * 카테고리 대분류
+     */
+    private String jobCategoryLarge;
+
+    /**
+     * 카테고리 중분류
+     */
+    private String jobCategoryMid;
+
+    /**
+     * 카테고리 소분류
+     */
+    private String jobCategorySub;
+
+    /**
+     * 추천사
+     */
+    private String suggestionDetail;
+
+    /**
+     * 키워드
+     */
+    private String recommendedKeyword;
+
+    /**
+     * 키워드 배열
+     */
+    private String[] recommendedKeywords;
+
+    /**
      * 페이지네이션 현재 페이지 번호
      */
     private int page;

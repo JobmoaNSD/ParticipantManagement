@@ -52,6 +52,8 @@
             주소 AS address,
 --             학교명 AS schoolName,
 --             전공 AS major,
+            직무_카테고리_대 AS jobCategoryLarge,
+            직무_카테고리_중 AS jobCategoryMid,
             희망직무 AS desiredJob,
 --             경력 AS career,
             나이 AS age,
@@ -71,6 +73,8 @@
                      주소,
 --                      학교명,
 --                      전공,
+                     직무_카테고리_중,
+                     직무_카테고리_대,
                      희망직무,
                      경력,
                      나이,
@@ -122,6 +126,10 @@
             상담사이메일 AS email,
             고유번호 AS uniqueNumber,
             상세정보 AS placementDetail,
+            추천사 AS suggestionDetail,
+            직무_카테고리_대 AS jobCategoryLarge,
+            직무_카테고리_중 AS jobCategoryMid,
+            키워드 AS recommendedKeyword,
             상담사전화번호 AS counselorPhone
         FROM
             dbo.EXTERNALPARTICIPANT
@@ -152,6 +160,8 @@
             학교명=#{schoolName},
             전공=#{major},
             경력=#{career},
+            직무_카테고리_대=#{jobCategoryLarge},
+            직무_카테고리_중=#{jobCategoryMid},
             참여자_수정일=GETDATE()
         WHERE
             구직번호=#{jobNumber} AND 전담자_계정 = #{counselorId};

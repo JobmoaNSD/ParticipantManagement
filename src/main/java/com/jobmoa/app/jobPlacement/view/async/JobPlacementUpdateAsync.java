@@ -47,7 +47,6 @@ public class JobPlacementUpdateAsync {
                 jobPlacementDTO.setCertificates(certificates);
             }
 
-
             log.info("JobPlacementUpdateAsync updateJobPlacement Start");
             jobPlacementDTO.setCondition("updateJobPlacementAsync");
             boolean outputDataFlag = jobPlacementService.update(jobPlacementDTO);

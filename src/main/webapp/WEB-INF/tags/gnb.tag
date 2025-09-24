@@ -159,8 +159,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/jobPlacement/" class="nav-link" target="_blank">
+                            <a href="jobPlacement/" class="nav-link" target="_blank">
                                 <small><p>알선참여자확인</p></small>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="placementManagement.login" class="nav-link">
+                                <small><p>자소서 요청 참여자관리</p></small>
                             </a>
                         </li>
                     </ul>

@@ -209,7 +209,7 @@ body {
     background: var(--secondary-50);
     border-radius: var(--radius-lg);
     padding: var(--space-lg);
-    margin-bottom: var(--space-lg);
+    /*margin-bottom: var(--space-lg);*/
 }
 
 .readonly-item {
@@ -242,7 +242,8 @@ body {
     font: 0.942em/1.5 var(--font-family);
     width: 100%;
     overflow: auto;
-    max-height: 200px;
+    max-height: 230px;
+    margin: 0;
     border-radius: var(--radius-md);
     background: var(--secondary-50);
 }
@@ -769,8 +770,8 @@ body {
     height: 100%;
     background: linear-gradient(135deg, var(--primary-50) 0%, var(--secondary-50) 100%);
     border-radius: var(--radius-lg);
-    padding: var(--space-xl);
-    margin-bottom: var(--space-lg);
+    padding: var(--space-md);
+    /*margin-bottom: var(--space-lg);*/
     box-shadow: var(--shadow-md);
     border: 1px solid var(--secondary-100);
 }
@@ -802,7 +803,7 @@ body {
 }
 
 /* 키워드 디스플레이 영역 */
-.keyWord-div {
+.keyword-div {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
@@ -810,7 +811,7 @@ body {
     min-width: 300px;
 }
 
-.keyWord-div > div {
+.keyword-div > div {
     background: white;
     color: var(--primary-600);
     padding: var(--space-sm) var(--space-md);
@@ -824,7 +825,7 @@ body {
     overflow: hidden;
 }
 
-.keyWord-div > div::before {
+.keyword-div > div::before {
     content: '';
     position: absolute;
     top: 0;
@@ -835,7 +836,7 @@ body {
     transition: left 0.5s;
 }
 
-.keyWord-div > div:hover {
+.keyword-div > div:hover {
     background: var(--primary-500);
     color: white;
     border-color: var(--primary-500);
@@ -843,42 +844,42 @@ body {
     box-shadow: var(--shadow-md);
 }
 
-.keyWord-div > div:hover::before {
+.keyword-div > div:hover::before {
     left: 100%;
 }
 
 /*!* 키워드 개별 스타일 *!
-.keyWord-div > div:nth-child(1) {
+.keyword-div > div:nth-child(1) {
     background: linear-gradient(135deg, var(--success-light) 0%, white 100%);
     border-color: var(--success);
     color: var(--success);
 }
 
-.keyWord-div > div:nth-child(1):hover {
+.keyword-div > div:nth-child(1):hover {
     background: var(--success);
     border-color: var(--success);
     color: white;
 }
 
-.keyWord-div > div:nth-child(2) {
+.keyword-div > div:nth-child(2) {
     background: linear-gradient(135deg, var(--info-light) 0%, white 100%);
     border-color: var(--info);
     color: var(--info);
 }
 
-.keyWord-div > div:nth-child(2):hover {
+.keyword-div > div:nth-child(2):hover {
     background: var(--info);
     border-color: var(--info);
     color: white;
 }
 
-.keyWord-div > div:nth-child(3) {
+.keyword-div > div:nth-child(3) {
     background: linear-gradient(135deg, var(--warning-light) 0%, white 100%);
     border-color: var(--warning);
     color: var(--warning);
 }
 
-.keyWord-div > div:nth-child(3):hover {
+.keyword-div > div:nth-child(3):hover {
     background: var(--warning);
     border-color: var(--warning);
     color: white;
@@ -931,6 +932,16 @@ body {
 .resume-request-button:active {
     transform: translateY(0);
     box-shadow: var(--shadow-sm);
+}
+
+/* 상세정보 섹션 */
+.detail-section {
+    height: 100%;
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    border: 1px solid var(--secondary-100);
+    box-shadow: var(--shadow-md);
 }
 
 /* 추천사 섹션 */
@@ -988,7 +999,7 @@ body {
 .recommendation-content::after {
     content: '"';
     position: absolute;
-    bottom: -20px;
+    bottom: -40px;
     right: 10px;
     font-size: 3rem;
     color: var(--primary-500);
@@ -1007,7 +1018,7 @@ body {
         gap: var(--space-md);
     }
 
-    .keyWord-div {
+    .keyword-div {
         min-width: auto;
         justify-content: center;
     }
@@ -1030,12 +1041,12 @@ body {
 
 /* 접근성 향상 */
 @media (prefers-reduced-motion: reduce) {
-    .keyWord-div > div,
+    .keyword-div > div,
     .resume-request-button {
         transition: none;
     }
 
-    .keyWord-div > div::before {
+    .keyword-div > div::before {
         display: none;
     }
 }

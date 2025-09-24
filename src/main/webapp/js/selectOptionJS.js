@@ -1,8 +1,8 @@
 function selectOption(selectID, data){
     selectID.val(data);
 
-    // 중분류 선택 시 소분류 옵션을 갱신하도록 change 이벤트를 트리거
-    if (selectID && selectID.length && selectID.is('#jobCategoryMid')) {
+    // 대분류 선택 시 중분류 옵션을 갱신하도록 change 이벤트를 트리거
+    if (selectID && selectID.length && selectID.is('#jobCategoryLarge')) {
         selectID.trigger('change');
     }
 }
