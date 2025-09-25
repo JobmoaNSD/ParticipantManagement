@@ -132,6 +132,7 @@ $(document).ready(function () {
 
 // 추천 키워드를 렌더링하는 함수
     function renderSuggestedKeywords() {
+        if(allSuggestedKeywords == null) return;
         suggestedContainer.innerHTML = ''; // 기존 추천 키워드 비우기
         const availableKeywords = allSuggestedKeywords.filter(keyword => !tags.includes(keyword));
 

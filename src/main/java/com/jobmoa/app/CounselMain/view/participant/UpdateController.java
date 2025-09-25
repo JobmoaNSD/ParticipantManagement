@@ -477,12 +477,23 @@ public class UpdateController {
         employmentDTO.setEmploymentJobNo(jobNo);
         particcertifDTO.setParticcertifJobNo(jobNo);
         educationDTO.setEducationJobNo(jobNo);
-        if(!basicService.update(basicDTO,counselDTO,employmentDTO,particcertifDTO,educationDTO)){
+        try{
+            if(!basicService.update(basicDTO,counselDTO,employmentDTO,particcertifDTO,educationDTO)){
+                url="participantUpdate.login?basicJobNo="+jobNo +"&"+searchBean;
+                icon="error";
+                title="참여자 업데이트 실패";
+                message="참여자 번호 : "+jobNo;
+            }
+        }catch (Exception e){
             url="participantUpdate.login?basicJobNo="+jobNo +"&"+searchBean;
             icon="error";
             title="참여자 업데이트 실패";
             message="참여자 번호 : "+jobNo;
+            log.error("update error : [{}]", e.getMessage());
+            InfoBean.info(model, url, icon, title, message);
+            return "views/info";
         }
+
 
         //update 완료 여부를 확인해 info page로 정보를 전달한다.
         InfoBean.info(model, url, icon, title, message);

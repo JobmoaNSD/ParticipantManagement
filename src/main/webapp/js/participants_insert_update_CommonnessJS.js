@@ -67,6 +67,9 @@ $(document).ready(function () {
 
     //키워드 등록 개수 확인용 함수
     function keywordCountFunction(){
+        //hiddenKeywordInput 이 0이라면 배열 제거
+        keywordArray.splice(0,keywordArray.length);
+        
         //알선 키워드 클릭시 개수 확인을 위해 추가.
         const hiddenKeywordInput = $(".hidden-keyword-input");
 
@@ -211,6 +214,8 @@ $(document).ready(function () {
                 jobPlacementTextAreaVal,  // 상세정보
                 suggestionTextAreaVal,    // 추천사
             ];
+
+            console.log(requiredFields);
 
             const hasBlankRequired = requiredFields.some(isBlank);
             const invalidKeywordRange = isKeywordCountInvalid(Number(keywordCount));
