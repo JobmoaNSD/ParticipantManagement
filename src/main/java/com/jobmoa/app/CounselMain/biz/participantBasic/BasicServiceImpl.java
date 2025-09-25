@@ -144,7 +144,7 @@ public class BasicServiceImpl implements BasicService {
 
             // 키워드 등록
             counselDTO.setCounselCondition("counselKeywordDelete");
-            flag = flag && counselDAO.delete(counselDTO);
+            counselDAO.delete(counselDTO);
 
             counselDTO.setCounselCondition("counselKeywordInsert");
             if (!counselDAO.insert(counselDTO)){
