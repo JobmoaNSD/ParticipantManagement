@@ -68,6 +68,9 @@
   <!-- selectOption JS -->
   <script src="/js/selectOptionJS.js"></script>
 
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
 </head>
 <body>
 <!-- Skip Navigation for Accessibility -->
@@ -273,6 +276,61 @@
 
   </div>
 </main>
+
+<div class="modal fade" id="resumeRequestModal" tabindex="-1" aria-labelledby="resumeRequestModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-gray-50 text-gray-800 rounded-lg">
+      <div class="modal-header p-4 border-b border-gray-200">
+        <h5 class="modal-title text-xl font-semibold" id="resumeRequestModalLabel">이력서 요청</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form id="resumeRequestForm" class="space-y-4">
+          <div>
+            <label for="companyName" class="block text-sm font-medium text-gray-700">기업명</label>
+            <input type="text" id="companyName" name="companyName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+          </div>
+          <div>
+            <label for="managerName" class="block text-sm font-medium text-gray-700">담당자명</label>
+            <input type="text" id="managerName" name="managerName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">이메일</label>
+            <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+          </div>
+          <div>
+            <label for="emergencyContact" class="block text-sm font-medium text-gray-700">비상연락처</label>
+            <input type="tel" id="emergencyContact" name="emergencyContact" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+          </div>
+          <div>
+            <label for="otherRequests" class="block text-sm font-medium text-gray-700">기타요청사항</label>
+            <textarea id="otherRequests" name="otherRequests" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer p-3 border-t border-gray-200">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" form="resumeRequestForm" id="resumeEmailRequestButton" class="btn btn-primary">요청하기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%--TODO 개인정보동의 동의 화면 모달 제작--%>
+<%--<div class="modal fade" id="personalInformation" tabindex="-1" aria-labelledby="resumeRequestModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-gray-50 text-gray-800 rounded-lg">
+      <div class="modal-header p-4 border-b border-gray-200">
+        <h5 class="modal-title text-xl font-semibold" id="resumeRequestModalLabel">이력서 요청</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+      </div>
+      <div class="modal-footer p-3 border-t border-gray-200">
+      </div>
+    </div>
+  </div>
+</div>--%>
 
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>

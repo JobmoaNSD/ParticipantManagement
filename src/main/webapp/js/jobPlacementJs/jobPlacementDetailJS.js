@@ -327,4 +327,72 @@ $(document).ready(function() {
     //시작시 적용
     keywordDivChange();
 
+    /* 이력서 요청 모달창 함수 시작 */
+
+    const resumeEmailRequestButton = $('#resumeEmailRequestButton'); // 이메일 요청 버튼
+    const resumeRequestForm = $('#resumeRequestForm'); // 이메일 요청 form
+    const companyName = $('#companyName'); // 기업명
+    const managerName = $('#managerName'); // 담당자명
+    const email = $('#email'); // 이메일
+    const emergencyContact = $('#emergencyContact'); // 비상연락처
+    const otherRequests = $('#otherRequests'); // 기타사항
+
+    // 백단으로 저장 요청 전달
+    resumeEmailRequestButton.click(function() {
+        const resumeDataArray = [];
+
+        // Input 값 배열 추가
+        resumeRequestForm.find('input').each(function() {
+            const $input = $(this);
+            const inputVal = $input.val();
+            const inputName = changeInputName($input.attr('name'));
+            console.log("inputVal: "+inputVal);
+
+            resumeDataArray[inputName] = inputVal;
+        });
+
+        //TODO 사용자 관련 백엔드 전달 API 기능 생성해야함
+        //TextArea 값 배열 추가
+        resumeDataArray[changeInputName(otherRequests.attr('name'))] = otherRequests.val();
+
+        sendResumeRequest(resumeDataArray)
+            .then(r => {
+                console.log(r)
+            })
+            .catch(e => {
+                console.log(e)
+            });
+    })
+
+    function changeInputName(inputName){
+        if(inputName === 'companyName'){
+            return "companyName"
+        }
+        else if(inputName === 'managerName'){
+            return "managerName"
+        }
+        else if(inputName === 'email'){
+            return "email"
+        }
+        else if(inputName === 'emergencyContact'){
+            return "emergencyContact"
+        }
+        else if(inputName === 'otherRequests'){
+            return "otherRequests"
+        }
+    }
+
+    async function sendResumeRequest(resumeDataArray) {
+        console.log();
+        return resumeDataArray
+    }
+
+    /* 이력서 요청 모달창 표시 */
+    $('#resume-request-button').click(function() {
+        const resumeRequestModal = new bootstrap.Modal($('#resumeRequestModal'));
+        resumeRequestModal.show();
+    });
+
+    /* 이력서 요청 모달창 함수 끝 */
+
 });
