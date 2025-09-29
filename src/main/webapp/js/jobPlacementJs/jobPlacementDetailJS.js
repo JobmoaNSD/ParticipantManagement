@@ -328,36 +328,118 @@ $(document).ready(function() {
     keywordDivChange();
 
     /* 이력서 요청 모달창 함수 시작 */
-
-    const resumeEmailRequestButton = $('#resumeEmailRequestButton'); // 이메일 요청 버튼
-    const resumeRequestForm = $('#resumeRequestForm'); // 이메일 요청 form
-    const companyName = $('#companyName'); // 기업명
-    const managerName = $('#managerName'); // 담당자명
-    const email = $('#email'); // 이메일
-    const emergencyContact = $('#emergencyContact'); // 비상연락처
-    const otherRequests = $('#otherRequests'); // 기타사항
+    const $resumeEmailRequestButton = $('#resumeEmailRequestButton'); // 이메일 요청 버튼
+    const $resumeRequestForm = $('#resumeRequestForm'); // 이메일 요청 form
+    const $companyName = $('#companyName'); // 기업명
+    const $managerName = $('#managerName'); // 담당자명
+    const $email = $('#email'); // 이메일
+    const $emergencyContact = $('#emergencyContact'); // 비상연락처
+    const $otherRequests = $('#otherRequests'); // 기타사항
+    const checkboxNames = [
+        'personalInformationAgreeMarketing',
+        'personalInformationAgreeCompany',
+        'personalInformationAgreeManager',
+    ];
 
     // 백단으로 저장 요청 전달
-    resumeEmailRequestButton.click(function() {
-        const resumeDataArray = [];
+    $resumeEmailRequestButton.click(function() {
+        const resumeDataArray = {};
 
-        // Input 값 배열 추가
-        resumeRequestForm.find('input').each(function() {
-            const $input = $(this);
-            const inputVal = $input.val();
-            const inputName = changeInputName($input.attr('name'));
-            console.log("inputVal: "+inputVal);
+        //otherRequests 기타사항 XLS 공격방어를 위해 작성
+        const XLSRegex = /(<script\b[^>]*>([\s\S]*?)<\/script>)/gm
 
-            resumeDataArray[inputName] = inputVal;
+        // 폼 요소(input, textarea) 값을 배열에 추가
+        $resumeRequestForm.find('input, textarea').each(function () {
+            const $element = $(this);
+            const name = changeInputName($element.attr('name'));
+
+            if (!name) {
+                return; // 이름이 없는 요소는 건너뜁니다.
+            }
+
+            let value = checkboxNames.includes(name) ? $element.is(':checked') : $element.val();
+
+            if (typeof value === 'string') {
+                value = value.replace(XLSRegex, '');
+            }
+
+            console.log(`inputVal: ${value}`);
+            resumeDataArray[name] = value;
         });
 
-        //TODO 사용자 관련 백엔드 전달 API 기능 생성해야함
-        //TextArea 값 배열 추가
-        resumeDataArray[changeInputName(otherRequests.attr('name'))] = otherRequests.val();
+        const companyName = $companyName.val();
+        const managerName = $managerName.val();
+        const email = $email.val();
+        const emergencyContact = $emergencyContact.val();
 
+        const isCheckValue = companyName === '' || managerName === '' || email === '' || emergencyContact === '';
+        if(isCheckValue){
+            if (companyName === ''){
+                $companyName.focus();
+                $companyName.css('border-color', 'red');
+                $companyName.css('border-width', '2px');
+                $companyName.css('border-style', 'solid');
+                $companyName.css('border-radius', '5px');
+                $companyName.css('background-color', '#f8d7da');
+                $companyName.css('color', '#721c24');
+                $companyName.css('font-weight', 'bold');
+            }
+            else if (managerName === ''){
+                $managerName.focus();
+                $managerName.css('border-color', 'red');
+                $managerName.css('border-width', '2px');
+                $managerName.css('border-style', 'solid');
+                $managerName.css('border-radius', '5px');
+                $managerName.css('background-color', '#f8d7da');
+                $managerName.css('color', '#721c24');
+                $managerName.css('font-weight', 'bold');
+            }
+            else if (email === ''){
+                $email.focus();
+                $email.css('border-color', 'red');
+                $email.css('border-width', '2px');
+                $email.css('border-style', 'solid');
+                $email.css('border-radius', '5px');
+                $email.css('background-color', '#f8d7da');
+                $email.css('color', '#721c24');
+                $email.css('font-weight', 'bold');
+            }
+            else if (emergencyContact === ''){
+                $emergencyContact.focus();
+                $emergencyContact.css('border-color', 'red');
+                $emergencyContact.css('border-width', '2px');
+                $emergencyContact.css('border-style', 'solid');
+                $emergencyContact.css('border-radius', '5px');
+                $emergencyContact.css('background-color', '#f8d7da');
+                $emergencyContact.css('color', '#721c24');
+                $emergencyContact.css('font-weight', 'bold');
+            }
+            return;
+        }
+        else{
+            $companyName.removeAttr('style');
+            $managerName.removeAttr('style');
+            $email.removeAttr('style');
+            $emergencyContact.removeAttr('style');
+        }
+
+        //emergencyContact(비상연락처) 전화번호 형식으로 작성
+        const emergencyContactRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+        if(!emergencyContactRegex.test(emergencyContact)){
+            alert("전화번호 형식으로 작성해주세요.")
+            return;
+        }
+
+
+        //TODO 사용자 관련 백엔드 전달 API 기능 생성해야함
         sendResumeRequest(resumeDataArray)
             .then(r => {
-                console.log(r)
+                const response = r.json();
+                console.log("sendResumeRequest(resumeDataArray): "+r)
+                //TODO 백엔드 완료 데이터 확인용 메시지 보여줄 수 있도록 설정하고 모달창 숨김처리
+                response.then(data => {
+
+                })
             })
             .catch(e => {
                 console.log(e)
@@ -369,29 +451,110 @@ $(document).ready(function() {
             return "companyName"
         }
         else if(inputName === 'managerName'){
-            return "managerName"
+            return "contactName"
         }
         else if(inputName === 'email'){
-            return "email"
+            return "contactEmail"
         }
         else if(inputName === 'emergencyContact'){
-            return "emergencyContact"
+            return "contactPhone"
         }
         else if(inputName === 'otherRequests'){
-            return "otherRequests"
+            return "contactOther"
+        }
+        //마케팅 개인정보 사용 동의
+        else if(inputName === 'personalInformationAgreeMarketing'){
+            return "marketingConsent"
+        }
+        //기업 담당자 개인정보 동의
+        else if(inputName === 'personalInformationAgreeManager'){
+            return "contactPrivacy"
+        }
+        //기업 담당자가 확인해야할 개인정보 처리 동의
+        else if(inputName === 'personalInformationAgreeCompany'){
+            return "companyPrivacy"
+        }
+        else{
+            return inputName
         }
     }
 
     async function sendResumeRequest(resumeDataArray) {
-        console.log();
-        return resumeDataArray
+        console.log(resumeDataArray);
+        // return resumeDataArray;
+        return await fetch('/jobPlacement/resumeRequest', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(resumeDataArray)
+        })
     }
 
-    /* 이력서 요청 모달창 표시 */
+    // 이력서 요청 개인정보 모달창 표시
     $('#resume-request-button').click(function() {
+        const personalInformation = new bootstrap.Modal($('#personalInformationModal'));
+        personalInformation.show();
+    })
+
+
+
+    // 개인정보 전체 동의
+    $('#personal-information-agree').click(function() {
+        console.log("personal-information-agree Start");
+
+        // 공통 클래스를 사용하여 모든 동의 체크박스를 한번에 선택합니다.
+        const $agreeCheckboxes = $('.personalInformationAgree');
+
+        // 모든 체크박스가 이미 선택되어 있는지 확인합니다.
+        const allChecked = $agreeCheckboxes.length === $agreeCheckboxes.filter(':checked').length;
+
+        // 새로운 체크 상태를 결정합니다. (모두 선택되었다면 -> 해제, 그렇지 않다면 -> 모두 선택)
+        const newCheckedState = !allChecked;
+
+        // 모든 체크박스에 새로운 상태를 일괄 적용합니다.
+        $agreeCheckboxes.prop('checked', newCheckedState);
+
+        console.log("personal-information-agree End");
+    });
+
+    // 이력서 요청 모달창 표시
+    $('#btn-next-modal').click(function() {
         const resumeRequestModal = new bootstrap.Modal($('#resumeRequestModal'));
+        const $personalInformation = $('#personalInformationModal');
+        const $personalInformationAgreeCompany = $('#personalInformationAgreeCompany')
+        const $personalInformationAgreeManager = $('#personalInformationAgreeManager')
+
+        if($personalInformationAgreeCompany.is(':checked') === false || $personalInformationAgreeManager.is(':checked') === false){
+            alert("필수 동의를 확인해주세요.")
+            return;
+        }
+
+        $personalInformation.modal('hide');
         resumeRequestModal.show();
     });
+
+    //modal 해제 후 input 값 제거
+    /*$('#personalInformationModal').on('hidden.bs.modal', function (e) {
+        modalHidden()
+    })*/
+    $('#resumeRequestModal').on('hidden.bs.modal', function (e) {
+        modalHidden()
+    })
+
+    function modalHidden(){
+        // const $resumeRequestModalLabel = $('#resumeRequestModalLabel');
+        const $agreeCheckboxes = $('.personalInformationAgree');
+
+        // $resumeRequestModalLabel.val('');
+        $companyName.val('');
+        $managerName.val('');
+        $email.val('');
+        $emergencyContact.val('');
+        $otherRequests.val('');
+        $agreeCheckboxes.prop('checked', false);
+
+    }
 
     /* 이력서 요청 모달창 함수 끝 */
 

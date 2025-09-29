@@ -143,7 +143,7 @@ public class JobPlacementDTO {
      * 페이지네이션 현재 페이지 번호
      */
     private int page;
-    
+
     /**
      * 페이지네이션 시작 번호
      */
@@ -158,7 +158,7 @@ public class JobPlacementDTO {
      * 페이지네이션 불러올 데이터 개수
      */
     private int pageRows;
-    
+
     /**
      * 페이지네이션 전체 데이터 개수
      */
@@ -198,7 +198,7 @@ public class JobPlacementDTO {
      * 희망 연봉 필터 시작
      */
     private int desiredSalaryStartFilter;
-    
+
     /**
      * 희망 연봉 필터 끝
      */
@@ -213,5 +213,45 @@ public class JobPlacementDTO {
      * 필터 사용 flag
      */
     private boolean filterFlag;
+
+    /**
+     * 이력서 요청 폼 기업명
+     */
+    private String companyName;
+
+    /**
+     * 이력서 요청 폼 담당자명
+     */
+    private String contactName;
+
+    /**
+     * 이력서 요청 폼 이메일
+     */
+    private String contactEmail;
+
+    /**
+     * 이력서 요청 폼 비상연락처
+     */
+    private String contactPhone;
+
+    /**
+     * 이력서 요청 폼 기타요청사항
+     */
+    private String contactOther;
+
+    /**
+     * 이력서 요청 폼 채용 기업(개인정보 수신자)을 위한 개인정보 처리 안내
+     */
+    private String companyPrivacy;
+
+    /**
+     * 이력서 요청 폼 채용 담당자 개인정보 수집·이용 동의
+     */
+    private String contactPrivacy;
+
+    /**
+     * 이력서 요청 폼 홍보 및 마케팅 정보 수신 동의
+     */
+    private String marketingConsent;
 
 }
