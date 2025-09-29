@@ -277,6 +277,8 @@
   </div>
 </main>
 
+
+<form id="resumeRequestForm" class="space-y-4">
 <div class="modal fade" id="resumeRequestModal" tabindex="-1" aria-labelledby="resumeRequestModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content bg-gray-50 text-gray-800 rounded-lg">
@@ -285,28 +287,28 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-4">
-        <form id="resumeRequestForm" class="space-y-4">
+        <%-- 참여자 구직번호 전달용 input --%>
+        <input type="hidden" id="jobNumber" name="jobNumber" value="${data.jobNumber}">
           <div>
-            <label for="companyName" class="block text-sm font-medium text-gray-700">기업명</label>
-            <input type="text" id="companyName" name="companyName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+            <label for="companyName" class="block text-sm font-medium text-gray-700">기업명 <span class="text-red-600 text-lg">*</span></label>
+            <input type="text" id="companyName" name="companyName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" required>
           </div>
           <div>
-            <label for="managerName" class="block text-sm font-medium text-gray-700">담당자명</label>
-            <input type="text" id="managerName" name="managerName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+            <label for="managerName" class="block text-sm font-medium text-gray-700 mt-2">담당자명 <span class="text-red-600 text-lg">*</span></label>
+            <input type="text" id="managerName" name="managerName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm  sm:text-sm" required>
           </div>
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">이메일</label>
-            <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+            <label for="email" class="block text-sm font-medium text-gray-700 mt-2">이메일 <span class="text-red-600 text-lg">*</span></label>
+            <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm  sm:text-sm" required>
           </div>
           <div>
-            <label for="emergencyContact" class="block text-sm font-medium text-gray-700">비상연락처</label>
-            <input type="tel" id="emergencyContact" name="emergencyContact" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+            <label for="emergencyContact" class="block text-sm font-medium text-gray-700 mt-2">비상연락처 <span class="text-red-600 text-lg">*</span></label>
+            <input type="tel" id="emergencyContact" name="emergencyContact" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm" required>
           </div>
           <div>
-            <label for="otherRequests" class="block text-sm font-medium text-gray-700">기타요청사항</label>
-            <textarea id="otherRequests" name="otherRequests" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+            <label for="otherRequests" class="block text-sm font-medium text-gray-700 mt-2">기타요청사항</label>
+            <textarea id="otherRequests" name="otherRequests" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"></textarea>
           </div>
-        </form>
       </div>
       <div class="modal-footer p-3 border-t border-gray-200">
         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">취소</button>
@@ -317,20 +319,94 @@
 </div>
 
 <%--TODO 개인정보동의 동의 화면 모달 제작--%>
-<%--<div class="modal fade" id="personalInformation" tabindex="-1" aria-labelledby="resumeRequestModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="personalInformationModal" tabindex="-1" aria-labelledby="personalInformationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content bg-gray-50 text-gray-800 rounded-lg">
+      <!--modal header -->
       <div class="modal-header p-4 border-b border-gray-200">
-        <h5 class="modal-title text-xl font-semibold" id="resumeRequestModalLabel">이력서 요청</h5>
+        <h5 class="modal-title text-xl font-semibold" id="personalInformationModalLabel">이력서 요청</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body p-4">
+
+      <!--modal body -->
+      <div class="modal-body p-4 space-y-4">
+
+        <div class="personalInformationTextAreaDiv">
+          <label for="" class="block text-sm font-medium text-gray-700 mb-1">채용 기업(개인정보 수신자)을 위한 개인정보 처리 안내(필수)</label>
+          <div class="w-full p-3 border border-gray-300 bg-gray-100 rounded-md overflow-auto text-sm">
+            <p>귀사(채용 기업)께서 (주)잡모아를 통해 제공받는 구직자의 개인정보는 개인정보보호법에 따라 엄격하게 처리되어야 합니다.</p>
+            <h3 class="font-semibold mt-2 mb-1"><strong>개인정보 처리 목적의 한정 및 이용 금지</strong></h3>
+            <ul class="list-disc list-inside space-y-1">
+              <li>제공받은 개인정보는 <strong>오직 구직자의 채용 심사 및 면접 기회 제공 목적으로만 이용</strong>되어야 합니다.</li>
+              <li>해당 정보를 당초의 채용 목적 <strong>외로 이용하거나 제3자에게 제공할 수 없습니다</strong>.</li>
+            </ul>
+            <h3 class="font-semibold mt-2 mb-1"><strong>안전성 확보 의무 및 파기</strong></h3>
+            <ul class="list-disc list-inside space-y-1">
+              <li><strong>안전성 확보</strong>: 귀사는 제공받은 구직자의 개인정보가 유출되거나 훼손되지 않도록 기술적·관리적 안전조치를 취해야 합니다. 데이터베이스(DB)에 저장된 개인정보는 <strong>AES256 이상 알고리즘으로 암호화</strong>되어야 하며, 관리자 계정이라도 <strong>접근 권한 제한(RBAC)을 설정</strong>해야 합니다.</li>
+              <li><strong>파기 의무</strong>: 채용 심사 목적이 달성되어 개인정보가 <strong>불필요하게 된 시점</strong>에 지체 없이 파기해야 합니다. 표준 개인정보 보호지침에 따르면, 불필요해진 후 <strong>5일 이내에 파기</strong>하는 것이 권고됩니다.</li>
+            </ul>
+            <h3 class="font-semibold mt-2 mb-1"><strong>주민등록번호 및 민감 정보 수집 제한</strong></h3>
+            <ul class="list-disc list-inside space-y-1">
+              <li><strong>주민등록번호 수집 제한</strong>: 채용 심사를 위한 이력서 제출 단계에서는 법률에 명확한 근거가 없으므로 구직자의 <strong>주민등록번호를 수집할 수 없습니다</strong>. 이는 <strong>최종합격이 확정된 이후에만</strong> 법률 근거에 따라 처리할 수 있습니다.</li>
+            </ul>
+          </div>
+          <div class="mt-2 text-end">
+            <label for="personalInformationAgreeCompany">[필수] 채용 기업(개인정보 수신자)을 위한 개인정보 처리 안내</label>
+            <input type="checkbox" id="personalInformationAgreeCompany" class="personalInformationAgree" name="personalInformationAgreeCompany" value="true" required>
+          </div>
+        </div>
+
+        <div class="personalInformationTextAreaDiv">
+          <label for="" class="block text-sm font-medium text-gray-700 mb-1">채용 담당자 개인정보 수집·이용 동의(필수)</label>
+          <div class="w-full p-3 border border-gray-300 bg-gray-100 rounded-md overflow-auto text-sm">
+            <p>(주)잡모아는 귀사(채용 기업)의 담당자님과 원활한 서비스 이행을 위해 아래와 같이 개인정보를 수집 및 이용하고자 합니다.</p>
+            <h3 class="font-semibold mt-2 mb-1"><strong>개인정보 수집·이용</strong></h3>
+            <ul class="list-disc list-inside space-y-1">
+              <li><strong>수집 항목</strong>: <strong>기업명, 담당자명, 이메일, 비상연락처</strong></li>
+              <li><strong>수집 및 이용 목적</strong>: 취업 알선 서비스 이행, 이력서 발부 및 전송, 채용 프로세스 진행 상황 안내, 담당자 커뮤니케이션 및 상담 지원</li>
+              <li><strong>이용 및 보유 기간</strong>: 서비스 계약 종료 시 또는 정보주체의 동의 철회 시까지</li>
+              <li><strong>동의 거부 권리</strong>: 담당자님은 위 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있으나, 거부 시 <strong>취업 알선 서비스 이용이 불가능</strong>할 수 있습니다.</li>
+            </ul>
+          </div>
+          <div class="mt-2 text-end">
+            <label for="personalInformationAgreeManager">[필수] 채용 담당자 개인정보 수집·이용 동의</label>
+            <input type="checkbox" id="personalInformationAgreeManager" class="personalInformationAgree" name="personalInformationAgreeManager" value="true" required>
+          </div>
+        </div>
+
+        <div class="personalInformationTextAreaDiv">
+          <label for="" class="block text-sm font-medium text-gray-700 mb-1">홍보 및 마케팅 정보 수신 동의(선택)</label>
+          <div class="w-full p-3 border border-gray-300 bg-gray-100 rounded-md overflow-auto text-sm">
+            <p>(주)잡모아는 귀사(채용 기업)의 담당자님과 원활한 서비스 이행을 위해 아래와 같이 개인정보를 수집 및 이용하고자 합니다.</p>
+            <h3 class="font-semibold mt-2 mb-1"><strong>개인정보 수집·이용</strong></h3>
+            <ul class="list-disc list-inside space-y-1">
+              <li><strong>수집 항목</strong>: 담당자명, 연락처</li>
+              <li><strong>수집 및 이용 목적</strong>: (주)잡모아의 신규 상품 및 서비스 관련 홍보∙마케팅 정보 전달</li>
+              <li><strong>이용 및 보유 기간</strong>: 정보주체의 동의 철회 시 또는 홍보/마케팅 목적 달성 시까지 (예시: 수집일로부터 6개월까지 보관/이용 후 파기)</li>
+              <li><strong>동의 거부 권리</strong>: 귀하는 홍보‧마케팅 활용을 위한 개인정보 수집·이용 동의를 거부할 권리가 있으며, <strong>동의 거부 시에도 핵심 서비스(채용 알선) 신청 및 이용은 가능</strong>합니다.</li>
+            </ul>
+          </div>
+          <div class="mt-2 text-end">
+            <label for="personalInformationAgreeMarketing">[선택] 홍보 및 마케팅 정보 수신 동의</label>
+            <input type="checkbox" id="personalInformationAgreeMarketing" class="personalInformationAgree" name="personalInformationAgreeMarketing" value="true" required>
+          </div>
+        </div>
+
       </div>
-      <div class="modal-footer p-3 border-t border-gray-200">
+
+      <!--modal footer -->
+      <div class="modal-footer p-3 flex justify-end items-center space-x-2 border-t border-gray-200">
+        <button type-="button" id="personal-information-agree" class="py-2 px-4 bg-gray-200 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 transition duration-150 ease-in-out" aria-label="전체동의">
+          전체동의
+        </button>
+        <button type="button" id="btn-next-modal" class="py-2 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition duration-150 ease-in-out" data-bs-dismiss="resumeRequestModal" aria-label="다음">
+          다음
+        </button>
       </div>
     </div>
   </div>
-</div>--%>
+</div>
+</form>
 
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>

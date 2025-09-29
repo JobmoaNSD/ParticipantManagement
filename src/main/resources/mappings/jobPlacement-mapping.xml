@@ -219,4 +219,36 @@
     <delete id="deletePlacementDetail">
         DELETE FROM J_참여자관리_알선상세정보 WHERE 구직번호 = #{jobNumber}
     </delete>
+
+    <!-- 이력서 요청 Query 시작 -->
+    <insert id="resumeRequestInsertAsync">
+        INSERT INTO J_참여자관리_이력서요청양식
+            (구직번호,
+             기업명,
+             담당자명,
+             이메일,
+             비상연락처,
+             기타요청사항,
+             상태,
+             등록일,
+             수정일,
+             기업개인정보처리동의,
+             기업담당자개인정보처리동의,
+             마케팅개인정보사용동의)
+        VALUES
+            (#{jobNumber},
+             #{companyName},
+             #{contactName},
+             #{contactEmail},
+             #{contactPhone},
+             #{contactOther},
+             '요청',
+             GETDATE(),
+             GETDATE(),
+             #{companyPrivacy},
+             #{contactPrivacy},
+             #{marketingConsent})
+    </insert>
+
+    <!-- 이력서 요청 Query 끝 -->
 </mapper>
