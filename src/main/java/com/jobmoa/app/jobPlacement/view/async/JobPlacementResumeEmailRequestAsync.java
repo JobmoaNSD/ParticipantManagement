@@ -40,11 +40,12 @@ public class JobPlacementResumeEmailRequestAsync {
         }
         catch(SQLException e){
             log.error("JobPlacementResumeEmailRequestAsync resumeRequestAsync SQLException Error : {}",e.getMessage());
-            return ResponseEntity.status(400).body(e.getMessage());
+            responseJson = String.format(responseJson,"error","이력서 요청 실패. 서버 문제로 이력서 요청에 실패했습니다.");
+            return ResponseEntity.status(400).body(responseJson);
         }
         catch(Exception e){
             log.error("JobPlacementResumeEmailRequestAsync resumeRequestAsync Exception Error : {}",e.getMessage());
-            responseJson = String.format(responseJson,"error","이력서 요청중 오류가 발생했습니다.");
+            responseJson = String.format(responseJson,"error","이력서 요청 실패. 서버 요청에 문제가 발생했습니다.");
             return ResponseEntity.status(500).body(responseJson);
         }
     }
