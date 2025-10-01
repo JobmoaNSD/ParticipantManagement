@@ -122,4 +122,17 @@ public class ParticipantDTO {
     private String searchStartDate;
     private String searchEndDate;
 
+    // 이력서 요청 관련 필드들
+    private String companyName; // 기업명
+    private String contactName; // 담당자명
+    private String contactEmail; // 이메일
+    private String contactPhone; // 비상연락처
+    private String contactOther; // 기타요청사항
+    private String status; // 상태 (요청, 승인, 거부, 완료)
+    private String registrationDate; // 등록일
+    private String modificationDate; // 수정일
+    private boolean companyPrivacy; // 기업개인정보처리동의
+    private boolean contactPrivacy; // 기업담당자개인정보처리동의
+    private boolean marketingConsent; // 마케팅개인정보사용동의
+
 }

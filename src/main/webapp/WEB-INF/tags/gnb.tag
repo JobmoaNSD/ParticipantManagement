@@ -164,7 +164,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="placementManagement.login" class="nav-link">
+                            <a href="/resumeRequest/list.login" class="nav-link" target="_blank">
                                 <small><p>자소서 요청 참여자관리</p></small>
                             </a>
                         </li>

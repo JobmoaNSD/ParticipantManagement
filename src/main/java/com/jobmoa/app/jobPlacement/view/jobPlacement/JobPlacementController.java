@@ -207,6 +207,7 @@ public class JobPlacementController {
         return viewPage;
     }
 
+
     //개인정보 숨기기
     private void hideInfo(JobPlacementDTO data, String originalName, String originalAddress){
         if (originalName != null && !originalName.isEmpty()) {
