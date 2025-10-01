@@ -431,18 +431,31 @@ $(document).ready(function() {
         }
 
 
-        //TODO 사용자 관련 백엔드 전달 API 기능 생성해야함
         sendResumeRequest(resumeDataArray)
             .then(r => {
                 const response = r.json();
                 console.log("sendResumeRequest(resumeDataArray): "+r)
-                //TODO 백엔드 완료 데이터 확인용 메시지 보여줄 수 있도록 설정하고 모달창 숨김처리
                 response.then(data => {
-
+                    if(data.statusData === 'success'){
+                        console.log(data.message)
+                        alertDefaultSuccess(data.message);
+                        $('#resumeRequestModal').modal('hide');
+                        $resumeRequestForm.trigger('reset');
+                        $resumeEmailRequestButton.attr('disabled', true);
+                    }
+                    else if(data.statusData === 'error'){
+                        console.log(data.message)
+                        alertDefaultError("이력서 발송에 실패했습니다.");
+                    }
+                    else{
+                        console.log(data.message)
+                        alertDefaultError("서버 오류로 이력서 발송에 실패했습니다.");
+                    }
                 })
             })
             .catch(e => {
                 console.log(e)
+                alertDefaultError("서버 오류로 이력서 발송에 실패했습니다. \n하단 상담사 이메일로 요청 부탁드립니다.");
             });
     })
 

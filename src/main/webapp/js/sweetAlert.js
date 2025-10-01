@@ -1,3 +1,11 @@
+/** sweetAlert.js 사용방법
+ *     <!-- sweetalert2 -->
+ *     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+ *     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+ *     <script src="js/sweetAlert.js"></script>
+ *
+ * */
+
     function alertDefaultSuccess(title, text) {
         return Swal.fire({
             icon: 'success',
