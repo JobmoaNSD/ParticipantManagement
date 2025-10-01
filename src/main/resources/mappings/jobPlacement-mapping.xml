@@ -250,5 +250,6 @@
              #{marketingConsent})
     </insert>
 
+
     <!-- 이력서 요청 Query 끝 -->
 </mapper>
