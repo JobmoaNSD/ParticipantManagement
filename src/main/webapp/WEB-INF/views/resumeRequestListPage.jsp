@@ -92,7 +92,7 @@
             <select class="form-select" id="statusFilter" name="status">
               <option value="">전체</option>
               <option value="요청">요청</option>
-              <option value="승인">승인</option>
+              <option value="예정">예정</option>
               <option value="거부">거부</option>
               <option value="완료">완료</option>
             </select>
@@ -177,7 +177,7 @@
                           <c:when test="${request.status eq '요청'}">
                             <span class="badge bg-warning text-dark">${request.status}</span>
                           </c:when>
-                          <c:when test="${request.status eq '승인'}">
+                          <c:when test="${request.status eq '예정'}">
                             <span class="badge bg-success">${request.status}</span>
                           </c:when>
                           <c:when test="${request.status eq '거부'}">
@@ -199,8 +199,8 @@
                                             data-job-number="${request.participantJobNo}"
                                             data-company-name="${request.companyName}"
                                             data-registration-date="${request.registrationDate}"
-                                            data-status="승인">
-                                        <i class="bi bi-check-lg"></i> 승인
+                                            data-status="예정">
+                                        <i class="bi bi-check-lg"></i> 예정
                                     </button>
                                     <button type="button" class="btn btn-outline-danger btn-sm status-update-btn"
                                             data-job-number="${request.participantJobNo}"
@@ -210,7 +210,7 @@
                                         <i class="bi bi-x-lg"></i> 거부
                                     </button>
                                 </c:when>
-                                <c:when test="${request.status eq '승인'}">
+                                <c:when test="${request.status eq '예정'}">
                                     <button type="button" class="btn btn-outline-primary btn-sm status-update-btn"
                                             data-job-number="${request.participantJobNo}"
                                             data-company-name="${request.companyName}"
