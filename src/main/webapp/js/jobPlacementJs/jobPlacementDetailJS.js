@@ -367,10 +367,10 @@ $(document).ready(function() {
             resumeDataArray[name] = value;
         });
 
-        const companyName = $companyName.val();
-        const managerName = $managerName.val();
-        const email = $email.val();
-        const emergencyContact = $emergencyContact.val();
+        const companyName = $companyName.val().trim();
+        const managerName = $managerName.val().trim();
+        const email = $email.val().trim();
+        const emergencyContact = $emergencyContact.val().trim();
 
         const isCheckValue = companyName === '' || managerName === '' || email === '' || emergencyContact === '';
         if(isCheckValue){
@@ -423,10 +423,19 @@ $(document).ready(function() {
             $emergencyContact.removeAttr('style');
         }
 
-        //emergencyContact(비상연락처) 전화번호 형식으로 작성
+        //emergencyContact(비상연락처) 전화번호 정규식
         const emergencyContactRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+        //이메일 정규식
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        //emergencyContact(비상연락처) 전화번호 형식 확인
         if(!emergencyContactRegex.test(emergencyContact)){
             alert("전화번호 형식으로 작성해주세요.")
+            return;
+        }
+        //email 이메일 형식으로 확인
+        else if(!emailRegex.test(email)){
+            alert("이메일 형식으로 작성해주세요.")
             return;
         }
 

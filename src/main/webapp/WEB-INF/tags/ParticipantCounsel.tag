@@ -178,6 +178,7 @@
                     <div class="bg-white">
                         <h1 class="mb-2 mt-2">키워드 추가하기</h1>
                         <p id="description" class="text-slate-500 mb-1">프로젝트에 관련된 키워드를 입력하거나 추천 키워드를 클릭하세요.</p>
+                        <p id="description" class="text-slate-500 mb-1 small text-danger">※키워드를 직접입력할때 ,(쉼표)로 구분합니다.</p>
 
                         <!-- 키워드 입력 컨테이너 -->
                         <div id="keywords-container" class="w-full border-2 border-slate-200 rounded-lg p-2 flex items-center flex-wrap gap-2 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200 transition-all duration-300">

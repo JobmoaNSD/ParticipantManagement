@@ -158,7 +158,7 @@ $(document).ready(function() {
             case '요청':
                 badgeClass = 'bg-warning text-dark';
                 break;
-            case '승인':
+            case '예정':
                 badgeClass = 'bg-success';
                 break;
             case '거부':
@@ -184,8 +184,8 @@ $(document).ready(function() {
                         data-job-number="${jobNumber}"
                         data-company-name="${companyName}"
                         data-registration-date="${registrationDate}"
-                        data-status="승인">
-                    <i class="bi bi-check-lg"></i> 승인
+                        data-status="예정">
+                    <i class="bi bi-check-lg"></i> 예정
                 </button>
                 <button type="button" class="btn btn-outline-danger btn-sm status-update-btn"
                         data-job-number="${jobNumber}"
@@ -195,7 +195,7 @@ $(document).ready(function() {
                     <i class="bi bi-x-lg"></i> 거부
                 </button>
             `;
-        } else if (newStatus === '승인') {
+        } else if (newStatus === '예정') {
             actionButtons = `
                 <button type="button" class="btn btn-outline-primary btn-sm status-update-btn"
                         data-job-number="${jobNumber}"
