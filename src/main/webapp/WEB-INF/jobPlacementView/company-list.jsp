@@ -17,6 +17,8 @@
     <meta name="description" content="국민취업지원제도 참여자 목록 확인 페이지">
     <title>참여자 목록 확인 - 국민취업지원제도</title>
     <mytag:Logo/>
+    <!-- jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net"/>
@@ -36,6 +38,9 @@
 
     <!-- InputLimits.js -->
     <script src="/js/InputLimits.js"></script>
+
+    <!-- jobCategorySelectRenderText.js -->
+    <script src="/js/jobPlacementJs/jobPlacementJobCategorySelectRenderText.js"></script>
 
 </head>
 <body>
@@ -74,135 +79,237 @@
       </div>
     </div>
 
-    <!-- 검색 및 필터 -->
-    <div class="search-filters">
-      <div class="row">
+      <!-- 검색 및 필터 -->
+      <div class="search-filters">
+          <div class="row">
 
-        <div class="col-md-5 ps-0 pe-0">
-            <label for="searchKeyword" class="form-label">
-                <i class="bi bi-search"></i> 검색
-            </label>
-            <div class="d-flex flex-row bd-highlight">
-                <select class="form-select w-25" id="searchType" name="searchType">
-                    <option value="">전체</option>
-                    <option value="구직번호">구직번호</option>
-                    <option value="희망직종">희망직종</option>
-                    <option value="거주지">거주지</option>
-                </select>
-                <input type="search"
-                       class="form-control search-input"
-                       id="searchKeyword"
-                       name="searchKeyword"
-                       placeholder="검색어를 입력해주세요.">
-            </div>
-        </div>
-        <div class="col-md-2">
-          <label for="ageStartFilter" class="form-label">
-            <i class="bi bi-filter"></i> 나이 필터
-          </label>
-            <div class="d-flex align-items-center">
-                <input type="number" class="form-control w-50 text-center" max="100" min="17" id="ageStartFilter" name="ageStartFilter" placeholder="18">
-                ~
-                <input type="number" class="form-control w-50 text-center" max="100" min="17" id="ageEndFilter" name="ageEndFilter" placeholder="35">
-            </div>
-        </div>
-          <div class="col-md-2 ps-0 pe-0">
-          <label for="desiredSalaryStartFilter" class="form-label">
-            <i class="bi bi-filter"></i> 희망 연봉 필터
-          </label>
-              <div class="d-flex align-items-center">
-                  <input type="number" class="form-control text-center" min="0" id="desiredSalaryStartFilter" name="desiredSalaryStartFilter" placeholder="0">
-                  ~
-                  <input type="number" class="form-control text-center" min="0" id="desiredSalaryEndFilter" name="desiredSalaryEndFilter" placeholder="3000">
+              <div class="col-md-7">
+                  <label for="searchKeyword" class="form-label">
+                      <i class="bi bi-search"></i> 검색
+                  </label>
+                  <div class="d-flex flex-row bd-highlight">
+                      <select class="form-select w-25" id="searchType" name="searchType">
+                          <option value="">전체</option>
+                          <option value="구직번호">구직번호</option>
+                          <option value="희망직종">상담사</option>
+                      </select>
+                      <input type="search"
+                             class="form-control search-input"
+                             id="searchKeyword"
+                             name="searchKeyword"
+                             placeholder="검색어를 입력해주세요.">
+                  </div>
               </div>
-        </div>
-          <div class="col-md-2">
-              <label for="genderFilter" class="form-label">
-                  <i class="bi bi-filter"></i> 성별 필터
-              </label>
-              <select class="form-select" id="genderFilter" name="genderFilter">
-                  <option value="">전체 성별</option>
-                  <option value="남">남</option>
-                  <option value="여">여</option>
-              </select>
-          </div>
-          <div class="col-md-1 ps-0 pe-0">
-              <label for="countFilter" class="form-label">
-                  <i class="bi bi-filter"></i> 조회 개수
-              </label>
-              <select class="form-select" id="countFilter" name="pageRows">
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
-                  <option value="40">40</option>
-                  <option value="50">50</option>
-              </select>
-          </div>
-      </div>
-    </div>
 
-    <!-- 참여자 목록 테이블 -->
-    <div class="card-modern">
-      <div class="table-responsive">
-        <table class="table table-modern mb-0" id="participantTable">
-          <thead>
-          <tr>
-<%--            <th scope="col" style="width: 60px;">--%>
-<%--              <input type="checkbox"--%>
-<%--                     class="form-check-input"--%>
-<%--                     id="selectAllCheckbox"--%>
-<%--                     aria-label="전체 선택">--%>
-<%--            </th>--%>
-            <th scope="col" style="width: 120px;">구직번호</th>
-            <th scope="col">이름</th>
-            <th scope="col">나이</th>
-            <th scope="col">성별</th>
-            <th scope="col">거주지</th>
-            <th scope="col">희망직종</th>
-            <th scope="col">희망연봉</th>
-            <th scope="col" style="width: 120px;">상세정보</th>
-          </tr>
-          </thead>
-          <tbody id="participantTableBody">
-          <c:choose>
-              <c:when test="${not empty jobPlacementDatas}">
-                  <c:forEach items="${jobPlacementDatas}" var="datas">
-                      <tr>
-                          <td>${datas.jobNumber}</td>
-                          <td>${fn:substring(datas.participant, 0, 4)}</td>
-                          <td>${datas.age == 0 ? '비공개':datas.age}</td>
-                          <td>${datas.gender}</td>
-                          <td>${datas.address}</td>
-                          <c:choose>
-                              <c:when test="${not empty datas.jobCategoryLarge}">
-                                  <td>${datas.jobCategoryLarge} > ${datas.jobCategoryMid} > ${datas.desiredJob}</td>
-                              </c:when>
-                              <c:otherwise>
-                                  <td>${datas.desiredJob}</td>
-                              </c:otherwise>
-                          </c:choose>
-                          <td>${datas.desiredSalary}</td>
-                          <td>
-                              <a href="#"
-                                 class="btn btn-outline-primary btn-sm detailPageATag"
-                                 title="상세보기">
-                                  <i class="bi bi-eye"></i>
-                              </a>
-                              <input type="hidden" value="${datas.jobNumber}" name="jobNumber">
-                          </td>
-                      </tr>
-                  </c:forEach>
-              </c:when>
-              <c:otherwise>
-                  <tr>
-                      <td colspan="8" style="font-size: 1.5em; text-align: center;">검색된 참여자가 없습니다.</td>
-                  </tr>
-              </c:otherwise>
-          </c:choose>
-          </tbody>
-        </table>
+
+              <div class="col-md-2">
+                  <label for="ageFilter" class="form-label">
+                      <i class="bi bi-filter"></i> 청년ㆍ중장년
+                  </label>
+                  <select class="form-select" id="ageFilter" name="pageRows">
+                      <option value="">전체</option>
+                      <option value="10">청년(20대)</option>
+                      <option value="30">청년(30대)</option>
+                      <option value="35">중장년(30대)</option>
+                      <option value="40">장년(40대+)</option>
+                  </select>
+              </div>
+
+              <div class="col-md-2">
+                  <label for="genderFilter" class="form-label">
+                      <i class="bi bi-filter"></i> 성별 필터
+                  </label>
+                  <select class="form-select" id="genderFilter" name="genderFilter">
+                      <option value="">전체 성별</option>
+                      <option value="남">남</option>
+                      <option value="여">여</option>
+                  </select>
+              </div>
+
+              <div class="col-md-1">
+                  <label for="countFilter" class="form-label">
+                      <i class="bi bi-filter"></i> 조회 개수
+                  </label>
+                  <select class="form-select" id="countFilter" name="pageRows">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                      <option value="40">40</option>
+                      <option value="50">50</option>
+                  </select>
+              </div>
+          </div>
+
+          <!-- 상세 검색 시작 -->
+          <div class="row pt-3 d-flex justify-content-between">
+                  <div class="col-md-6">
+                      <label class="form-label">
+                          <i class="bi bi-geo-alt"></i> 지역 선택
+                      </label>
+                      <div class="address-checkbox-group h-100">
+                          <div class="address-checkbox-item address-checkbox-all">
+                              <input type="checkbox" id="detailSearchAddressAll" value="" checked>
+                              <label for="detailSearchAddressAll">전체 선택</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressSeoul" value="서울" checked>
+                              <label for="detailSearchAddressSeoul">서울</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGyeonggi" value="경기" checked>
+                              <label for="detailSearchAddressGyeonggi">경기</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressIncheon" value="인천" checked>
+                              <label for="detailSearchAddressIncheon">인천</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressDaejeon" value="대전" checked>
+                              <label for="detailSearchAddressDaejeon">대전</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressSejong" value="세종특별자치시" checked>
+                              <label for="detailSearchAddressSejong">세종</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressChungnam" value="충남" checked>
+                              <label for="detailSearchAddressChungnam">충청남도</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressChungbuk" value="충북" checked>
+                              <label for="detailSearchAddressChungbuk">충청북도</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGwangju" value="광주" checked>
+                              <label for="detailSearchAddressGwangju">광주</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressJeonnam" value="전남" checked>
+                              <label for="detailSearchAddressJeonnam">전라남도</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressJeonbuk" value="전북특별자치도" checked>
+                              <label for="detailSearchAddressJeonbuk">전북</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressDaegu" value="대구" checked>
+                              <label for="detailSearchAddressDaegu">대구</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGyeongbuk" value="경북" checked>
+                              <label for="detailSearchAddressGyeongbuk">경상북도</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressBusan" value="부산" checked>
+                              <label for="detailSearchAddressBusan">부산</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressUlsan" value="울산" checked>
+                              <label for="detailSearchAddressUlsan">울산</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGyeongnam" value="경남" checked>
+                              <label for="detailSearchAddressGyeongnam">경상남도</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGangwon" value="강원특별자치도" checked>
+                              <label for="detailSearchAddressGangwon">강원도</label>
+                          </div>
+                          <div class="address-checkbox-item">
+                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressJeju" value="제주특별자치도" checked>
+                              <label for="detailSearchAddressJeju">제주도</label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="col-md-3">
+                      <label class="form-label">
+                          <i class="bi bi-geo-alt"></i> 직무카테고리-대분류
+                      </label>
+                      <div class="jobCategoryLarge-box">
+                          <select class="form-select" id="jobCategoryLarge" name="jobCategoryLarge" multiple required>
+                              <option value="">선택하세요</option>
+                          </select>
+                      </div>
+                  </div>
+
+                  <div class="col-md-3">
+                      <label class="form-label">
+                          <i class="bi bi-geo-alt"></i> 직무카테고리-중분류
+                      </label>
+                      <div class="jobCategoryMid-box">
+                          <select class="form-select" id="jobCategoryMid" name="jobCategoryMid" multiple required>
+                              <option value="">선택하세요</option>
+                          </select>
+                      </div>
+                  </div>
+
+          </div>
+          <!-- 상세 검색 끝 -->
       </div>
-    </div>
+
+      <!-- 참여자 목록 테이블 -->
+      <div class="card-modern">
+          <div class="table-responsive">
+              <table class="table table-modern mb-0" id="participantTable">
+                  <thead>
+                  <tr>
+                      <%--            <th scope="col" style="width: 60px;">--%>
+                          <%--              <input type="checkbox"--%>
+                          <%--                     class="form-check-input"--%>
+                          <%--                     id="selectAllCheckbox"--%>
+                          <%--                     aria-label="전체 선택">--%>
+                          <%--            </th>--%>
+                          <th scope="col" style="width: 120px;">학교명</th>
+                          <th scope="col">나이</th>
+                          <th scope="col">성별</th>
+                          <th scope="col">구직번호</th>
+                          <th scope="col">거주지</th>
+                          <th scope="col">희망직종</th>
+                          <th scope="col">희망연봉</th>
+                          <th scope="col" style="width: 120px;">상세정보</th>
+                  </tr>
+                  </thead>
+                  <tbody id="participantTableBody">
+                  <%--<c:choose>
+                      <c:when test="${not empty jobPlacementDatas}">
+                          <c:forEach items="${jobPlacementDatas}" var="datas">
+                              <tr>
+                                  <td>${datas.jobNumber}</td>
+                                  <td>${fn:substring(datas.participant, 0, 4)}</td>
+                                  <td>${datas.age == 0 ? '비공개':datas.age}</td>
+                                  <td>${datas.gender}</td>
+                                  <td>${datas.address}</td>
+                                  <c:choose>
+                                      <c:when test="${not empty datas.jobCategoryLarge}">
+                                          <td>${datas.jobCategoryLarge} > ${datas.jobCategoryMid} > ${datas.desiredJob}</td>
+                                      </c:when>
+                                      <c:otherwise>
+                                          <td>${datas.desiredJob}</td>
+                                      </c:otherwise>
+                                  </c:choose>
+                                  <td>${datas.desiredSalary}</td>
+                                  <td>
+                                      <a href="#"
+                                         class="btn btn-outline-primary btn-sm detailPageATag"
+                                         title="상세보기">
+                                          <i class="bi bi-eye"></i>
+                                      </a>
+                                      <input type="hidden" value="${datas.jobNumber}" name="jobNumber">
+                                  </td>
+                              </tr>
+                          </c:forEach>
+                      </c:when>
+                      <c:otherwise>
+                          <tr>
+                              <td colspan="8" style="font-size: 1.5em; text-align: center;">검색된 참여자가 없습니다.</td>
+                          </tr>
+                      </c:otherwise>
+                  </c:choose>--%>
+                  </tbody>
+              </table>
+          </div>
+      </div>
 
       <%-- 페이지네이션 시작 --%>
       <nav class="col-md-11 text-center ms-auto me-auto d-flex justify-content-center">
