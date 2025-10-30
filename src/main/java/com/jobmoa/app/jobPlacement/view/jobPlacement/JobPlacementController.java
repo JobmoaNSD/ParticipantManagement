@@ -208,7 +208,7 @@ public class JobPlacementController {
     }
 
 
-    //개인정보 숨기기
+    //개인정보 숨기기(이름)
     private void hideInfo(JobPlacementDTO data, String originalName, String originalAddress){
         if (originalName != null && !originalName.isEmpty()) {
             // 첫 글자 제외하고 나머지를 "O"로 변환
