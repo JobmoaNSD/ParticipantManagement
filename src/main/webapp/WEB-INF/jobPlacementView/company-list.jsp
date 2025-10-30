@@ -82,7 +82,6 @@
       <!-- 검색 및 필터 -->
       <div class="search-filters">
           <div class="row">
-
               <div class="col-md-7">
                   <label for="searchKeyword" class="form-label">
                       <i class="bi bi-search"></i> 검색
@@ -103,10 +102,10 @@
 
 
               <div class="col-md-2">
-                  <label for="ageFilter" class="form-label">
+                  <label for="ageRangeFilter" class="form-label">
                       <i class="bi bi-filter"></i> 청년ㆍ중장년
                   </label>
-                  <select class="form-select" id="ageFilter" name="pageRows">
+                  <select class="form-select" id="ageRangeFilter" name="ageRangeFilter">
                       <option value="">전체</option>
                       <option value="10">청년(20대)</option>
                       <option value="30">청년(30대)</option>
@@ -152,71 +151,71 @@
                               <label for="detailSearchAddressAll">전체 선택</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressSeoul" value="서울" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressSeoul" value="서울" checked>
                               <label for="detailSearchAddressSeoul">서울</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGyeonggi" value="경기" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressGyeonggi" value="경기" checked>
                               <label for="detailSearchAddressGyeonggi">경기</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressIncheon" value="인천" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressIncheon" value="인천" checked>
                               <label for="detailSearchAddressIncheon">인천</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressDaejeon" value="대전" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressDaejeon" value="대전" checked>
                               <label for="detailSearchAddressDaejeon">대전</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressSejong" value="세종특별자치시" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressSejong" value="세종특별자치시" checked>
                               <label for="detailSearchAddressSejong">세종</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressChungnam" value="충남" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressChungnam" value="충남" checked>
                               <label for="detailSearchAddressChungnam">충청남도</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressChungbuk" value="충북" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressChungbuk" value="충북" checked>
                               <label for="detailSearchAddressChungbuk">충청북도</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGwangju" value="광주" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressGwangju" value="광주" checked>
                               <label for="detailSearchAddressGwangju">광주</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressJeonnam" value="전남" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressJeonnam" value="전남" checked>
                               <label for="detailSearchAddressJeonnam">전라남도</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressJeonbuk" value="전북특별자치도" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressJeonbuk" value="전북특별자치도" checked>
                               <label for="detailSearchAddressJeonbuk">전북</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressDaegu" value="대구" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressDaegu" value="대구" checked>
                               <label for="detailSearchAddressDaegu">대구</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGyeongbuk" value="경북" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressGyeongbuk" value="경북" checked>
                               <label for="detailSearchAddressGyeongbuk">경상북도</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressBusan" value="부산" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressBusan" value="부산" checked>
                               <label for="detailSearchAddressBusan">부산</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressUlsan" value="울산" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressUlsan" value="울산" checked>
                               <label for="detailSearchAddressUlsan">울산</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGyeongnam" value="경남" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressGyeongnam" value="경남" checked>
                               <label for="detailSearchAddressGyeongnam">경상남도</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressGangwon" value="강원특별자치도" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressGangwon" value="강원특별자치도" checked>
                               <label for="detailSearchAddressGangwon">강원도</label>
                           </div>
                           <div class="address-checkbox-item">
-                              <input type="checkbox" name="detailSearchAddress" id="detailSearchAddressJeju" value="제주특별자치도" checked>
+                              <input type="checkbox" class="detailSearchAddress" name="searchAddressFilter" id="detailSearchAddressJeju" value="제주특별자치도" checked>
                               <label for="detailSearchAddressJeju">제주도</label>
                           </div>
                       </div>
@@ -227,7 +226,7 @@
                           <i class="bi bi-geo-alt"></i> 직무카테고리-대분류
                       </label>
                       <div class="jobCategoryLarge-box">
-                          <select class="form-select" id="jobCategoryLarge" name="jobCategoryLarge" multiple required>
+                          <select class="form-select" id="jobCategoryLarge" name="jobCategoryLargeFilter" multiple required>
                               <option value="">선택하세요</option>
                           </select>
                       </div>
@@ -238,7 +237,7 @@
                           <i class="bi bi-geo-alt"></i> 직무카테고리-중분류
                       </label>
                       <div class="jobCategoryMid-box">
-                          <select class="form-select" id="jobCategoryMid" name="jobCategoryMid" multiple required>
+                          <select class="form-select" id="jobCategoryMid" name="jobCategoryMidFilter" multiple required>
                               <option value="">선택하세요</option>
                           </select>
                       </div>
@@ -260,10 +259,11 @@
                           <%--                     id="selectAllCheckbox"--%>
                           <%--                     aria-label="전체 선택">--%>
                           <%--            </th>--%>
-                          <th scope="col" style="width: 120px;">학교명</th>
+                          <th scope="col" style="width: 120px;">구직번호</th>
+                          <th scope="col">이름</th>
+                          <th scope="col">학교명</th>
                           <th scope="col">나이</th>
                           <th scope="col">성별</th>
-                          <th scope="col">구직번호</th>
                           <th scope="col">거주지</th>
                           <th scope="col">희망직종</th>
                           <th scope="col">희망연봉</th>
@@ -344,28 +344,53 @@
         <%-- pagination 끝 --%>
 
         <%-- 검색 폼 input --%>
+        // 검색어
         let searchKeyword = $('#searchKeyword');
+        // 검색 필터
         let searchType = $('#searchType');
-        let ageStartFilter = $('#ageStartFilter');
-        let ageEndFilter = $('#ageEndFilter');
-        let desiredSalaryStartFilter = $('#desiredSalaryStartFilter');
-        let desiredSalaryEndFilter = $('#desiredSalaryEndFilter');
+        // 나이대 필터
+        let ageRangeFilter = $('#ageRangeFilter');
+        // 성별 필터
         let genderFilter = $('#genderFilter');
+        // 게시글 개수 필터
         let countFilter = $('#countFilter');
+        // 주소 필터
+        let detailSearchAddress = $('.detailSearchAddress');
+        // 직무 대분류
+        let jobCategoryLarge = $('#jobCategoryLarge');
+        // 직무 중분류
+        let jobCategoryMid = $('#jobCategoryMid');
+        // 주소 전체 선택
+        let detailSearchAddressAll = $('#detailSearchAddressAll');
         <%-- 검색 폼 input --%>
 
         <%-- 검색 초기화 시작 --%>
         $("#filterResetBtn").on('click', function(){
             searchKeyword.val('');
             searchType.val('');
-            ageStartFilter.val('');
-            ageEndFilter.val('');
-            desiredSalaryStartFilter.val('');
-            desiredSalaryEndFilter.val('');
+            ageRangeFilter.val('');
             genderFilter.val('');
             countFilter.val('10');
+            detailSearchAddress.prop('checked', true);
+            jobCategoryLarge.val('');
+            jobCategoryMid.val('');
         })
         <%-- 검색 초기화 끝 --%>
+
+        /* 주소 검색 필터 전체 선택 함수 시작 */
+        function detailSearchAddressAllCheck(){
+            if(detailSearchAddressAll.is(':checked')){
+                detailSearchAddress.prop('checked', true);
+            }else{
+                detailSearchAddress.prop('checked', false);
+            }
+        }
+
+
+        detailSearchAddressAll.on('click', function(){
+            detailSearchAddressAllCheck();
+        })
+        /* 주소 검색 필터 전체 선택 함수 끝 */
 
         /* 상세보기 버튼 주소 추가 */
         $('.detailPageATag').click(function(){
@@ -380,15 +405,6 @@
             regexSpecialSymbols($(this).val(), $(this));
         });
 
-
-        // 숫자 검증 + 범위 제한 (한 번에 처리)
-        inputLimitsWithRegex(ageStartFilter, 0, 120);
-        inputLimitsWithRegex(ageEndFilter, 0, 120);
-        inputLimitsWithRegex(desiredSalaryStartFilter, 0, 99999);
-        inputLimitsWithRegex(desiredSalaryEndFilter, 0, 99999);
-
-
-        //
         /* 검색어 및 각 필터값 특수 문자 처리 끝 */
 
         /* 검색 시작*/
@@ -402,22 +418,35 @@
         $('#refreshListBtn').on('click',function(){
             let searchKeywordVal = searchKeyword.val();
             let searchTypeVal = searchType.val();
-            let ageStartFilterVal = ageStartFilter.val();
-            let ageEndFilterVal = ageEndFilter.val();
-            let desiredSalaryStartFilterVal = desiredSalaryStartFilter.val();
-            let desiredSalaryEndFilterVal = desiredSalaryEndFilter.val();
+            let ageRangeFilterVal = ageRangeFilter.val();
             let genderFilterVal = genderFilter.val();
             let countFilterVal = countFilter.val();
+            // let detailSearchAddressVal = detailSearchAddress.val();
+            let detailSearchAddressAllBoolean = detailSearchAddressAll.is(':checked');
+            let jobCategoryLargeVal = jobCategoryLarge.val();
+            let jobCategoryMidVal = jobCategoryMid.val();
             let searchHref = '?page=1';//+page;
 
-            searchHref += searchKeywordVal == '' ? '' : '&searchKeyword='+searchKeywordVal.trim();
-            searchHref += searchTypeVal == '' ? '' : '&searchType='+searchTypeVal;
-            searchHref += ageStartFilterVal == '' ? '' : '&ageStartFilter='+ageStartFilterVal;
-            searchHref += ageEndFilterVal == '' ? '' : '&ageEndFilter='+ageEndFilterVal;
-            searchHref += desiredSalaryStartFilterVal == '' ? '' : '&desiredSalaryStartFilter='+desiredSalaryStartFilterVal;
-            searchHref += desiredSalaryEndFilterVal == '' ? '' : '&desiredSalaryEndFilter='+desiredSalaryEndFilterVal;
-            searchHref += genderFilterVal == '' ? '' : '&genderFilter='+genderFilterVal;
-            searchHref += countFilterVal == '' ? '&pageRows=10' : '&pageRows='+countFilterVal;
+            searchHref += searchKeywordVal === '' ? '' : '&searchKeyword='+searchKeywordVal.trim();
+            searchHref += searchTypeVal === '' ? '' : '&searchType='+searchTypeVal;
+            searchHref += ageRangeFilterVal === '' ? '' : '&ageRangeFilter='+ageRangeFilterVal;
+            searchHref += genderFilterVal === '' ? '' : '&genderFilter='+genderFilterVal;
+            searchHref += jobCategoryLargeVal === '' ? '' : '&jobCategoryLargeFilter='+jobCategoryLargeVal;
+            searchHref += jobCategoryMidVal === '' ? '' : '&jobCategoryMidFilter='+jobCategoryMidVal;
+            searchHref += countFilterVal === '' ? '&pageRows=10' : '&pageRows='+countFilterVal;
+
+            //만약 주소에 전체 선택이 되어있다면 주소창에 넣지 않도록 설정
+            if (detailSearchAddressAllBoolean){
+                searchHref += '&searchAddressFilter='+'all';
+            }
+            else{
+                detailSearchAddress.each(function(){
+                    if($(this).is(':checked')){
+                        searchHref += '&searchAddressFilter='+$(this).val();
+                    }
+                })
+            }
+
             window.location.href = '/jobPlacement/placementList'+searchHref;
             }
         )
@@ -426,12 +455,29 @@
         /* 검색 폼 데이터 및 추가 시작 */
         searchKeyword.val('${param.searchKeyword}');
         searchType.val('${param.searchType}');
-        ageStartFilter.val(${param.ageStartFilter});
-        ageEndFilter.val(${param.ageEndFilter});
-        desiredSalaryStartFilter.val(${param.desiredSalaryStartFilter});
-        desiredSalaryEndFilter.val(${param.desiredSalaryEndFilter});
-        genderFilter.val('${param.genderFilter}');
+        ageRangeFilter.val(${param.ageRangeFilter});
+        genderFilter.val(${param.genderFilter});
+        jobCategoryLarge.val(${param.jobCategoryLargeFilter});
+        jobCategoryMid.val(${param.jobCategoryMidFilter});
         countFilter.val('${param.pageRows}'==='' ? '10' : '${param.pageRows}');
+
+        let searchAddressFilter = '${param.searchAddressFilter}';
+
+        if(searchAddressFilter === 'all'){
+            detailSearchAddressAll.click();
+            detailSearchAddressAll.prop('checked', true);
+        }
+        else{
+            detailSearchAddress.each(function(){
+                if($(this).val() === searchAddressFilter){
+                    $(this).prop('checked', true);
+                }else{
+                    $(this).prop('checked', false);
+                }
+            })
+        }
+
+
         /* 검색 폼 데이터 및 추가 끝 */
 
     })

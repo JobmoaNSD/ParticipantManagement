@@ -195,6 +195,26 @@ public class JobPlacementDTO {
     private int ageEndFilter;
 
     /**
+     * 나이대 필터
+     */
+    private String ageRangeFilter;
+
+    /**
+     * 주소 필터 배열
+     */
+    private String[] searchAddressFilter;
+
+    /**
+     * 카테고리 대분류 필터
+     */
+    private String jobCategoryLargeFilter;
+
+    /**
+     * 카테고리 중분류 필터
+     */
+    private String jobCategoryMidFilter;
+
+    /**
      * 희망 연봉 필터 시작
      */
     private int desiredSalaryStartFilter;
