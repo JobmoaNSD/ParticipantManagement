@@ -64,14 +64,19 @@ public class JobPlacementController {
         //검색 필터 사용 여부 체크
         String searchKeyword = jobPlacementDTO.getSearchKeyword();
         String searchType = jobPlacementDTO.getSearchType();
-        int ageStartFilter = jobPlacementDTO.getAgeStartFilter();
-        int ageEndFilter = jobPlacementDTO.getAgeEndFilter();
-        int desiredSalaryStartFilter = jobPlacementDTO.getDesiredSalaryStartFilter();
-        int desiredSalaryEndFilter = jobPlacementDTO.getDesiredSalaryEndFilter();
+        //나이대 필터
+        int ageRangeFilter = jobPlacementDTO.getAgeRangeFilter();
+        // 직무 카테고리 대분류
+        String jobCategoryLargeFilter = jobPlacementDTO.getJobCategoryLargeFilter();
+        // 직무 카테고리 중분류
+        String jobCategoryMidFilter = jobPlacementDTO.getJobCategoryMidFilter();
+        //성별
         String genderFilter = jobPlacementDTO.getGenderFilter();
+        //주소
+        String[] searchAddressFilter = jobPlacementDTO.getSearchAddressFilter();
 
         //나이 필터, 희망 연봉 필터, 성별 필터가 비어 있지 않다면 필터 사용으로 간주한다.
-        if(ageStartFilter != 0 || ageEndFilter != 0 || desiredSalaryStartFilter != 0 || desiredSalaryEndFilter != 0 || genderFilter != null || searchKeyword != null){
+        if(genderFilter != null || searchKeyword != null || ageRangeFilter != 0 || jobCategoryLargeFilter != null || jobCategoryMidFilter != null || searchAddressFilter != null){
             if(searchKeyword != null){
                 searchKeyword = searchKeyword.trim();
                 searchKeyword = searchKeyword.replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]", "");
