@@ -107,10 +107,9 @@
                   </label>
                   <select class="form-select" id="ageRangeFilter" name="ageRangeFilter">
                       <option value="">전체</option>
-                      <option value="10">청년(20대)</option>
-                      <option value="30">청년(30대)</option>
-                      <option value="35">중장년(30대)</option>
-                      <option value="40">장년(40대+)</option>
+                      <option value="10">청년(~39)</option>
+                      <option value="40">중년(~59)</option>
+                      <option value="60">장년(60+)</option>
                   </select>
               </div>
 
@@ -271,12 +270,13 @@
                   </tr>
                   </thead>
                   <tbody id="participantTableBody">
-                  <%--<c:choose>
+                  <c:choose>
                       <c:when test="${not empty jobPlacementDatas}">
                           <c:forEach items="${jobPlacementDatas}" var="datas">
                               <tr>
                                   <td>${datas.jobNumber}</td>
                                   <td>${fn:substring(datas.participant, 0, 4)}</td>
+                                  <td>${datas.schoolName}</td>
                                   <td>${datas.age == 0 ? '비공개':datas.age}</td>
                                   <td>${datas.gender}</td>
                                   <td>${datas.address}</td>
@@ -305,7 +305,7 @@
                               <td colspan="8" style="font-size: 1.5em; text-align: center;">검색된 참여자가 없습니다.</td>
                           </tr>
                       </c:otherwise>
-                  </c:choose>--%>
+                  </c:choose>
                   </tbody>
               </table>
           </div>
@@ -421,7 +421,6 @@
             let ageRangeFilterVal = ageRangeFilter.val();
             let genderFilterVal = genderFilter.val();
             let countFilterVal = countFilter.val();
-            // let detailSearchAddressVal = detailSearchAddress.val();
             let detailSearchAddressAllBoolean = detailSearchAddressAll.is(':checked');
             let jobCategoryLargeVal = jobCategoryLarge.val();
             let jobCategoryMidVal = jobCategoryMid.val();
@@ -436,10 +435,7 @@
             searchHref += countFilterVal === '' ? '&pageRows=10' : '&pageRows='+countFilterVal;
 
             //만약 주소에 전체 선택이 되어있다면 주소창에 넣지 않도록 설정
-            if (detailSearchAddressAllBoolean){
-                searchHref += '&searchAddressFilter='+'all';
-            }
-            else{
+            if (!detailSearchAddressAllBoolean){
                 detailSearchAddress.each(function(){
                     if($(this).is(':checked')){
                         searchHref += '&searchAddressFilter='+$(this).val();
@@ -456,25 +452,59 @@
         searchKeyword.val('${param.searchKeyword}');
         searchType.val('${param.searchType}');
         ageRangeFilter.val(${param.ageRangeFilter});
-        genderFilter.val(${param.genderFilter});
-        jobCategoryLarge.val(${param.jobCategoryLargeFilter});
-        jobCategoryMid.val(${param.jobCategoryMidFilter});
+        genderFilter.val('${param.genderFilter}');
         countFilter.val('${param.pageRows}'==='' ? '10' : '${param.pageRows}');
 
-        let searchAddressFilter = '${param.searchAddressFilter}';
+        // 직무 카테고리 - 대분류 먼저 설정
+        const jobCategoryLargeFilterValue = '${param.jobCategoryLargeFilter}';
+        const jobCategoryMidFilterValue = '${param.jobCategoryMidFilter}';
 
-        if(searchAddressFilter === 'all'){
-            detailSearchAddressAll.click();
-            detailSearchAddressAll.prop('checked', true);
-        }
-        else{
-            detailSearchAddress.each(function(){
-                if($(this).val() === searchAddressFilter){
-                    $(this).prop('checked', true);
-                }else{
-                    $(this).prop('checked', false);
+        <%--jobCategoryLarge.val('${param.jobCategoryLargeFilter}' || '');--%>
+        <%--jobCategoryMid.val('${param.jobCategoryMidFilter}' || '');--%>
+
+        if (jobCategoryLargeFilterValue) {
+            jobCategoryLarge.val(jobCategoryLargeFilterValue);
+
+            // 대분류 선택 시 중분류 옵션을 생성하는 이벤트를 강제로 발생시킴
+            jobCategoryLarge.trigger('change');
+
+            // 중분류 옵션 생성이 완료된 후 값을 설정
+            // (옵션 생성이 비동기인 경우를 대비해 약간의 지연 추가)
+            setTimeout(function() {
+                if (jobCategoryMidFilterValue) {
+                    jobCategoryMid.val(jobCategoryMidFilterValue);
                 }
-            })
+            }, 100);
+        }
+
+        // JSTL을 사용해 컨트롤러에서 전달된 모든 searchAddressFilter 값을 JS 배열로 만듭니다.
+        const searchAddressFilterValues = [
+            <c:forEach items="${paramValues.searchAddressFilter}" var="val" varStatus="status">'${val}'<c:if test="${!status.last}">,</c:if></c:forEach>
+        ];
+
+        // 배열에 값이 있을 경우에만 로직을 실행합니다.
+        if (searchAddressFilterValues.length > 0) {
+            // 'all'이 포함되어 있으면 전체 선택 처리
+            if (searchAddressFilterValues.includes('all')) {
+                detailSearchAddressAll.prop('checked', true);
+                detailSearchAddress.prop('checked', true);
+            } else {
+                // 'all'이 아니면, 먼저 전체 선택을 해제하고 시작합니다.
+                detailSearchAddressAll.prop('checked', false);
+                detailSearchAddress.prop('checked', false);
+
+                // 각 지역 체크박스를 순회하며, 값이 배열에 포함되어 있으면 체크합니다.
+                detailSearchAddress.each(function() {
+                    if (searchAddressFilterValues.includes($(this).val())) {
+                        $(this).prop('checked', true);
+                    }
+                });
+
+                // 만약 모든 지역이 개별적으로 선택되었다면, '전체 선택' 체크박스도 활성화합니다.
+                if (detailSearchAddress.length === detailSearchAddress.filter(':checked').length) {
+                    detailSearchAddressAll.prop('checked', true);
+                }
+            }
         }
 
 

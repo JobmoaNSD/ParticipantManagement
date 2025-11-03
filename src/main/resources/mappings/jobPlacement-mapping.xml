@@ -6,36 +6,52 @@
     <!-- 검색 필터를 위한 sql Query -->
     <sql id="externalAllSearch">
         <where>
+            <!-- 일반 검색 -->
             <if test="searchKeyword != null and searchKeyword != ''">
                 <choose>
                     <when test="searchType == null or searchType == '' or searchType == '전체'">
-                        (구직번호 LIKE CONCAT('%', #{searchKeyword}, '%') OR 주소 LIKE CONCAT('%', #{searchKeyword}, '%') OR 희망직무 LIKE CONCAT('%', #{searchKeyword}, '%') OR 상세정보 LIKE CONCAT('%', #{searchKeyword}, '%'))
+                        (구직번호 LIKE CONCAT('%', #{searchKeyword}, '%') OR 상담사 LIKE CONCAT('%', #{searchKeyword}, '%')
                     </when>
                     <when test="searchType == '구직번호'">
                         구직번호 LIKE CONCAT('%', #{searchKeyword}, '%')
                     </when>
-                    <when test="searchType == '희망직종'">
-                        희망직무 LIKE CONCAT('%', #{searchKeyword}, '%')
-                    </when>
-                    <when test="searchType == '거주지'">
-                        주소 LIKE CONCAT('%', #{searchKeyword}, '%')
+                    <when test="searchType == '상담사'">
+                        상담사 LIKE CONCAT('%', #{searchKeyword}, '%')
                     </when>
                 </choose>
             </if>
-            <if test="ageStartFilter != null and ageStartFilter >=  0">
-                AND 나이 <![CDATA[>=]]> #{ageStartFilter}
-            </if>
-            <if test="ageEndFilter != null and ageEndFilter > 0">
-                AND 나이 <![CDATA[<=]]> #{ageEndFilter}
-            </if>
-            <if test="desiredSalaryStartFilter != null and desiredSalaryStartFilter >= 0">
-                AND 희망연봉 <![CDATA[>=]]> #{desiredSalaryStartFilter}
-            </if>
-            <if test="desiredSalaryEndFilter != null and desiredSalaryEndFilter > 0">
-                AND 희망연봉 <![CDATA[<=]]> #{desiredSalaryEndFilter}
-            </if>
+
+            <!-- 성별 검색 -->
             <if test="genderFilter != null and genderFilter != ''">
                 AND 성별 LIKE CONCAT('%', #{genderFilter}, '%')
+            </if>
+
+            <!-- 나이 검색 -->
+            <if test="ageRangeFilter != null and ageRangeFilter != ''">
+                <if test="ageRangeFilter == 10">
+                    AND 나이 <![CDATA[>=]]> #{ageRangeFilter} AND 나이 <![CDATA[<=]]> 39
+                </if>
+                <if test="ageRangeFilter == 40">
+                    AND 나이 <![CDATA[>=]]> #{ageRangeFilter} AND 나이 <![CDATA[<=]]> 59
+                </if>
+                <if test="ageRangeFilter == 60">
+                    AND 나이 <![CDATA[>=]]> #{ageRangeFilter}
+                </if>
+            </if>
+
+            <if test="jobCategoryLargeFilter != null and jobCategoryLargeFilter != ''">
+                AND 직무_카테고리_대 LIKE CONCAT('%', #{jobCategoryLargeFilter}, '%')
+            </if>
+
+            <if test="jobCategoryMidFilter != null and jobCategoryMidFilter != ''">
+                AND 직무_카테고리_중 LIKE CONCAT('%', #{jobCategoryMidFilter}, '%')
+            </if>
+
+            <if test="searchAddressFilter != null and searchAddressFilter != ''">
+                AND
+                <foreach collection="searchAddressFilter" item="data" open="(" close=")" separator=" OR ">
+                    주소 LIKE CONCAT(#{data}, '%')
+                </foreach>
             </if>
         </where>
     </sql>
@@ -44,13 +60,13 @@
     <select id="selectExternalAll" resultType="jobPlacement">
         SELECT
             구직번호 AS jobNumber,
---             상담사 AS counselor,
+            상담사 AS counselor,
 --             상담사_아이디 AS counselorId,
             참여자 AS participant,
             성별 AS gender,
 --             생년월일 AS birthDate,
             주소 AS address,
---             학교명 AS schoolName,
+            학교명 AS schoolName,
 --             전공 AS major,
             직무_카테고리_대 AS jobCategoryLarge,
             직무_카테고리_중 AS jobCategoryMid,
@@ -65,13 +81,13 @@
                  SELECT
                      ROW_NUMBER() OVER (ORDER BY 구직번호 DESC) AS RowNum,
                      구직번호,
---                      상담사,
+                     상담사,
                      상담사_아이디,
                      참여자,
                      성별,
                      생년월일,
                      주소,
---                      학교명,
+                     학교명,
 --                      전공,
                      직무_카테고리_중,
                      직무_카테고리_대,
