@@ -90,7 +90,8 @@
                       <select class="form-select w-25" id="searchType" name="searchType">
                           <option value="">전체</option>
                           <option value="구직번호">구직번호</option>
-                          <option value="희망직종">상담사</option>
+                          <option value="상담사">상담사</option>
+                          <option value="참여자">참여자</option>
                       </select>
                       <input type="search"
                              class="form-control search-input"
@@ -277,7 +278,14 @@
                                   <td>${datas.jobNumber}</td>
                                   <td>${fn:substring(datas.participant, 0, 4)}</td>
                                   <td>${datas.schoolName}</td>
-                                  <td>${datas.ageRangeContent}</td>
+                                  <c:choose>
+                                      <c:when test="${datas.ageRangeContent eq null || datas.ageRangeContent eq ''}">
+                                          <td>${datas.age}</td>
+                                      </c:when>
+                                      <c:otherwise>
+                                          <td>${datas.ageRangeContent}</td>
+                                      </c:otherwise>
+                                  </c:choose>
                                   <td>${datas.gender}</td>
                                   <td>${datas.address}</td>
                                   <c:choose>

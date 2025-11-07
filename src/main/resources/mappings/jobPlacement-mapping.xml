@@ -10,13 +10,16 @@
             <if test="searchKeyword != null and searchKeyword != ''">
                 <choose>
                     <when test="searchType == null or searchType == '' or searchType == '전체'">
-                        (구직번호 LIKE CONCAT('%', #{searchKeyword}, '%') OR 상담사 LIKE CONCAT('%', #{searchKeyword}, '%')
+                        (구직번호 LIKE CONCAT('%', #{searchKeyword}, '%') OR 상담사 LIKE CONCAT('%', #{searchKeyword}, '%') OR 참여자 LIKE CONCAT('%', #{searchKeyword}, '%'))
                     </when>
                     <when test="searchType == '구직번호'">
                         구직번호 LIKE CONCAT('%', #{searchKeyword}, '%')
                     </when>
                     <when test="searchType == '상담사'">
                         상담사 LIKE CONCAT('%', #{searchKeyword}, '%')
+                    </when>
+                    <when test="searchType == '참여자'">
+                        참여자 LIKE CONCAT('%', #{searchKeyword}, '%')
                     </when>
                 </choose>
             </if>
