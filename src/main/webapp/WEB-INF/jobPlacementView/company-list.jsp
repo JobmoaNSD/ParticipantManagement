@@ -277,7 +277,7 @@
                                   <td>${datas.jobNumber}</td>
                                   <td>${fn:substring(datas.participant, 0, 4)}</td>
                                   <td>${datas.schoolName}</td>
-                                  <td>${datas.age == 0 ? '비공개':datas.age}</td>
+                                  <td>${datas.ageRangeContent}</td>
                                   <td>${datas.gender}</td>
                                   <td>${datas.address}</td>
                                   <c:choose>
@@ -389,6 +389,13 @@
 
         detailSearchAddressAll.on('click', function(){
             detailSearchAddressAllCheck();
+        })
+
+        /* 주소 검색 필터 선택에 따른 전체 선택해제 */
+        detailSearchAddress.on('click', function(){
+            if(!$(this).is(':checked')){
+                detailSearchAddressAll.prop('checked', false);
+            }
         })
         /* 주소 검색 필터 전체 선택 함수 끝 */
 

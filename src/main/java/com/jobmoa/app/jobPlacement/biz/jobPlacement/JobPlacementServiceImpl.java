@@ -50,17 +50,17 @@ public class JobPlacementServiceImpl implements JobPlacementService{
         boolean certificateFlag = false;
 
         // 자격증 배열이 비어 있지 않다면
-        if(certificates.length > 0){
+        if(certificates != null && certificates.length > 0){
             //자격증 삭제를 진행
             jobPlacementDTO.setCondition("certificateDelete");
             jobPlacementDAO.delete(jobPlacementDTO);
             //자격증 추가
             jobPlacementDTO.setCondition("certificateInsert");
             certificateFlag = jobPlacementDAO.insert(jobPlacementDTO) ;
-            log.info("JobPlacementDTO delete success certificateFlag : [{}]",certificateFlag);
+//            log.info("JobPlacementDTO delete success certificateFlag : [{}]",certificateFlag);
         }
         else{
-            jobPlacementDAO.delete(jobPlacementDTO);
+            certificateFlag = jobPlacementDAO.delete(jobPlacementDTO);
         }
 
         //알선 상세 정보 수정
@@ -70,17 +70,20 @@ public class JobPlacementServiceImpl implements JobPlacementService{
             if(data == null) {
                 jobPlacementDTO.setCondition("insertPlacementDetail");
                 certificateFlag = certificateFlag && jobPlacementDAO.insert(jobPlacementDTO);
+//                log.info("JobPlacementDTO insert success certificateFlag : [{}]",certificateFlag);
             }
             else{
                 data.setCondition("updatePlacementDetail");
                 data.setPlacementDetail(placementDetail);
                 data.setJobNumber(jobNumber);
                 certificateFlag = certificateFlag && jobPlacementDAO.update(data);
+//                log.info("JobPlacementDTO update success certificateFlag : [{}]",certificateFlag);
             }
         }
         else{
             jobPlacementDTO.setCondition("deletePlacementDetail");
             certificateFlag = certificateFlag && jobPlacementDAO.delete(jobPlacementDTO);
+//            log.info("JobPlacementDTO delete success certificateFlag : [{}]",certificateFlag);
         }
 
         if(condition.equals("updateJobPlacementAsync")) {

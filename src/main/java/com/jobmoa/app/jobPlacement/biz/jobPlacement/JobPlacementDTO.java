@@ -200,6 +200,11 @@ public class JobPlacementDTO {
     private int ageRangeFilter;
 
     /**
+     * 나이대 내용
+     */
+    private String ageRangeContent;
+
+    /**
      * 주소 필터 배열
      */
     private String[] searchAddressFilter;

@@ -22,22 +22,22 @@
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <script src="js/sweetAlert.js"></script>
+    <script src="/js/sweetAlert.js"></script>
 
     <script>
         $(document).ready(function(){
             let icon = '${icon}';
-            console.log(icon);
+            // console.log(icon);
             let title = '${title}';
-            console.log(title);
+            // console.log(title);
             let message = '${message}';
-            console.log(message);
+            // console.log(message);
             let url = '${url}';
-            console.log(url);
+            // console.log(url);
 
             if(icon == 'success'){
                 alertDefaultSuccess(title, message).then((r) => {
-                    console.log(r);
+                    // console.log(r);
                     location.href = url;
                 });
             }
@@ -59,6 +59,11 @@
             else if(icon == 'back'){
                 alertDefaultInfo(title, message).then(()=>{
                     window.history.back();
+                });
+            }
+            else if(icon == 'warning'){
+                alertDefaultWarning(title, message).then(()=>{
+                    location.href = url;
                 });
             }
             else{
