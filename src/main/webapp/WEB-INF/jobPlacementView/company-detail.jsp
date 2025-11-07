@@ -151,7 +151,16 @@
               </div>
               <div class="readonly-item">
                 <span class="readonly-label">(만)나이</span>
-                <span class="readonly-value" id="detailAge" name="age" >${data.ageRangeContent}</span>
+                  <span class="readonly-value" id="detailAge" name="age" >
+                      <c:choose>
+                          <c:when test="${data.ageRangeContent eq null || data.ageRangeContent eq ''}">
+                              <td>${data.age}</td>
+                          </c:when>
+                          <c:otherwise>
+                              <td>${data.ageRangeContent}</td>
+                          </c:otherwise>
+                      </c:choose>
+                  </span>
                 <input type="hidden" id="detailBirthDate" name="birthDate" value="${data.birthDate}">
               </div>
               <div class="readonly-item">
