@@ -123,11 +123,12 @@ public class JobPlacementController {
             for (JobPlacementDTO p : jobPlacementDatas) {
                 String originalName = p.getParticipant(); // 참여자 이름
                 String originalAddress = p.getAddress(); // 참여자 주소
+                int originalAge = p.getAge();
                 String uniqueNumber = p.getUniqueNumber(); // 상담사 고유번호
                 boolean flag = Objects.equals(uniqueNumber, sessionUniqueNumber); // 세션에 있는 아이디와 비교
                 if(!flag){
                     //이름, 주소 숨김 처리
-                    hideInfo(p,originalName,originalAddress);
+                    hideInfo(p,originalName,originalAddress,originalAge);
                 }
             }
 
@@ -182,11 +183,12 @@ public class JobPlacementController {
         //이름 및 주소를 변수로 생성
         String originalName = data.getParticipant();
         String originalAddress = data.getAddress();
+        int originalAge = data.getAge();
 
         //로그인 정보가 없다면
         if(loginBean == null){
             //개인 정보 이름, 주소를 변환
-            hideInfo(data, originalName, originalAddress);
+            hideInfo(data, originalName, originalAddress, originalAge);
         }
         else{
             //로그인 정보가 있다면 상담사 아이디와 구직번호를 받아오고
@@ -201,7 +203,7 @@ public class JobPlacementController {
 
             //데이터가 null이면 로그인 정보와 다른 상담사로 값을 숨김처리해서 전달.
             if(counselorData == null){
-                hideInfo(data, originalName, originalAddress);
+                hideInfo(data, originalName, originalAddress,originalAge);
             }
         }
 
@@ -214,7 +216,7 @@ public class JobPlacementController {
 
 
     //개인정보 숨기기(이름)
-    private void hideInfo(JobPlacementDTO data, String originalName, String originalAddress){
+    private void hideInfo(JobPlacementDTO data, String originalName, String originalAddress, int age){
         if (originalName != null && !originalName.isEmpty()) {
             // 첫 글자 제외하고 나머지를 "O"로 변환
             String maskedName = originalName.charAt(0) + originalName.substring(1).replaceAll(".", "O");
@@ -226,6 +228,21 @@ public class JobPlacementController {
             //단 11번째 글자가 끝이 아닐 수 있으니 글자 길이를 확인 후 글자 자르기를 진행
             String makeAddress = originalAddress.length() > 11 ? originalAddress.substring(0, 11): originalAddress;
             data.setAddress(makeAddress + "...");
+        }
+
+        if(age != 0){
+            if(age >= 1 && age <= 39){
+                data.setAgeRangeContent("청년");
+            }
+            else if (age >= 40 && age <= 59){
+                data.setAgeRangeContent("중년");
+            }
+            else if (age >= 60 && age <= 79){
+                data.setAgeRangeContent("장년");
+            }
+            else{
+                data.setAgeRangeContent("비공개");
+            }
         }
     }
 

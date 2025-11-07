@@ -151,7 +151,7 @@
               </div>
               <div class="readonly-item">
                 <span class="readonly-label">(만)나이</span>
-                <span class="readonly-value" id="detailAge" name="age" >${data.age == 0 ? '비공개':data.age}</span>
+                <span class="readonly-value" id="detailAge" name="age" >${data.ageRangeContent}</span>
                 <input type="hidden" id="detailBirthDate" name="birthDate" value="${data.birthDate}">
               </div>
               <div class="readonly-item">
@@ -460,12 +460,12 @@
     datepicker_on.on('change', function () {
       dateValue = $(this).val();
       const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-      console.log(dateValue);
+      // console.log(dateValue);
       if (!datePattern.test(dateValue)) {
         $(this).val(''); // 날짜형식이 아니면 삭제
-        console.log('Invalid date format, value cleared.');
+        // console.log('Invalid date format, value cleared.');
       } else {
-        console.log('datepicker_on');
+        // console.log('datepicker_on');
         //console.log(dateValue);
       }
     });
