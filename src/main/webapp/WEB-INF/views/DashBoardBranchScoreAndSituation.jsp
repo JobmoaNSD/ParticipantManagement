@@ -832,7 +832,6 @@
 
     $(document).ready(function () {
         changeData(responseData);
-
         // 데이터 존재 여부 확인 (JavaScript 방식으로 수정)
         if (!responseData || Object.keys(responseData).length === 0) {
             changeData(initData)
@@ -841,11 +840,22 @@
         renderScoreChart(changJson);
 
         function changeData(data){
-            data.map(function(item){
-                changJson.name.push(item.name);
-                changJson.data.push(item.data);
-            });
-            //console.log(changJson);
+            //JSON 데이터로 변환
+            try{
+                data = JSON.parse(data);
+            }
+            //오류 발생시 이미 JSON 데이터이므로 오류 출력
+            catch (e) {
+                console.log(`Error: ${e}`);
+            }
+            // 데이터 map 진행
+            finally{
+                data.map(function(item){
+                    changJson.name.push(item.name);
+                    changJson.data.push(item.data);
+                });
+                //console.log(changJson);
+            }
         }
 
         // 테이블 변경 감지 및 행 수 업데이트
