@@ -625,7 +625,8 @@ $(document).ready(function () {
         let title = participantName + " 참여자 선택"
         let text = "마감 처리 하시겠습니까?"
         let confirmButtonText = "마감"
-        if($this.text() == "마감"){
+        let $thisTextBoolean = $this.text() === "마감";
+        if($thisTextBoolean){
             text = "진행중으로 변경 하시겠습니까?"
             confirmButtonText = "확인"
         }
@@ -640,9 +641,14 @@ $(document).ready(function () {
             let participantProgressVal = $this.closest('tr').find('td').eq(6).text().trim();
             console.log('participantProgressVal : ['+participantProgressVal+']');
 
-            if(participantProgressVal == 'IAP 전' || participantProgressVal == 'IAP 후' || participantProgressVal == '유예'){
-                alertDefaultQuestion('진행단계를 확인해주세요.','IAP 전, IAP 후, 유예는 마감 처리 하실 수 없습니다.')
-                return;
+            console.log('isClose : ['+isClose+']');
+            console.log('$thisText : ['+$thisTextBoolean+']');
+            // 현재 텍스트가 마감이라면 변경이 가능하도록 설정
+            if(!$thisTextBoolean){
+                if(participantProgressVal === 'IAP 전' || participantProgressVal === 'IAP 후' || participantProgressVal === '유예'){
+                    alertDefaultQuestion('진행단계를 확인해주세요.','IAP 전, IAP 후, 유예는 마감 처리 하실 수 없습니다.')
+                    return;
+                }
             }
         }
 

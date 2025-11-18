@@ -31,3 +31,35 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Sensitive Configuration Files ###
+# 민감한 정보가 포함된 설정 파일은 Git에서 제외
+# application.properties에 DB 비밀번호, API 키 등이 포함되어 있음
+# 운영 환경에서는 별도의 환경변수나 외부 설정으로 관리 필요
+
+# 주의: 개발 환경에서는 application.properties를 포함할 수 있으나,
+# 실제 운영 환경 정보는 반드시 제외해야 함
+# application.properties
+# application-prod.properties
+# application-*.properties
+
+### Legacy Files ###
+# XML 설정 파일 (deprecated)
+*.deprecated
+legacy-config/
+
+### Security ###
+# SSH Keys
+*.pem
+*.key
+*.p12
+*.jks
+
+### Logs ###
+logs/
+*.log
+
+### Temporary Files ###
+out/
+*.tmp
+*.temp
