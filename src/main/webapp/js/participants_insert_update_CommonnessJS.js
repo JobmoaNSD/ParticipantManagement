@@ -232,9 +232,29 @@ $(document).ready(function () {
 
         // 초기상담일이 비어있는 상태라면 최근상담일이 초기상담일이 입력된다는 안내를 출력한다.
         if(!counselInItConsVal.length > 0){
-            // alertDefaultQuestion('초기상담일이 작성되지 않았습니다.','최근상담일을 초기상담일로 작성합니다.')
+            // let flag = false;
+            // alertConfirmQuestion('초기상담일이 작성되지 않았습니다.','최근상담일을 초기상담일로 작성합니다.','수정','취소')
+            //     .then(result => {
+            //         if(result){
+            //             counselInItCons.val(counselLastConsVal);
+            //             flag = true;
+            //         }
+            //     })
+            
+            // 초기상담일 변경
             counselInItCons.val(counselLastConsVal);
-            // return;
+
+            // if(!flag){
+            //     return;
+            // }
+            // 기간만료(예정)일 수정
+            counselEXPDateChangeFunction();
+        }
+
+        // 기간만료(예정)일 값이 없다면 초기상담일 기준으로 1년 이후로 변경
+        if(!counselEXPDateVal.length > 0){
+            // 기간만료(예정)일 수정
+            counselEXPDateChangeFunction();
         }
 
         //취창업일이 비어있고 임금 OR 취업인센티브_구분이 비어있다면 함수에서 내보낸다.
@@ -275,6 +295,27 @@ $(document).ready(function () {
         form.submit();
     });
 //  form 전달 끝
+
+    // 기간만료(예정)일 수정 시작
+    function counselEXPDateChangeFunction() {
+        const counselInItConsVal = counselInItCons.val();
+
+        if(counselInItConsVal.length === 0){
+            counselEXPDate.val("");
+            return;
+        }
+
+        const defaultDate = new Date(counselInItConsVal);
+        const year = defaultDate.getFullYear()+1;
+        const month = String(defaultDate.getMonth() + 1).padStart(2, '0');
+        const day = String(defaultDate.getDate()).padStart(2, '0');
+        counselEXPDate.val(`${year}-${month}-${day}`);
+    }
+
+    counselInItCons.on("change", function () {
+        counselEXPDateChangeFunction();
+    })
+    // 기간만료(예정)일 수정 끝
 
 // 사용자 편의성을 위해 목록 리스트 출력 시작
     //자격증 목록 리스트 출력
