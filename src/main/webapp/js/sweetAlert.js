@@ -59,7 +59,7 @@
         return Swal.fire({
             title: title,
             text: text,
-            icon: 'Question',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
