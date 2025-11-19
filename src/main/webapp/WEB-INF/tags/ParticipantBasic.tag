@@ -38,10 +38,10 @@
                 <label for="basicRecruit" class="form-label">모집경로</label>
                 <select class="form-select" aria-label="Default select example" id="basicRecruit" name="basicRecruit">
                     <option selected value="센터배정">센터배정</option>
-                    <option value="대학">대학</option>
-                    <option value="고교">고교</option>
-                    <option value="훈련기관">훈련기관</option>
-                    <option value="자체모집">자체모집</option>
+                    <option value="자체모집(대학)">자체모집(대학)</option>
+                    <option value="자체모집(고교)">자체모집(고교)</option>
+                    <option value="자체모집(훈련기관)">자체모집(훈련기관)</option>
+                    <option value="자체모집(기타)">자체모집(기타)</option>
                     <option value="이관">이관</option>
                 </select>
             </div>
