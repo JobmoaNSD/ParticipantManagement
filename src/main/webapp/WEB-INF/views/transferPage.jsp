@@ -77,7 +77,10 @@
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <script src="js/sweetAlert.js"></script>
+    <script src="/js/sweetAlert.js"></script>
+
+    <!-- transferJS.js -->
+    <script src="/js/transferJS.js"></script>
 
     <style>
         .transfer-buttons {
@@ -242,6 +245,20 @@
                                             <label for="selectAllSource" class="form-check-label">전체 선택</label>
                                         </div>
                                     </div>
+
+                                    <div class="input-group mb-3">
+                                        <input type="text"
+                                               id="participantSearch"
+                                               class="form-control"
+                                               placeholder="구직번호, 이름, 생년월일, 성별 검색">
+                                        <button class="btn btn-outline-secondary"
+                                                type="button"
+                                                id="clearSearch">
+                                            <i class="bi bi-x-circle"></i> 초기화
+                                        </button>
+                                    </div>
+                                    <small id="searchResult" class="text-muted d-block mb-2"></small>
+
                                     <div id="participantList" class="list-group participant-list" style="max-height: 600px; overflow-y: auto;">
 
                                     </div>
@@ -376,7 +393,10 @@
 
 
 <script>
-    $(document).ready(function() {
+
+    const memberBranch = '${JOBMOA_LOGIN_DATA.memberBranch}'
+
+    /*$(document).ready(function() {
         let selectedParticipants = new Set();
         let transferredParticipants = new Set();
         const $sourceCounselor = $('#sourceCounselor');
@@ -423,8 +443,8 @@
                         '<input type="checkbox" class="form-check-input participant-check" id="'+participant.jobno+'" value="'+participant.jobno+'">' +
                         '<label class="form-check-label ms-2 participant-label" for="'+participant.jobno+'">' +
                         '<div class="d-flex justify-content-between align-items-center w-100">' +
-                        '<span class="participant-name">'+ participant.jobno +'</span>' +
-                        '<span class="participant-jobno">'+ participant.particName +'</span>' +
+                        '<span class="participant-jobno">'+ participant.jobno +'</span>' +
+                        '<span class="participant-name">'+ participant.particName +'</span>' +
                         '<div class="participant-info">' +
                         '<span class="info-item">'+ participant.dob +'</span>' +
                         '<span class="info-item">'+ participant.gender +'</span>' +
@@ -454,8 +474,8 @@
                     JSON.parse(data).forEach(participant => {
                         let appendHTML = '<div class="list-group-item participant-item">' +
                             '<div class="d-flex justify-content-between align-items-center w-100">'+
-                            '<span class="participant-name">'+ participant.jobno +'</span>'+
-                            '<span class="participant-jobno">'+ participant.particName +'</span>'+
+                            '<span class="participant-jobno">'+ participant.jobno +'</span>'+
+                            '<span class="participant-name">'+ participant.particName +'</span>'+
                             '<div class="participant-info">'+
                             '<span class="info-item">'+ participant.dob +'</span>'+
                             '<span class="info-item">'+ participant.gender +'</span>'+
@@ -570,6 +590,6 @@
                 }
             });
         }
-    });
+    });*/
 </script>
 </html>
