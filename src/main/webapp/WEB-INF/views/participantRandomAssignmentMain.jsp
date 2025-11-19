@@ -84,6 +84,11 @@
     <!-- praCSVtoTable JS -->
     <script src="<c:url value="/js/praDataVerification.js"/>"></script>
 
+    <!-- table2excel Table to Excel -->
+    <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+    <!-- praTableExport JS -->
+    <script src="<c:url value="/js/praTabletoExcel.js"/>"></script>
+
     <!-- csv file inline css -->
     <!-- id&class file-text, file-button-label, file-input -->
     <style>
@@ -165,6 +170,16 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        #template-button{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #018b38;
+            color: #fff;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
@@ -183,7 +198,7 @@
             <div class="container-fluid">
                 <!-- 필요 본문 내용은 이쪽에 만들어 주시면 됩니다. -->
                 <div class="row">
-                    <div class="row col-md-4">
+                    <div class="col-md-4">
                         <div class="title-header col-md-12 pt-2">
                             참여자 랜덤 배정 <span id="helpButton" data-toggle="tooltip" data-placement="top" title="사용 방법 및 파일 설명"><i class="bi bi-lightbulb-fill"></i>도움말</span>
                         </div>
@@ -216,12 +231,13 @@
                             <br>
                             <button id="save-button" class="save-button mt-1"><i class="bi bi-save-fill"></i> 저장</button>
                             <button id="varification-button" class="varification-button"><i class="bi bi-save-fill"></i> 데이터 검증</button>
+                            <a href="/templateFolder/Template.csv"><button id="template-button"><i class="bi bi-save-fill"></i> 템플릿 다운로드</button></a>
 
                             <div class="response-text-div pb-2">경고 내용 출력 부분</div>
                         </div>
                     </div>
 
-                    <div class="row body-content col-md-8">
+                    <div class="body-content col-md-8">
                         <div class="counselor-container col-md-12 mt-1">
                             <button class="btn btn-secondary float-end" id="excludeBtn">선택 상담사 배정 제외</button>
                         </div>
@@ -254,7 +270,10 @@
                     <div class="content-body col-md-12">
                         <!-- csvData ID를 JavaScript와 일치시킴 -->
                         <div class="csvData" id="csvData">
-                            <table class="table table-striped">
+                            <div class="counselor-container col-md-12 mt-1">
+                                <button class="btn btn-success float-end" id="excel-download-btn" onclick="exportToExcel()">Excel 다운로드</button>
+                            </div>
+                            <table class="table table-striped" id="pra-csv-table">
                                 <thead class="csv-data-header">
                                 <tr>
                                     <th class="">번호</th>

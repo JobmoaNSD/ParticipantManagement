@@ -59,7 +59,7 @@
             <div class="w-auto">
                 <label for="employmentIncentive" class="form-label">취업인센티브_구분<span class="text-danger">*</span></label>
                 <select class="form-select" aria-label="Default select example" id="employmentIncentive" name="employmentIncentive">
-                    <option value=""></option>
+                    <option value="">취업인센티브_선택</option>
                     <option value="해당[컨설팅 알선 - 120%]">해당[컨설팅 알선 - 120%]</option>
                     <option value="해당[알선취업(외부소개) - 100%]">해당[알선취업(외부소개) - 100%]</option>
                     <option value="해당[대면상담 6회(알선3회) - 100%]">해당[대면상담 6회(알선3회) - 100%]</option>
@@ -76,7 +76,7 @@
             <div class="w-auto">
                 <label for="employmentJobcat" class="form-label">일경험분류</label>
                 <select class="form-select" aria-label="Default select example" id="employmentJobcat" name="employmentJobcat">
-                    <option value=""></option>
+                    <option value="">일경험분류_선택</option>
                     <option value="신규진입">신규진입</option>
                     <option value="장기미취업">장기미취업</option>
                     <option value="경력자">경력자</option>
