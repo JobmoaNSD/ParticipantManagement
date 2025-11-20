@@ -54,7 +54,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="css/adminlte.css" />
+    <link rel="stylesheet" href="/css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
     <!-- apexcharts -->
     <link
@@ -105,31 +105,31 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="js/adminlte.js"></script>
+    <script src="/js/adminlte.js"></script>
     <!--end::Required Plugin(AdminLTE)-->
 
     <!-- datepicker CSS JS -->
     <!-- Bootstrap Datepicker 로드 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="js/datepickerJS.js"></script>
+    <script src="/js/datepickerJS_0.0.1.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css">
-    <link rel="stylesheet" href="css/datepicker.css">
+    <link rel="stylesheet" href="/css/datepicker.css">
 
     <!-- recommend JS -->
-    <script src="js/recommendJS.js"></script>
-    <link rel="stylesheet" href="css/recommend.css">
+    <script src="/js/recommendJS_0.0.1.js"></script>
+    <link rel="stylesheet" href="/css/recommend.css">
 
     <!-- selectOption JS -->
-    <script src="js/selectOptionJS.js"></script>
+    <script src="/js/selectOptionJS_0.0.1.js"></script>
 
     <!-- InputLimits JS -->
-    <script src="js/InputLimits.js"></script>
+    <script src="/js/InputLimits_0.0.1.js"></script>
 
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <script src="js/sweetAlert.js"></script>
+    <script src="/js/sweetAlert_0.0.1.js"></script>
 
 
 </head>

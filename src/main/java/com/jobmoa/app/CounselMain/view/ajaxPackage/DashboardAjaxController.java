@@ -28,7 +28,9 @@ public class DashboardAjaxController {
     @Autowired
     private ChangeJson changeJson;
 
-    @PostMapping(value = "/dashBoardSuccess.login", headers = "application/json; charset=utf-8")
+    @PostMapping(value = "/dashBoardSuccess.login",
+            consumes = "application/json; charset=utf-8",
+            produces = "application/json; charset=utf-8")
     public String dashBoardAjaxSuccess(@RequestBody DashboardDTO dashboardDTO){
         String branch = dashboardDTO.getDashboardBranch();
         String startDate = dashboardDTO.getDashBoardStartDate();
@@ -67,7 +69,9 @@ public class DashboardAjaxController {
         return branchDataChangeJson;
     }
 
-    @PostMapping("/dashBoardInventive.login")
+    @PostMapping(value = "/dashBoardInventive.login",
+            consumes = "application/json; charset=utf-8",
+            produces = "application/json; charset=utf-8")
     public String dashBoardAjaxInventive(@RequestBody DashboardDTO dashboardDTO){
         String startDate = dashboardDTO.getDashBoardStartDate();
         String endDate = dashboardDTO.getDashBoardEndDate();
@@ -109,7 +113,9 @@ public class DashboardAjaxController {
     }
 
     //총점, 취업자, 알선취업자, 고용유지, 조기취업자, 나은일자리 비동기 조회
-    @PostMapping(value = "dashBoardAjaxBranchScore.login", produces = "application/json; charset=utf-8")
+    @PostMapping(value = "dashBoardAjaxBranchScore.login",
+            consumes = "application/json; charset=utf-8",
+            produces = "application/json; charset=utf-8")
     public String consolScore(@RequestBody DashboardDTO dashboardDTO, HttpSession session){
 //        Code 실행 시간을 확인하기 위해 작성
         long beforeTime = System.currentTimeMillis();
@@ -223,7 +229,9 @@ public class DashboardAjaxController {
         );
     }
 
-    @PostMapping("noServiceAjax.login")
+    @PostMapping(value = "noServiceAjax.login",
+            consumes = "application/json; charset=utf-8",
+            produces = "application/json; charset=utf-8")
     public List<ParticipantDTO> noServiceSearchAjax(@RequestBody ParticipantDTO participantDTO, HttpSession session){
         log.info("noServiceSearchAjax Start noService.login");
         // 세션에 저장되어 있는 로그인 정보를 확인한다.
@@ -250,7 +258,9 @@ public class DashboardAjaxController {
         return datas;
     }
 
-    @PostMapping("scoreBranchPerformanceGraphAjax.login")
+    @PostMapping(value = "scoreBranchPerformanceGraphAjax.login",
+            consumes = "application/json; charset=utf-8",
+            produces = "application/json; charset=utf-8")
     public String scoreBranchPerformanceGraphAjax(@RequestBody DashboardDTO dashboardDTO){
 
         boolean conditionFlag = dashboardDTO.isDashboardFlagCondition();//Boolean.parseBoolean(dashboardDTO.getDashboardCondition());
@@ -277,7 +287,9 @@ public class DashboardAjaxController {
         return responseJson;
     }
 
-    @PostMapping("scoreBranchPerformanceTableAjax.login")
+    @PostMapping(value ="scoreBranchPerformanceTableAjax.login",
+            consumes = "application/json; charset=utf-8",
+            produces = "application/json; charset=utf-8")
     public List<DashboardDTO> scoreBranchPerformanceTableAjax(@RequestBody DashboardDTO dashboardDTO){
 
         boolean conditionFlag = dashboardDTO.isDashboardFlagCondition();

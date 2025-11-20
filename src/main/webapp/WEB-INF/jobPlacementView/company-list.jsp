@@ -34,13 +34,13 @@
     <link href="/css/jobPlacementCss/jobPlacementDefault.css" rel="stylesheet"/>
 
     <!-- jobPlacementListJS -->
-    <script src="/js/jobPlacementJs/jobPlacementListJS.js"></script>
+    <script src="/js/jobPlacementJs/jobPlacementListJS_0.0.1.js"></script>
 
-    <!-- InputLimits.js -->
-    <script src="/js/InputLimits.js"></script>
+    <!-- InputLimits_0.0.1.js -->
+    <script src="/js/InputLimits_0.0.1.js"></script>
 
-    <!-- jobCategorySelectRenderText.js -->
-    <script src="/js/jobPlacementJs/jobPlacementJobCategorySelectRenderText.js"></script>
+    <!-- jobCategorySelectRenderText_0.0.1.js -->
+    <script src="/js/jobPlacementJs/jobPlacementJobCategorySelectRenderText_0.0.1.js"></script>
 
 </head>
 <body>
@@ -334,7 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Pagination Function Start -->
-<script src="/js/paginationJS.js"></script>
+<script src="/js/paginationJS_0.0.1.js"></script>
 <script>
     $(document).ready(function(){
         <%-- pagination 시작 --%>

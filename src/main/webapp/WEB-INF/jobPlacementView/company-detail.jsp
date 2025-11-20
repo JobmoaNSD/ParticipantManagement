@@ -43,7 +43,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- jobPlacementDetailJS -->
-  <script src="/js/jobPlacementJs/jobPlacementDetailJS.js"></script>
+  <script src="/js/jobPlacementJs/jobPlacementDetailJS_0.0.1.js"></script>
 
   <!-- datepicker CSS JS -->
   <!-- mouse pointer 모양 bootstrap 5 -->
@@ -52,7 +52,7 @@
   <!-- Bootstrap Datepicker 로드 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js" integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/js/jobPlacementJs/datepickerJS.js"></script>
+  <script src="/js/jobPlacementJs/datepickerJS_0.0.1.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css">
   <link rel="stylesheet" href="/css/datepicker.css">
 
@@ -60,13 +60,13 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
   <!-- kakao 주소 API 호출 JS API 문서 주소 https://postcode.map.daum.net/guide#usage -->
-  <script src="/js/jobPlacementJs/kakaoAddressAPIJS.js"></script>
+  <script src="/js/jobPlacementJs/kakaoAddressAPIJS_0.0.1.js"></script>
 
   <!-- 카테고리 설정 jobPlacementDefault JS -->
-  <script src="/js/jobCategorySelectRenderText.js"></script>
+  <script src="/js/jobCategorySelectRenderText_0.0.1.js"></script>
 
   <!-- selectOption JS -->
-  <script src="/js/selectOptionJS.js"></script>
+  <script src="/js/selectOptionJS_0.0.1.js"></script>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -74,7 +74,7 @@
   <!-- sweetalert2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-  <script src="/js/sweetAlert.js"></script>
+  <script src="/js/sweetAlert_0.0.1.js"></script>
 
 
 </head>
@@ -427,7 +427,7 @@
 <div class="toast-container" id="toastContainer"></div>
 
 <!-- Scripts -->
-<script src="../js/paginationJS.js"></script>
+<script src="/js/paginationJS_0.0.1.js"></script>
 <script>
   $(document).ready(function(){
     let page = parseInt("${param.page}", 10) || 1; // page가 비어있거나 아닌 경우 숫자로 변환 후 기본값 1 적용

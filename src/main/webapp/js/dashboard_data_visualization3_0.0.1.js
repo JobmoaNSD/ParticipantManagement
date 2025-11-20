@@ -169,7 +169,7 @@ $(document).ready(function(){
                         },
                     ]};
 
-        fetch('dashBoardInventive.login', {
+        fetch('/dashBoardInventive.login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -182,6 +182,7 @@ $(document).ready(function(){
         }).then(async r => {
             let result = await r.json();
             JSON.parse(result).forEach((item) => {
+            // result.forEach((item) => {
                 inventiveFalseStatusData.branch.push(item.branch);
                 inventiveFalseStatusData.inventiveSituation.at(0).data.push(item.noService);
                 inventiveFalseStatusData.inventiveSituation.at(1).data.push(item.lessThanOneMonth);

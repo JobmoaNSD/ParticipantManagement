@@ -34,7 +34,7 @@
     <!-- Custom Style CSS  -->
     <link href="/css/jobPlacementCss/jobPlacementDefault.css" rel="stylesheet">
 
-    <script src="/js/jobPlacementJs/locationSelect.js"></script>
+    <script src="/js/jobPlacementJs/locationSelect_0.0.1.js"></script>
 </head>
 <body>
 <!-- Skip Navigation for Accessibility -->

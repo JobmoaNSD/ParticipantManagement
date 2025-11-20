@@ -55,7 +55,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="css/adminlte.css" />
+    <link rel="stylesheet" href="/css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
     <!-- apexcharts -->
     <link
@@ -79,15 +79,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.9/jquery.csv.js" integrity="sha512-eDkr7sqAJqr3s63mdge3uTyuKVpEbzw3eji7CbGYr8VeM+NtqNajwuAiU31S0buRspDF1mZ8qTSeEZ4v/8b3Gw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- praCSVtoTable JS -->
-    <script src="<c:url value="/js/praCSVtoTableJS.js"/>"></script>
+    <script src="/js/praCSVtoTableJS_0.0.1.js"></script>
 
     <!-- praCSVtoTable JS -->
-    <script src="<c:url value="/js/praDataVerification.js"/>"></script>
+    <script src="/js/praDataVerification_0.0.1.js"></script>
 
     <!-- table2excel Table to Excel -->
     <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
     <!-- praTableExport JS -->
-    <script src="<c:url value="/js/praTabletoExcel.js"/>"></script>
+    <script src="/js/praTableToExcel_0.0.1.js"></script>
 
     <!-- csv file inline css -->
     <!-- id&class file-text, file-button-label, file-input -->

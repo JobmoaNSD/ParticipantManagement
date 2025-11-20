@@ -55,7 +55,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="css/adminlte.css" />
+    <link rel="stylesheet" href="/css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
     <!-- apexcharts -->
     <link
@@ -75,7 +75,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- 실적 정보 Dfault 디자인 -->
-    <link rel="stylesheet" href="css/DashBoardBranchScoreAndSituation.css" />
+    <link rel="stylesheet" href="/css/DashBoardBranchScoreAndSituation.css" />
 
     <style>
 

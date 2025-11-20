@@ -78,7 +78,7 @@ $(document).ready(function(){
             amounts: []
         };
 
-        fetch('dashBoardSuccess.login', {
+        fetch('/dashBoardSuccess.login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

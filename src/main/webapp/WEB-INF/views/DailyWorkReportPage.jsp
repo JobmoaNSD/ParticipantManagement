@@ -56,7 +56,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="css/adminlte.css" />
+    <link rel="stylesheet" href="/css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
     <!-- apexcharts -->
     <link
@@ -79,7 +79,7 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
     <!-- CSS 추가 -->
-    <link rel="stylesheet" href="css/dailyWorkReportCss.css">
+    <link rel="stylesheet" href="/css/dailyWorkReportCss.css">
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">

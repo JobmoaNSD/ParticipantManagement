@@ -53,7 +53,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="css/adminlte.css" />
+    <link rel="stylesheet" href="/css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
     <!-- apexcharts -->
     <link
@@ -77,20 +77,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
-    <script src="js/drawChartCenterTextPlugin.js"></script>
-    <script src="js/dashBoardJS.js"></script>
+    <script src="/js/drawChartCenterTextPlugin_0.0.1.js"></script>
+    <script src="/js/dashBoardJS_0.0.1.js"></script>
 
     <!-- ApexChart로 변경 -->
-    <script src="js/ApexChartMainDashBoardJS.js"></script>
+    <script src="/js/ApexChartMainDashBoardJS_0.0.1.js"></script>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
     <!-- 랜덤 색상 지정 -->
-    <script src="js/randomColorGenerator.js"></script>
+    <script src="/js/randomColorGenerator_0.0.1.js"></script>
 
     <!-- 진행바 스타일 적용 -->
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
