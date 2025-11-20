@@ -55,7 +55,7 @@
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="css/adminlte.css" />
+    <link rel="stylesheet" href="/css/adminlte.css" />
     <!--end::Required Plugin(AdminLTE)-->
     <!-- apexcharts -->
     <link
@@ -75,7 +75,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- myPage JS -->
-    <script src="js/myPageJS.js"></script>
+    <script src="/js/myPageJS_0.0.1.js"></script>
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
