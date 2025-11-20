@@ -273,6 +273,7 @@
             진행단계,
             지점,
             등록일,
+            취업인센티브_구분,
             -- 유효한 날짜 계산을 CTE로 분리
             CASE
                 WHEN 취창업일 > '1900-01-01' AND 기간만료일 > '1900-01-01' THEN COALESCE(취창업일, 기간만료일)
@@ -281,13 +282,20 @@
                 ELSE NULL
             END AS 유효날짜
         FROM J_참여자관리
-        WHERE 전담자_계정 = #{dashboardUserID}
+        WHERE
+            지점 NOT IN ('테스트', '공통')
+            AND (모집경로 <![CDATA[<>]]> '이관' OR 모집경로 IS NULL)
+            AND (참여유형 <![CDATA[<>]]> '이관' OR 참여유형 IS NULL)
+          AND 진행단계 NOT IN ('미고보','미등록창업')
+          AND (취업인센티브_구분 NOT LIKE '%미해당%파견%' OR 취업인센티브_구분 IS NULL)
+            AND 전담자_계정 = #{dashboardUserID}
         ),
         조건_필터 AS (
         SELECT
             전담자_계정,
             취창업일,
             진행단계,
+            취업인센티브_구분,
             -- 조건을 명확하게 분리
             CASE
             WHEN 지점 IN ('인천', '성남') AND 등록일 BETWEEN '2025-01-01' AND '2025-10-31' THEN 1
@@ -300,7 +308,9 @@
         )
         SELECT
             전담자_계정,
-            SUM(CASE WHEN 취창업일 <![CDATA[<>]]> '' THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountUser,
+            SUM(CASE WHEN
+                취창업일 <![CDATA[<>]]> ''
+                THEN 1 ELSE 0 END) AS dashBoardEarlyEmployedCountUser,
             -- 0으로 나누기 방지 및 백분율 계산
             CASE
                 WHEN SUM(CASE WHEN 진행단계 NOT IN ('유예', '취소') THEN 1 ELSE 0 END) = 0
@@ -318,7 +328,7 @@
 
     <!-- 성공금 현황 시작 -->
     <select id="selectSuccessMoneyDetails" resultType="dashboard">
-        SELECT TOP(100)
+        SELECT
             A.구직번호 AS dashBoardJobNo,
             A.등록일 AS dashBoardDate,
             A.참여자 AS dashBoardPartic,
@@ -333,7 +343,8 @@
         WHERE
             A.성공금 <![CDATA[<>]]> '' AND
             A.전담자_계정 = #{dashboardUserID} AND
-            A.지점=#{dashBoardUserBranch};
+            A.지점=#{dashBoardUserBranch}
+        ORDER BY A.등록일 DESC;
     </select>
     <!-- 성공금 현황 끝 -->
 
