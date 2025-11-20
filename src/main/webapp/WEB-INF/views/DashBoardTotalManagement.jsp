@@ -54,7 +54,7 @@
   />
   <!--end::Third Party Plugin(Bootstrap Icons)-->
   <!--begin::Required Plugin(AdminLTE)-->
-  <link rel="stylesheet" href="css/adminlte.css" />
+  <link rel="stylesheet" href="/css/adminlte.css" />
   <!--end::Required Plugin(AdminLTE)-->
   <!-- apexcharts -->
   <link
@@ -75,13 +75,13 @@
   <!-- sweetalert2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-  <script src="js/sweetAlert.js"></script>
+  <script src="/js/sweetAlert_0.0.1.js"></script>
 
 
   <!-- 대시보드 JavaScript -->
-  <script src="js/dashboard_data_visualization.js"></script>
-  <script src="js/dashboard_data_visualization2.js"></script>
-  <script src="js/dashboard_data_visualization3.js"></script>
+  <script src="/js/dashboard_data_visualization_0.0.1.js"></script>
+  <script src="/js/dashboard_data_visualization2_0.0.1.js"></script>
+  <script src="/js/dashboard_data_visualization3_0.0.1.js"></script>
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">

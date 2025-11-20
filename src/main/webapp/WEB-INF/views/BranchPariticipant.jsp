@@ -111,27 +111,27 @@
             crossorigin="anonymous"
     ></script>
     <!--begin::Required Plugin(AdminLTE)-->
-    <script src="js/adminlte.js"></script>
+    <script src="/js/adminlte.js"></script>
     <!--end::Required Plugin(AdminLTE)-->
 
     <!-- pagination JS 파일 -->
-    <script src="js/paginationJS.js"></script>
+    <script src="/js/paginationJS_0.0.1.js"></script>
 
     <!-- selectOptionJS JS 파일 -->
-    <script src="js/selectOptionJS.js"></script>
+    <script src="/js/selectOptionJS_0.0.1.js"></script>
 
     <!-- Excel 다운 버튼 CSS 추가 -->
-    <link rel="stylesheet" href="css/dailyWorkReportCss.css">
+    <link rel="stylesheet" href="/css/dailyWorkReportCss.css">
 
     <!-- sweetalert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <script src="js/sweetAlert.js"></script>
+    <script src="/js/sweetAlert_0.0.1.js"></script>
 
     <!-- 새로 분리한 JS 파일들 추가 -->
     <!-- 참여자조회 Js 코드들 -->
-    <script src="js/participant_main.js"></script>
-    <script src="js/participant_excel_download.js"></script>
+    <script src="/js/participant_main_0.0.1.js"></script>
+    <script src="/js/participant_excel_download_0.0.1.js"></script>
 
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">

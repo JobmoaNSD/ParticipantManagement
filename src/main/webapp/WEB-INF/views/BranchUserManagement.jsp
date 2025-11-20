@@ -55,11 +55,11 @@
   />
   <!--end::Third Party Plugin(Bootstrap Icons)-->
   <!--begin::Required Plugin(AdminLTE)-->
-  <link rel="stylesheet" href="css/adminlte.css" />
+  <link rel="stylesheet" href="/css/adminlte.css" />
   <!--end::Required Plugin(AdminLTE)-->
 
-  <!-- Custom sweetAlert.js -->
-  <script src="js/sweetAlert.js"></script>
+  <!-- Custom sweetAlert_0.0.1.js -->
+  <script src="/js/sweetAlert_0.0.1.js"></script>
 
   <!-- Custom styles -->
   <style>
