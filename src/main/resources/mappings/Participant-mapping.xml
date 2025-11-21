@@ -330,6 +330,10 @@
     <delete id="participantDelete">
         DELETE FROM J_참여자관리 WHERE 구직번호 = #{participantJobNo} AND 전담자_계정 = #{participantUserid}
     </delete>
+    <!-- 기본 정보 삭제 쿼리 -->
+    <delete id="participantDeleteAdmin">
+        DELETE FROM J_참여자관리 WHERE 구직번호 = #{participantJobNo}
+    </delete>
     <!-- 자격증 정보 삭제 쿼리 -->
     <delete id="participantParticcertifDelete">
         DELETE FROM J_참여자관리_자격증 WHERE 구직번호 = #{participantJobNo}

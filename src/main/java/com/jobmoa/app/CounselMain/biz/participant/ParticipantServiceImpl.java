@@ -71,6 +71,7 @@ public class ParticipantServiceImpl implements ParticipantService {
             return false;
         }
         log.info("delete participantDTO not null OR participantCondition not null");
+
         //기본정보 삭제를 진행하고
         if(participantDAO.delete(participantDTO)){
             //각 삭제 쿼리를 실행할 condition

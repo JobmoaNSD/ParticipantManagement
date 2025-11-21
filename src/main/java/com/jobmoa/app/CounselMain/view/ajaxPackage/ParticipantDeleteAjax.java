@@ -30,6 +30,14 @@ public class ParticipantDeleteAjax {
         //로그인 정보에서 아이디 확인
         String loginId = loginBean.getMemberUserID();
 
+        //로그인 정보에서 지점 관리자 권한을 확인
+        boolean branchAdminBoolean = (Boolean)session.getAttribute("IS_BRANCH_MANAGER");
+        //로그인 정보에서 관리자 권한을 확인
+        boolean adminBoolean = (Boolean)session.getAttribute("IS_MANAGER");
+
+        //지점 관리자 이거나 관리자이면 adminFlag True
+        boolean adminFlag = branchAdminBoolean || adminBoolean;
+
         //구직번호 배열이 넘어오면 해당 배열을 기준으로 삭제를 진행
         int[] jobNos = basicDTO.getBasicJobNos();
         log.info("Participant jobNos : [{}]",jobNos);
@@ -42,6 +50,11 @@ public class ParticipantDeleteAjax {
         for(int jobNo : jobNos) {
             // condition 추가
             participantDTO.setParticipantCondition("participantDelete");
+            if(adminFlag){
+                participantDTO.setParticipantCondition("participantDeleteAdmin");
+            }
+
+
             //각 정보에 구직번호를 추가하고  기본정보 삭제 탭으로 전달한다.
             participantDTO.setParticipantJobNo(jobNo);
             //참여자 삭제를 확인한다.
