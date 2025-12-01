@@ -329,6 +329,8 @@ public class DashboardMainController {
         log.info("scoreBranchDashboard responseJson : [{}]",responseJson);
 
         model.addAttribute("branchAvg",responseJson);
+        model.addAttribute("dashBoardStartDate",FAILSTARTDATE);
+        model.addAttribute("dashBoardEndDate",FAILENDDATE);
 
         return "views/DashBoardBranchScoreAndSituation";
     }

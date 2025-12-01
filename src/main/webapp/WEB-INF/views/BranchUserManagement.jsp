@@ -326,7 +326,7 @@
         crossorigin="anonymous"
 ></script>
 
-<%--TODO table 순서 변경 관련해서 수정하고 유저 비밀번호, 신규참여자 등록, 사용정지 여부 등록하는 jQuery를 추가한다.--%>
+<%--table 순서 변경 관련해서 수정하고 유저 비밀번호, 신규참여자 등록, 사용정지 여부 등록하는 jQuery를 추가한다.--%>
 <script>
   $(document).ready(function () {
     // sortable 초기화

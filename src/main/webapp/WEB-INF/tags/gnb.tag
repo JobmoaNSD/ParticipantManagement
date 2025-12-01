@@ -4,6 +4,8 @@
 <%@ attribute name="gnb_sub_header"%>
 <%@ attribute name="gnb_sub_menu_header"%>
 
+<script src="/js/gnb.js"></script>
+
 <!--begin::Header-->
 <nav class="app-header navbar navbar-expand bg-body">
     <!--begin::Container-->
@@ -22,6 +24,8 @@
         <!--end::Start Navbar Links-->
         <!--begin::End Navbar Links-->
         <ul class="navbar-nav ms-auto">
+
+
             <!--begin::Fullscreen Toggle-->
             <li class="nav-item">
                 <a class="nav-link" href="#" data-lte-toggle="fullscreen">
@@ -48,10 +52,16 @@
                     <li class="user-body">
                         <!--begin::Row-->
                         <div class="row">
-
                             <div class="col-4 text-center">전담자<br/>${JOBMOA_LOGIN_DATA.memberUserName}</div>
                             <div class="col-4 text-center">권한<br/>${JOBMOA_LOGIN_DATA.memberRole}</div>
                             <div class="col-4 text-center">고유번호<br/>${JOBMOA_LOGIN_DATA.memberUniqueNumber}</div>
+                            <!--begin::Session Time-->
+                            <hr>
+                            <div class="col-12">
+                                <input type="hidden" id="sessionTimeHidden" value="${SESSION_TIME}">
+                                로그인 일시: <span id="sessionTime">${SESSION_TIME}</span>
+                            </div>
+                            <!--end::Session Time-->
                         </div>
                         <!--end::Row-->
                     </li>
@@ -172,7 +182,6 @@
                 </li>
                 <!--end::알선기업관리-->
                 <!--begin::지점관리-->
-                <!-- FIXME 권한 확인하고 어디까지 열어둘지 확인해야함 -->
                 <c:if test="${IS_BRANCH_MANAGER || IS_MANAGER}">
                     <li class="nav-item ${gnb_main_header eq '지점관리' ? 'menu-open' : ''}">
                         <a href="#" class="nav-link">
