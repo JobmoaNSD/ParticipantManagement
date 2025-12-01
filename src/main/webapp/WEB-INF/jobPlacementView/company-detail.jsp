@@ -333,7 +333,6 @@
   </div>
 </div>
 
-<%--TODO 개인정보동의 동의 화면 모달 제작--%>
 <div class="modal fade" id="personalInformationModal" tabindex="-1" aria-labelledby="personalInformationModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content bg-gray-50 text-gray-800 rounded-lg">

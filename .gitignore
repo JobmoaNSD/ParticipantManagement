@@ -63,3 +63,6 @@ logs/
 out/
 *.tmp
 *.temp
+
+### 설정 파일 ###
+application.properties

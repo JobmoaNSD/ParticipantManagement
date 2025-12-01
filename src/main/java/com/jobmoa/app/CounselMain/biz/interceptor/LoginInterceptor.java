@@ -61,6 +61,9 @@ public class LoginInterceptor implements HandlerInterceptor { // 스프링 MVC�
             flag = false;
             // 컨트롤러 실행을 중단하고 요청 처리를 여기서 종료
         }
+        else if (session.getAttribute("JOBMOA_LOGIN_DATA") != null) {
+            session.setMaxInactiveInterval(60 * 60);
+        }
 
         log.info("---Login Success---");
         // 세션 정보가 있고, 로그인 데이터가 포함되어 있으므로 로그인을 성공했다고 출력

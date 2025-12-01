@@ -78,6 +78,11 @@ public class LoginController {
                 session.setAttribute("IS_MANAGER", isManager);
                 session.setAttribute("IS_PRA_MANAGER",praRole);
 
+                //Session 시간 1시간 지정
+                session.setMaxInactiveInterval(60*60);
+                log.info("Session MaxInactiveInterval : [{}]",session.getMaxInactiveInterval());
+                session.setAttribute("SESSION_TIME",System.currentTimeMillis());
+
                 url = "dashboard.login";
                 icon = "success";
                 title = "로그인 성공";
@@ -101,8 +106,9 @@ public class LoginController {
     @GetMapping("/logout.do")
     public String logoutController(HttpSession session){
         log.info("-----------------------------------");
-        session.removeAttribute("JOBMOA_LOGIN_DATA");
+        //모든 세션 정보 제거
         log.info("session remove : [{}]", session.getAttribute("JOBMOA_LOGIN_DATA"));
+        session.invalidate();
         log.info("-----------------------------------");
         return "redirect:login.do";
     }

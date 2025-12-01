@@ -104,6 +104,41 @@
                             </div>
                         </div>
 
+                        <%-- TODO 기간별 선택 기능 제작 완료 후 d-none 설정 제거 --%>
+                        <div class="col-md-12 d-none">
+                            <div class="modern-btn-group">
+                                <div id="graphAndTableButtonContainer">
+                                    <span class="placeholderText">* 실적 기간 선택</span>
+                                    <div class="input-group w-100">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-calendar-date"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                                type="date"
+                                                class="form-control"
+                                                name="dashBoardStartDate"
+                                                id="dashBoardStartDate"
+                                                autocomplete="off"
+                                                value="${dashBoardStartDate}"
+                                        >
+                                        <div class="input-group-prepend input-group-append">
+                                            <span class="input-group-text">~</span>
+                                        </div>
+                                        <input
+                                                type="date"
+                                                class="form-control"
+                                                name="dashBoardEndDate"
+                                                id="dashBoardEndDate"
+                                                autocomplete="off"
+                                                value="${dashBoardEndDate}"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row g-3">
                             <!-- 그래프/테이블 선택 -->
                             <div class="col-lg-3 col-md-6">
@@ -984,6 +1019,9 @@
                 const $loadingScoreChartDiv = $("#loadingScoreChartDiv");
                 $loadingScoreChartDiv.show().html('<div class="modern-loader-text">실적 정보를 불러오는 중입니다</div><div class="loader"></div>');
 
+                const $dashBoardStartDateInput = $('#dashBoardStartDate');
+                const $dashBoardEndDateInput = $('#dashBoardEndDate');
+
                 changJson = {
                     name: [],
                     data: []
@@ -1000,8 +1038,8 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
-                        dashBoardEndDate: '2025-10-31',
+                        dashBoardStartDate: $dashBoardStartDateInput.val(),//EX: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
+                        dashBoardEndDate: $dashBoardEndDateInput.val(),//EX: '2025-10-31',
                         dashboardFlagCondition: conditionFlag,
                         dashboardExcludeRetention: isExcludeRetention,
                         isManagement: ${IS_MANAGER},
@@ -1078,14 +1116,17 @@
                 let isExcludeRetention = !excludeRetention.is(':checked');
                 console.log("isExcludeRetention :[" +isExcludeRetention+"]")
 
+                const $dashBoardStartDateInput = $('#dashBoardStartDate');
+                const $dashBoardEndDateInput = $('#dashBoardEndDate');
+
                 fetch('scoreBranchPerformanceTableAjax.login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        dashBoardStartDate: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
-                        dashBoardEndDate: '2025-10-31',
+                        dashBoardStartDate: $dashBoardStartDateInput.val(),//EX: '2024-11-01', //FIXME 추후 실적 일정 설정 input 추가시 수정
+                        dashBoardEndDate: $dashBoardEndDateInput.val(),//EX: '2025-10-31',
                         dashboardFlagCondition: conditionFlag,
                         dashboardExcludeRetention: isExcludeRetention,
                         isManagement: ${IS_MANAGER},
